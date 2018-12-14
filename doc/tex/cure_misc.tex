@@ -1,0 +1,51 @@
+\section{cure\_misc}
+
+cure\_miscでは，
+どのカテゴリにも入らない，雑多なマクロ{\&}関数群を定義しています．
+
+\subsection{マクロ(引数付き)}
+
+\begin{description}
+\item[zMax(x,y)]{x,yのうち，大きい値を返します．}
+\item[zMin(x,y)]{x,yのうち，小さい値を返します．}
+\item[zLimit(x,l,u)]{xを最小値l，最大値uの間で飽和させます．}
+\end{description}
+言うまでもないことですが，x,y,l,uは大小比較の出来る値でなければ
+いけません．
+
+\begin{description}
+\item[zSwap(type,a,b)]{aとbの中身を入れ換えます．typeはa,bの型です．}
+\end{description}
+
+\begin{description}
+\item[zAlloc(type,n)]{type型の変数n個分のメモリをヒープから取ってきます．
+確保されたメモリは零クリアされます．}
+\item[zFree(m)]{ポインタmで指される領域を解放した後に，
+mにナルポインタを代入します．
+mがもともとナルポインタならば何もしません．}
+\item[zRealloc(m,type,n)]{ポインタmで指される領域を，
+type型の変数n個分用に再確保します．}
+\end{description}
+
+\subsection{関数}
+
+\begin{description}
+\item[int fpeek(FILE *fp);]{\hfil\newline
+fpのカレントポジションにある1バイト分のデータを読み込みます．
+fgetc()と異なり，カレントポジションは移動しません．
+}
+\item[int eprintf(char *format, ... );]{\hfil\newline
+出力先が標準エラーである以外はprintf()関数と同じです．
+}
+\item[int atox_c(char c);]{\hfil\newline
+
+}
+\end{description}
+
+\begin{verbatim}
+
+int atox(char *str);
+
+char* itoa(int val, char *buf);
+char* ftoa(double val, char *buf);
+\end{verbatim}

@@ -1,0 +1,41 @@
+#!/bin/sh
+
+test "$1" || exit 0
+
+DEPLIST=$1
+RETVAL=0
+
+while [ "${DEPLIST}" ]; do
+  lib=${DEPLIST%%=*}
+  DEPLIST=${DEPLIST#*=}
+  rqrver=${DEPLIST%%;*}
+  NEXTDEPLIST=${DEPLIST#*;}
+  if [ "${NEXTDEPLIST}" = "${DEPLIST}" ]; then
+    DEPLIST=""
+  else
+    DEPLIST=${NEXTDEPLIST}
+  fi
+
+  rqrmsg="lib${lib}: required version ${rqrver} /"
+  if [ ! `which ${lib}-config` ]; then
+    echo ${rqrmsg} " not installed"
+    continue
+  fi
+  curver=`${lib}-config -v`
+  msg="${rqrmsg} installed version ${curver}"
+
+  rqrvermjr=`echo ${rqrver} | cut -d. -f 1`
+  rqrvermdl=`echo ${rqrver} | cut -d. -f 2`
+  rqrvermnr=`echo ${rqrver} | cut -d. -f 3`
+  curvermjr=`echo ${curver} | cut -d. -f 1`
+  curvermdl=`echo ${curver} | cut -d. -f 2`
+  curvermnr=`echo ${curver} | cut -d. -f 3`
+  if [ ${rqrvermjr} -gt ${curvermjr} -o ${rqrvermdl} -gt ${curvermdl} -o ${rqrvermnr} -gt ${curvermnr} ]; then
+    echo ${msg} ": need update"
+    RETVAL=1
+  else
+    echo ${msg} ": OK"
+  fi
+done
+
+exit ${RETVAL}

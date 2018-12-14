@@ -1,0 +1,33 @@
+\section{cure\_defs}
+
+cure\_defsは，全てのライブラリで共通に用いられる型およびマクロを
+定義しています．
+いろいろありますが，ユーザが知っておくと良いのは，次の7つだけでしょう．
+
+\begin{description}
+\setlength{\itemsep}{-.2\baselineskip}
+\item[byte]{符号付き1バイト型}
+\item[ubyte]{符号なし1バイト型}
+\item[word]{符号付き2バイト型}
+\item[uword]{符号なし2バイト型}
+\item[uint]{符号なしint型}
+\item[ulong]{符号なしlong int型}
+\item[bool]{boolean型(C言語のみ)}
+\end{description}
+
+uint，ulongが既に定義されている処理系では，処理系の定義を優先させます．
+
+\begin{quote}
+\verb|cure_defs.h|を見ると分かりますが，
+このあたりの定義は割といい加減で，
+処理系によってはうまくいかない可能性が高いです．
+フィードバックを待ちます．
+\end{quote}
+
+boolの実体は列挙型で，false = 0, true = 1と定義しています
+(C++で定義されているものに合わせています)．
+
+デバッグ用に，次のマクロを用意しています．
+\begin{verbatim}
+#define zBoolExpr(b) ( (b) ? "true" : "false" )
+\end{verbatim}

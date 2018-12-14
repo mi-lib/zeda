@@ -1,0 +1,14 @@
+%
+%%%%
+%%%%%%%%%
+
+% comment1
+%%%  comment2
+
+string1
+string2		%comment3
+"separated string 3"
+
+string4
+
+%comment 4

@@ -1,0 +1,31 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% tag test file
+
+[typeA]
+name: type_a
+ival: -1, -2, -3
+dval: 3.14159
+invalidfield1: invalid
+
+% this
+% is
+% a
+% comment.
+
+[typeB]
+name: "Type B"
+ival: 100
+dval: 1.414 2.135 6.237
+% this is also a comment.
+invalidfield2: invalid
+msg: "read this carefully."
+
+
+[typeC]
+name: typeC
+msg: "this is not read."
+
+
+% this is the last comment.
+
+this is not a comment.

@@ -1,0 +1,70 @@
+\documentclass[12pt]{jarticle}
+
+\flushbottom
+\sloppy
+
+%%% paper size = A4
+\setlength{\paperwidth}{210mm}
+\setlength{\paperheight}{297mm}
+
+%%% truncate offset
+\setlength{\voffset}{0mm}
+\setlength{\hoffset}{0mm}
+
+%%% text bounding size
+\setlength{\textwidth}{\paperwidth}
+\addtolength{\textwidth}{-50mm}
+\setlength{\textheight}{\paperheight}
+\addtolength{\textheight}{-40mm}
+
+%%% text margin
+\setlength{\topmargin}{-1in}
+\addtolength{\topmargin}{20mm}
+\setlength{\headheight}{0mm}
+\setlength{\headsep}{0mm}
+\setlength{\footskip}{10mm}
+\setlength{\oddsidemargin}{-1in}
+\addtolength{\oddsidemargin}{25mm}
+\setlength{\columnsep}{7mm}
+
+\renewenvironment{quote}{
+ \list{}{%
+  \setlength{\topsep}{.3\baselineskip}
+  \setlength{\leftmargin}{1em}
+  \setlength{\rightmargin}{0pt}
+  \small
+  \item\relax}}
+ {\endlist}
+
+\begin{document}
+
+\input{title}
+
+%\setcounter{secnumdepth}{3}
+%\setcounter{tocdepth}{3}
+%\renewcommand{\textfraction}{0.00}
+\tableofcontents
+
+\input{intro}
+
+\include{cure_defs}
+\include{cure_misc}
+
+%#include <cure/cure_option.h>
+\include{cure_option}
+
+%#include <cure/cure_array.h>
+%#include <cure/cure_ring.h>
+%#include <cure/cure_rrtab.h>
+%#include <cure/cure_stream.h>
+%#include <cure/cure_list.h>
+
+%#include <cure/cure_string.h>
+
+%#include <cure/cure_rand.h>
+%#include <cure/cure_index.h>
+
+
+\input{postfix}
+
+\end{document}
