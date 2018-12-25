@@ -22,7 +22,7 @@ zIndex zIndexAlloc(zIndex idx, int size)
   zArrayAlloc( idx, int, size );
   if( !zArrayBuf(idx) ) return NULL;
   for( i=0; i<size; i++ )
-    zIndexSetElem( idx, i, i ); /* ordered index as default */
+    zIndexSetElemNC( idx, i, i ); /* ordered index as default */
   return idx;
 }
 
@@ -54,7 +54,7 @@ zIndex zIndexCreateList(int size, ...)
   if( !( idx = zIndexCreate( size ) ) ) return NULL;
   va_start( args, size );
   for( i=0; i<size; i++ )
-    zIndexSetElem( idx, i, va_arg( args, int ) );
+    zIndexSetElemNC( idx, i, va_arg( args, int ) );
   va_end( args );
   return idx;
 }
@@ -71,7 +71,7 @@ zIndex zIndexSetList(zIndex idx, ...)
 
   va_start( args, idx );
   for( i=0; i<zArraySize(idx); i++ )
-    zIndexSetElem( idx, i, va_arg( args, int ) );
+    zIndexSetElemNC( idx, i, va_arg( args, int ) );
   va_end( args );
   return idx;
 }
@@ -106,7 +106,7 @@ zIndex zIndexOrder(zIndex idx, int s)
   register uint i;
 
   for( i=0; i<zArraySize(idx); i++ )
-    zIndexSetElem( idx, i, s+i );
+    zIndexSetElemNC( idx, i, s+i );
   return idx;
 }
 #endif /* __KERNEL__ */
@@ -120,7 +120,7 @@ bool zIndexIsEqual(zIndex idx1, zIndex idx2)
 
   if( zArraySize(idx1) != zArraySize(idx2) ) return false;
   for( i=0; i<zArraySize(idx1); i++ )
-    if( zIndexElem(idx1,i) != zIndexElem(idx2,i) ) return false;
+    if( zIndexElemNC(idx1,i) != zIndexElemNC(idx2,i) ) return false;
   return true;
 }
 
@@ -129,8 +129,8 @@ bool zIndexIsEqual(zIndex idx1, zIndex idx2)
  */
 int zIndexSwap(zIndex idx, int p1, int p2)
 {
-  zSwap( int, zIndexElem(idx,p1), zIndexElem(idx,p2) );
-  return zIndexElem( idx, p2 );
+  zSwap( int, zIndexElemNC(idx,p1), zIndexElemNC(idx,p2) );
+  return zIndexElemNC( idx, p2 );
 }
 
 /* zIndexMove
@@ -141,15 +141,15 @@ int zIndexMove(zIndex idx, int from, int to)
   register int i;
   int tmp;
 
-  tmp = zIndexElem( idx, from );
+  tmp = zIndexElemNC( idx, from );
   if( from == to ) return tmp;
   if( from < to )
     for( i=from; i<to; i++ )
-      zIndexSetElem( idx, i, zIndexElem(idx,i+1) );
+      zIndexSetElemNC( idx, i, zIndexElemNC(idx,i+1) );
   else
     for( i=from; i>to; i-- )
-      zIndexSetElem( idx, i, zIndexElem(idx,i-1) );
-  return zIndexSetElem( idx, to, tmp );
+      zIndexSetElemNC( idx, i, zIndexElemNC(idx,i-1) );
+  return zIndexSetElemNC( idx, to, tmp );
 }
 
 #ifndef __KERNEL__
@@ -166,7 +166,7 @@ zIndex zIndexFRead(FILE *fp)
     return NULL;
 
   for( i=0; i<size; i++ )
-    zIndexSetElem( idx, i, zFInt( fp ) );
+    zIndexSetElemNC( idx, i, zFInt( fp ) );
   return idx;
 }
 
@@ -179,7 +179,7 @@ void zIndexDataFWrite(FILE *fp, zIndex idx)
 
   if( !idx ) return;
   for( i=0; i<zArraySize(idx); i++ )
-    fprintf( fp, "%d ", zIndexElem(idx,i) );
+    fprintf( fp, "%d ", zIndexElemNC(idx,i) );
   fprintf( fp, "\n" );
 }
 
@@ -195,7 +195,7 @@ void zIndexFWrite(FILE *fp, zIndex idx)
   else{
     fprintf( fp, "%d (", zArraySize(idx) );
     for( i=0; i<zArraySize(idx); i++ )
-      fprintf( fp, " %d", zIndexElem(idx,i) );
+      fprintf( fp, " %d", zIndexElemNC(idx,i) );
     fprintf( fp, " )\n" );
   }
 }
@@ -212,7 +212,7 @@ void zIndexWrite(zIndex idx)
   else{
     printk( "%d (", zArraySize(idx) );
     for( i=0; i<zArraySize(idx); i++ )
-      printk( " %d", zIndexElem(idx,i) );
+      printk( " %d", zIndexElemNC(idx,i) );
     printk( " )\n" );
   }
 }
