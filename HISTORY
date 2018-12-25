@@ -1,3 +1,5 @@
+2018.12.25. Added zArray2Class. [zeda_array]
+2018.12.25. Renamed zArrayNum to zArraySize. [zeda_array, zeda_index]
 2018.12.12. Modified zNameFind in order to avoid a warning that the address of 'array' will always evaluate as true. [zeda_name]
 2018.12.12. Added zStrSearchKMP and zStrSearchBM. [zeda_string]
 2018.12.12. Renamed from CURE to ZEDA. [all]

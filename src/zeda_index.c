@@ -70,7 +70,7 @@ zIndex zIndexSetList(zIndex idx, ...)
   va_list args;
 
   va_start( args, idx );
-  for( i=0; i<zArrayNum(idx); i++ )
+  for( i=0; i<zArraySize(idx); i++ )
     zIndexSetElem( idx, i, va_arg( args, int ) );
   va_end( args );
   return idx;
@@ -93,7 +93,7 @@ void zIndexFree(zIndex idx)
  */
 zIndex zIndexClear(zIndex idx)
 {
-  memset( zArrayBuf(idx), 0, sizeof(int)*zArrayNum(idx) );
+  memset( zArrayBuf(idx), 0, sizeof(int)*zArraySize(idx) );
   return idx;
 }
 
@@ -105,7 +105,7 @@ zIndex zIndexOrder(zIndex idx, int s)
 {
   register uint i;
 
-  for( i=0; i<zArrayNum(idx); i++ )
+  for( i=0; i<zArraySize(idx); i++ )
     zIndexSetElem( idx, i, s+i );
   return idx;
 }
@@ -118,8 +118,8 @@ bool zIndexIsEqual(zIndex idx1, zIndex idx2)
 {
   register uint i;
 
-  if( zArrayNum(idx1) != zArrayNum(idx2) ) return false;
-  for( i=0; i<zArrayNum(idx1); i++ )
+  if( zArraySize(idx1) != zArraySize(idx2) ) return false;
+  for( i=0; i<zArraySize(idx1); i++ )
     if( zIndexElem(idx1,i) != zIndexElem(idx2,i) ) return false;
   return true;
 }
@@ -178,7 +178,7 @@ void zIndexDataFWrite(FILE *fp, zIndex idx)
   register uint i;
 
   if( !idx ) return;
-  for( i=0; i<zArrayNum(idx); i++ )
+  for( i=0; i<zArraySize(idx); i++ )
     fprintf( fp, "%d ", zIndexElem(idx,i) );
   fprintf( fp, "\n" );
 }
@@ -193,8 +193,8 @@ void zIndexFWrite(FILE *fp, zIndex idx)
   if( !idx )
     fprintf( fp, "(null integer vector)\n" );
   else{
-    fprintf( fp, "%d (", zArrayNum(idx) );
-    for( i=0; i<zArrayNum(idx); i++ )
+    fprintf( fp, "%d (", zArraySize(idx) );
+    for( i=0; i<zArraySize(idx); i++ )
       fprintf( fp, " %d", zIndexElem(idx,i) );
     fprintf( fp, " )\n" );
   }
@@ -210,8 +210,8 @@ void zIndexWrite(zIndex idx)
   if( !idx )
     printk( "(null integer vector)\n" );
   else{
-    printk( "%d (", zArrayNum(idx) );
-    for( i=0; i<zArrayNum(idx); i++ )
+    printk( "%d (", zArraySize(idx) );
+    for( i=0; i<zArraySize(idx); i++ )
       printk( " %d", zIndexElem(idx,i) );
     printk( " )\n" );
   }

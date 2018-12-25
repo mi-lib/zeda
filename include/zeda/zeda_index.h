@@ -36,8 +36,8 @@ __BEGIN_DECLS
 zArrayClass( zIndexStruct, int );
 typedef zIndexStruct *zIndex;
 
-#define zIndexIncNum(i)      ( zArrayNum(i)++ )
-#define zIndexDecNum(i)      ( zArrayNum(i) -= (zArrayNum(i)>0 ? 1:0) )
+#define zIndexIncSize(i)     ( zArraySize(i)++ )
+#define zIndexDecSize(i)     ( zArraySize(i) -= (zArraySize(i)>0 ? 1:0) )
 
 #define zIndexElem(i,n)      ( *zArrayElemNC(i,n) )
 #define zIndexSetElem(i,n,e) ( zIndexElem(i,n) = (e) )
