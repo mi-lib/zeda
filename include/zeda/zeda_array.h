@@ -279,7 +279,7 @@ typedef struct{\
 #define zArray2ElemNC(a,i,j)      ( &zArray2Buf(a)[(i)*zArray2ColSize(a) + (j)] )
 #define zArray2Elem(a,i,j)        ( zArray2PosIsValid(a,i,j) ? zArray2ElemNC(a,i,j) : NULL )
 #define zArray2SetElemNC(a,i,j,d) memcpy( zArray2ElemNC(a,i,j), (d), zArray2ElemSize(a) )
-#define zArray2SetElem(a,i,j,d)   if( zArray2PosIsValid(a,i,j) ) zArray2SetElemNC(a,i,j,d)
+#define zArray2SetElem(a,i,j,d)   ( zArray2PosIsValid(a,i,j) ? zArray2SetElemNC(a,i,j,d) : NULL )
 
 #define zArray2Init(arr) do{\
   zArray2RowSize(arr) = zArray2ColSize(arr) = 0;\
