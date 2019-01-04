@@ -1,3 +1,4 @@
+2019. 1. 4. Added zArray2Size. [zeda_array]
 2018.12.25. Added zIndexPosIsValid, zIndexElemNC and zIndexSetElemNC. Modified specifications of zIndexElem and zIndexSetElem. [zeda_index]
 2018.12.25. Added zArray2Class. [zeda_array]
 2018.12.25. Renamed zArrayNum to zArraySize. [zeda_array, zeda_index]

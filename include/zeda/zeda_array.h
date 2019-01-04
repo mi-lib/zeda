@@ -239,8 +239,8 @@ __EXPORT void zQuickSort(void *array, size_t nmemb, size_t size, int (*cmp)(void
  * \a array_t is the class name to be defined.
  * \a cell_t is the class name of the data to be arrayed.
  *
- * The row and column sizes of the array are acquired by zArray2RowSize()
- * and zArray2ColSize(), respectively.
+ * The row and column sizes of the array are acquired by zArray2Size().
+ * zArray2RowSize() and zArray2ColSize() are also available.
  * Each element can be accessed by zArray2Elem().
  * For a faster access to each element, zArray2ElemNC() is also
  * available, which does not check the specified location.
@@ -255,22 +255,21 @@ __EXPORT void zQuickSort(void *array, size_t nmemb, size_t size, int (*cmp)(void
 #ifdef __cplusplus
 #define zArray2Class(array_t,cell_t) \
 struct array_t{\
-  uint rowsize;\
-  uint colsize;\
+  uint size[2];\
   cell_t *buf;\
 }
 #else
 #define zArray2Class(array_t,cell_t) \
 typedef struct{\
-  uint rowsize;\
-  uint colsize;\
+  uint size[2];\
   cell_t *buf;\
 } array_t
 #endif /* __cplusplus */
 
-#define zArray2RowSize(a)         (a)->rowsize
-#define zArray2ColSize(a)         (a)->colsize
-#define zArray2Buf(a)             ( (a)->buf )
+#define zArray2Size(a,i)  (a)->size[i]
+#define zArray2RowSize(a) (a)->size[0]
+#define zArray2ColSize(a) (a)->size[1]
+#define zArray2Buf(a)     ( (a)->buf )
 
 #define zArray2PosIsValid(a,r,c) ( (r) < zArray2RowSize(a) && (r) >= 0 && (c) < zArray2ColSize(a) && (c) >= 0 )
 
