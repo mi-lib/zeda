@@ -30,11 +30,21 @@ while [ "${DEPLIST}" ]; do
   curvermjr=`echo ${curver} | cut -d. -f 1`
   curvermdl=`echo ${curver} | cut -d. -f 2`
   curvermnr=`echo ${curver} | cut -d. -f 3`
-  if [ ${rqrvermjr} -gt ${curvermjr} -o ${rqrvermdl} -gt ${curvermdl} -o ${rqrvermnr} -gt ${curvermnr} ]; then
-    echo ${msg} ": need update"
-    RETVAL=1
-  else
+  if [ ${curvermjr} -gt ${rqrvermjr} ]; then
     echo ${msg} ": OK"
+  else
+    if [ ${curvermjr} -eq ${rqrvermjr} ]; then
+      if [ ${curvermdl} -gt ${rqrvermdl} ]; then
+        echo ${msg} ": OK"
+      else
+        if [ ${curvermdl} -eq ${rqrvermdl} -a ${curvermnr} -ge ${rqrvermnr} ]; then
+          echo ${msg} ": OK"
+        else
+          echo ${msg} ": need update"
+          RETVAL=1
+        fi
+      fi
+    fi
   fi
 done
 
