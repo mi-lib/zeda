@@ -6,9 +6,7 @@
 
 #include <zeda/zeda_bit.h>
 
-/* endian_reverse16
- * - convert 16-bit little/bit endian to/from big/little endian.
- */
+/* convert 16-bit little/bit endian to/from big/little endian. */
 uint16_t endian_reverse16(uint16_t val)
 {
   union{
@@ -22,9 +20,7 @@ uint16_t endian_reverse16(uint16_t val)
   return cnv.wval;
 }
 
-/* endian_reverse32
- * - convert 32-bit little/bit endian to/from big/little endian.
- */
+/* convert 32-bit little/bit endian to/from big/little endian. */
 uint32_t endian_reverse32(uint32_t val)
 {
   union{
@@ -40,9 +36,7 @@ uint32_t endian_reverse32(uint32_t val)
   return cnv.lval;
 }
 
-/* endian_reverse64
- * - convert 64-bit little/bit endian to/from big/little endian.
- */
+/* convert 64-bit little/bit endian to/from big/little endian. */
 uint64_t endian_reverse64(uint64_t val)
 {
   union{
@@ -62,23 +56,19 @@ uint64_t endian_reverse64(uint64_t val)
   return cnv.lval;
 }
 
-/* bit_rotate
- * - rotate a bit sequence.
- */
+/* rotate a bit sequence. */
 ulong bit_rotate(ulong val, int bitwidth, int d)
 {
   ulong mask;
 
   if( bitwidth > (int)( sizeof(ulong) << 3 ) )
-    ZRUNWARN( "too large bit width. the result might be wrong." );
+    ZRUNWARN( ZEDA_WARN_TOOLNG_BITWIDTH );
   val &= ( mask = ( 1 << bitwidth ) - 1 ); /* masking */
   if( ( d %= bitwidth ) < 0 ) d += bitwidth;
   return ( ( val << d ) & mask ) | ( val >> ( bitwidth - d ) );
 }
 
-/* bit_reverse
- * - reverse a bit sequence.
- */
+/* reverse a bit sequence. */
 ulong bit_reverse(ulong val, int width)
 {
   ulong result;
@@ -90,9 +80,7 @@ ulong bit_reverse(ulong val, int width)
   return result;
 }
 
-/* sprintf_bit
- * - convert a bit sequence to a string.
- */
+/* convert a bit sequence to a string. */
 void sprintf_bit(char *str, ulong val, int width)
 {
   register int i;
@@ -106,9 +94,7 @@ void sprintf_bit(char *str, ulong val, int width)
 
 #define ULONG_BIT_BUFSIZ 256
 #ifndef __KERNEL__
-/* fprintf_bit
- * - output a bit sequence to a file.
- */
+/* output a bit sequence to file. */
 void fprintf_bit(FILE *fp, ulong val, int width)
 {
   char buf[ULONG_BIT_BUFSIZ];
@@ -117,9 +103,7 @@ void fprintf_bit(FILE *fp, ulong val, int width)
   fprintf( fp, "%s", buf );
 }
 #else
-/* printk_bit
- * - output a bit sequence (for kernel module).
- */
+/* output a bit sequence (for kernel module). */
 void printk_bit(ulong val, int width)
 {
   char buf[ULONG_BIT_BUFSIZ];

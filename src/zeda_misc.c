@@ -17,9 +17,7 @@ __DEF_WINDLL
 #include <stdarg.h>
 #include <ctype.h>
 
-/* zBound
- * - a saturated value of a segment.
- */
+/* saturate a value within a segment. */
 double zBound(double x, double b1, double b2)
 {
   if( b1 > b2 ) zSwap( double, b1, b2 );
@@ -31,9 +29,7 @@ double zBound(double x, double b1, double b2)
  * ********************************************************** */
 
 #ifndef __KERNEL__
-/* fpeek
- * - peek charactor.
- */
+/* peek a charactor from file. */
 int fpeek(FILE *fp)
 {
   int c;
@@ -55,21 +51,17 @@ bool __zeda_echo = true;
 /* value from/to string conversion
  * ********************************************************** */
 
-/* atox_c
- * - convert hexadecimal charactor to value.
- */
+/* convert a hexadecimal charactor to a value. */
 int atox_c(char c)
 {
   if( !isxdigit(c) ){
-    ZRUNERROR( "invalid hexadecimal notation: %c", c );
+    ZRUNERROR( ZEDA_WARN_INVHEX, c );
     return 0;
   }
   return isdigit(c) ? c - '0' : tolower(c) - 'a' + 10;
 }
 
-/* atox
- * - convert hexadecimal string to value.
- */
+/* convert a hexadecimal string to a value. */
 int atox(char *str)
 {
   int ret = 0;
@@ -89,10 +81,7 @@ int atox(char *str)
 
 static void _ftoa_advance(double val, char *fig);
 
-/* (static)
- * _ftoa_advance
- * - pick up the bottom figure of the value.
- */
+/* pick up the bottom figure of the value. */
 void _ftoa_advance(double val, char *fig)
 {
   if( _ftoa_fig1_val(val) <= 5 ) return;
@@ -102,9 +91,7 @@ void _ftoa_advance(double val, char *fig)
 }
 #endif /* __KERNEL__ */
 
-/* itoa
- * - integer to ASCII translator.
- */
+/* translate an integer value to an ASCII string. */
 char *itoa(int val, char *buf)
 {
 #ifdef __KERNEL__
@@ -129,9 +116,7 @@ char *itoa(int val, char *buf)
   return buf;
 }
 
-/* ftoa
- * - floating point number to ASCII translator.
- */
+/* translate a floating point number to an ASCII string. */
 char *ftoa(double val, char *buf)
 {
 #ifdef __KERNEL__
@@ -202,9 +187,7 @@ char *ftoa(double val, char *buf)
 }
 
 #ifndef __KERNEL__
-/* itoa_fill
- * - convert integer to string with blank filled by a charactor.
- */
+/* convert an integer number to a string with blank filled by a specified charactor. */
 #define ULONG_MAX_BUFSIZ 25
 char *itoa_fill(int val, int size, char pat, char *buf)
 {

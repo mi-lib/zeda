@@ -15,6 +15,14 @@ __BEGIN_DECLS
 
 #ifndef __KERNEL__
 
+/*! \brief return the null string.
+ *
+ * zNullStr() returns a pointer to the null string "".
+ * \return
+ * a pointer to the null string.
+ */
+__EXPORT char *zNullStr(void);
+
 /*! \brief copy a string without checking the buffer size.
  *
  * zStrCopyNC() copies a string \a src to a buffer pointed by
@@ -114,6 +122,36 @@ __EXPORT char *zStrDelChar(char *str, int cur);
  * a pointer to the withdrawn location is returned.
  */
 __EXPORT char *zStrBSChar(char *str, int cur);
+
+/*! \brief cut a newline charactor.
+ *
+ * zCutNL() directly cuts a newline charactor at the
+ * end of a string pointed by \a str, and puts the
+ * null charactor '\\0' there instead.
+ * \return
+ * a pointer \a str is returned.
+ */
+__EXPORT char *zCutNL(char *str);
+
+/*! \brief convert a string to the uppercase set.
+ *
+ * zToUpper() copies a string \a str to \a dest with
+ * all lowercase alphabets included in \a str converted
+ * to uppercase charactors.
+ * \return
+ * a pointer \a dest is returned.
+ */
+__EXPORT char *zToUpper(char *src, char *dest);
+
+/*! \brief convert a string to the lowercase set.
+ *
+ * zToLower() copies a string \a str to \a dest with
+ * all uppercase alphabets included in \a str converted
+ * to lowercase charactors.
+ * \return
+ * a pointer \a dest is returned.
+ */
+__EXPORT char *zToLower(char *src, char *dest);
 
 /* ********************************************************** */
 /*! \defgroup token tokenization.
@@ -471,44 +509,6 @@ __EXPORT double zSDouble(char *str);
 
 /*! \} */
 
-/*! \brief return the null string.
- *
- * zNullStr() returns a pointer to the null string "".
- * \return
- * a pointer to the null string.
- */
-__EXPORT char *zNullStr(void);
-
-/*! \brief cut a newline charactor.
- *
- * zCutNL() directly cuts a newline charactor at the
- * end of a string pointed by \a str, and puts the
- * null charactor '\\0' there instead.
- * \return
- * a pointer \a str is returned.
- */
-__EXPORT char *zCutNL(char *str);
-
-/*! \brief convert a string to the uppercase set.
- *
- * zToUpper() copies a string \a str to \a dest with
- * all lowercase alphabets included in \a str converted
- * to uppercase charactors.
- * \return
- * a pointer \a dest is returned.
- */
-__EXPORT char *zToUpper(char *src, char *dest);
-
-/*! \brief convert a string to the lowercase set.
- *
- * zToLower() copies a string \a str to \a dest with
- * all uppercase alphabets included in \a str converted
- * to lowercase charactors.
- * \return
- * a pointer \a dest is returned.
- */
-__EXPORT char *zToLower(char *src, char *dest);
-
 /*! \brief check if a token is a tag.
  *
  * zTokenIsTag() checks if a token pointed by \a tkn
@@ -714,6 +714,12 @@ __EXPORT char *zCutSuffix(char *name);
  * succeeds. Otherwise, the null pointer is returned.
  */
 __EXPORT FILE *zOpenFile(char filename[], char *suffix, char *mode);
+
+/*! \brief default suffix of .ztk file format. */
+#define ZEDA_ZTK_SUFFIX "ztk"
+
+/*! \brief open a .ztk file. */
+#define zOpenZTKFile(filename,mode) zOpenFile( filename, ZEDA_ZTK_SUFFIX, mode )
 
 /*! \} */
 

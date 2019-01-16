@@ -1,3 +1,6 @@
+2019. 1.16. Created zeda_errmsg.h. [zeda_errmsg, zeda_misc, zeda_bit, zeda_string, zeda_option ]
+2019. 1.16. Added ZEDA_ZTK_SUFFIX and zOpenZTKFile. [zeda_string]
+2019. 1.16. Reimplemented zCutNL. [zeda_string]
 2019. 1.10. Debugged zeda-chkdep. [app]
 2019. 1. 4. Modified zArray2SetElem. [zeda_array]
 2019. 1. 4. Added zArray2Size. [zeda_array]

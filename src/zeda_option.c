@@ -12,9 +12,7 @@
  * command line option
  * ********************************************************** */
 
-/* zOptionHelp
- * - display command line help.
- */
+/* display command line help. */
 void zOptionHelp(zOption *opts)
 {
   zOption *op;
@@ -35,9 +33,7 @@ void zOptionHelp(zOption *opts)
   }
 }
 
-/* zOptionDiag
- * - diagnosis option flags (for debugging).
- */
+/* diagnosis option flags (for debug). */
 void zOptionDiag(zOption *opts)
 {
   zOption *op;
@@ -51,10 +47,7 @@ void zOptionDiag(zOption *opts)
   }
 }
 
-/* (static)
- * _zOptionFindKey, _zOptionFindLongKey
- * - find option structure by a key.
- */
+/* find option structure by a key. */
 static bool _zOptionFindKey(zOption *opts, char *key, zOption **cur);
 static bool _zOptionFindLongKey(zOption *opts, char *key, zOption **cur);
 
@@ -68,10 +61,11 @@ bool _zOptionFindKey(zOption *opts, char *key, zOption **cur)
       *cur = op->arg_guide ? op : NULL;
       return true;
     }
-  ZRUNWARN( "unknown option: %s", key );
+  ZRUNWARN( ZEDA_WARN_UNKNOWNOPT, key );
   return false;
 }
 
+/* find option structure by a long key. */
 bool _zOptionFindLongKey(zOption *opts, char *key, zOption **cur)
 {
   zOption *op;
@@ -82,13 +76,11 @@ bool _zOptionFindLongKey(zOption *opts, char *key, zOption **cur)
       *cur = op->arg_guide ? op : NULL;
       return true;
     }
-  ZRUNWARN( "unknown option: %s", key );
+  ZRUNWARN( ZEDA_WARN_UNKNOWNOPT, key );
   return false;
 }
 
-/* zOptionRead
- * - read command line options.
- */
+/* read command line options. */
 bool zOptionRead(zOption *opts, char **argv, zStrList *arglist)
 {
   zOption *cur;
@@ -124,9 +116,7 @@ bool zOptionRead(zOption *opts, char **argv, zStrList *arglist)
 /* integer range
  * ********************************************************** */
 
-/* zParseIntRange
- * - parse integer range notation.
- */
+/* parse integer range notation. */
 void zParseIntRange(char *expr, int *from, int *to)
 {
   char *cp;
@@ -144,9 +134,7 @@ void zParseIntRange(char *expr, int *from, int *to)
 /* commandline argument
  * ********************************************************** */
 
-/* zGetArg
- * - get next command line argument.
- */
+/* get next command line argument. */
 char *zGetArg(char ***argv)
 {
   char *arg;

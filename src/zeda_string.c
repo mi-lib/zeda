@@ -10,18 +10,14 @@
 static const char *znullstring = "";
 char *zNullStr(void){ return (char *)znullstring; }
 
-/* zStrCopyNC
- * - copy a string supposing the destination area has enough size.
- */
+/* copy a string supposing the destination area has enough size. */
 char *zStrCopyNC(char *dest, const char *src)
 {
   /* length should include the terminating \0 */
   return memmove( dest, src, strlen(src)+1 );
 }
 
-/* zStrCopy
- * - copy a string.
- */
+/* copy a string. */
 char *zStrCopy(char *dest, const char *src, size_t size)
 {
   size_t len;
@@ -33,9 +29,7 @@ char *zStrCopy(char *dest, const char *src, size_t size)
   return memmove( dest, src, len ); 
 }
 
-/* zStrClone
- * - cloning of a string.
- */
+/* clone a string. */
 char *zStrClone(char str[])
 {
   char *buf;
@@ -49,9 +43,7 @@ char *zStrClone(char str[])
   return buf;
 }
 
-/* zStrCat
- * - concatenate a string to another.
- */
+/* concatenate a string with another. */
 char *zStrCat(char *dest, const char *src, size_t size)
 {
   size_t ld;
@@ -60,11 +52,7 @@ char *zStrCat(char *dest, const char *src, size_t size)
   return zStrCopy( dest+ld, src, size-ld );
 }
 
-#define ZEDA_WARN_BUF_EXHAUSTED "buffer exhausted"
-
-/* zStrAddChar
- * - concatenate a string and a charactor.
- */
+/* concatenate a string with a charactor. */
 char *zStrAddChar(char *str, size_t size, char c)
 {
   int len;
@@ -78,9 +66,7 @@ char *zStrAddChar(char *str, size_t size, char c)
   return str;
 }
 
-/* zStrInsChar
- * - insert a charactor to a string.
- */
+/* insert a charactor into a string. */
 char *zStrInsChar(char *str, size_t size, int cur, char c)
 {
   int len;
@@ -97,9 +83,7 @@ char *zStrInsChar(char *str, size_t size, int cur, char c)
   return str + cur;
 }
 
-/* zStrOvrChar
- * - override a charactor to a string.
- */
+/* override a charactor in a string. */
 char *zStrOvrChar(char *str, size_t size, int cur, char c)
 {
   if( cur >= strlen(str) )
@@ -109,9 +93,7 @@ char *zStrOvrChar(char *str, size_t size, int cur, char c)
   return str + cur;
 }
 
-/* zStrDelChar
- * - delete a charactor from a string.
- */
+/* delete a charactor from a string. */
 char *zStrDelChar(char *str, int cur)
 {
   char *cp;
@@ -122,9 +104,7 @@ char *zStrDelChar(char *str, int cur)
   return zStrCopyNC( cp, cp+1 );
 }
 
-/* zStrBSChar
- * - backspace a string.
- */
+/* backspace a string. */
 char *zStrBSChar(char *str, int cur)
 {
   char *cp;
@@ -136,6 +116,34 @@ char *zStrBSChar(char *str, int cur)
   return zStrCopyNC( cp, cp+1 );
 }
 
+/* cut a newline charactor at the end of a string. */
+char *zCutNL(char *str)
+{
+  if( *( str += strlen(str)-1 ) == '\n' )
+    *str = '\0';
+  return str;
+}
+
+/* convert charactors in a string to uppercases. */
+char *zToUpper(char *src, char *dest)
+{
+  char *cp = dest;
+
+  while( *src ) *cp++ = toupper( *src++ );
+  *cp = '\0';
+  return dest;
+}
+
+/* convert charactors in a string to lowercases. */
+char *zToLower(char *src, char *dest)
+{
+  char *cp = dest;
+
+  while( *src ) *cp++ = tolower( *src++ );
+  *cp = '\0';
+  return dest;
+}
+
 #ifndef __KERNEL__
 static char zdelimiter_default[] = {
   EOF, '\t', '\v', '\f', '\n', '\r',
@@ -143,14 +151,10 @@ static char zdelimiter_default[] = {
 };
 static char *zdelimiter = zdelimiter_default;
 
-/* zSetDelimiter
- * - specification of a delimiter set.
- */
+/* specify a set of delimiters. */
 void zSetDelimiter(char s[]){ zdelimiter = s; }
 
-/* zResetDelimiter
- * - respecification of a delimiter set.
- */
+/* reset a set of delimiters. */
 void zResetDelimiter(void){ zSetDelimiter( zdelimiter_default ); }
 
 static char zoperator_default[] = {
@@ -158,44 +162,32 @@ static char zoperator_default[] = {
   '?', '@', '\\', '^', '~', '\0' };
 static char *zoperator = zoperator_default;
 
-/* zSetOperator
- * - specification of an operator set.
- */
+/* specify a set of operators. */
 void zSetOperator(char s[]){ zoperator = s; }
 
-/* zResetOperator
- * - respecification of an operator set.
- */
+/* reset a set of operators. */
 void zResetOperator(void){ zSetOperator( zoperator_default ); }
 
-/* zIsIncludedChar
- * - check if a charactor is included in a specified set.
- */
+/* check if a charactor is included in a specified set. */
 bool zIsIncludedChar(char c, char *s)
 {
   while( *s ) if( *s++ == c ) return true;
   return false;
 }
 
-/* zIsDelimiter
- * - check if a charactor is a delimiter.
- */
+/* check if a charactor is a delimiter. */
 bool zIsDelimiter(char c)
 {
   return zIsIncludedChar( c, zdelimiter );
 }
 
-/* zIsOperator
- * - charactor classification routines.
- */
+/* check if a charactor is an operator. */
 bool zIsOperator(char c)
 {
   return zIsIncludedChar( c, zoperator );
 }
 
-/* zStrIsHex
- * - check if the string is a hexadecimal number.
- */
+/* check if a string represents a hexadecimal number. */
 bool zStrIsHex(char *str)
 {
   for( ; *str; str++ )
@@ -203,9 +195,7 @@ bool zStrIsHex(char *str)
   return true;
 }
 
-/* zFSkipWS
- * - skip whitespaces.
- */
+/* skip whitespaces in file. */
 char zFSkipWS(FILE *fp)
 {
   char c;
@@ -217,18 +207,14 @@ char zFSkipWS(FILE *fp)
   return c;
 }
 
-/* zSSkipWS
- * - skip whitespaces
- */
+/* skip whitespaces in string. */
 char *zSSkipWS(char *str)
 {
   for( ; *str && zIsWS(*str); str++ );
   return str;
 }
 
-/* zFSkipIncludedChar
- * - skip certain charactors in a stream.
- */
+/* skip certain charactors in file. */
 char zFSkipIncludedChar(FILE *fp, char *s)
 {
   char c;
@@ -240,34 +226,26 @@ char zFSkipIncludedChar(FILE *fp, char *s)
   return c;
 }
 
-/* zSSkipIncludedChar
- * - skip certain charactors in a string.
- */
+/* skip certain charactors in string. */
 char *zSSkipIncludedChar(char *str, char *s)
 {
   for( ; *str && zIsIncludedChar(*str,s); str++ );
   return str;
 }
 
-/* zFSkipDelimiter
- * - skip delimiters.
- */
+/* skip delimiters in file. */
 char zFSkipDelimiter(FILE *fp)
 {
   return zFSkipIncludedChar( fp, zdelimiter );
 }
 
-/* zSSkipDelimiter
- * - skip delimiters.
- */
+/* skip delimiters in string. */
 char *zSSkipDelimiter(char *str)
 {
   return zSSkipIncludedChar( str, zdelimiter );
 }
 
-/* zFSkipComment
- * - skip comment.
- */
+/* skip comments in file. */
 char zFSkipComment(FILE *fp, char ident)
 {
   char c;
@@ -293,10 +271,7 @@ char zFSkipComment(FILE *fp, char ident)
 static char *_zFString(FILE *fp, char *tkn, size_t size);
 static char *_zSString(char *str, char *tkn, size_t size);
 
-/* (static)
- * _zFString
- * - acquire string from a file.
- */
+/* get a string from file. */
 char *_zFString(FILE *fp, char *tkn, size_t size)
 {
   register int i;
@@ -305,7 +280,7 @@ char *_zFString(FILE *fp, char *tkn, size_t size)
   size--;
   for( i=0; !feof(fp); i++ ){
     if( i >= size ){
-      ZRUNWARN( "too long string" );
+      ZRUNWARN( ZEDA_WARN_TOOLNG_STR );
       i = zMax( size, 0 );
       break;
     }
@@ -317,10 +292,7 @@ char *_zFString(FILE *fp, char *tkn, size_t size)
   return tkn;
 }
 
-/* (static)
- * _zSString
- * - acquire string from a string.
- */
+/* get a string from string. */
 char *_zSString(char *str, char *tkn, size_t size)
 {
   register int i;
@@ -331,7 +303,7 @@ char *_zSString(char *str, char *tkn, size_t size)
     if( zIsQuotation(*sp) && ( i == 0 || tkn[i-1] != '\\' ) )
       break;
     if( i >= size ){
-      ZRUNWARN( "too long string" );
+      ZRUNWARN( ZEDA_WARN_TOOLNG_STR );
       i = zMax( size, 0 );
       break;
     }
@@ -342,9 +314,7 @@ char *_zSString(char *str, char *tkn, size_t size)
   return tkn;
 }
 
-/* zFToken
- * - tokenization of a file.
- */
+/* get a token in file. */
 char *zFToken(FILE *fp, char *tkn, size_t size)
 {
   register int i;
@@ -357,7 +327,7 @@ char *zFToken(FILE *fp, char *tkn, size_t size)
   size--;
   for( i=1; !feof(fp); i++ ){
     if( i >= size ){
-      ZRUNWARN( "too long expression" );
+      ZRUNWARN( ZEDA_WARN_TOOLNG_TKN );
       i = zMax( size, 0 );
       break;
     }
@@ -367,9 +337,7 @@ char *zFToken(FILE *fp, char *tkn, size_t size)
   return tkn;
 }
 
-/* zSToken
- * - tokenization of a string.
- */
+/* get a token in a string. */
 char *zSToken(char *str, char *tkn, size_t size)
 {
   register int i;
@@ -387,7 +355,7 @@ char *zSToken(char *str, char *tkn, size_t size)
   size--;
   for( i=1; *sp && !zIsDelimiter(*sp); i++ ){
     if( i >= size ){
-      ZRUNWARN( "too long expression" );
+      ZRUNWARN( ZEDA_WARN_TOOLNG_TKN );
       i = zMax( size, 0 );
       break;
     }
@@ -398,9 +366,7 @@ char *zSToken(char *str, char *tkn, size_t size)
   return tkn;
 }
 
-/* zFIntToken
- * - acquire integer token from file.
- */
+/* get a token that represents an integer number from file. */
 char *zFIntToken(FILE *fp, char *tkn, size_t size)
 {
   register int i;
@@ -408,7 +374,7 @@ char *zFIntToken(FILE *fp, char *tkn, size_t size)
   size--;
   for( i=0; ; i++ ){
     if( i >= size ){
-      ZRUNWARN( "too long integer number" );
+      ZRUNWARN( ZEDA_WARN_TOOLNG_NUM );
       i = zMax( size, 0 );
       break;
     }
@@ -426,9 +392,7 @@ static char *_zFFractToken(FILE *fp, char *tkn, size_t size);
 static char *_zFUnsignedToken(FILE *fp, char *tkn, size_t size);
 static char *_zFSignedToken(FILE *fp, char *tkn, size_t size);
 
-/* (static)
- * _zFFractToken - tokenize period and the remaining number.
- */
+/* get a token that represents a fraction part from file. */
 char *_zFFractToken(FILE *fp, char *tkn, size_t size)
 {
   if( size <= 1 )
@@ -444,9 +408,7 @@ char *_zFFractToken(FILE *fp, char *tkn, size_t size)
   return tkn;
 }
 
-/* (static)
- * _zFUnsignedToken - tokenize unsigned real number.
- */
+/* get a token that represents an unsigned real number from file. */
 char *_zFUnsignedToken(FILE *fp, char *tkn, size_t size)
 {
   int l;
@@ -456,9 +418,7 @@ char *_zFUnsignedToken(FILE *fp, char *tkn, size_t size)
   return tkn;
 }
 
-/* (static)
- * _zFSignedToken - tokenize signed real number.
- */
+/* get a token that represents a signed real number from file. */
 char *_zFSignedToken(FILE *fp, char *tkn, size_t size)
 {
   char c;
@@ -479,9 +439,7 @@ char *_zFSignedToken(FILE *fp, char *tkn, size_t size)
   return tkn;
 }
 
-/* zFNumToken
- * - acquire number token from file.
- */
+/* get a token that represents a number from file. */
 char *zFNumToken(FILE *fp, char *tkn, size_t size)
 {
   char c;
@@ -504,9 +462,7 @@ char *zFNumToken(FILE *fp, char *tkn, size_t size)
   return tkn;
 }
 
-/* zSIntToken
- * - acquire integer token from a string.
- */
+/* get a token that represents an integer number from string. */
 char *zSIntToken(char *str, char *tkn, size_t size)
 {
   register int i;
@@ -515,7 +471,7 @@ char *zSIntToken(char *str, char *tkn, size_t size)
   size--;
   for( sp=str, i=0; isdigit(*sp); tkn[i++]=*sp++ )
     if( i >= size ){
-      ZRUNWARN( "too long integer value" );
+      ZRUNWARN( ZEDA_WARN_TOOLNG_NUM );
       i = zMax( size, 0 );
       break;
     }
@@ -528,9 +484,7 @@ static char *_zSFractToken(char *str, char *tkn, size_t size);
 static char *_zSUnsignedToken(char *str, char *tkn, size_t size);
 static char *_zSSignedToken(char *str, char *tkn, size_t size);
 
-/* (static)
- * _zSFractToken - tokenize period and the remaining number.
- */
+/* get a token that represents a fraction part from string. */
 char *_zSFractToken(char *str, char *tkn, size_t size)
 {
   if( *str == '.' ){
@@ -542,9 +496,7 @@ char *_zSFractToken(char *str, char *tkn, size_t size)
   return tkn;
 }
 
-/* (static)
- * _zSUnsignedToken - tokenize unsigned real number.
- */
+/* get a token that represents an unsigned real number from string. */
 char *_zSUnsignedToken(char *str, char *tkn, size_t size)
 {
   int l;
@@ -554,9 +506,7 @@ char *_zSUnsignedToken(char *str, char *tkn, size_t size)
   return tkn;
 }
 
-/* (static)
- * _zSSignedToken - tokenize signed real number.
- */
+/* get a token that represents a signed real number from string. */
 char *_zSSignedToken(char *str, char *tkn, size_t size)
 {
   if( *str != '+' && *str != '-' )
@@ -569,9 +519,7 @@ char *_zSSignedToken(char *str, char *tkn, size_t size)
   return tkn;
 }
 
-/* zSNumToken
- * - acquire number token from a string.
- */
+/* get a token that represents a number from string. */
 char *zSNumToken(char *str, char *tkn, size_t size)
 {
   int l;
@@ -589,90 +537,42 @@ char *zSNumToken(char *str, char *tkn, size_t size)
   return tkn;
 }
 
-/* zFInt
- * - acquire integer value from a file.
- */
+/* get an integer value from file. */
 int zFInt(FILE *fp)
 {
   char buf[BUFSIZ];
   return zFToken( fp, buf, BUFSIZ ) ? atoi( buf ) : 0;
 }
 
-/* zSInt
- * - acquire integer value from a string.
- */
+/* get an integer value from string. */
 int zSInt(char *str)
 {
   char buf[BUFSIZ];
   return zSToken( str, buf, BUFSIZ ) ? atoi( buf ) : 0;
 }
 
-/* zFDouble
- * - acquire double-precision floating-point value from a file.
- */
+/* get a double-precision floating-point value from file. */
 double zFDouble(FILE *fp)
 {
   char buf[BUFSIZ];
   return zFToken( fp, buf, BUFSIZ ) ? atof( buf ) : 0;
 }
 
-/* zSDouble
- * - acquire double-precision floating-point value from a string.
- */
+/* get a double-precision floating-point value from string. */
 double zSDouble(char *str)
 {
   char buf[BUFSIZ];
   return zSToken( str, buf, BUFSIZ ) ? atof( buf ) : 0;
 }
 
-/* zCutNL
- * - cut a newline charactor.
- */
-char *zCutNL(char *str)
-{
-  int pos;
-
-  if( str[ ( pos = strlen(str)-1 ) ] == '\n' )
-    str[pos] = '\0';
-  return str;
-}
-
-/* zToUpper
- * - string converter to upper case.
- */
-char *zToUpper(char *src, char *dest)
-{
-  char *cp = dest;
-
-  while( *src ) *cp++ = toupper( *src++ );
-  *cp = '\0';
-  return dest;
-}
-
-/* zToLower
- * - string converter to lower case.
- */
-char *zToLower(char *src, char *dest)
-{
-  char *cp = dest;
-
-  while( *src ) *cp++ = tolower( *src++ );
-  *cp = '\0';
-  return dest;
-}
-
-/* zTokenIsTag
- * - check if the token is a tag or not.
- */
+/* check if a token is a tag. */
 bool zTokenIsTag(char *tkn)
 {
   return tkn && ( tkn[0] == '[' && tkn[strlen(tkn)-1] == ']' )
     ? true : false;
 }
 
-/* zExtractTag
- * - tag extractor.
- */
+/* extract a tagged part from string. */
 char *zExtractTag(char *tag, char *notag)
 {
   char *cp;
@@ -682,9 +582,7 @@ char *zExtractTag(char *tag, char *notag)
   return notag;
 }
 
-/* zFCountTag
- * - tag counter.
- */
+/* count specified tags in file. */
 int zFCountTag(FILE *fp, char *tag)
 {
   char buf[BUFSIZ];
@@ -699,9 +597,7 @@ int zFCountTag(FILE *fp, char *tag)
   return count;
 }
 
-/* zFCountKey
- * - key counter.
- */
+/* count specified keys in file. */
 int zFCountKey(FILE *fp, char *key)
 {
   char buf[BUFSIZ];
@@ -717,9 +613,7 @@ int zFCountKey(FILE *fp, char *key)
   return count;
 }
 
-/* zTagFRead
- * - read tagged fields in a file.
- */
+/* read tagged fields in file. */
 bool zTagFRead(FILE *fp, bool (* fread_tag)(FILE*,void*,char*,bool*), void *instance)
 {
   char buf[BUFSIZ];
@@ -736,9 +630,7 @@ bool zTagFRead(FILE *fp, bool (* fread_tag)(FILE*,void*,char*,bool*), void *inst
   return success;
 }
 
-/* zFieldFRead
- * - read a field in a file.
- */
+/* read a field in file. */
 bool zFieldFRead(FILE *fp, bool (* fread_field)(FILE*,void*,char*,bool*), void *instance)
 {
   char buf[BUFSIZ];
@@ -760,17 +652,13 @@ bool zFieldFRead(FILE *fp, bool (* fread_field)(FILE*,void*,char*,bool*), void *
 }
 
 #ifndef __KERNEL__
-/* zIndentF
- * - indent
- */
+/* indent. */
 void zIndentF(FILE *fp, int n)
 {
   fprintf( fp, "%*s", n, "" );
 }
 #else
-/* zIndent
- * - indent(for kernel module).
- */
+/* indent(for kernel module). */
 void zIndent(int n)
 {
   int i;
@@ -779,9 +667,7 @@ void zIndent(int n)
 }
 #endif /* __KERNEL__ */
 
-/* zGetSuffix
- * - get suffix.
- */
+/* get suffix of a pathname. */
 char *zGetSuffix(char *name)
 {
   char *cp;
@@ -789,9 +675,7 @@ char *zGetSuffix(char *name)
   return ( cp = strrchr( name, '.' ) ) ? cp+1 : NULL;
 }
 
-/* zAddSuffix
- * - concatenate suffix.
- */
+/* concatenate suffix to a pathname. */
 char *zAddSuffix(char *org, char *suffix, char *dest, size_t size)
 {
   char *sfx;
@@ -804,9 +688,7 @@ char *zAddSuffix(char *org, char *suffix, char *dest, size_t size)
   return dest;
 }
 
-/* zReplaceSuffix
- * - replace suffix.
- */
+/* replace suffix of a pathname. */
 char *zReplaceSuffix(char *org, char *suffix, char *dest, size_t size)
 {
   char *sfx;
@@ -821,9 +703,7 @@ char *zReplaceSuffix(char *org, char *suffix, char *dest, size_t size)
   return dest;
 }
 
-/* zCutSuffix
- * - cut suffix.
- */
+/* cut suffix of a pathname. */
 char *zCutSuffix(char *name)
 {
   char *cp;
@@ -832,9 +712,7 @@ char *zCutSuffix(char *name)
   return cp;
 }
 
-/* zGetBasename
- * - simplify path name.
- */
+/* simplify a pathname. */
 char *zGetBasename(char *org, char *name, size_t size)
 {
   char *cp;
@@ -846,9 +724,7 @@ char *zGetBasename(char *org, char *name, size_t size)
   return name;
 }
 
-/* zOpenFile
- * - open file with default suffix.
- */
+/* open file with specified suffix. */
 FILE *zOpenFile(char filename[], char *suffix, char *mode)
 {
   char fullname[BUFSIZ];
@@ -863,10 +739,7 @@ FILE *zOpenFile(char filename[], char *suffix, char *mode)
   return NULL;
 }
 
-/* (static)
- * _zStrSearchKMPTable
- * - generate a table for string search by Knuth-Morris-Pratt algorithm.
- */
+/* generate a table for string search by Knuth-Morris-Pratt algorithm. */
 static int *_zStrSearchKMPTable(char *pat, int lp);
 int *_zStrSearchKMPTable(char *pat, int lp)
 {
@@ -893,9 +766,7 @@ int *_zStrSearchKMPTable(char *pat, int lp)
   return table;
 }
 
-/* zStrSearchKMP
- * - search a string by Knuth-Morris-Pratt algorithm.
- */
+/* search a string by Knuth-Morris-Pratt algorithm. */
 char *zStrSearchKMP(char *text, char *pat)
 {
   register int m=0, i=0, lt, lp;
@@ -915,9 +786,7 @@ char *zStrSearchKMP(char *text, char *pat)
   return NULL;
 }
 
-/* zStrSearchBM
- * - search a string by Boyer-Moore algorithm.
- */
+/* search a string by Boyer-Moore algorithm. */
 char *zStrSearchBM(char *text, char *pat)
 {
   register int i, j, n, m;

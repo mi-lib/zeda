@@ -10,6 +10,7 @@
 #define __ZEDA_MISC_H__
 
 #include <zeda/zeda_defs.h>
+#include <zeda/zeda_errmsg.h>
 #include <assert.h>
 
 __BEGIN_DECLS
