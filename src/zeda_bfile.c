@@ -82,7 +82,7 @@ uint32_t zFileHeaderCalcHeaderSize(zHeader *h)
 
   /* suffix */
   size += sizeof(char);
-  if( h->suffix != '\0' )
+  if( h->suffix[0] != '\0' )
     size += sizeof(char) * strlen(h->suffix);
 
   return size;

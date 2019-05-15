@@ -1,3 +1,4 @@
+2019. 5.15. Debugged zFileHeaderCalcHeaderSize. [zeda_bfile]
 2019. 1.16. Created zeda_errmsg.h. [zeda_errmsg, zeda_misc, zeda_bit, zeda_string, zeda_option ]
 2019. 1.16. Added ZEDA_ZTK_SUFFIX and zOpenZTKFile. [zeda_string]
 2019. 1.16. Reimplemented zCutNL. [zeda_string]
