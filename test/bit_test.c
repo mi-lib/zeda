@@ -16,35 +16,37 @@ ulong compose_bit(ubyte b[], int i0, int i1, int i2, int i3, int i4, int i5, int
   return b[0] << i0 | b[1] << i1 | b[2] << i2 | b[3] << i3 | b[4] << i4 | b[5] << i5 | b[6] << i6 | b[7] << i7;
 }
 
-#define WIDTH 8
+#define width 8
 
 int main(void)
 {
-  ubyte b[WIDTH];
+  ubyte b[width];
   ulong val;
 
   zRandInit();
-  val = gen_bit_rand( b, WIDTH );
+  val = gen_bit_rand( b, width );
   zAssert( bit_rotate,
-    bit_rotate(val,WIDTH,0) == compose_bit(b,0,1,2,3,4,5,6,7) &&
-    bit_rotate(val,WIDTH,1) == compose_bit(b,1,2,3,4,5,6,7,0) &&
-    bit_rotate(val,WIDTH,2) == compose_bit(b,2,3,4,5,6,7,0,1) &&
-    bit_rotate(val,WIDTH,3) == compose_bit(b,3,4,5,6,7,0,1,2) &&
-    bit_rotate(val,WIDTH,4) == compose_bit(b,4,5,6,7,0,1,2,3) &&
-    bit_rotate(val,WIDTH,5) == compose_bit(b,5,6,7,0,1,2,3,4) &&
-    bit_rotate(val,WIDTH,6) == compose_bit(b,6,7,0,1,2,3,4,5) &&
-    bit_rotate(val,WIDTH,7) == compose_bit(b,7,0,1,2,3,4,5,6) &&
-    bit_rotate(val,WIDTH,-1) == compose_bit(b,7,0,1,2,3,4,5,6) &&
-    bit_rotate(val,WIDTH,-2) == compose_bit(b,6,7,0,1,2,3,4,5) &&
-    bit_rotate(val,WIDTH,-3) == compose_bit(b,5,6,7,0,1,2,3,4) &&
-    bit_rotate(val,WIDTH,-4) == compose_bit(b,4,5,6,7,0,1,2,3) &&
-    bit_rotate(val,WIDTH,-5) == compose_bit(b,3,4,5,6,7,0,1,2) &&
-    bit_rotate(val,WIDTH,-6) == compose_bit(b,2,3,4,5,6,7,0,1) &&
-    bit_rotate(val,WIDTH,-7) == compose_bit(b,1,2,3,4,5,6,7,0) );
-  zAssert( bit_reverse, bit_reverse(val,WIDTH) == compose_bit(b,7,6,5,4,3,2,1,0) );
+    bit_rotate(val,width,0) == compose_bit(b,0,1,2,3,4,5,6,7) &&
+    bit_rotate(val,width,1) == compose_bit(b,1,2,3,4,5,6,7,0) &&
+    bit_rotate(val,width,2) == compose_bit(b,2,3,4,5,6,7,0,1) &&
+    bit_rotate(val,width,3) == compose_bit(b,3,4,5,6,7,0,1,2) &&
+    bit_rotate(val,width,4) == compose_bit(b,4,5,6,7,0,1,2,3) &&
+    bit_rotate(val,width,5) == compose_bit(b,5,6,7,0,1,2,3,4) &&
+    bit_rotate(val,width,6) == compose_bit(b,6,7,0,1,2,3,4,5) &&
+    bit_rotate(val,width,7) == compose_bit(b,7,0,1,2,3,4,5,6) &&
+    bit_rotate(val,width,-1) == compose_bit(b,7,0,1,2,3,4,5,6) &&
+    bit_rotate(val,width,-2) == compose_bit(b,6,7,0,1,2,3,4,5) &&
+    bit_rotate(val,width,-3) == compose_bit(b,5,6,7,0,1,2,3,4) &&
+    bit_rotate(val,width,-4) == compose_bit(b,4,5,6,7,0,1,2,3) &&
+    bit_rotate(val,width,-5) == compose_bit(b,3,4,5,6,7,0,1,2) &&
+    bit_rotate(val,width,-6) == compose_bit(b,2,3,4,5,6,7,0,1) &&
+    bit_rotate(val,width,-7) == compose_bit(b,1,2,3,4,5,6,7,0) );
+  zAssert( bit_reverse, bit_reverse(val,width) == compose_bit(b,7,6,5,4,3,2,1,0) );
 
   zAssert( endian_reverse16, endian_reverse16(0x1234) == 0x3412 );
   zAssert( endian_reverse32, endian_reverse32(0x12345678) == 0x78563412 );
   zAssert( endian_reverse64, endian_reverse64(0x12345678abcdefab) == 0xabefcdab78563412 );
+
+  zAssert( endian_check, endian_check() == __BYTE_ORDER );
   return EXIT_SUCCESS;
 }

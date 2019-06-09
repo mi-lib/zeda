@@ -14,8 +14,26 @@
 __BEGIN_DECLS
 
 /* ********************************************************** */
-/*! \defgroup bit_op bit operations.
+/*! \defgroup endian_op endian operations.
  * \{ *//* ************************************************** */
+
+/* middle endian not supported. */
+#define Z_ENDIAN_UNKNOWN 9999
+#define Z_ENDIAN_LITTLE  1234
+#define Z_ENDIAN_BIG     4321
+
+/*! \brief check type of endian of the current architecture.
+ *
+ * endian_check() checks the type of endian of the current
+ * architecture.
+ * \return
+ * It returns any of the following identifiers with respect to
+ * the detected type:
+ *  Z_ENDIAN_UNKNOWN ... unknown endian type (incl. middle endian)
+ *  Z_ENDIAN_LITTLE  ... little endian
+ *  Z_ENDIAN_BIG     ... big endian
+ */
+__EXPORT int endian_check(void);
 
 /*! \brief convert 16-bit little/big endian to big/little endian.
  *
@@ -46,6 +64,12 @@ __EXPORT uint32_t endian_reverse32(uint32_t val);
  * PDP endian is not dealt with.
  */
 __EXPORT uint64_t endian_reverse64(uint64_t val);
+
+/*! \} */
+
+/* ********************************************************** */
+/*! \defgroup bit_op bit operations.
+ * \{ *//* ************************************************** */
 
 /*! \brief rotate a bit sequence.
  *

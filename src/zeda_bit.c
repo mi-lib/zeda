@@ -6,54 +6,53 @@
 
 #include <zeda/zeda_bit.h>
 
+/* check type of endian of the current architecture. */
+int endian_check(void)
+{
+  union{
+    uint32_t val32;
+    uint8_t val8[4];
+  } testval;
+
+  testval.val32 = 0xaabbccdd;
+  if( testval.val8[0] == 0xaa &&
+      testval.val8[1] == 0xbb &&
+      testval.val8[2] == 0xcc &&
+      testval.val8[3] == 0xdd ) return Z_ENDIAN_BIG;
+  if( testval.val8[0] == 0xdd &&
+      testval.val8[1] == 0xcc &&
+      testval.val8[2] == 0xbb &&
+      testval.val8[3] == 0xaa ) return Z_ENDIAN_LITTLE;
+  /* middle endian not supported. */
+  return Z_ENDIAN_UNKNOWN;
+}
+
 /* convert 16-bit little/bit endian to/from big/little endian. */
 uint16_t endian_reverse16(uint16_t val)
 {
-  union{
-    uint16_t wval;
-    uint8_t bval[2];
-  } org, cnv;
-
-  org.wval = val;
-  cnv.bval[1] = org.bval[0];
-  cnv.bval[0] = org.bval[1];
-  return cnv.wval;
+  return ( val << 8 & 0xff00 ) | ( val >> 8 & 0xff );
 }
 
 /* convert 32-bit little/bit endian to/from big/little endian. */
 uint32_t endian_reverse32(uint32_t val)
 {
-  union{
-    uint32_t lval;
-    uint8_t bval[4];
-  } org, cnv;
-
-  org.lval = val;
-  cnv.bval[3] = org.bval[0];
-  cnv.bval[2] = org.bval[1];
-  cnv.bval[1] = org.bval[2];
-  cnv.bval[0] = org.bval[3];
-  return cnv.lval;
+  return ( val << 24 & 0xff000000 ) |
+         ( val <<  8 & 0x00ff0000 ) |
+         ( val >>  8 & 0x0000ff00 ) |
+         ( val >> 24 & 0x000000ff );
 }
 
 /* convert 64-bit little/bit endian to/from big/little endian. */
 uint64_t endian_reverse64(uint64_t val)
 {
-  union{
-    uint64_t lval;
-    uint8_t bval[8];
-  } org, cnv;
-
-  org.lval = val;
-  cnv.bval[7] = org.bval[0];
-  cnv.bval[6] = org.bval[1];
-  cnv.bval[5] = org.bval[2];
-  cnv.bval[4] = org.bval[3];
-  cnv.bval[3] = org.bval[4];
-  cnv.bval[2] = org.bval[5];
-  cnv.bval[1] = org.bval[6];
-  cnv.bval[0] = org.bval[7];
-  return cnv.lval;
+  return ( val << 56 & 0xff00000000000000 ) |
+         ( val << 40 & 0x00ff000000000000 ) |
+         ( val << 24 & 0x0000ff0000000000 ) |
+         ( val <<  8 & 0x000000ff00000000 ) |
+         ( val >>  8 & 0x00000000ff000000 ) |
+         ( val >> 24 & 0x0000000000ff0000 ) |
+         ( val >> 40 & 0x000000000000ff00 ) |
+         ( val >> 56 & 0x00000000000000ff );
 }
 
 /* rotate a bit sequence. */

@@ -20,7 +20,7 @@
 #ifndef __ZEDA_H__
 #define __ZEDA_H__
 
-#include <zeda/zeda_bit.h>
+#include <zeda/zeda_binfile.h>
 
 #include <zeda/zeda_option.h>
 
@@ -35,7 +35,5 @@
 #include <zeda/zeda_index.h>
 
 #include <zeda/zeda_name.h>
-
-#include <zeda/zeda_bfile.h>
 
 #endif /* __ZEDA_H__ */

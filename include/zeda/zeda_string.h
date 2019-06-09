@@ -715,7 +715,7 @@ __EXPORT char *zCutSuffix(char *name);
  */
 __EXPORT FILE *zOpenFile(char filename[], char *suffix, char *mode);
 
-/*! \brief default suffix of .ztk file format. */
+/*! \brief default suffix of .ztk (Z-Tag-and-Key) file format. */
 #define ZEDA_ZTK_SUFFIX "ztk"
 
 /*! \brief open a .ztk file. */

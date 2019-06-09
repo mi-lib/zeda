@@ -13,10 +13,10 @@ SIGNUP=echo "ZEDA ver."$(VERSION)" Copyright (C) 1998 Tomomichi Sugihara (Zhidao
 OBJ=zeda_misc.o\
 	zeda_string.o \
 	zeda_bit.o zeda_rand.o\
+	zeda_binfile.o\
 	zeda_array.o zeda_index.o zeda_stream.o zeda_list.o zeda_rrtab.o\
 	zeda_strlist.o\
-	zeda_option.o\
-	zeda_bfile.o
+	zeda_option.o
 DLIB=libzeda.so
 
 TARGET=$(DLIB)
