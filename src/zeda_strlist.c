@@ -76,10 +76,10 @@ void zStrListGetPtr(zStrList *strlist, int n, ...)
   va_end( args );
 }
 
-/* zStrListFWrite
- * - output a list of strings to a file.
+/* zStrListFPrint
+ * - print a list of strings to a file.
  */
-void zStrListFWrite(FILE *fp, zStrList *list)
+void zStrListFPrint(FILE *fp, zStrList *list)
 {
   zStrListCell *cell;
 

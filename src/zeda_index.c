@@ -153,10 +153,10 @@ int zIndexMove(zIndex idx, int from, int to)
 }
 
 #ifndef __KERNEL__
-/* zIndexFRead
- * - input of integer vector.
+/* zIndexFScan
+ * - scan an integer vector from a file.
  */
-zIndex zIndexFRead(FILE *fp)
+zIndex zIndexFScan(FILE *fp)
 {
   register int i, size;
   zIndex idx;
@@ -170,10 +170,10 @@ zIndex zIndexFRead(FILE *fp)
   return idx;
 }
 
-/* zIndexDataFWrite
- * - output of integer vector.
+/* zIndexDataFPrint
+ * - print out an array of integer values to a file.
  */
-void zIndexDataFWrite(FILE *fp, zIndex idx)
+void zIndexDataFPrint(FILE *fp, zIndex idx)
 {
   register uint i;
 
@@ -183,10 +183,10 @@ void zIndexDataFWrite(FILE *fp, zIndex idx)
   fprintf( fp, "\n" );
 }
 
-/* zIndexFWrite
- * - output of integer vector.
+/* zIndexFPrint
+ * - print out an integer vector to a file.
  */
-void zIndexFWrite(FILE *fp, zIndex idx)
+void zIndexFPrint(FILE *fp, zIndex idx)
 {
   register uint i;
 
@@ -200,10 +200,10 @@ void zIndexFWrite(FILE *fp, zIndex idx)
   }
 }
 #else
-/* zIndexWrite
- * - output of integer vector (for kernel space programming).
+/* zIndexPrint
+ * - print an integer vector out (for kernel space programming).
  */
-void zIndexWrite(zIndex idx)
+void zIndexPrint(zIndex idx)
 {
   register int i;
 

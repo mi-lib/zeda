@@ -158,56 +158,57 @@ __EXPORT int zIndexSwap(zIndex idx, int p1, int p2);
 __EXPORT int zIndexMove(zIndex idx, int from, int to);
 
 #ifndef __KERNEL__
-/*! \brief read an array of integer values from a file.
+/*! \brief scan an array of integer values from a file.
  *
- * zIndexFRead() reads a sequence of integer values from
+ * zIndexFScan() scans a sequence of integer values from
  * the current position of a file \a fp, and create a new
  * zIndex instance.
- * The format to be read by zIndexFRead() is as follows:
+ * The format to be scanned by zIndexFScan() is as follows:
  *
  *  \a n ( x1 x2 x3 ... xn )
  *
  * where \a n is the number of values.
  *
- * zIndexRead() is also available to read values from the
+ * zIndexScan() is also available to scan values from the
  * standard input.
  * \return a pointer to the newly allocated zIndex instance.
- * \sa zIndexRead, zIndexFWrite
+ * \sa zIndexScan, zIndexFPrint
  */
-__EXPORT zIndex zIndexFRead(FILE *fp);
-#define zIndexRead()   zIndexFRead( stdin )
-/*! \brief output an array of integer values to a file.
+__EXPORT zIndex zIndexFScan(FILE *fp);
+#define zIndexScan() zIndexFScan( stdin )
+
+/*! \brief print an array of integer values to a file.
  *
- * zIndexFWrite() outputs an array of integer values in
- * a zIndex instance \a idx to the current position of
- * a file \a fp in the following format:
+ * zIndexFPrint() prints an array of integer values in
+ * a zIndex instance \a idx out to the current position
+ * of a file \a fp in the following format:
  *
  *  \a n ( x1 x2 x3 ... xn )
  *
  * where \a n is the number of values.
  *
- * zIndexWrite() is also available to output values to the
- * standard output.
- * \sa zIndexFRead, zIndexWrite, zIndexDataFWrite
+ * zIndexPrint() is also available to print values out to
+ * the standard output.
+ * \sa zIndexFScan, zIndexPrint, zIndexDataFPrint
  */
-__EXPORT void zIndexFWrite(FILE *fp, zIndex idx);
-#define zIndexWrite(i) zIndexFWrite( stdout, i )
-/*! \brief output an array of integer values to a file.
+__EXPORT void zIndexFPrint(FILE *fp, zIndex idx);
+#define zIndexPrint(i) zIndexFPrint( stdout, i )
+/*! \brief print an array of integer values out to a file.
  *
- * zIndexDataFWrite() outputs an array of integer values
- * in a zIndex instance \a idx to the current position of
+ * zIndexDataFPrint() prints an array of integer values in
+ * a zIndex instance \a idx out to the current position of
  * a file \a fp in the following format:
  *
  *  x1 x2 x3 ... xn
  *
- * zIndexDataWrite() is also available to output values
+ * zIndexDataPrint() is also available to print values out
  * to the standard output.
- * \sa zIndexFRead, zIndexFWrite, zIndexDataWrite
+ * \sa zIndexFScan, zIndexFPrint, zIndexDataPrint
  */
-__EXPORT void zIndexDataFWrite(FILE *fp, zIndex idx);
-#define zIndexDataWrite(i) zIndexDataFWrite( stdout, i )
+__EXPORT void zIndexDataFPrint(FILE *fp, zIndex idx);
+#define zIndexDataPrint(i) zIndexDataFPrint( stdout, i )
 #else
-void zIndexWrite(zIndex idx);
+void zIndexPrint(zIndex idx);
 #endif /* __KERNEL__ */
 
 /*! \} */

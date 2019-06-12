@@ -16,10 +16,10 @@
  * ********************************************************** */
 
 #ifndef __KERNEL__
-/* _zListFWrite
- * - print out an information of a list.
+/* _zListFPrint
+ * - print information of a list to a file.
  */
-void _zListFWrite(FILE *fp, zList *list)
+void _zListFPrint(FILE *fp, zList *list)
 {
   register int i = 0;
   zListCell *cp;
@@ -27,14 +27,14 @@ void _zListFWrite(FILE *fp, zList *list)
   fprintf( fp, "number = %d\n", zListNum( list ) );
   zListForEach( list, cp ){
     fprintf( fp, "<%d>", i++ );
-    zListCellFWrite( fp, cp );
+    zListCellFPrint( fp, cp );
   }
 }
 #else
-/* zListWrite
- * - print out an information of a list(for kernel module).
+/* zListPrint
+ * - print information of a list (for kernel module).
  */
-void zListWrite(zList *list)
+void zListPrint(zList *list)
 {
   int i;
   zListCell *cp;
@@ -42,7 +42,7 @@ void zListWrite(zList *list)
   printk( "number = %d\n", zListNum( list ) );
   zListForEach( list, cp ){
     printk( "<%d>", i++ );
-    zListCellWrite( cp );
+    zListCellPrint( cp );
   }
 }
 #endif /* __KERNEL__ */
