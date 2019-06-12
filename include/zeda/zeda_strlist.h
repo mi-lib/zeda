@@ -31,9 +31,9 @@ __EXPORT void zStrListDestroy(zStrList *list, bool clone);
 /*! \brief get pointers to strings of a list. */
 __EXPORT void zStrListGetPtr(zStrList *strlist, int n, ...);
 
-/*! \brief output a list of strings to a file. */
-__EXPORT void zStrListFWrite(FILE *fp, zStrList *list);
-#define zStrListWrite(l) zStrListFWrite( stdout, (l) )
+/*! \brief print a list of strings to a file. */
+__EXPORT void zStrListFPrint(FILE *fp, zStrList *list);
+#define zStrListPrint(l) zStrListFPrint( stdout, (l) )
 
 #endif /* __KERNEL__ */
 

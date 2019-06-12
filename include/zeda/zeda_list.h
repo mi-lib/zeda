@@ -134,18 +134,18 @@ zListClass(zList, zListCell, void*);
 } while(0)
 
 #ifndef __KERNEL__
-/*! \brief write connections around a list cell \a c
+/*! \brief print connections around a list cell \a c
     to the file \a f. */
-#define zListCellFWrite(f,c) do{\
+#define zListCellFPrint(f,c) do{\
   fprintf( f, "cell [%p] ", c ); \
   fprintf( f, "%p <- prev | next-> %p\n", \
     zListCellPrev(c), zListCellNext(c) ); \
 } while(0)
-/*! \brief write connections around a list cell \a c
+/*! \brief print pointing information of a list cell \a c
     to the standard output. */
-#define zListCellWrite(c)  zListCellFWrite( stdout, c )
+#define zListCellPrint(c)  zListCellFPrint( stdout, c )
 #else
-#define zListCellWrite(c) do{\
+#define zListCellPrint(c) do{\
   printk( "cell [%p] ", c ); \
   printk( "%p <- prev | next-> %p\n", \
     zListCellPrev(c), zListCellNext(c) ); \
@@ -367,9 +367,9 @@ list_t *list_t##QuickSort(list_t *list, int (* cmp)(void*,void*,void*), void *pr
   return list;\
 }
 
-/*! \brief output the list connection.
+/*! \brief print connection information of a list.
  *
- * zListFWrite() outputs the connection information of a
+ * zListFPrint() prints the connection information of a
  * list \a list to the current position of a file \a fp
  * with the following form.
  *
@@ -385,30 +385,30 @@ list_t *list_t##QuickSort(list_t *list, int (* cmp)(void*,void*,void*), void *pr
 
  *   ...
  *
- * zListWrite() is also available to output to the standard
- * output.
+ * zListPrint() is also available to print the information
+ * to the standard output.
  * \sa
- * zListCellFWrite, zListCellWrite
+ * zListCellFPrint, zListCellPrint
  */
 #ifndef __KERNEL__
-__EXPORT void _zListFWrite(FILE *fp, zList *list);
-#define zListFWrite(f,l)         _zListFWrite( f, (zList *)(l) )
-#define zListWrite(l)            zListFWrite( stdout, l )
+__EXPORT void _zListFPrint(FILE *fp, zList *list);
+#define zListFPrint(f,l) _zListFPrint( f, (zList *)(l) )
+#define zListPrint(l)    zListFPrint( stdout, l )
 #else
-void zListWrite(zList *list);
+void zListPrint(zList *list);
 #endif /* __KERNEL__ */
 
 /* zStack/zQueue alias */
 
 /*! \brief stack push operation. */
-#define zStackPush(s,v)          zListInsertHead(s,v)
+#define zStackPush(s,v)    zListInsertHead(s,v)
 /*! \brief stack pop operation. */
-#define zStackPop(s,c)           zListDeleteHead(s,c)
+#define zStackPop(s,c)     zListDeleteHead(s,c)
 
 /*! \brief enqueue operation. */
-#define zQueueEnqueue(q,v)       zListInsertTail(q,v)
+#define zQueueEnqueue(q,v) zListInsertTail(q,v)
 /*! \brief dequeue operation. */
-#define zQueueDequeue(q,c)       zListDeleteHead(q,c)
+#define zQueueDequeue(q,c) zListDeleteHead(q,c)
 
 /*! \} */
 

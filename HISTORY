@@ -1,3 +1,6 @@
+2019. 6.12. Renamed zStrListFWrite to zStrListFPrint. [zeda_strlist]
+2019. 6.12. Renamed zList*Write to zList*Print. [zeda_list]
+2019. 6.12. Renamed zIndex*Read and zIndex*Write to zIndex*Scan and zIndex*Print. [zeda_index]
 2019. 6.10. Added zeda_binfile and abolished zeda_bfile. [zeda_binfile]
 2019. 5.21. Added endian_check. [zeda_bit]
 2019. 5.21. Reimplemented endian_reverse16, endian_reverse32 and endian_reverse64. [zeda_bit]
