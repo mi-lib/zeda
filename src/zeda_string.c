@@ -613,8 +613,8 @@ int zFCountKey(FILE *fp, char *key)
   return count;
 }
 
-/* read tagged fields in file. */
-bool zTagFRead(FILE *fp, bool (* fread_tag)(FILE*,void*,char*,bool*), void *instance)
+/* scan tagged fields from a file. */
+bool zTagFScan(FILE *fp, bool (* fscan_tag)(FILE*,void*,char*,bool*), void *instance)
 {
   char buf[BUFSIZ];
   bool success = true;
@@ -623,15 +623,15 @@ bool zTagFRead(FILE *fp, bool (* fread_tag)(FILE*,void*,char*,bool*), void *inst
     if( !zFSkipDefaultComment( fp ) ) break;
     if( zTokenIsTag( zFToken(fp,buf,BUFSIZ) ) ){
       zExtractTag( buf, buf );
-      fread_tag( fp, instance, buf, &success );
+      fscan_tag( fp, instance, buf, &success );
     } else
       if( !fgets( buf, BUFSIZ, fp ) ) break;
   }
   return success;
 }
 
-/* read a field in file. */
-bool zFieldFRead(FILE *fp, bool (* fread_field)(FILE*,void*,char*,bool*), void *instance)
+/* scan a field from a file. */
+bool zFieldFScan(FILE *fp, bool (* fscan_field)(FILE*,void*,char*,bool*), void *instance)
 {
   char buf[BUFSIZ];
   int cur = 0;
@@ -645,7 +645,7 @@ bool zFieldFRead(FILE *fp, bool (* fread_field)(FILE*,void*,char*,bool*), void *
       fseek( fp, cur, SEEK_SET );
       break;
     }
-    if( !fread_field( fp, instance, buf, &success ) )
+    if( !fscan_field( fp, instance, buf, &success ) )
       if( !fgets( buf, BUFSIZ, fp ) ) break;
   }
   return success;

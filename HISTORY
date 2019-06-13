@@ -1,3 +1,4 @@
+2019. 6.13. Renamed zTagFRead and zFieldFRead to zTagFScan and zFieldFScan. [zeda_string]
 2019. 6.12. Renamed zStrListFWrite to zStrListFPrint. [zeda_strlist]
 2019. 6.12. Renamed zList*Write to zList*Print. [zeda_list]
 2019. 6.12. Renamed zIndex*Read and zIndex*Write to zIndex*Scan and zIndex*Print. [zeda_index]

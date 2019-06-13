@@ -558,47 +558,47 @@ __EXPORT int zFCountTag(FILE *fp, char *tag);
  */
 __EXPORT int zFCountKey(FILE *fp, char *key);
 
-/*! \brief read tagged fields in a file.
+/*! \brief scan tagged fields in a file.
  *
- * zTagFRead() reads all tagged fields in a file pointed by \a fp.
- * \a tag_fread defines persing rules to accept some tags.
+ * zTagFScan() scans all tagged fields in a file \a fp.
+ * \a tag_fscan defines persing rules to accept some tags.
  * \a instance is a pointer to an instance of a specific class
  * to be processed.
  *
- * \a fp and \instance are given to \a tag_fread as the first and
- * second arguments, respectively. The third argument of \a tag_fread
- * is for a buffer that stores the token previously read, which
- * may be used to further tokenize in \a tag_fread. It is up to
+ * \a fp and \instance are given to \a tag_fscan as the first and
+ * second arguments, respectively. The third argument of \a tag_fscan
+ * is for a buffer that stores the token previously scanned, which
+ * may be used to further tokenize in \a tag_fscan. It is up to
  * programmers whether they use the fourth argument. It can be
- * utilized to catch something illegal in \a tag_fread and try
- * any exceptions. It is returned by zTagFRead().
+ * utilized to catch something illegal in \a tag_fscan and try
+ * any exceptions. It is returned by zTagFScan().
  * \return
- * zTagFRead() returns the fourth value of \a tag_fread, which may
+ * zTagFScan() returns the fourth value of \a tag_fscan, which may
  * catch something illegal in the persing process. At default,
  * the true value is returned.
  */
-__EXPORT bool zTagFRead(FILE *fp, bool (* tag_fread)(FILE*,void*,char*,bool*), void *instance);
+__EXPORT bool zTagFScan(FILE *fp, bool (* tag_fscan)(FILE*,void*,char*,bool*), void *instance);
 
-/*! \brief read a field in a file.
+/*! \brief scan a field in a file.
  *
- * zFieldFRead() reads a field in a file pointed by \a fp from the
- * current position. \a field_fread defines persing rules to process
+ * zFieldFScan() scans a field in a file pointed by \a fp from the
+ * current position. \a field_fscan defines persing rules to process
  * a specific class. \a instance is a pointer to an instance of the
  * specific class.
  *
- * \a fp and \instance are given to \a field_fread as the first
+ * \a fp and \instance are given to \a field_fscan as the first
  * and second arguments, respectively. The third argument of
- * \a field_fread is for a buffer that stores the token previously
- * read, which may be used to further tokenize in \a field_fread.
+ * \a field_fscan is for a buffer that stores the token previously
+ * scanned, which may be used to further tokenize in \a field_fscan.
  * It is up to programmers whether they use the fourth argument.
- * It can be utilized to catch something illegal in \a field_fread
- * and try any exceptions. It is returned by zFieldFRead().
+ * It can be utilized to catch something illegal in \a field_fscan
+ * and try any exceptions. It is returned by zFieldFScan().
  * \return
- * zFieldFRead() returns the fourth value of \a field_fread, which
+ * zFieldFScan() returns the fourth value of \a field_fscan, which
  * may catch something illegal in the persing process. At default,
  * the true value is returned.
  */
-__EXPORT bool zFieldFRead(FILE *fp, bool (* field_fread)(FILE*,void*,char*,bool*), void *instance);
+__EXPORT bool zFieldFScan(FILE *fp, bool (* field_fscan)(FILE*,void*,char*,bool*), void *instance);
 
 #endif /* __KERNEL__ */
 
