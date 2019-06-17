@@ -12,9 +12,7 @@
  * integer value array class
  * ********************************************************** */
 
-/* zIndexAlloc
- * - allocate internal array of integer vector.
- */
+/* allocate internal array of integer vector. */
 zIndex zIndexAlloc(zIndex idx, int size)
 {
   register int i;
@@ -26,9 +24,7 @@ zIndex zIndexAlloc(zIndex idx, int size)
   return idx;
 }
 
-/* zIndexCreate
- * - creation of integer vector.
- */
+/* create an integer vector. */
 zIndex zIndexCreate(int size)
 {
   zIndex idx;
@@ -42,9 +38,7 @@ zIndex zIndexCreate(int size)
 }
 
 #ifndef __KERNEL__
-/* zIndexCreateList
- * - creation of integer vector from argument list.
- */
+/* create an integer vector from argument list. */
 zIndex zIndexCreateList(int size, ...)
 {
   register int i;
@@ -61,9 +55,7 @@ zIndex zIndexCreateList(int size, ...)
 #endif /* __KERNEL__ */
 
 #ifndef __KERNEL__
-/* zIndexSetList
- * - set elements of an integer vector from argument list.
- */
+/* set components of an integer vector from argument list. */
 zIndex zIndexSetList(zIndex idx, ...)
 {
   register int i;
@@ -77,9 +69,7 @@ zIndex zIndexSetList(zIndex idx, ...)
 }
 #endif /* __KERNEL__ */
 
-/* zIndexFree
- * - free integer vector.
- */
+/* free an integer vector. */
 void zIndexFree(zIndex idx)
 {
   if( idx ){
@@ -88,19 +78,14 @@ void zIndexFree(zIndex idx)
   }
 }
 
-/* zIndexClear
- * - cleanup of integer vector.
- */
-zIndex zIndexClear(zIndex idx)
+/* zero an integer vector. */
+zIndex zIndexZero(zIndex idx)
 {
   memset( zArrayBuf(idx), 0, sizeof(int)*zArraySize(idx) );
   return idx;
 }
 
-#ifndef __KERNEL__
-/* zIndexOrder
- * - ordination of integer vector.
- */
+/* ordinate an integer vector. */
 zIndex zIndexOrder(zIndex idx, int s)
 {
   register uint i;
@@ -109,11 +94,8 @@ zIndex zIndexOrder(zIndex idx, int s)
     zIndexSetElemNC( idx, i, s+i );
   return idx;
 }
-#endif /* __KERNEL__ */
 
-/* zIndexIsEqual
- * - check if two arrays of integer values are equal.
- */
+/* check if two integer vectors are equal. */
 bool zIndexIsEqual(zIndex idx1, zIndex idx2)
 {
   register uint i;
@@ -124,18 +106,14 @@ bool zIndexIsEqual(zIndex idx1, zIndex idx2)
   return true;
 }
 
-/* zIndexSwap
- * - swap of two components of integer vector.
- */
+/* swap two components of an integer vector. */
 int zIndexSwap(zIndex idx, int p1, int p2)
 {
   zSwap( int, zIndexElemNC(idx,p1), zIndexElemNC(idx,p2) );
   return zIndexElemNC( idx, p2 );
 }
 
-/* zIndexMove
- * - move a component of index to another position.
- */
+/* move a component of an integer vector to another position. */
 int zIndexMove(zIndex idx, int from, int to)
 {
   register int i;
@@ -153,9 +131,7 @@ int zIndexMove(zIndex idx, int from, int to)
 }
 
 #ifndef __KERNEL__
-/* zIndexFScan
- * - scan an integer vector from a file.
- */
+/* scan an integer vector from a file. */
 zIndex zIndexFScan(FILE *fp)
 {
   register int i, size;
@@ -170,9 +146,7 @@ zIndex zIndexFScan(FILE *fp)
   return idx;
 }
 
-/* zIndexDataFPrint
- * - print out an array of integer values to a file.
- */
+/* print out components of an integer vector to a file. */
 void zIndexDataFPrint(FILE *fp, zIndex idx)
 {
   register uint i;
@@ -183,9 +157,7 @@ void zIndexDataFPrint(FILE *fp, zIndex idx)
   fprintf( fp, "\n" );
 }
 
-/* zIndexFPrint
- * - print out an integer vector to a file.
- */
+/* print out an integer vector to a file. */
 void zIndexFPrint(FILE *fp, zIndex idx)
 {
   register uint i;
@@ -200,9 +172,7 @@ void zIndexFPrint(FILE *fp, zIndex idx)
   }
 }
 #else
-/* zIndexPrint
- * - print an integer vector out (for kernel space programming).
- */
+/* print out an integer vector (for kernel space programming). */
 void zIndexPrint(zIndex idx)
 {
   register int i;
