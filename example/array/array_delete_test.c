@@ -24,7 +24,7 @@ void delete_test(coord_array_t *arr, int pos)
 
   printf( "<delete %d>\n", pos );
   zArrayDelete( arr, coord, pos );
-  for( i=0; i<zArrayNum(arr); i++ ){
+  for( i=0; i<zArraySize(arr); i++ ){
     printf( "[%02d] ", i ); coord_write( zArrayElem( arr, i ) );
   }
 }
@@ -41,7 +41,7 @@ int main(void)
     zArrayAdd( &array, coord, &c );
   }
   printf( "<original array>\n" );
-  for( i=0; i<zArrayNum(&array); i++ ){
+  for( i=0; i<zArraySize(&array); i++ ){
     printf( "[%02d] ", i ); coord_write( zArrayElem( &array, i ) );
   }
   delete_test( &array, 2 );

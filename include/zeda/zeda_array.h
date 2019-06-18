@@ -57,7 +57,7 @@ typedef struct{\
 #endif /* __cplusplus */
 
 #define zArraySize(a)          (a)->size
-#define zArrayBuf(a)           ( (a)->buf )
+#define zArrayBuf(a)           (a)->buf
 
 #define zArrayPosIsValid(a,p)  ( (p) < zArraySize(a) && (p) >= 0 )
 
@@ -67,7 +67,7 @@ typedef struct{\
 #define zArrayElemNC(a,i)      ( &zArrayBuf(a)[i] )
 #define zArrayElem(a,i)        ( zArrayPosIsValid(a,i) ? zArrayElemNC(a,i) : NULL )
 #define zArraySetElemNC(a,i,d) memcpy( zArrayElemNC(a,i), (d), zArrayElemSize(a) )
-#define zArraySetElem(a,i,d)   if( zArrayPosIsValid(a,i) ) zArraySetElemNC(a,i,d)
+#define zArraySetElem(a,i,d)   ( zArrayPosIsValid(a,i) ? zArraySetElemNC(a,i,d) : NULL )
 
 #define zArrayHead(a)          zArrayElemNC( a, zArraySize(a)-1 )
 #define zArrayNeck(a)          zArrayElemNC( a, zArraySize(a)-2 )
@@ -83,12 +83,14 @@ typedef struct{\
  * \param n the number of cells.
  */
 #define zArrayAlloc(arr,type,n) do{\
-  zArrayInit( arr );\
-  if( (n) > 0 && !( zArrayBuf(arr) = zAlloc(type,n) ) ){\
-    ZALLOCERROR();\
-    zArraySize(arr) = 0;\
-  } else\
-    zArraySize(arr) = (n);\
+  if( (n) <= 0 ) zArrayInit( arr );\
+  else{\
+    if( !( zArrayBuf(arr) = zAlloc( type, n ) ) ){\
+      ZALLOCERROR();\
+      zArraySize(arr) = 0;\
+    } else\
+      zArraySize(arr) = (n);\
+  }\
 } while(0)
 
 /*! \brief free an array.
@@ -124,7 +126,7 @@ typedef struct{\
   else{\
     zArraySize(arr)++;\
     zArrayBuf(arr) = __zarray_ap;\
-    zArrayHead(arr) = dat;\
+    zArraySetElemNC( arr, zArraySize(arr)-1, dat );\
   }\
 } while(0)
 

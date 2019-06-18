@@ -39,15 +39,15 @@ typedef zIndexStruct *zIndex;
 /*! \brief increment size of an index vector. */
 #define zIndexIncSize(i)     ( zArraySize(i)++ )
 /*! \brief decrement size of an index vector. */
-#define zIndexDecSize(i)     ( zArraySize(i) -= (zArraySize(i)>0 ? 1:0) )
+#define zIndexDecSize(i)     ( zArraySize(i) -= ( zArraySize(i) > 0 ? 1 : 0 ) )
 
 /*! \brief check if the specified position is valid for an index vector. */
-#define zIndexPosIsValid(i,n) ( (n) >= 0 && (n) < zArraySize(i) )
+#define zIndexPosIsValid(i,n) zArrayPosIsValid( i, n )
 
 #define zIndexElemNC(i,n)      zArrayBuf(i)[n]
 #define zIndexElem(i,n)        ( zIndexPosIsValid(i,n) ? zIndexElemNC(i,n) : -1 )
 #define zIndexSetElemNC(i,n,e) ( zIndexElemNC(i,n) = (e) )
-#define zIndexSetElem(i,n,e)   if( zIndexPosIsValid(i,n) ) zIndexSetElemNC(i,n,e)
+#define zIndexSetElem(i,n,e)   ( zIndexPosIsValid(i,n) ? zIndexSetElemNC(i,n,e) : -1 )
 
 #define zIndexHead(idx)      ( *zArrayHead(idx) )
 #define zIndexNeck(idx)      ( *zArrayNeck(idx) )

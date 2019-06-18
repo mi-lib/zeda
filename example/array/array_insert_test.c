@@ -24,7 +24,7 @@ void insert(coord_array_t *arr, coord *c, int pos)
 
   printf( "<inserted array at %d>\n", pos );
   zArrayInsert( arr, coord, pos, c );
-  for( i=0; i<zArrayNum(arr); i++ ){
+  for( i=0; i<zArraySize(arr); i++ ){
     printf( "[%02d] ", i ); coord_write( zArrayElemNC( arr, i ) );
   }
 }
@@ -41,7 +41,7 @@ int main(void)
     zArrayAdd( &array, coord, &c );
   }
   printf( "<original array>\n" );
-  for( i=0; i<zArrayNum(&array); i++ ){
+  for( i=0; i<zArraySize(&array); i++ ){
     printf( "[%02d] ", i ); coord_write( zArrayElemNC( &array, i ) );
   }
 

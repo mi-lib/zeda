@@ -1,3 +1,7 @@
+2019. 6.18. Debugged zArrayAdd. [zeda_array]
+2019. 6.18. Reimplemented zIndexPosIsValid and zIndexSetElem. [zeda_index]
+2019. 6.18. Modified zArrayAlloc. [zeda_array]
+2019. 6.18. Modified zArraySetElem. [zeda_array]
 2019. 6.17. Renamed zIndexClear to zIndexZero. [zeda_index]
 2019. 6.14. Corrected dox.conf. [doc]
 2019. 6.13. Renamed zTagFRead and zFieldFRead to zTagFScan and zFieldFScan. [zeda_string]
