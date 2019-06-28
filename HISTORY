@@ -1,3 +1,6 @@
+2019. 6.28. Reflected new specification of zStrListInsert and zStrAddrListInsert in zOptionRead. [zeda_option]
+2019. 6.28. Added zStrAddrList class. [zeda_strlist]
+2019. 6.28. Modified specifications of zStrListInsert, zStrListCellFree and zStrListDestroy. [zeda_strlist]
 2019. 6.18. Debugged zArrayAdd. [zeda_array]
 2019. 6.18. Reimplemented zIndexPosIsValid and zIndexSetElem. [zeda_index]
 2019. 6.18. Modified zArrayAlloc. [zeda_array]

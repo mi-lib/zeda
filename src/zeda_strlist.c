@@ -7,10 +7,8 @@
 #include <zeda/zeda_strlist.h>
 #include <stdarg.h>
 
-/* zStrListInsert
- * - insert a string to a list of strings.
- */
-zStrListCell *zStrListInsert(zStrList *list, char *str, bool clone)
+/* insert a string to a list of strings. */
+zStrListCell *zStrListInsert(zStrList *list, char *str)
 {
   zStrListCell *cell;
 
@@ -18,44 +16,34 @@ zStrListCell *zStrListInsert(zStrList *list, char *str, bool clone)
     ZALLOCERROR();
     return NULL;
   }
-  if( clone ){
-    if( !( cell->data = zStrClone( str ) ) ){
-      ZALLOCERROR();
-      free( cell );
-      return NULL;
-    }
-  } else
-    cell->data = str;
+  if( !( cell->data = zStrClone( str ) ) ){
+    ZALLOCERROR();
+    free( cell );
+    return NULL;
+  }
   zListInsertHead( list, cell );
   return cell;
 }
 
-/* zStrListCellFree
- * - free a cell of a list of strings.
- */
-void zStrListCellFree(zStrListCell *cell, bool clone)
+/* free a cell of a list of strings. */
+void zStrListCellFree(zStrListCell *cell)
 {
-  if( clone )
-    free( cell->data );
+  free( cell->data );
   free( cell );
 }
 
-/* zStrListDestroy
- * - destroy a list of strings.
- */
-void zStrListDestroy(zStrList *list, bool clone)
+/* destroy a list of strings. */
+void zStrListDestroy(zStrList *list)
 {
   zStrListCell *cell;
 
   while( !zListIsEmpty( list ) ){
     zListDeleteTail( list, &cell );
-    zStrListCellFree( cell, clone );
+    zStrListCellFree( cell );
   }
 }
 
-/* zStrListGetPtr
- * - get pointers to strings of a list.
- */
+/* get pointers to strings of a list. */
 void zStrListGetPtr(zStrList *strlist, int n, ...)
 {
   zStrListCell *cell;
@@ -76,13 +64,27 @@ void zStrListGetPtr(zStrList *strlist, int n, ...)
   va_end( args );
 }
 
-/* zStrListFPrint
- * - print a list of strings to a file.
- */
+/* print a list of strings to a file. */
 void zStrListFPrint(FILE *fp, zStrList *list)
 {
   zStrListCell *cell;
 
   zListForEach( list, cell )
     fprintf( fp, "%s\n", cell->data );
+}
+
+/* a list of addresses of strings. */
+
+/* insert a string to a list of strings. */
+zStrAddrListCell *zStrAddrListInsert(zStrAddrList *list, char *str)
+{
+  zStrAddrListCell *cell;
+
+  if( !( cell = zAlloc( zStrAddrListCell, 1 ) ) ){
+    ZALLOCERROR();
+    return NULL;
+  }
+  cell->data = str;
+  zListInsertHead( list, cell );
+  return cell;
 }

@@ -81,7 +81,7 @@ bool _zOptionFindLongKey(zOption *opts, char *key, zOption **cur)
 }
 
 /* read command line options. */
-bool zOptionRead(zOption *opts, char **argv, zStrList *arglist)
+bool zOptionRead(zOption *opts, char **argv, zStrAddrList *arglist)
 {
   zOption *cur;
   bool cnt;
@@ -95,7 +95,7 @@ bool zOptionRead(zOption *opts, char **argv, zStrList *arglist)
         cnt = false;
         cur = NULL;
       } else{
-        if( arglist && !zStrListInsert( arglist, *argv, false ) ){
+        if( arglist && !zStrAddrListInsert( arglist, *argv ) ){
           ret = false;
         }
       }

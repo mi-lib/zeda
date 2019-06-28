@@ -106,7 +106,8 @@ __EXPORT void zOptionDiag(zOption *opts);
  * correspoinding option instance in \a opts.
  *
  * When arguments which do not follow any options are picked up,
- * they are sequentially stored into a list of strings \a arglist.
+ * they are sequentially stored into a list of addresses of strings
+ * \a arglist.
  * \a arglist is automatically initialized in zOptionRead().
  *
  * Example:
@@ -139,7 +140,7 @@ __EXPORT void zOptionDiag(zOption *opts);
  * Note that the string "--" disables the following string
  * to be parsed as an option even if it begins with '-'.
  */
-__EXPORT bool zOptionRead(zOption *opts, char **argv, zStrList *arglist);
+__EXPORT bool zOptionRead(zOption *opts, char **argv, zStrAddrList *arglist);
 
 /* ********************************************************** */
 /* integer range
