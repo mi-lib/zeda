@@ -1,3 +1,5 @@
+2019. 7. 3. Modified ZTKFPrint. [zeda_ztk]
+2019. 7. 2. Added ZTKCountTag and ZTKCountKey. [zeda_ztk]
 2019. 7. 2. Added ZTK class and ZTK parser. [zeda_ztk]
 2019. 7. 1. Added zStrListFindStr. [zeda_strlist]
 2019. 6.28. Reflected new specification of zStrListInsert and zStrAddrListInsert in zOptionRead. [zeda_option]

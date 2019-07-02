@@ -154,7 +154,7 @@ __EXPORT void ZTKDestroy(ZTK *ztk);
 __EXPORT bool ZTKParse(ZTK *ztk, char *path);
 
 #define ZTKTag(ztk) ( (ztk)->tf_cp->data.tag )
-#define ZTKTagRewind(ztk) ( (ztk)->tf_cp = zListTail(&(ztk)->tflist) )
+#define ZTKTagRewind(ztk) ( (ztk)->tf_cp = zListIsEmpty(&(ztk)->tflist) ? NULL : zListTail(&(ztk)->tflist) )
 #define ZTKTagNext(ztk) ( (ztk)->tf_cp = (ztk)->tf_cp == zListHead(&(ztk)->tflist) ? NULL : zListCellNext((ztk)->tf_cp) )
 
 #define ZTKKey(ztk) ( (ztk)->kf_cp->data.key )
@@ -164,6 +164,12 @@ __EXPORT bool ZTKParse(ZTK *ztk, char *path);
 #define ZTKVal(ztk) ( (ztk)->val_cp->data )
 #define ZTKValRewind(ztk) ( (ztk)->val_cp = (ztk)->kf_cp ? zListTail(&(ztk)->kf_cp->data.vallist) : NULL )
 #define ZTKValNext(ztk) ( (ztk)->val_cp = (ztk)->kf_cp && (ztk)->val_cp != zListHead(&(ztk)->kf_cp->data.vallist) ? zListCellNext((ztk)->val_cp) : NULL )
+
+/*! \brief count the number of tagged fields with specified tag */
+__EXPORT int ZTKCountTag(ZTK *ztk, const char *tag);
+
+/*! \brief count the number of key fields with specified key in the current tagged field */
+__EXPORT int ZTKCountKey(ZTK *ztk, const char *key);
 
 /*! \brief print out ZTK to a file. */
 __EXPORT void ZTKFPrint(FILE *fp, ZTK *ztk);

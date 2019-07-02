@@ -357,12 +357,38 @@ bool ZTKParse(ZTK *ztk, char *path)
   return ret;
 }
 
+/* count the number of tagged fields with specified tag */
+int ZTKCountTag(ZTK *ztk, const char *tag)
+{
+  ZTKTagFieldListCell *cp;
+  int count = 0;
+
+  zListForEach( &ztk->tflist, cp )
+    if( strcmp( cp->data.tag, tag ) == 0 ) count++;
+  return count;
+}
+
+/* count the number of key fields with specified key in the current tagged field */
+int ZTKCountKey(ZTK *ztk, const char *key)
+{
+  ZTKKeyFieldListCell *cp;
+  int count = 0;
+
+  if( !ztk->tf_cp ) return 0;
+  zListForEach( &ztk->tf_cp->data.kflist, cp )
+    if( strcmp( cp->data.key, key ) == 0 ) count++;
+  return count;
+}
+
 /* print out ZTK to a file.
  * This function could be referred as an example of how the information in ZTK is retrieved.
  */
 void ZTKFPrint(FILE *fp, ZTK *ztk)
 {
-  if( !ZTKTagRewind( ztk ) ) return; /* no tag registerred */
+  if( !ZTKTagRewind( ztk ) ){
+    fprintf( fp, "(empty)\n" );
+    return; /* no tag registerred */
+  }
   do{
     fprintf( fp, "[%s]\n", ZTKTag(ztk) );
     ZTKKeyRewind( ztk );
