@@ -15,6 +15,7 @@
  - command line option manipulation
  - generalized I/O stream
  - random number generator
+ - ZTK format parser
  */
 
 #ifndef __ZEDA_H__
@@ -35,5 +36,7 @@
 #include <zeda/zeda_index.h>
 
 #include <zeda/zeda_name.h>
+
+#include <zeda/zeda_ztk.h>
 
 #endif /* __ZEDA_H__ */

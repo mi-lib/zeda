@@ -34,6 +34,9 @@ __EXPORT void zStrListDestroy(zStrList *list);
 /*! \brief get pointers to strings of a list. */
 __EXPORT void zStrListGetPtr(zStrList *strlist, int n, ...);
 
+/*! \brief find a string in a list of strings. */
+__EXPORT zStrListCell *zStrListFindStr(zStrList *list, char *str);
+
 /*! \brief print a list of strings to a file. */
 __EXPORT void zStrListFPrint(FILE *fp, zStrList *list);
 #define zStrListPrint(l) zStrListFPrint( stdout, (l) )

@@ -29,6 +29,10 @@
 #define ZEDA_WARN_TOOLNG_TKN           "too long string to tokenize"
 #define ZEDA_WARN_TOOLNG_NUM           "too long number"
 
+#define ZEDA_WARN_ZTK_INCLUDE_DUP      "%s: duplicate file inclusion, skipped."
+#define ZEDA_WARN_ZTK_NOT_TAGGED       "not in a tagged field, skipped."
+#define ZEDA_WARN_ZTK_DUPDEF           "duplicate entry of tag [%s], skipped."
+
 #define ZEDA_WARN_UNKNOWNOPT           "unknown option: %s"
 
 /* error messages */

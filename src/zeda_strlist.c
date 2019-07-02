@@ -64,6 +64,17 @@ void zStrListGetPtr(zStrList *strlist, int n, ...)
   va_end( args );
 }
 
+/* find a string in a list of strings. */
+zStrListCell *zStrListFindStr(zStrList *list, char *str)
+{
+  zStrListCell *cp;
+
+  if( !str ) return NULL;
+  zListForEach( list, cp )
+    if( strcmp( cp->data, str ) == 0 ) return cp;
+  return NULL;
+}
+
 /* print a list of strings to a file. */
 void zStrListFPrint(FILE *fp, zStrList *list)
 {

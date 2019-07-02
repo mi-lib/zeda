@@ -16,7 +16,7 @@ OBJ=zeda_misc.o\
 	zeda_binfile.o\
 	zeda_array.o zeda_index.o zeda_stream.o zeda_list.o zeda_rrtab.o\
 	zeda_strlist.o\
-	zeda_option.o
+	zeda_option.o zeda_ztk.o
 DLIB=libzeda.so
 
 TARGET=$(DLIB)

@@ -1,3 +1,5 @@
+2019. 7. 2. Added ZTK class and ZTK parser. [zeda_ztk]
+2019. 7. 1. Added zStrListFindStr. [zeda_strlist]
 2019. 6.28. Reflected new specification of zStrListInsert and zStrAddrListInsert in zOptionRead. [zeda_option]
 2019. 6.28. Added zStrAddrList class. [zeda_strlist]
 2019. 6.28. Modified specifications of zStrListInsert, zStrListCellFree and zStrListDestroy. [zeda_strlist]
