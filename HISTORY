@@ -1,3 +1,8 @@
+2019. 7. 4. Reimplemented ZTKDefListReg. [zeda_ztk]
+2019. 7. 4. Added ZTKDefListFindAndAddTag, ZTKDefListRegOne and ZTKDefRegOne. [zeda_ztk]
+2019. 7. 4. Reimplemented ZTKDefFindKey as a function. [zeda_option, zeda_ztk]
+2019. 7. 4. Added zStrListFindAndAdd. [zeda_strlist]
+2019. 7. 4. Renamed zStrListInsert and zStrListFindStr to zStrListAdd and zStrListFind. [zeda_strlist]
 2019. 7. 4. Reimplemented ZTKKeyRewind and ZTKTagRewind. [zeda_ztk]
 2019. 7. 4. Added ZTKValCmp, ZTKKeyCmp and ZTKTagCmp. [zeda_ztk]
 2019. 7. 4. Added ZTKInt and ZTKDouble. [zeda_ztk]

@@ -95,9 +95,8 @@ bool zOptionRead(zOption *opts, char **argv, zStrAddrList *arglist)
         cnt = false;
         cur = NULL;
       } else{
-        if( arglist && !zStrAddrListInsert( arglist, *argv ) ){
+        if( arglist && !zStrAddrListAdd( arglist, *argv ) )
           ret = false;
-        }
       }
       continue;
     }

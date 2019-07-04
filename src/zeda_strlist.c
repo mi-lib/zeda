@@ -7,8 +7,8 @@
 #include <zeda/zeda_strlist.h>
 #include <stdarg.h>
 
-/* insert a string to a list of strings. */
-zStrListCell *zStrListInsert(zStrList *list, char *str)
+/* add a string to the head of a list of strings. */
+zStrListCell *zStrListAdd(zStrList *list, char *str)
 {
   zStrListCell *cell;
 
@@ -65,7 +65,7 @@ void zStrListGetPtr(zStrList *strlist, int n, ...)
 }
 
 /* find a string in a list of strings. */
-zStrListCell *zStrListFindStr(zStrList *list, char *str)
+zStrListCell *zStrListFind(zStrList *list, char *str)
 {
   zStrListCell *cp;
 
@@ -73,6 +73,14 @@ zStrListCell *zStrListFindStr(zStrList *list, char *str)
   zListForEach( list, cp )
     if( strcmp( cp->data, str ) == 0 ) return cp;
   return NULL;
+}
+
+/* find a string in a list or strings, and if not found, add it to the head of the list. */
+zStrListCell *zStrListFindAndAdd(zStrList *list, char *str)
+{
+  zStrListCell *cp;
+
+  return ( cp = zStrListFind( list, str ) ) ? cp : zStrListAdd( list, str );
 }
 
 /* print a list of strings to a file. */
@@ -86,8 +94,8 @@ void zStrListFPrint(FILE *fp, zStrList *list)
 
 /* a list of addresses of strings. */
 
-/* insert a string to a list of strings. */
-zStrAddrListCell *zStrAddrListInsert(zStrAddrList *list, char *str)
+/* add a string to the head of a list of strings. */
+zStrAddrListCell *zStrAddrListAdd(zStrAddrList *list, char *str)
 {
   zStrAddrListCell *cell;
 

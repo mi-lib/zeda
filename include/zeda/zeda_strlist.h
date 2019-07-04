@@ -22,8 +22,8 @@ __BEGIN_DECLS
  */
 zListClass(zStrList, zStrListCell, char *);
 
-/*! \brief insert a string to a list of strings from the tail. */
-__EXPORT zStrListCell *zStrListInsert(zStrList *list, char *str);
+/*! \brief add a string to the head of a list of strings. */
+__EXPORT zStrListCell *zStrListAdd(zStrList *list, char *str);
 
 /*! \brief free a cell of a list of strings. */
 __EXPORT void zStrListCellFree(zStrListCell *cell);
@@ -35,7 +35,10 @@ __EXPORT void zStrListDestroy(zStrList *list);
 __EXPORT void zStrListGetPtr(zStrList *strlist, int n, ...);
 
 /*! \brief find a string in a list of strings. */
-__EXPORT zStrListCell *zStrListFindStr(zStrList *list, char *str);
+__EXPORT zStrListCell *zStrListFind(zStrList *list, char *str);
+
+/*! \brief find a string in a list or strings, and if not found, add it to the head of the list. */
+__EXPORT zStrListCell *zStrListFindAndAdd(zStrList *list, char *str);
 
 /*! \brief print a list of strings to a file. */
 __EXPORT void zStrListFPrint(FILE *fp, zStrList *list);
@@ -49,8 +52,8 @@ __EXPORT void zStrListFPrint(FILE *fp, zStrList *list);
 typedef zStrList zStrAddrList;
 typedef zStrListCell zStrAddrListCell;
 
-/*! \brief insert an address of a string to a list from the tail. */
-__EXPORT zStrAddrListCell *zStrAddrListInsert(zStrAddrList *list, char *str);
+/*! \brief add an address of a string to a list from the tail. */
+__EXPORT zStrAddrListCell *zStrAddrListAdd(zStrAddrList *list, char *str);
 
 /*! \brief destroy a list of addresses of strings. */
 #define zStrAddrListDestroy(l) zListDestroy( zStrAddrListCell, l )

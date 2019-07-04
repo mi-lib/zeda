@@ -55,6 +55,9 @@ typedef struct{
 /* destroy a definition of ZTK. */
 __EXPORT void ZTKDefDestroy(ZTKDef *def);
 
+/* find a key in a definition of ZTK. */
+__EXPORT bool ZTKDefFindKey(ZTKDef *def, char *key);
+
 /* print out a definition of ZTK (for debug). */
 __EXPORT void ZTKDefFPrint(FILE *fp, ZTKDef *def);
 
@@ -64,16 +67,22 @@ __EXPORT void ZTKDefFPrint(FILE *fp, ZTKDef *def);
  *//* ******************************************************* */
 zListClass( ZTKDefList, ZTKDefListCell, ZTKDef );
 
-/* destroy a definition list of ZTK. */
+/*! \brief destroy a definition list of ZTK. */
 __EXPORT void ZTKDefListDestroy(ZTKDefList *list);
 
-/* register a new definition of ZTK to a list. */
-__EXPORT ZTKDefListCell *ZTKDefListReg(ZTKDefList *list, char *tag, char **key, int keynum);
-
-/* find tag in a definition list of ZTK. */
+/*! \brief find tag in a definition list of ZTK. */
 __EXPORT ZTKDefListCell *ZTKDefListFindTag(ZTKDefList *list, char *tag);
 
-/* print out a definition list of ZTK (for debug). */
+/*! \brief find tag in a definition list of ZTK, and if not, allocate a new definition. */
+__EXPORT ZTKDefListCell *ZTKDefListFindAndAddTag(ZTKDefList *list, char *tag);
+
+/*! \brief register a new definition of ZTK to a list. */
+__EXPORT ZTKDefListCell *ZTKDefListRegOne(ZTKDefList *list, char *tag, char *key);
+
+/*! \brief register a new definition of ZTK to a list. */
+__EXPORT ZTKDefListCell *ZTKDefListReg(ZTKDefList *list, char *tag, char **key, int keynum);
+
+/*! \brief print out a definition list of ZTK (for debug). */
 __EXPORT void ZTKDefListFPrint(FILE *fp, ZTKDefList *list);
 
 /* ********************************************************** */
@@ -140,6 +149,9 @@ typedef struct{
   ZTKKeyFieldListCell *kf_cp;
   zStrListCell *val_cp;
 } ZTK;
+
+/*! \brief register a definition of a set of tag and key to ZTK format processor. */
+#define ZTKDefRegOne(ztk,tag,key) ZTKDefListRegOne( &(ztk)->deflist, tag, key )
 
 /*! \brief register a definition of a set of tag and keys to ZTK format processor. */
 #define ZTKDefReg(ztk,tag,keylist) ZTKDefListReg( &(ztk)->deflist, tag, keylist, sizeof(keylist)/sizeof(char*) )
