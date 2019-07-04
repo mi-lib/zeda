@@ -129,7 +129,7 @@ __EXPORT void ZTKTagFieldListFPrint(FILE *fp, ZTKTagFieldList *list);
 
 /* ********************************************************** */
 /*! \struct ZTK
- * \brief ZTK format.
+ * \brief ZTK format processor.
  *//* ******************************************************* */
 typedef struct{
   zFileStack fs;
@@ -141,35 +141,49 @@ typedef struct{
   zStrListCell *val_cp;
 } ZTK;
 
-/*! \brief register a definition of a set of tag and keys to ZTK. */
+/*! \brief register a definition of a set of tag and keys to ZTK format processor. */
 #define ZTKDefReg(ztk,tag,keylist) ZTKDefListReg( &(ztk)->deflist, tag, keylist, sizeof(keylist)/sizeof(char*) )
 
-/*! \brief initialize ZTK. */
+/*! \brief initialize a ZTK format processor. */
 __EXPORT ZTK *ZTKInit(ZTK *ztk);
 
-/*! \brief destroy ZTK. */
+/*! \brief destroy a ZTK format processor. */
 __EXPORT void ZTKDestroy(ZTK *ztk);
 
-/*! \brief scan a file and parse ZTK format into a list of tagged fields. */
+/*! \brief scan a file and parse it into a tag-and-key list of a ZTK format processor. */
 __EXPORT bool ZTKParse(ZTK *ztk, char *path);
 
-#define ZTKTag(ztk) ( (ztk)->tf_cp->data.tag )
-#define ZTKTagRewind(ztk) ( (ztk)->tf_cp = zListIsEmpty(&(ztk)->tflist) ? NULL : zListTail(&(ztk)->tflist) )
-#define ZTKTagNext(ztk) ( (ztk)->tf_cp = (ztk)->tf_cp == zListHead(&(ztk)->tflist) ? NULL : zListCellNext((ztk)->tf_cp) )
-
-#define ZTKKey(ztk) ( (ztk)->kf_cp->data.key )
-#define ZTKKeyRewind(ztk) ( (ztk)->kf_cp = (ztk)->tf_cp ? zListTail(&(ztk)->tf_cp->data.kflist) : NULL )
-#define ZTKKeyNext(ztk) ( (ztk)->kf_cp = (ztk)->tf_cp && (ztk)->kf_cp != zListHead(&(ztk)->tf_cp->data.kflist) ? zListCellNext((ztk)->kf_cp) : NULL )
-
-#define ZTKVal(ztk) ( (ztk)->val_cp->data )
-#define ZTKValRewind(ztk) ( (ztk)->val_cp = (ztk)->kf_cp ? zListTail(&(ztk)->kf_cp->data.vallist) : NULL )
-#define ZTKValNext(ztk) ( (ztk)->val_cp = (ztk)->kf_cp && (ztk)->val_cp != zListHead(&(ztk)->kf_cp->data.vallist) ? zListCellNext((ztk)->val_cp) : NULL )
-
-/*! \brief count the number of tagged fields with specified tag */
+/*! \brief count the number of tagged fields with a specified tag in a tag-and-key list of a ZTK format processor. */
 __EXPORT int ZTKCountTag(ZTK *ztk, const char *tag);
 
-/*! \brief count the number of key fields with specified key in the current tagged field */
+/*! \brief count the number of key fields with a specified key of the current tagged field in a tag-and-key list of a ZTK format processor. */
 __EXPORT int ZTKCountKey(ZTK *ztk, const char *key);
+
+/*! \brief return the current value string of the current key field of the current tagged field in a tag-and-key list of a ZTK format processor. */
+#define ZTKVal(ztk) ( (ztk)->val_cp ? (ztk)->val_cp->data : NULL )
+/*! \brief rewind the list of value strings of the current key field of the current tagged field in a tag-and-key list of a ZTK format processor. */
+__EXPORT zStrListCell *ZTKValRewind(ZTK *ztk);
+/*! \brief move to the next value string in the current key field of the current tagged field in a tag-and-key list of a ZTK format processor. */
+__EXPORT zStrListCell *ZTKValNext(ZTK *ztk);
+
+/*! \brief return the current key of the current tagged field in a tag-and-key list of a ZTK format processor. */
+#define ZTKKey(ztk) ( (ztk)->kf_cp ? (ztk)->kf_cp->data.key : NULL )
+/*! \brief rewind the list of key fields of the current tagged field in a tag-and-key list of a ZTK format processor. */
+__EXPORT ZTKKeyFieldListCell *ZTKKeyRewind(ZTK *ztk);
+/*! \brief move to the next key field of the current tagged field in a tag-and-key list of a ZTK format processor. */
+__EXPORT ZTKKeyFieldListCell *ZTKKeyNext(ZTK *ztk);
+
+/*! \brief return the current tag in a tag-and-key list of a ZTK format processor. */
+#define ZTKTag(ztk) ( (ztk)->tf_cp ? (ztk)->tf_cp->data.tag : NULL )
+/*! \brief rewind the list of tagged field in a tag-and-key list of a ZTK format processor. */
+__EXPORT ZTKTagFieldListCell *ZTKTagRewind(ZTK *ztk);
+/*! \brief move to the next tagged field in a tag-and-key list of a ZTK format processor. */
+__EXPORT ZTKTagFieldListCell *ZTKTagNext(ZTK *ztk);
+
+/*! \brief retrieve an integer value from the current key field of the current tagged field in a tag-and-key list of a ZTK format processor. */
+__EXPORT int ZTKInt(ZTK *ztk);
+/*! \brief retrieve a real value from the current key field of the current tagged field in a tag-and-key list of a ZTK format processor. */
+__EXPORT double ZTKDouble(ZTK *ztk);
 
 /*! \brief print out ZTK to a file. */
 __EXPORT void ZTKFPrint(FILE *fp, ZTK *ztk);

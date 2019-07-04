@@ -279,10 +279,10 @@ void ZTKTagFieldListFPrint(FILE *fp, ZTKTagFieldList *list)
 }
 
 /* ********************************************************** */
-/* parser class of ZTK format.
+/* ZTK format processor.
  *//* ******************************************************* */
 
-/* initialize ZTK. */
+/* a initialize ZTK format processor. */
 ZTK *ZTKInit(ZTK *ztk)
 {
   zFileStackInit( &ztk->fs );
@@ -295,7 +295,7 @@ ZTK *ZTKInit(ZTK *ztk)
   return ztk;
 }
 
-/* destroy ZTK. */
+/* destroy a ZTK format processor. */
 void ZTKDestroy(ZTK *ztk)
 {
   zFileStackDestroy( &ztk->fs );
@@ -303,7 +303,7 @@ void ZTKDestroy(ZTK *ztk)
   ZTKTagFieldListDestroy( &ztk->tflist );
 }
 
-/* scan a file and parse ZTK format into a list of tagged fields. */
+/* scan a file and parse it into a tag-and-key list of a ZTK format processor. */
 bool ZTKParse(ZTK *ztk, char *path)
 {
   char buf[BUFSIZ];
@@ -357,7 +357,7 @@ bool ZTKParse(ZTK *ztk, char *path)
   return ret;
 }
 
-/* count the number of tagged fields with specified tag */
+/* count the number of tagged fields with a specified tag in a tag-and-key list of a ZTK format processor. */
 int ZTKCountTag(ZTK *ztk, const char *tag)
 {
   ZTKTagFieldListCell *cp;
@@ -368,7 +368,7 @@ int ZTKCountTag(ZTK *ztk, const char *tag)
   return count;
 }
 
-/* count the number of key fields with specified key in the current tagged field */
+/* count the number of key fields with a specified key of the current tagged field in a tag-and-key list of a ZTK format processor. */
 int ZTKCountKey(ZTK *ztk, const char *key)
 {
   ZTKKeyFieldListCell *cp;
@@ -378,6 +378,78 @@ int ZTKCountKey(ZTK *ztk, const char *key)
   zListForEach( &ztk->tf_cp->data.kflist, cp )
     if( strcmp( cp->data.key, key ) == 0 ) count++;
   return count;
+}
+
+/* rewind the list of value strings of the current key field of the current tagged field in a tag-and-key list of a ZTK format processor. */
+zStrListCell *ZTKValRewind(ZTK *ztk)
+{
+  return ztk->val_cp = ztk->kf_cp ? zListTail(&ztk->kf_cp->data.vallist) : NULL;
+}
+
+/* move to the next value string in the current key field of the current tagged field in a tag-and-key list of a ZTK format processor. */
+zStrListCell *ZTKValNext(ZTK *ztk)
+{
+  return ztk->val_cp = ztk->kf_cp && ztk->val_cp != zListHead(&ztk->kf_cp->data.vallist) ?
+    zListCellNext(ztk->val_cp) : NULL;
+}
+
+/* rewind the list of key fields of the current tagged field in a tag-and-key list of a ZTK format processor. */
+ZTKKeyFieldListCell *ZTKKeyRewind(ZTK *ztk)
+{
+  if( !ztk->tf_cp ) return ztk->kf_cp = NULL;
+  ztk->kf_cp = zListTail(&ztk->tf_cp->data.kflist);
+  ZTKValRewind( ztk );
+  return ztk->kf_cp;
+}
+
+/* move to the next key field of the current tagged field in a tag-and-key list of a ZTK format processor. */
+ZTKKeyFieldListCell *ZTKKeyNext(ZTK *ztk)
+{
+  if( !ztk->tf_cp || ztk->kf_cp == zListHead(&ztk->tf_cp->data.kflist) )
+    return ztk->kf_cp = NULL;
+  ztk->kf_cp = zListCellNext(ztk->kf_cp);
+  ZTKValRewind( ztk );
+  return ztk->kf_cp;
+}
+
+/* rewind the list of tagged field in a tag-and-key list of a ZTK format processor. */
+ZTKTagFieldListCell *ZTKTagRewind(ZTK *ztk)
+{
+  if( zListIsEmpty(&ztk->tflist) ) return ztk->tf_cp = NULL;
+  ztk->tf_cp = zListTail(&ztk->tflist);
+  ZTKKeyRewind( ztk );
+  return ztk->tf_cp;
+}
+
+/* move to the next tagged field in a tag-and-key list of a ZTK format processor. */
+ZTKTagFieldListCell *ZTKTagNext(ZTK *ztk)
+{
+  if( ztk->tf_cp == zListHead(&(ztk)->tflist) ) return ztk->tf_cp = NULL;
+  ztk->tf_cp = zListCellNext(ztk->tf_cp);
+  ZTKKeyRewind( ztk );
+  return ztk->tf_cp;
+}
+
+/* retrieve an integer value from the current key field of the current tagged field in a tag-and-key list of a ZTK format processor. */
+int ZTKInt(ZTK *ztk)
+{
+  int retval;
+
+  if( !ZTKVal(ztk) ) return 0;
+  retval = zSInt( ZTKVal(ztk) );
+  ZTKValNext( ztk );
+  return retval;
+}
+
+/* retrieve a real value from the current key field of the current tagged field in a tag-and-key list of a ZTK format processor. */
+double ZTKDouble(ZTK *ztk)
+{
+  double retval;
+
+  if( !ZTKVal(ztk) ) return 0;
+  retval = zSDouble( ZTKVal(ztk) );
+  ZTKValNext( ztk );
+  return retval;
 }
 
 /* print out ZTK to a file.
@@ -391,10 +463,8 @@ void ZTKFPrint(FILE *fp, ZTK *ztk)
   }
   do{
     fprintf( fp, "[%s]\n", ZTKTag(ztk) );
-    ZTKKeyRewind( ztk );
     do{
       fprintf( fp, "%s:", ZTKKey(ztk) );
-      ZTKValRewind( ztk );
       while( 1 ){
         fprintf( fp, " %s", ZTKVal(ztk) );
         if( ZTKValNext(ztk) )
