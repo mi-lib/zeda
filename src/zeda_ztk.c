@@ -380,12 +380,6 @@ int ZTKCountKey(ZTK *ztk, const char *key)
   return count;
 }
 
-/* rewind the list of value strings of the current key field of the current tagged field in a tag-and-key list of a ZTK format processor. */
-zStrListCell *ZTKValRewind(ZTK *ztk)
-{
-  return ztk->val_cp = ztk->kf_cp ? zListTail(&ztk->kf_cp->data.vallist) : NULL;
-}
-
 /* move to the next value string in the current key field of the current tagged field in a tag-and-key list of a ZTK format processor. */
 zStrListCell *ZTKValNext(ZTK *ztk)
 {
@@ -393,41 +387,46 @@ zStrListCell *ZTKValNext(ZTK *ztk)
     zListCellNext(ztk->val_cp) : NULL;
 }
 
-/* rewind the list of key fields of the current tagged field in a tag-and-key list of a ZTK format processor. */
-ZTKKeyFieldListCell *ZTKKeyRewind(ZTK *ztk)
+/* rewind the list of value strings of the current key field of the current tagged field in a tag-and-key list of a ZTK format processor. */
+zStrListCell *ZTKValRewind(ZTK *ztk)
 {
-  if( !ztk->tf_cp ) return ztk->kf_cp = NULL;
-  ztk->kf_cp = zListTail(&ztk->tf_cp->data.kflist);
-  ZTKValRewind( ztk );
-  return ztk->kf_cp;
+  return ztk->val_cp = ztk->kf_cp ? zListTail(&ztk->kf_cp->data.vallist) : NULL;
 }
 
 /* move to the next key field of the current tagged field in a tag-and-key list of a ZTK format processor. */
 ZTKKeyFieldListCell *ZTKKeyNext(ZTK *ztk)
 {
-  if( !ztk->tf_cp || ztk->kf_cp == zListHead(&ztk->tf_cp->data.kflist) )
-    return ztk->kf_cp = NULL;
-  ztk->kf_cp = zListCellNext(ztk->kf_cp);
-  ZTKValRewind( ztk );
+  do{
+    if( !ztk->tf_cp || ztk->kf_cp == zListHead(&ztk->tf_cp->data.kflist) )
+      return ztk->kf_cp = NULL;
+    ztk->kf_cp = zListCellNext(ztk->kf_cp);
+  } while( !ZTKValRewind( ztk ) );
   return ztk->kf_cp;
 }
 
-/* rewind the list of tagged field in a tag-and-key list of a ZTK format processor. */
-ZTKTagFieldListCell *ZTKTagRewind(ZTK *ztk)
+/* rewind the list of key fields of the current tagged field in a tag-and-key list of a ZTK format processor. */
+ZTKKeyFieldListCell *ZTKKeyRewind(ZTK *ztk)
 {
-  if( zListIsEmpty(&ztk->tflist) ) return ztk->tf_cp = NULL;
-  ztk->tf_cp = zListTail(&ztk->tflist);
-  ZTKKeyRewind( ztk );
-  return ztk->tf_cp;
+  if( !ztk->tf_cp ) return ztk->kf_cp = NULL;
+  ztk->kf_cp = zListRoot(&ztk->tf_cp->data.kflist);
+  return ZTKKeyNext( ztk );
 }
 
 /* move to the next tagged field in a tag-and-key list of a ZTK format processor. */
 ZTKTagFieldListCell *ZTKTagNext(ZTK *ztk)
 {
-  if( ztk->tf_cp == zListHead(&(ztk)->tflist) ) return ztk->tf_cp = NULL;
-  ztk->tf_cp = zListCellNext(ztk->tf_cp);
-  ZTKKeyRewind( ztk );
+  do{
+    if( ztk->tf_cp == zListHead(&ztk->tflist) ) return ztk->tf_cp = NULL;
+    ztk->tf_cp = zListCellNext(ztk->tf_cp);
+  } while( !ZTKKeyRewind( ztk ) );
   return ztk->tf_cp;
+}
+
+/* rewind the list of tagged field in a tag-and-key list of a ZTK format processor. */
+ZTKTagFieldListCell *ZTKTagRewind(ZTK *ztk)
+{
+  ztk->tf_cp = zListRoot(&ztk->tflist);
+  return ZTKTagNext( ztk );
 }
 
 /* retrieve an integer value from the current key field of the current tagged field in a tag-and-key list of a ZTK format processor. */

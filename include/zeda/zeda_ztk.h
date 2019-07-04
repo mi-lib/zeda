@@ -160,25 +160,31 @@ __EXPORT int ZTKCountTag(ZTK *ztk, const char *tag);
 __EXPORT int ZTKCountKey(ZTK *ztk, const char *key);
 
 /*! \brief return the current value string of the current key field of the current tagged field in a tag-and-key list of a ZTK format processor. */
-#define ZTKVal(ztk) ( (ztk)->val_cp ? (ztk)->val_cp->data : NULL )
-/*! \brief rewind the list of value strings of the current key field of the current tagged field in a tag-and-key list of a ZTK format processor. */
-__EXPORT zStrListCell *ZTKValRewind(ZTK *ztk);
+#define ZTKVal(ztk) ( (ztk)->val_cp ? (ztk)->val_cp->data : "" )
 /*! \brief move to the next value string in the current key field of the current tagged field in a tag-and-key list of a ZTK format processor. */
 __EXPORT zStrListCell *ZTKValNext(ZTK *ztk);
+/*! \brief rewind the list of value strings of the current key field of the current tagged field in a tag-and-key list of a ZTK format processor. */
+__EXPORT zStrListCell *ZTKValRewind(ZTK *ztk);
+/*! \brief check if a string is the same with the current value string of the current key field of the current tagged field in a tag-and-key list of a ZTK format processor. */
+#define ZTKValCmp(ztk,str) ( strcmp( ZTKVal(ztk), str ) == 0 )
 
 /*! \brief return the current key of the current tagged field in a tag-and-key list of a ZTK format processor. */
-#define ZTKKey(ztk) ( (ztk)->kf_cp ? (ztk)->kf_cp->data.key : NULL )
-/*! \brief rewind the list of key fields of the current tagged field in a tag-and-key list of a ZTK format processor. */
-__EXPORT ZTKKeyFieldListCell *ZTKKeyRewind(ZTK *ztk);
+#define ZTKKey(ztk) ( (ztk)->kf_cp ? (ztk)->kf_cp->data.key : "" )
 /*! \brief move to the next key field of the current tagged field in a tag-and-key list of a ZTK format processor. */
 __EXPORT ZTKKeyFieldListCell *ZTKKeyNext(ZTK *ztk);
+/*! \brief rewind the list of key fields of the current tagged field in a tag-and-key list of a ZTK format processor. */
+__EXPORT ZTKKeyFieldListCell *ZTKKeyRewind(ZTK *ztk);
+/*! \brief check if a string is the same with the current key of the current tagged field in a tag-and-key list of a ZTK format processor. */
+#define ZTKKeyCmp(ztk,str) ( strcmp( ZTKKey(ztk), str ) == 0 )
 
 /*! \brief return the current tag in a tag-and-key list of a ZTK format processor. */
-#define ZTKTag(ztk) ( (ztk)->tf_cp ? (ztk)->tf_cp->data.tag : NULL )
-/*! \brief rewind the list of tagged field in a tag-and-key list of a ZTK format processor. */
-__EXPORT ZTKTagFieldListCell *ZTKTagRewind(ZTK *ztk);
+#define ZTKTag(ztk) ( (ztk)->tf_cp ? (ztk)->tf_cp->data.tag : "" )
 /*! \brief move to the next tagged field in a tag-and-key list of a ZTK format processor. */
 __EXPORT ZTKTagFieldListCell *ZTKTagNext(ZTK *ztk);
+/*! \brief rewind the list of tagged field in a tag-and-key list of a ZTK format processor. */
+__EXPORT ZTKTagFieldListCell *ZTKTagRewind(ZTK *ztk);
+/*! \brief check if a string is the same with the current tag in a tag-and-key list of a ZTK format processor. */
+#define ZTKTagCmp(ztk,str) ( strcmp( ZTKTag(ztk), str ) == 0 )
 
 /*! \brief retrieve an integer value from the current key field of the current tagged field in a tag-and-key list of a ZTK format processor. */
 __EXPORT int ZTKInt(ZTK *ztk);
