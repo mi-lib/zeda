@@ -1,3 +1,4 @@
+2019. 7. 6. Renamed zIndentF to zFIndent. [zeda_string]
 2019. 7. 4. Reimplemented ZTKDefListReg. [zeda_ztk]
 2019. 7. 4. Added ZTKDefListFindAndAddTag, ZTKDefListRegOne and ZTKDefRegOne. [zeda_ztk]
 2019. 7. 4. Reimplemented ZTKDefFindKey as a function. [zeda_option, zeda_ztk]

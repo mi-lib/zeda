@@ -604,14 +604,14 @@ __EXPORT bool zFieldFScan(FILE *fp, bool (* field_fscan)(FILE*,void*,char*,bool*
 
 /*! \brief insert whitespaces before a string.
  *
- * zIndentF() inserts \a n whitespaces at the current
+ * zFIndent() inserts \a n whitespaces at the current
  * position of a file \a fp.
  * For an indentation of the output to the standard
  * output, use zIndent().
  */
 #ifndef __KERNEL__
-__EXPORT void zIndentF(FILE *fp, int n);
-#define zIndent(n) zIndentF( stdout,(n) )
+__EXPORT void zFIndent(FILE *fp, int n);
+#define zIndent(n) zFIndent( stdout,(n) )
 #else
 void zIndent(int n);
 #endif /* __KERNEL__ */

@@ -653,7 +653,7 @@ bool zFieldFScan(FILE *fp, bool (* fscan_field)(FILE*,void*,char*,bool*), void *
 
 #ifndef __KERNEL__
 /* indent. */
-void zIndentF(FILE *fp, int n)
+void zFIndent(FILE *fp, int n)
 {
   fprintf( fp, "%*s", n, "" );
 }
