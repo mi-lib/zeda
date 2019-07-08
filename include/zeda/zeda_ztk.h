@@ -207,6 +207,37 @@ __EXPORT double ZTKDouble(ZTK *ztk);
 __EXPORT void ZTKFPrint(FILE *fp, ZTK *ztk);
 #define ZTKPrint(ztk) ZTKFPrint( stdout, ztk )
 
+/* ********************************************************** */
+/*! \struct ZTKPrp
+ * \brief properties of a class described by a set of tag/key string and call-back functions.
+ *//* ******************************************************* */
+typedef struct{
+  char *str; /*!< a string for a tag/key */
+  int num;   /*!< the number of tags/keys */
+  void *(* encode)(void *, int, void *, ZTK *); /*!< ZTK encoder function */
+  void (* fprintf)(FILE *, int, void *); /*!< print out function */
+} ZTKPrp;
+
+/* register a tag-and-key property to a ZTK format processor. */
+__EXPORT bool ZTKDefListRegPrp(ZTKDefList *list, char *tag, ZTKPrp prp[], int num);
+#define ZTKDefRegPrp(ztk,tag,prp) ZTKDefListRegPrp( &(ztk)->deflist, tag, prp, sizeof(prp)/sizeof(ZTKPrp) )
+
+/* encode a key field of a ZTK format processor based on a ZTK property. */
+__EXPORT void *_ZTKEncodeKey(void *obj, void *arg, ZTK *ztk, ZTKPrp prp[], int num);
+#define ZTKEncodeKey(obj,arg,ztk,prp) _ZTKEncodeKey( obj, arg, ztk, prp, sizeof(prp)/sizeof(ZTKPrp) )
+
+/* print out a key field of a ZTK format processor based on a ZTK property. */
+__EXPORT void _ZTKPrpKeyFPrint(FILE *fp, void *obj, ZTKPrp prp[], int num);
+#define ZTKPrpKeyFPrint(fp,obj,prp) _ZTKPrpKeyFPrint( fp, obj, prp, sizeof(prp)/sizeof(ZTKPrp) )
+
+/* encode a tag field of a ZTK format processor based on a ZTK property. */
+__EXPORT void *_ZTKEncodeTag(void *obj, void *arg, ZTK *ztk, ZTKPrp prp[], int num);
+#define ZTKEncodeTag(obj,arg,ztk,prp) _ZTKEncodeTag( obj, arg, ztk, prp, sizeof(prp)/sizeof(ZTKPrp) )
+
+/* print out a tag field of a ZTK format processor based on a ZTK property. */
+__EXPORT void _ZTKPrpTagFPrint(FILE *fp, void *obj, ZTKPrp prp[], int num);
+#define ZTKPrpTagFPrint(fp,obj,prp) _ZTKPrpTagFPrint( fp, obj, prp, sizeof(prp)/sizeof(ZTKPrp) )
+
 __END_DECLS
 
 #endif /* __KERNEL__ */

@@ -33,6 +33,9 @@
 #define ZEDA_WARN_ZTK_NOT_TAGGED       "not in a tagged field, skipped."
 #define ZEDA_WARN_ZTK_DUPDEF           "duplicate entry of tag [%s], skipped."
 
+#define ZEDA_WARN_ZTK_TOOMANY_TAGS     "too many tag %s specified, skipped."
+#define ZEDA_WARN_ZTK_TOOMANY_KEYS     "too many key %s specified, skipped."
+
 #define ZEDA_WARN_UNKNOWNOPT           "unknown option: %s"
 
 /* error messages */

@@ -504,3 +504,105 @@ void ZTKFPrint(FILE *fp, ZTK *ztk)
     } while( ZTKKeyNext(ztk) );
   } while( ZTKTagNext(ztk) );
 }
+
+/* ********************************************************** */
+/*! \struct ZTKPrp
+ * \brief properties of a class described by a set of tag/key string and call-back functions.
+ *//* ******************************************************* */
+
+/* register a tag-and-key property to a ZTK format processor. */
+bool ZTKDefListRegPrp(ZTKDefList *list, char *tag, ZTKPrp prp[], int num)
+{
+  register int i;
+
+  for( i=0; i<num; i++ )
+    if( !ZTKDefListRegOne( list, tag, prp[i].str ) ) return false;
+  return true;
+}
+
+/* encode a key field of a ZTK format processor based on a ZTK property. */
+void *_ZTKEncodeKey(void *obj, void *arg, ZTK *ztk, ZTKPrp prp[], int num)
+{
+  register int i;
+  int *count;
+
+  if( !ZTKKeyRewind( ztk ) ) return NULL;
+  if( !( count = zAlloc( int, num ) ) ){
+    ZALLOCERROR();
+    return NULL;
+  }
+  do{
+    for( i=0; i<num; i++ )
+      if( ZTKKeyCmp( ztk, prp[i].str ) && prp[i].encode ){
+        if( prp[i].num > 0 && count[i] >= prp[i].num ){
+          ZRUNWARN( ZEDA_WARN_ZTK_TOOMANY_KEYS, prp[i].str );
+        } else
+        if( !prp[i].encode( obj, count[i]++, arg, ztk ) ){
+          obj = NULL;
+          goto TERMINATE;
+        }
+        break;
+      }
+  } while( ZTKKeyNext(ztk) );
+ TERMINATE:
+  free( count );
+  return obj;
+}
+
+/* print out a key field of a ZTK format processor based on a ZTK property. */
+void _ZTKPrpKeyFPrint(FILE *fp, void *obj, ZTKPrp prp[], int num)
+{
+  register int i, j;
+
+  for( i=0; i<num; i++ )
+    if( prp[i].fprintf ){
+      for( j=0; j<prp[i].num; j++ ){
+        fprintf( fp, "%s: ", prp[i].str );
+        prp[i].fprintf( fp, j, obj );
+      }
+    }
+}
+
+/* encode a tag field of a ZTK format processor based on a ZTK property. */
+void *_ZTKEncodeTag(void *obj, void *arg, ZTK *ztk, ZTKPrp prp[], int num)
+{
+  register int i;
+  int *count;
+
+  if( !ZTKTagRewind( ztk ) ) return NULL;
+  if( !( count = zAlloc( int, num ) ) ){
+    ZALLOCERROR();
+    return NULL;
+  }
+  for( i=0; i<num; i++ ){
+    ZTKTagRewind( ztk );
+    if( prp[i].encode ) do{
+      if( ZTKTagCmp( ztk, prp[i].str ) ){
+        if( prp[i].num > 0 && count[i] >= prp[i].num ){
+          ZRUNWARN( ZEDA_WARN_ZTK_TOOMANY_TAGS, prp[i].str );
+        } else
+        if( !prp[i].encode( obj, count[i]++, arg, ztk ) ){
+          obj = NULL;
+          goto TERMINATE;
+        }
+      }
+    } while( ZTKTagNext(ztk) );
+  }
+ TERMINATE:
+  free( count );
+  return obj;
+}
+
+/* print out a tag field of a ZTK format processor based on a ZTK property. */
+void _ZTKPrpTagFPrint(FILE *fp, void *obj, ZTKPrp prp[], int num)
+{
+  register int i, j;
+
+  for( i=0; i<num; i++ )
+    if( prp[i].fprintf ){
+      for( j=0; j<prp[i].num; j++ ){
+        fprintf( fp, "[%s]\n", prp[i].str );
+        prp[i].fprintf( fp, j, obj );
+      }
+    }
+}
