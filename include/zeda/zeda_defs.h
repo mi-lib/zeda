@@ -108,7 +108,7 @@ enum{
 #endif /* __cplusplus */
 
 /*! convert a boolean value to a string. */
-#define zBoolExpr(b) ( (b) ? "true" : "false" )
+#define zBoolStr(b) ( (b) ? "true" : "false" )
 
 __END_DECLS
 

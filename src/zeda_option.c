@@ -43,7 +43,7 @@ void zOptionDiag(zOption *opts)
       eprintf( "-%s", op->key );
     else
       eprintf( "--%s", op->longkey );
-    eprintf( "-> %s [%s]\n", op->arg ? op->arg : "NULL", zBoolExpr(op->flag) );
+    eprintf( "-> %s [%s]\n", op->arg ? op->arg : "NULL", zBoolStr(op->flag) );
   }
 }
 
