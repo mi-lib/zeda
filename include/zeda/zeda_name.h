@@ -21,9 +21,9 @@ __BEGIN_DECLS
  * by a string.
  *
  * The inheritance can have a string to represent its
- * name, which is referred by zName(). When setting the
- * name, use zNameSet(). When destroying the instance,
- * call zNameDestroy() to free the name string.
+ * name, which is referred by zName(). Use zNameSet()
+ * to set the name. Use zNameFree() to free the name
+ * string.
  *
  * When searching an instance with a name \a name from
  * an array of the class, call zNameFind( array, n, name, ptr );
@@ -46,7 +46,7 @@ __BEGIN_DECLS
 #define zNameSetPtr(c,p) ( (c)->name = (p) )
 #define zName(c)         ( (c) && zNamePtr(c) ? zNamePtr(c) : ZNONAME )
 #define zNameSet(c,n)    zNameSetPtr( c, zStrClone(n) )
-#define zNameDestroy(c)  zFree(zNamePtr(c))
+#define zNameFree(c)     zFree( zNamePtr(c) )
 
 #define zNameFind(array,n,name,ptr) do{\
   int __z_name_find_id;\
