@@ -1,5 +1,4 @@
 #include <zeda/zeda.h>
-#include <assert.h>
 
 #define assert_defs( type, size ) zAssert( type, sizeof(type) == size )
 
@@ -20,6 +19,8 @@ int main(void)
   assert_defs( uint, sizeof(int) );
   assert_defs( ulong, sizeof(long) );
 
-  zAssert( zBoolExpr, strcmp( zBoolExpr( true ), "true" ) == 0 && strcmp( zBoolExpr( false ), "false" ) == 0 );
+  zAssert( zBoolStr,
+    strcmp( zBoolStr( true ), "true" ) == 0 &&
+    strcmp( zBoolStr( false ), "false" ) == 0 );
   return EXIT_SUCCESS;
 }
