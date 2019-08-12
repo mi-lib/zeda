@@ -1,3 +1,4 @@
+2019. 8.12. Corrected zeda_array to include zeda_name.h. [zeda_array]
 2019. 7.28. Modified defs_test. [test]
 2019. 7.28. Renamed zNameDestroy to zNameFree. [zeda_name]
 2019. 7.26. Renamed zBoolExpr to zBoolStr. [zeda_defs, zeda_option]

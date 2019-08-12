@@ -10,6 +10,7 @@
 #define __ZEDA_ARRAY_H__
 
 #include <zeda/zeda_misc.h>
+#include <zeda/zeda_name.h>
 
 __BEGIN_DECLS
 
