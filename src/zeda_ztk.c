@@ -366,7 +366,12 @@ bool ZTKParse(ZTK *ztk, char *path)
           break;
         }
       } else{
-        if( !ztk->kf_cp ) continue; /* skipped if the key field is unactivated */
+        if( !ztk->kf_cp ){ /* add and activate a null key field */
+          if( !( ztk->kf_cp = ZTKKeyFieldListNew( &ztk->tf_cp->data.kflist, "" ) ) ){
+            ret = false;
+            break;
+          }
+        }
         if( !ZTKKeyFieldAddVal( &ztk->kf_cp->data, buf ) ){ /* token is a value. */
           ret = false;
           break;
