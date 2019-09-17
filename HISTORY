@@ -1,3 +1,4 @@
+2019. 9.17. Added ZTKValPtr. [zeda_ztk]
 2019. 9.13. Modified ZTKParse to accept null key list. [zeda_ztk]
 2019. 9.12. Added ZTKDefRegTag to accept null key list. [zeda_ztk]
 2019. 8.12. Corrected zeda_array to include zeda_name.h. [zeda_array]

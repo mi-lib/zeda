@@ -174,6 +174,8 @@ __EXPORT int ZTKCountTag(ZTK *ztk, const char *tag);
 /*! \brief count the number of key fields with a specified key of the current tagged field in a tag-and-key list of a ZTK format processor. */
 __EXPORT int ZTKCountKey(ZTK *ztk, const char *key);
 
+/*! \brief return a pointer to the current value string of the current key field of the current tagged field in a tag-and-key list of a ZTK format processor. */
+#define ZTKValPtr(ztk) (ztk)->val_cp
 /*! \brief return the current value string of the current key field of the current tagged field in a tag-and-key list of a ZTK format processor. */
 #define ZTKVal(ztk) ( (ztk)->val_cp ? (ztk)->val_cp->data : "" )
 /*! \brief move to the next value string in the current key field of the current tagged field in a tag-and-key list of a ZTK format processor. */
