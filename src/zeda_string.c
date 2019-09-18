@@ -245,8 +245,16 @@ char *zSSkipDelimiter(char *str)
   return zSSkipIncludedChar( str, zdelimiter );
 }
 
+static char zcommentident = ZDEFAULT_COMMENT_IDENT;
+
+/* specify the comment identifier. */
+void zSetCommentIdent(char ident){ zcommentident = ident; }
+
+/* reset the comment identifier. */
+void zResetCommentIdent(void){ zSetCommentIdent( ZDEFAULT_COMMENT_IDENT ); }
+
 /* skip comments in file. */
-char zFSkipComment(FILE *fp, char ident)
+char zFSkipComment(FILE *fp)
 {
   char c;
   char dummy[BUFSIZ];
@@ -257,7 +265,7 @@ char zFSkipComment(FILE *fp, char ident)
     case '\n': case '\r': break;
     case EOF: return (char)0;
     default:
-      if( c == ident ){
+      if( c == zcommentident ){
         if( !fgets( dummy, BUFSIZ, fp ) ) return (char)0;
       } else{
         ungetc( c, fp );
@@ -320,6 +328,7 @@ char *zFToken(FILE *fp, char *tkn, size_t size)
   register int i;
 
   *tkn = '\0';
+  if( !zFSkipComment( fp ) ) return NULL;
   if( !zFSkipDelimiter( fp ) ) return NULL;
   *tkn = fgetc( fp );
   if( zIsQuotation( *tkn ) )
@@ -620,7 +629,6 @@ bool zTagFScan(FILE *fp, bool (* fscan_tag)(FILE*,void*,char*,bool*), void *inst
   bool success = true;
 
   while( !feof( fp ) ){
-    if( !zFSkipDefaultComment( fp ) ) break;
     if( zTokenIsTag( zFToken(fp,buf,BUFSIZ) ) ){
       zExtractTag( buf, buf );
       fscan_tag( fp, instance, buf, &success );
@@ -638,7 +646,6 @@ bool zFieldFScan(FILE *fp, bool (* fscan_field)(FILE*,void*,char*,bool*), void *
   bool success = true;
 
   while( !feof(fp) ){
-    if( !zFSkipDefaultComment( fp ) ) break;
     cur = ftell( fp );
     if( !zFToken(fp,buf,BUFSIZ) ) break;
     if( zTokenIsTag( buf ) ){

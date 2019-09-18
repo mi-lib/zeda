@@ -324,6 +324,21 @@ void ZTKDestroy(ZTK *ztk)
   ZTKTagFieldListDestroy( &ztk->tflist );
 }
 
+/* parse a tag with a ZTK format processor. */
+bool ZTKParseTag(ZTK *ztk, char *buf)
+{
+  if( !( ztk->def = ZTKDefListFindTag( &ztk->deflist, buf ) ) ){
+    /* unregisterred tagged field, skipped */
+    ztk->tf_cp = NULL;
+  } else{
+    if( !( ztk->tf_cp = ZTKTagFieldListNew( buf ) ) ) /* allocate a new tagged field */
+      return false;
+    zListInsertHead( &ztk->tflist, ztk->tf_cp );
+    ztk->kf_cp = NULL; /* unactivate the key field */
+  }
+  return true;
+}
+
 /* scan a file and parse it into a tag-and-key list of a ZTK format processor. */
 bool ZTKParse(ZTK *ztk, char *path)
 {
@@ -333,28 +348,19 @@ bool ZTKParse(ZTK *ztk, char *path)
 
   if( !( fs = zFileStackPush( &ztk->fs, path ) ) ) return false;
   while( !feof( fs->fp ) ){
-    if( !zFSkipDefaultComment( fs->fp ) ) break;
     if( !zFToken( fs->fp, buf, BUFSIZ ) ) break;
     if( zTokenIsTag( buf ) ){
       zExtractTag( buf, buf );
-      if( !( ztk->def = ZTKDefListFindTag( &ztk->deflist, buf ) ) ){
-        /* unregisterred tagged field, skipped */
-        ztk->tf_cp = NULL;
-      } else{
-        if( !( ztk->tf_cp = ZTKTagFieldListNew( buf ) ) ){ /* allocate a new tagged field */
-          ret = false;
-          break;
-        }
-        zListInsertHead( &ztk->tflist, ztk->tf_cp );
-        ztk->kf_cp = NULL; /* unactivate the key field */
+      if( !ZTKParseTag( ztk, buf ) ){
+        ret = false;
+        break;
       }
     } else{ /* might be a key or a value */
       if( strcmp( buf, "include" ) == 0 ){ /* include a file */
-        if( !zFSkipDefaultComment( fs->fp ) ) break;
         ZTKParse( ztk, zFToken(fs->fp,buf,BUFSIZ) );
         continue;
       }
-      if( !ztk->def ) continue; /* tagged field unactivated */
+      if( !ztk->def && !ZTKParseTag( ztk, "" ) ) continue; /* tagged field unactivated */
       if( !ztk->tf_cp ){ /* the corresponding tagged field must be activated. */
         ZRUNERROR( ZEDA_ERR_FATAL );
         ret = false;

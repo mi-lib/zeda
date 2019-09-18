@@ -18,6 +18,7 @@ void reg_tf_def(ZTK *ztk)
   ZTKDefReg( ztk, "tag2", tag2key );
   ZTKDefReg( ztk, "tag3", tag3key );
   ZTKDefReg( ztk, "tag4", tag4key );
+  ZTKDefRegKey( ztk, tag2key );
 }
 
 int main(int argc, char *argv[])

@@ -150,14 +150,17 @@ typedef struct{
   zStrListCell *val_cp;
 } ZTK;
 
-/*! \brief register a definition of a tag to ZTK format processor. */
+/*! \brief register a definition of a tag to a ZTK format processor. */
 #define ZTKDefRegTag(ztk,tag) ZTKDefListFindAndAddTag( &(ztk)->deflist, tag )
 
-/*! \brief register a definition of a set of tag and key to ZTK format processor. */
+/*! \brief register a definition of a set of tag and key to a ZTK format processor. */
 #define ZTKDefRegOne(ztk,tag,key) ZTKDefListRegOne( &(ztk)->deflist, tag, key )
 
-/*! \brief register a definition of a set of tag and keys to ZTK format processor. */
+/*! \brief register a definition of a set of tag and keys to a ZTK format processor. */
 #define ZTKDefReg(ztk,tag,keylist) ZTKDefListReg( &(ztk)->deflist, tag, keylist, sizeof(keylist)/sizeof(char*) )
+
+/*! \brief register a definition of a tagless key to a ZTK format processor. */
+#define ZTKDefRegKey(ztk,key) ZTKDefReg(ztk,"",key)
 
 /*! \brief initialize a ZTK format processor. */
 __EXPORT ZTK *ZTKInit(ZTK *ztk);
