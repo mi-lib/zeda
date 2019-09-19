@@ -385,13 +385,6 @@ __EXPORT void zResetCommentIdent(void);
  */
 __EXPORT char zFSkipComment(FILE *fp);
 
-#if 0
-/*! \brief skip default comment beginning with '\%'.
- * Vague lines are also skipped.
- */
-#define zFSkipDefaultComment(f) zFSkipComment( (f), ZDEFAULT_COMMENT_IDENT )
-#endif
-
 /*! \brief tokenize a file.
  *
  * zFToken() acquires a first token in a file \a fp

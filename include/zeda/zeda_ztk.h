@@ -222,25 +222,25 @@ __EXPORT void ZTKFPrint(FILE *fp, ZTK *ztk);
 typedef struct{
   char *str; /*!< a string for a tag/key */
   int num;   /*!< the number of tags/keys */
-  void *(* encode)(void *, int, void *, ZTK *); /*!< ZTK encoder function */
-  void (* fprintf)(FILE *, int, void *); /*!< print out function */
+  void *(* _eval)(void *, int, void *, ZTK *); /*!< ZTK evaluation function */
+  void (* _fprint)(FILE *, int, void *); /*!< print out function */
 } ZTKPrp;
 
 /* register a tag-and-key property to a ZTK format processor. */
 __EXPORT bool ZTKDefListRegPrp(ZTKDefList *list, char *tag, ZTKPrp prp[], int num);
 #define ZTKDefRegPrp(ztk,tag,prp) ZTKDefListRegPrp( &(ztk)->deflist, tag, prp, sizeof(prp)/sizeof(ZTKPrp) )
 
-/* encode a key field of a ZTK format processor based on a ZTK property. */
-__EXPORT void *_ZTKEncodeKey(void *obj, void *arg, ZTK *ztk, ZTKPrp prp[], int num);
-#define ZTKEncodeKey(obj,arg,ztk,prp) _ZTKEncodeKey( obj, arg, ztk, prp, sizeof(prp)/sizeof(ZTKPrp) )
+/* evaluate a key field of a ZTK format processor based on a ZTK property. */
+__EXPORT void *_ZTKEvalKey(void *obj, void *arg, ZTK *ztk, ZTKPrp prp[], int num);
+#define ZTKEvalKey(obj,arg,ztk,prp) _ZTKEvalKey( obj, arg, ztk, prp, sizeof(prp)/sizeof(ZTKPrp) )
 
 /* print out a key field of a ZTK format processor based on a ZTK property. */
 __EXPORT void _ZTKPrpKeyFPrint(FILE *fp, void *obj, ZTKPrp prp[], int num);
 #define ZTKPrpKeyFPrint(fp,obj,prp) _ZTKPrpKeyFPrint( fp, obj, prp, sizeof(prp)/sizeof(ZTKPrp) )
 
-/* encode a tag field of a ZTK format processor based on a ZTK property. */
-__EXPORT void *_ZTKEncodeTag(void *obj, void *arg, ZTK *ztk, ZTKPrp prp[], int num);
-#define ZTKEncodeTag(obj,arg,ztk,prp) _ZTKEncodeTag( obj, arg, ztk, prp, sizeof(prp)/sizeof(ZTKPrp) )
+/* evaluate a tag field of a ZTK format processor based on a ZTK property. */
+__EXPORT void *_ZTKEvalTag(void *obj, void *arg, ZTK *ztk, ZTKPrp prp[], int num);
+#define ZTKEvalTag(obj,arg,ztk,prp) _ZTKEvalTag( obj, arg, ztk, prp, sizeof(prp)/sizeof(ZTKPrp) )
 
 /* print out a tag field of a ZTK format processor based on a ZTK property. */
 __EXPORT void _ZTKPrpTagFPrint(FILE *fp, void *obj, ZTKPrp prp[], int num);

@@ -41,11 +41,11 @@ void assert_token(void)
   char buf[BUFSIZ];
 
   fp = fopen( TEST_TXT, "r" );
-  zAssert( zFSkipDefaultComment,
-    zFSkipDefaultComment( fp ) && zFToken( fp, buf, BUFSIZ ) && !strcmp( buf, "string1" ) &&
-    zFSkipDefaultComment( fp ) && zFToken( fp, buf, BUFSIZ ) && !strcmp( buf, "string2" ) &&
-    zFSkipDefaultComment( fp ) && zFToken( fp, buf, BUFSIZ ) && !strcmp( buf, "separated string 3" ) &&
-    zFSkipDefaultComment( fp ) && zFToken( fp, buf, BUFSIZ ) && !strcmp( buf, "string4" ) );
+  zAssert( zFSkipComment,
+    zFSkipComment( fp ) && zFToken( fp, buf, BUFSIZ ) && !strcmp( buf, "string1" ) &&
+    zFSkipComment( fp ) && zFToken( fp, buf, BUFSIZ ) && !strcmp( buf, "string2" ) &&
+    zFSkipComment( fp ) && zFToken( fp, buf, BUFSIZ ) && !strcmp( buf, "separated string 3" ) &&
+    zFSkipComment( fp ) && zFToken( fp, buf, BUFSIZ ) && !strcmp( buf, "string4" ) );
   fclose( fp );
 
   fp = fopen( WS_TEST_TXT, "r" );

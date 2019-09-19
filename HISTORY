@@ -1,3 +1,4 @@
+2019. 9.19. Renamed encode and fprintf members in ZTKPrp to _eval and _fprint, respectively. [zeda_ztk]
 2019. 9.18. Modified ZTKParse to accept a tagless key field. [zeda_ztk]
 2019. 9.18. Added ZTKParseTag and ZTKDefRegKey. [zeda_ztk]
 2019. 9.18. Modified zFToken to automatically skip comments. [zeda_string]

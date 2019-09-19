@@ -530,8 +530,8 @@ bool ZTKDefListRegPrp(ZTKDefList *list, char *tag, ZTKPrp prp[], int num)
   return true;
 }
 
-/* encode a key field of a ZTK format processor based on a ZTK property. */
-void *_ZTKEncodeKey(void *obj, void *arg, ZTK *ztk, ZTKPrp prp[], int num)
+/* evaluate a key field of a ZTK format processor based on a ZTK property. */
+void *_ZTKEvalKey(void *obj, void *arg, ZTK *ztk, ZTKPrp prp[], int num)
 {
   register int i;
   int *count;
@@ -543,11 +543,11 @@ void *_ZTKEncodeKey(void *obj, void *arg, ZTK *ztk, ZTKPrp prp[], int num)
   }
   do{
     for( i=0; i<num; i++ )
-      if( ZTKKeyCmp( ztk, prp[i].str ) && prp[i].encode ){
+      if( ZTKKeyCmp( ztk, prp[i].str ) && prp[i]._eval ){
         if( prp[i].num > 0 && count[i] >= prp[i].num ){
           ZRUNWARN( ZEDA_WARN_ZTK_TOOMANY_KEYS, prp[i].str );
         } else
-        if( !prp[i].encode( obj, count[i]++, arg, ztk ) ){
+        if( !prp[i]._eval( obj, count[i]++, arg, ztk ) ){
           obj = NULL;
           goto TERMINATE;
         }
@@ -565,16 +565,16 @@ void _ZTKPrpKeyFPrint(FILE *fp, void *obj, ZTKPrp prp[], int num)
   register int i, j;
 
   for( i=0; i<num; i++ )
-    if( prp[i].fprintf ){
+    if( prp[i]._fprint ){
       for( j=0; j<prp[i].num; j++ ){
         fprintf( fp, "%s: ", prp[i].str );
-        prp[i].fprintf( fp, j, obj );
+        prp[i]._fprint( fp, j, obj );
       }
     }
 }
 
-/* encode a tag field of a ZTK format processor based on a ZTK property. */
-void *_ZTKEncodeTag(void *obj, void *arg, ZTK *ztk, ZTKPrp prp[], int num)
+/* evaluate a tag field of a ZTK format processor based on a ZTK property. */
+void *_ZTKEvalTag(void *obj, void *arg, ZTK *ztk, ZTKPrp prp[], int num)
 {
   register int i;
   int *count;
@@ -586,12 +586,12 @@ void *_ZTKEncodeTag(void *obj, void *arg, ZTK *ztk, ZTKPrp prp[], int num)
   }
   for( i=0; i<num; i++ ){
     ZTKTagRewind( ztk );
-    if( prp[i].encode ) do{
+    if( prp[i]._eval ) do{
       if( ZTKTagCmp( ztk, prp[i].str ) ){
         if( prp[i].num > 0 && count[i] >= prp[i].num ){
           ZRUNWARN( ZEDA_WARN_ZTK_TOOMANY_TAGS, prp[i].str );
         } else
-        if( !prp[i].encode( obj, count[i]++, arg, ztk ) ){
+        if( !prp[i]._eval( obj, count[i]++, arg, ztk ) ){
           obj = NULL;
           goto TERMINATE;
         }
@@ -609,10 +609,10 @@ void _ZTKPrpTagFPrint(FILE *fp, void *obj, ZTKPrp prp[], int num)
   register int i, j;
 
   for( i=0; i<num; i++ )
-    if( prp[i].fprintf ){
+    if( prp[i]._fprint ){
       for( j=0; j<prp[i].num; j++ ){
         fprintf( fp, "[%s]\n", prp[i].str );
-        prp[i].fprintf( fp, j, obj );
+        prp[i]._fprint( fp, j, obj );
       }
     }
 }
