@@ -1,0 +1,10 @@
+[job]
+expression: 1 + 2
+operation: print
+
+[job]
+expression: 3 * 7
+operation: print
+
+[job]
+operation: scan
