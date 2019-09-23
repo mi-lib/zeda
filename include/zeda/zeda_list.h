@@ -41,9 +41,9 @@ struct cell_t{\
   cell_t(){ prev = next = this; };\
 };\
 struct list_t{\
-  int num;\
+  int size;\
   cell_t root;\
-  list_t(){ num = 0; };\
+  list_t(){ size = 0; };\
 }
 #else
 #define zListClass(list_t,cell_t,data_t) \
@@ -52,7 +52,7 @@ typedef struct __##cell_t{\
   data_t data;\
 } cell_t;\
 typedef struct __##list_t{\
-  int num;\
+  int size;\
   cell_t root;\
 } list_t
 #endif /* __cplusplus */
@@ -156,8 +156,8 @@ zListClass(zList, zListCell, void*);
 /* bidirectional ring list structure
  * ********************************************************** */
 
-/*! \brief the number of cells in a list \a l. */
-#define zListNum(l)      (l)->num
+/*! \brief the size of a list \a l. */
+#define zListSize(l)     (l)->size
 /*! \brief the root cell of a list \a l. */
 #define zListRoot(l)     ( &(l)->root )
 /*! \brief the head cell (the previous of the root) of a list \a l. */
@@ -165,22 +165,19 @@ zListClass(zList, zListCell, void*);
 /*! \brief the tail cell (the next of the root) of a list \a l. */
 #define zListTail(l)     zListCellNext( zListRoot( l ) )
 
-/*! \brief set the number of cells in a list \a l for \a n.
-    not preferable to use it. */
-#define zListSetNum(l,n) ( zListNum(l) = (n) )
-/*! \brief increment the number of cells in a list \a l.
-    not preferable to use it. */
-#define zListIncNum(l)   ( zListNum(l)++ )
-/*! \brief decrement the number of cells in a list \a l.
-    not preferable to use it. */
-#define zListDecNum(l)   ( zListNum(l)-- )
+/*! \brief set the size of a list \a l for \a n (unpreferable to be used). */
+#define zListSetSize(l,n) ( zListSize(l) = (n) )
+/*! \brief increment the size of a list \a l (unpreferable to be used). */
+#define zListIncSize(l)   ( zListSize(l)++ )
+/*! \brief decrement the size of a list \a l (unpreferable to be used). */
+#define zListDecSize(l)   ( zListSize(l)-- )
 
 /*! \brief check if a list \a l is empty. */
-#define zListIsEmpty(l)  ( zListNum(l) == 0 )
+#define zListIsEmpty(l)   ( zListSize(l) == 0 )
 
 /*! \brief initialize a list \a l. */
 #define zListInit(l) do{\
-  zListSetNum( l, 0 ); \
+  zListSetSize( l, 0 ); \
   zListCellInit( zListRoot( l ) ); \
 } while(0)
 
@@ -197,13 +194,13 @@ zListClass(zList, zListCell, void*);
 /*! \brief insert a list cell \a n to the next of \a c in a list \a l. */
 #define zListInsertNext(l,c,n) do{\
   zListCellInsertNext( c, n ); \
-  zListIncNum(l); \
+  zListIncSize(l); \
 } while(0)
 
 /*! \brief insert a list cell \a p to the previous of \a c in a list \a l. */
 #define zListInsertPrev(l,c,p) do{\
   zListCellInsertPrev( c, p ); \
-  zListIncNum(l); \
+  zListIncSize(l); \
 } while(0)
 
 /*! \brief insert a list cell \a c to the head of a list \a l. */
@@ -215,14 +212,14 @@ zListClass(zList, zListCell, void*);
     The deleted cell is stored into \a n. */
 #define zListDeleteNext(l,c,n) do{\
   zListCellDeleteNext( c, n ); \
-  zListDecNum(l); \
+  zListDecSize(l); \
 } while(0)
 
 /*! \brief delete the previous cell of \a c of a list \a l.
     The deleted cell is stored into \a p. */
 #define zListDeletePrev(l,c,p) do{\
   zListCellDeletePrev( c, p ); \
-  zListDecNum(l); \
+  zListDecSize(l); \
 } while(0)
 
 /*! \brief delete the head cell of a list \a l.
@@ -235,7 +232,7 @@ zListClass(zList, zListCell, void*);
 /*! \brief purge a list cell \a c in a list \a l. */
 #define zListPurge(l,c) do{\
   zListCellPurge( c );\
-  zListDecNum(l);\
+  zListDecSize(l);\
 } while(0)
 
 /*! \brief append all cells in a list \a p to the head of
@@ -244,7 +241,7 @@ zListClass(zList, zListCell, void*);
   if( !zListIsEmpty(p) ){\
     zListCellBind( zListHead(a), zListTail(p) );\
     zListCellBind( zListHead(p), zListRoot(a) );\
-    zListNum(a) += zListNum(p);\
+    zListSize(a) += zListSize(p);\
     zListInit(p);\
   }\
 } while(0)
@@ -255,7 +252,7 @@ zListClass(zList, zListCell, void*);
   if( !zListIsEmpty(p) ){\
     zListCellBind( zListHead(p), zListTail(a) );\
     zListCellBind( zListRoot(a), zListTail(p) );\
-    zListNum(a) += zListNum(p);\
+    zListSize(a) += zListSize(p);\
     zListInit(p);\
   }\
 } while(0)
@@ -266,17 +263,17 @@ zListClass(zList, zListCell, void*);
 #define zListMove(src,dst) do{\
   zListCellBind( zListRoot(dst), zListTail(src) );\
   zListCellBind( zListHead(src), zListRoot(dst) );\
-  zListSetNum( dst, zListNum(src) );\
+  zListSetSize( dst, zListSize(src) );\
 } while(0)
 
 /*! \brief swap two lists \a l1 and \a l2.
  */
 #define zListSwap(cell_t,l1,l2) do{\
-  int __tmpnum;\
+  int __tmpsize;\
   zListCellSwap( cell_t, zListRoot(l1), zListRoot(l2) );\
-  __tmpnum = zListNum(l1);\
-  zListSetNum( l1, zListNum(l2) );\
-  zListSetNum( l2, __tmpnum );\
+  __tmpsize = zListSize(l1);\
+  zListSetSize( l1, zListSize(l2) );\
+  zListSetSize( l2, __tmpsize );\
 } while(0)
 
 /*! \brief succeed a process for each cell of a list \a l from the
@@ -302,13 +299,13 @@ zListClass(zList, zListCell, void*);
 #define zListItem(list,i,cp) do{\
   int __z_list_item_tmp;\
   *(cp) = NULL;\
-  if( (i) >= 0 && (i) < zListNum(list) ){\
-    if( (i) <= zListNum(list) - (i) ){\
+  if( (i) >= 0 && (i) < zListSize(list) ){\
+    if( (i) <= zListSize(list) - (i) ){\
       __z_list_item_tmp = 0;\
       zListForEach( list, *(cp) )\
         if( __z_list_item_tmp++ == (i) ) break;\
     } else{\
-      __z_list_item_tmp = zListNum( list );\
+      __z_list_item_tmp = zListSize( list );\
       zListForEachRew( list, *(cp) )\
         if( --__z_list_item_tmp == (i) ) break;\
     }\

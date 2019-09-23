@@ -11,7 +11,7 @@ int main(void)
   zStrListAdd( &list, "ccc" );
   zStrListAdd( &list, "ddd" );
   zStrListAdd( &list, "eee" );
-  zAssert( zStrListAdd, zListNum(&list) == 5 );
+  zAssert( zStrListAdd, zListSize(&list) == 5 );
 
   zAssert( zStrListFind, zStrListFind(&list,"ccc") && !zStrListFind(&list,"fff") );
 

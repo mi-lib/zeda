@@ -16,30 +16,26 @@
  * ********************************************************** */
 
 #ifndef __KERNEL__
-/* _zListFPrint
- * - print information of a list to a file.
- */
+/* print information of a list to a file. */
 void _zListFPrint(FILE *fp, zList *list)
 {
   register int i = 0;
   zListCell *cp;
 
-  fprintf( fp, "number = %d\n", zListNum( list ) );
+  fprintf( fp, "size = %d\n", zListSize( list ) );
   zListForEach( list, cp ){
     fprintf( fp, "<%d>", i++ );
     zListCellFPrint( fp, cp );
   }
 }
 #else
-/* zListPrint
- * - print information of a list (for kernel module).
- */
+/* print information of a list (for kernel module). */
 void zListPrint(zList *list)
 {
   int i;
   zListCell *cp;
 
-  printk( "number = %d\n", zListNum( list ) );
+  printk( "size = %d\n", zListSize( list ) );
   zListForEach( list, cp ){
     printk( "<%d>", i++ );
     zListCellPrint( cp );

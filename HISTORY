@@ -1,3 +1,5 @@
+2019. 9.23. Renamed zRingNum to zRingSize. [zeda_ring]
+2019. 9.23. Renamed num member of an automatically generated list class to size and zList*Num to zList*Size. [zeda_list]
 2019. 9.20. Created a sample code of how to use ZTK parser. [example]
 2019. 9.19. Renamed encode and fprintf members in ZTKPrp to _eval and _fprint, respectively. [zeda_ztk]
 2019. 9.18. Modified ZTKParse to accept a tagless key field. [zeda_ztk]
