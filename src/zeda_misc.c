@@ -204,3 +204,22 @@ char *itoa_fill(int val, int size, char pat, char *buf)
   return buf;
 }
 #endif /* __KERNEL__ */
+
+#ifndef __KERNEL__
+/* convert an integer number to a string that represents an ordinal. */
+char *itoa_ordinal(int val, char *buf, size_t size)
+{
+  itoa( val, buf );
+  if( val % 10 == 1 && val % 100 != 11 )
+    strcat( buf, "st" );
+  else
+  if( val % 10 == 2 && val % 100 != 12 )
+    strcat( buf, "nd" );
+  else
+  if( val % 10 == 3 && val % 100 != 13 )
+    strcat( buf, "rd" );
+  else
+    strcat( buf, "th" );
+  return buf;
+}
+#endif /* __KERNEL__ */

@@ -226,6 +226,16 @@ __EXPORT char *itoa_fill(int val, int size, char pat, char *buf);
  * \sa itoa_fill
  */
 #define itoa_zerofill(v,s,b) itoa_fill( (v), (s), '0', (b) )
+
+/*! \brief convert an integer number to a string that represents an ordinal.
+ *
+ * itoa_ordinal() converts an integer number \a val into a string
+ * that represents an ordinal, and stores it into \a buf.
+ * \a size is the size of \a buf.
+ * \return
+ * itoa_ordinal() returns a pointer \a buf.
+ */
+__EXPORT char *itoa_ordinal(int val, char *buf, size_t size);
 #endif /* __KERNEL__ */
 
 /*! \} */
