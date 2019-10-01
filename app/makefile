@@ -3,6 +3,7 @@ include ../config
 BINDIR=$(PREFIX)/bin
 
 INSTALL=install -m 755
+UNINSTALL=rm -f
 
 LINK=-lzeda -lm
 
@@ -29,3 +30,10 @@ install: $(CHKDEP) $(TARGET)
 clean:
 	@echo " CLEAN"
 	-@rm -f *.o *~ core $(TARGET)
+uninstall:
+	@echo " UNINSTALL	" $(CONFIGGEN)
+	@$(UNINSTALL) $(BINDIR)/$(CONFIGGEN)
+	@echo " UNINSTALL	" $(CHKDEP)
+	@$(UNINSTALL) $(BINDIR)/$(CHKDEP)
+	@echo " UNINSTALL	" $(TARGET)
+	@$(UNINSTALL) $(BINDIR)/$(TARGET)

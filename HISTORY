@@ -1,3 +1,4 @@
+2019.10. 1. Enabled make uninstall. [makefile]
 2019. 9.25. Added itoa_ordinal. [zeda_misc]
 2019. 9.23. Renamed zRingNum to zRingSize. [zeda_ring]
 2019. 9.23. Renamed num member of an automatically generated list class to size and zList*Num to zList*Size. [zeda_list]
