@@ -23,8 +23,6 @@ $(CONFIG):
 	-@rm -f $(CONFIG)
 	@$(CONFIGGEN) -I $(PREFIX)/include -L $(PREFIX)/lib -l "$(LINK)" -v $(VERSION) > $(CONFIG)
 install: $(CHKDEP) $(TARGET)
-	@echo " INSTALL	" $(CHKDEP)
-	@$(INSTALL) $(CHKDEP) $(BINDIR)
 	@echo " INSTALL	" $^
 	@$(INSTALL) $^ $(BINDIR)
 clean:
