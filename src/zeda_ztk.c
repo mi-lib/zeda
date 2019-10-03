@@ -325,7 +325,7 @@ void ZTKDestroy(ZTK *ztk)
 }
 
 /* parse a tag with a ZTK format processor. */
-bool ZTKParseTag(ZTK *ztk, char *buf)
+static bool _ZTKParseTag(ZTK *ztk, char *buf)
 {
   if( !( ztk->def = ZTKDefListFindTag( &ztk->deflist, buf ) ) ){
     /* unregisterred tagged field, skipped */
@@ -351,7 +351,7 @@ bool ZTKParse(ZTK *ztk, char *path)
     if( !zFToken( fs->fp, buf, BUFSIZ ) ) break;
     if( zTokenIsTag( buf ) ){
       zExtractTag( buf, buf );
-      if( !ZTKParseTag( ztk, buf ) ){
+      if( !_ZTKParseTag( ztk, buf ) ){
         ret = false;
         break;
       }
@@ -360,10 +360,9 @@ bool ZTKParse(ZTK *ztk, char *path)
         ZTKParse( ztk, zFToken(fs->fp,buf,BUFSIZ) );
         continue;
       }
-      if( !ztk->def && !ZTKParseTag( ztk, "" ) ) continue; /* tagged field unactivated */
-      if( !ztk->tf_cp ){ /* the corresponding tagged field must be activated. */
-        ZRUNERROR( ZEDA_ERR_FATAL );
-        ret = false;
+      if( !ztk->def ){
+        _ZTKParseTag( ztk, "" );
+        if( !ztk->tf_cp ) continue; /* tagged field unactivated. */
         break;
       }
       if( ZTKDefFindKey( &ztk->def->data, buf ) ){ /* token is a key. */
