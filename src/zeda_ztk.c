@@ -10,8 +10,6 @@
 /* file stack.
  *//* ******************************************************* */
 
-static zFileStack *_zFileStackNew(char *pathname);
-
 /* initialize a file stack. */
 void zFileStackInit(zFileStack *stack)
 {
@@ -20,7 +18,7 @@ void zFileStackInit(zFileStack *stack)
 }
 
 /* open a new file to be pushed to a file stack. */
-zFileStack *_zFileStackNew(char *pathname)
+static zFileStack *_zFileStackNew(char *pathname)
 {
   zFileStack *cp;
 
@@ -32,7 +30,7 @@ zFileStack *_zFileStackNew(char *pathname)
     free( cp );
     return NULL;
   }
-  strncpy( cp->pathname, pathname, BUFSIZ );
+  zStrCopy( cp->pathname, pathname, BUFSIZ );
   cp->prev = NULL;
   return cp;
 }

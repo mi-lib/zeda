@@ -6,6 +6,7 @@
 
 #include <zeda/zeda_string.h>
 #include <ctype.h>
+#include <stdarg.h>
 
 static const char *znullstring = "";
 char *zNullStr(void){ return (char *)znullstring; }
@@ -50,6 +51,18 @@ char *zStrCat(char *dest, const char *src, size_t size)
 
   ld = strlen(dest);
   return zStrCopy( dest+ld, src, size-ld );
+}
+
+/* concatenate a string with a formatted string. */
+char *zStrCatPrint(char *str, size_t size, char *fmt, ...)
+{
+  va_list args;
+  char buf[BUFSIZ];
+
+  va_start( args, fmt );
+  vsprintf( buf, fmt, args );
+  va_end( args );
+  return zStrCat( str, buf, size );
 }
 
 /* concatenate a string with a charactor. */

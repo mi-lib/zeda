@@ -61,6 +61,23 @@ __EXPORT char *zStrClone(char str[]);
  */
 __EXPORT char *zStrCat(char *dest, const char *src, size_t size);
 
+/*! \brief concatenate a string with a formatted string.
+ *
+ * zStrCatPrint() concatenates a formatted string \a fmt to
+ * another string \a str. \a size is the maximum number of
+ * charactors \a str can store. If the sum of lengths of \a src
+ * and \a fmt is beyond \a size, the resulted string is clamped.
+ *
+ * The format of \a fmt and the following variable arguments
+ * conform to printf() family.
+ * \return
+ * zStrCatPrint() returns a pointer \a str.
+ * \note
+ * zStrCatPrint() is not sufficiently secure since it internally
+ * calls vsprintf(), in which the size of \a fmt is not checked.
+ */
+__EXPORT char *zStrCatPrint(char *str, size_t size, char *fmt, ...);
+
 /*! \brief concatenate a string and a charactor.
  *
  * zStrAddChar() appends a charactor \a c to a string

@@ -90,12 +90,13 @@ __EXPORT ulong bit_reverse(ulong val, int bitwidth);
 
 /*! \brief convert a bit sequence to a string in binary format.
  *
- * sprintf_bit() converts a given value \a val to
- * a string in binary format. The string is stored
- * where a pointer \a str points.
+ * sprintf_bit() converts a given value \a val to a string in
+ * binary format. The string is stored where a pointer \a str
+ * points.
  * \a width is the applied bit width.
- * For example, sprintf_bit( str, 0xf, 6 ) makes
- * \a str "001111".
+ * For example, sprintf_bit( str, 0xf, 6 ) makes \a str "001111".
+ * \note
+ * The size of \a str has to be more than \a width + 1 bytes.
  * \sa fprintf_bit
  */
 __EXPORT void sprintf_bit(char *str, ulong val, int width);

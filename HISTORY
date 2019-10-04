@@ -1,3 +1,5 @@
+2019.10. 5. Added zStrCatPrint. [zeda_string]
+2019.10. 5. Modified _zFileStackNew to use zStrCopy instead of strncpy. [zeda_ztk]
 2019.10. 4. Debugged ZTKParse. [zeda_ztk]
 2019.10. 3. Debugged ZTKParse. [zeda_ztk]
 2019.10. 3. Renamed ZTKParseTag to _ZTKParseTag. [zeda_ztk]
