@@ -35,9 +35,12 @@ __BEGIN_DECLS
  * return a saturated value of \a x with the lower
  * boundary \a l and the upper boundary \a u.
  */
-#define zMax(x,y)     ( (x)>=(y) ? (x) : (y) )
-#define zMin(x,y)     ( (x)<=(y) ? (x) : (y) )
-#define zLimit(x,l,u) ( (x)<=(l) ? (l) : ( (x)>=(u) ? (u) : (x) ) )
+#define _zMax(x,y)     ( (x)>=(y) ? (x) : (y) )
+__EXPORT double zMax(double x, double y);
+#define _zMin(x,y)     ( (x)<=(y) ? (x) : (y) )
+__EXPORT double zMin(double x, double y);
+#define _zLimit(x,l,u) ( (x)<=(l) ? (l) : ( (x)>=(u) ? (u) : (x) ) )
+__EXPORT double zLimit(double x, double l, double u);
 
 /*! \brief
  * return a saturated value of \a x with two boundaries \a b1 and

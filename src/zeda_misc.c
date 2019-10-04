@@ -17,11 +17,18 @@ __DEF_WINDLL
 #include <stdarg.h>
 #include <ctype.h>
 
+/* return the larger of two values. */
+double zMax(double x, double y){ return _zMax( x, y ); }
+/* return the smaller of two values. */
+double zMin(double x, double y){ return _zMin( x, y ); }
+/* return as close value in between the given lower and upper bounds. */
+double zLimit(double x, double l, double u){ return _zLimit( x, l, u ); }
+
 /* saturate a value within a segment. */
 double zBound(double x, double b1, double b2)
 {
   if( b1 > b2 ) zSwap( double, b1, b2 );
-  return zLimit( x, b1, b2 );
+  return _zLimit( x, b1, b2 );
 }
 
 /* ********************************************************** */

@@ -1,3 +1,4 @@
+2019.10. 5. Renamed zMax, zMin and zLimit to _zMax, _zMin and _zLimit, and redefined zMax, zMin and zLimit as functions. [zeda_misc, zeda_string]
 2019.10. 5. Added zStrCatPrint. [zeda_string]
 2019.10. 5. Modified _zFileStackNew to use zStrCopy instead of strncpy. [zeda_ztk]
 2019.10. 4. Debugged ZTKParse. [zeda_ztk]
