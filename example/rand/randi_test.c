@@ -1,6 +1,6 @@
 #include <zeda/zeda_rand.h>
 
-#define N 100
+#define N 1000
 
 int main(int argc, char *argv[])
 {
@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
   zRandInit();
   for( i=0; i<N; i++ ){
     val = zRandI( min, max );
-    printf( "%d %d\n", val/10, val%10 );
+    printf( "%d %d %d\n", val, val/10, val%10 );
   }
   return 0;
 }

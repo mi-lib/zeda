@@ -1,3 +1,5 @@
+2019.11.16. Corrected misspelling in ZEDA_WARN_INT_SHRTSIZ and ZEDA_WARN_LNG_SHRTSIZ. [zeda_errmsg]
+2019.11.16. Moved zRandMT from ZM and reimplemented zRandInit, zRandI, zRandF, zRandN and zRandNU as macros with the default MT. [zeda_rand]
 2019.10. 5. Renamed zMax, zMin and zLimit to _zMax, _zMin and _zLimit, and redefined zMax, zMin and zLimit as functions. [zeda_misc, zeda_string]
 2019.10. 5. Added zStrCatPrint. [zeda_string]
 2019.10. 5. Modified _zFileStackNew to use zStrCopy instead of strncpy. [zeda_ztk]

@@ -16,8 +16,8 @@
 #define ZEDA_WARN_ENDIAN_NOT_SUPPORTED "middle endian not supported."
 #define ZEDA_WARN_INVALID_INTSIZ       "invalid (or unsupported) size of int %d."
 #define ZEDA_WARN_INVALID_LNGSIZ       "invalid (or unsupported) size of long int %d."
-#define ZEDA_WARN_INT_SHRTSIZ          "size of int in ZBD file = %d, whilc sizeof(int) = %ld; might lose information."
-#define ZEDA_WARN_LNG_SHRTSIZ          "size of long in ZBD file = %d, whilc sizeof(long) = %ld; might lose information."
+#define ZEDA_WARN_INT_SHRTSIZ          "size of int in ZBD file = %d, while sizeof(int) = %ld; might lose information."
+#define ZEDA_WARN_LNG_SHRTSIZ          "size of long in ZBD file = %d, while sizeof(long) = %ld; might lose information."
 
 #define ZEDA_WARN_INVHEX               "invalid hexadecimal notation: %c"
 
