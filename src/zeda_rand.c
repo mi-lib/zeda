@@ -42,7 +42,7 @@ static ulong _zRandMTVal(zRandMT *mt)
 
   if( !mt && !( mt = __z_rand_mt ) ){
     zRandInitMT( NULL );
-    mt = &__z_rand_mt_default;
+    mt = __z_rand_mt;
   }
   if( ( i = mt->index ) == 0 ){
     for( ; i<Z_RAND_MT_CYC1; i++ ){
@@ -75,7 +75,7 @@ void zRandInitMT(zRandMT *mt)
   register uint i;
 
   seed = time( NULL );
-  if( mt == NULL )
+  if( !mt )
     mt = __z_rand_mt = &__z_rand_mt_default;
   else
     seed++;
@@ -113,5 +113,8 @@ double zRandMTNU(zRandMT *mt)
 {
   return (double)_zRandMTVal( mt ) / ( (double)Z_RAND_MT_MAX + 1 );
 }
+
+/* return a pointer to the default random number generator. */
+zRandMT *zRandMTDefault(void){ return __z_rand_mt; }
 
 #endif /* __KERNEL__ */

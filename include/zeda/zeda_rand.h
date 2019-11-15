@@ -34,7 +34,7 @@ __BEGIN_DECLS
 /*! \endcond */
 
 /* ********************************************************** */
-/*! \brief Mersenne twister class.
+/*! \brief random number generator based on Mersenne twister.
  *//********************************************************* */
 typedef struct{
   ulong  x[Z_RAND_MT_HISTORY+1]; /*!< state vector */
@@ -43,7 +43,7 @@ typedef struct{
   double nd_last;                /*!< a memory for normal distribution */
 } zRandMT;
 
-/*! \brief initialize Mersenne twister.
+/*! \brief initialize a random number generator based on Mersenne twister.
  *
  * zRandInitMT() initializes Mersenne twister \a mt
  * by seeding the current time for a new history.
@@ -55,16 +55,19 @@ __EXPORT void zRandInitMT(zRandMT *mt);
 /*! \brief a pseudo-random integer between \a min and \a max. */
 __EXPORT int zRandMTI(zRandMT *mt, int min, int max);
 
-/*! \brief a pseudo-random double-precision floating-point
- * value between \a min and \a max. */
+/*! \brief a pseudo-random double-precision floating-point value
+ * between \a min and \a max. */
 __EXPORT double zRandMTF(zRandMT *mt, double min, double max);
 
-/*! \brief a pseudo-random double-precision floating-point
- * value in the range of [0,1]. */
+/*! \brief a pseudo-random double-precision floating-point value
+ * in the range of [0,1]. */
 __EXPORT double zRandMTN(zRandMT *mt);
 
 /*! \brief a pseudo-random value in the range of [0,1). */
 __EXPORT double zRandMTNU(zRandMT *mt);
+
+/*! \brief return a pointer to the default random number generator. */
+__EXPORT zRandMT *zRandMTDefault(void);
 
 #define zRandInit()     zRandInitMT( NULL )
 #define zRandI(min,max) zRandMTI( NULL, min, max )
