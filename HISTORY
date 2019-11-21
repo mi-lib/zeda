@@ -1,3 +1,4 @@
+2019.11.21. Rewrote README and README.ZTK conforming to markdown format. [README, README.ZTK]
 2019.11.16. Added zRandMTDefault. [zeda_rand]
 2019.11.16. Corrected misspelling in ZEDA_WARN_INT_SHRTSIZ and ZEDA_WARN_LNG_SHRTSIZ. [zeda_errmsg]
 2019.11.16. Moved zRandMT from ZM and reimplemented zRandInit, zRandI, zRandF, zRandN and zRandNU as macros with the default MT. [zeda_rand]
