@@ -1,3 +1,4 @@
+2020. 3.28. Modified .ztk files in examples to be ready for respecification of ZTK format. [example]
 2019.11.21. Rewrote README and README.ZTK conforming to markdown format. [README, README.ZTK]
 2019.11.16. Added zRandMTDefault. [zeda_rand]
 2019.11.16. Corrected misspelling in ZEDA_WARN_INT_SHRTSIZ and ZEDA_WARN_LNG_SHRTSIZ. [zeda_errmsg]
