@@ -13,6 +13,50 @@
 
 __BEGIN_DECLS
 
+/* endian-conversion-friendly I/O functions */
+
+#define ZEDA_BINFILE_DEF_FREAD_PROTOTYPE( bit ) \
+  size_t fread_int##bit(FILE *fp, int##bit##_t *val)
+#define ZEDA_BINFILE_DEF_FREAD_REV_PROTOTYPE( bit ) \
+  size_t fread_int##bit##_rev(FILE *fp, int##bit##_t *val)
+#define ZEDA_BINFILE_DEF_FWRITE_PROTOTYPE( bit ) \
+  size_t fwrite_int##bit(FILE *fp, int##bit##_t *val)
+#define ZEDA_BINFILE_DEF_FWRITE_REV_PROTOTYPE( bit ) \
+  size_t fwrite_int##bit##_rev(FILE *fp, int##bit##_t *val)
+
+__EXPORT ZEDA_BINFILE_DEF_FREAD_PROTOTYPE(       8 );
+__EXPORT ZEDA_BINFILE_DEF_FWRITE_PROTOTYPE(      8 );
+
+__EXPORT ZEDA_BINFILE_DEF_FREAD_PROTOTYPE(      16 );
+__EXPORT ZEDA_BINFILE_DEF_FREAD_REV_PROTOTYPE(  16 );
+__EXPORT ZEDA_BINFILE_DEF_FWRITE_PROTOTYPE(     16 );
+__EXPORT ZEDA_BINFILE_DEF_FWRITE_REV_PROTOTYPE( 16 );
+
+__EXPORT ZEDA_BINFILE_DEF_FREAD_PROTOTYPE(      32 );
+__EXPORT ZEDA_BINFILE_DEF_FREAD_REV_PROTOTYPE(  32 );
+__EXPORT ZEDA_BINFILE_DEF_FWRITE_PROTOTYPE(     32 );
+__EXPORT ZEDA_BINFILE_DEF_FWRITE_REV_PROTOTYPE( 32 );
+
+__EXPORT ZEDA_BINFILE_DEF_FREAD_PROTOTYPE(      64 );
+__EXPORT ZEDA_BINFILE_DEF_FREAD_REV_PROTOTYPE(  64 );
+__EXPORT ZEDA_BINFILE_DEF_FWRITE_PROTOTYPE(     64 );
+__EXPORT ZEDA_BINFILE_DEF_FWRITE_REV_PROTOTYPE( 64 );
+
+__EXPORT byte fread_byte(FILE *fp);
+__EXPORT size_t fwrite_byte(FILE *fp, byte val);
+
+__EXPORT float fread_float(FILE *fp);
+__EXPORT float fread_float_rev(FILE *fp);
+__EXPORT size_t fwrite_float(FILE *fp, float val);
+__EXPORT size_t fwrite_float_rev(FILE *fp, float val);
+
+__EXPORT double fread_double(FILE *fp);
+__EXPORT double fread_double_rev(FILE *fp);
+__EXPORT size_t fwrite_double(FILE *fp, double val);
+__EXPORT size_t fwrite_double_rev(FILE *fp, double val);
+
+/* binary-file manipulator */
+
 #define ZBINFILE_CURRENT_VERSION 0x00000001
 
 #define ZBINFILE_ID "ZBD "
@@ -44,17 +88,17 @@ typedef struct _zBinFile{
   /*! \endcond */
 } zBinFile;
 
-bool zBinFileOpen(zBinFile *bf, char filename[], const char *mode);
-int zBinFileClose(zBinFile *bf);
+__EXPORT bool zBinFileOpen(zBinFile *bf, char filename[], const char *mode);
+__EXPORT int zBinFileClose(zBinFile *bf);
 
-bool zBinFileHeaderFRead(zBinFile *bf);
-size_t zBinFileHeaderFWrite(zBinFile *bf);
+__EXPORT byte zBinFileByteFRead(zBinFile *bf);
+__EXPORT size_t zBinFileByteFWrite(zBinFile *bf, byte val);
 
-void zBinFileInfoSet(zBinFile *bf, int16_t version, int16_t endian_type, int16_t size_int, int16_t size_long);
-void zBinFileInfoSetThis(zBinFile *bf);
+__EXPORT bool zBinFileHeaderFRead(zBinFile *bf);
+__EXPORT size_t zBinFileHeaderFWrite(zBinFile *bf);
 
-byte zBinFileByteFRead(zBinFile *bf);
-size_t zBinFileByteFWrite(zBinFile *bf, byte val);
+__EXPORT void zBinFileInfoSet(zBinFile *bf, int16_t version, int16_t endian_type, int16_t size_int, int16_t size_long);
+__EXPORT void zBinFileInfoSetThis(zBinFile *bf);
 
 #define zBinFileIntFRead(bf)       ( (bf)->_fread_int( (bf) ) )
 #define zBinFileIntFWrite(bf,val)  ( (bf)->_fwrite_int( (bf), (val) ) )
@@ -62,10 +106,10 @@ size_t zBinFileByteFWrite(zBinFile *bf, byte val);
 #define zBinFileLongFRead(bf)      ( (bf)->_fread_long( (bf) ) )
 #define zBinFileLongFWrite(bf,val) ( (bf)->_fwrite_long( (bf), (val) ) )
 
-float zBinFileFloatFRead(zBinFile *bf);
-size_t zBinFileFloatFWrite(zBinFile *bf, float val);
-double zBinFileDoubleFRead(zBinFile *bf);
-size_t zBinFileDoubleFWrite(zBinFile *bf, double val);
+__EXPORT float zBinFileFloatFRead(zBinFile *bf);
+__EXPORT size_t zBinFileFloatFWrite(zBinFile *bf, float val);
+__EXPORT double zBinFileDoubleFRead(zBinFile *bf);
+__EXPORT size_t zBinFileDoubleFWrite(zBinFile *bf, double val);
 
 __END_DECLS
 

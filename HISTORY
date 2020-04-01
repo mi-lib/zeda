@@ -1,3 +1,5 @@
+2020. 4. 1. Redefined fread/fwrite_byte/float/double and added fread/fwrite_float/double_rev. [zeda_binfile]
+2020. 4. 1. Defined fread_int* and fwrite_int* family with a macro ZEDA_BINFILE_DEF_FREAD/FWRITE. [zeda_binfile]
 2020. 3.28. Modified .ztk files in examples to be ready for respecification of ZTK format. [example]
 2019.11.21. Rewrote README and README.ZTK conforming to markdown format. [README, README.ZTK]
 2019.11.16. Added zRandMTDefault. [zeda_rand]

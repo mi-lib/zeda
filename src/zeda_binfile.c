@@ -6,13 +6,15 @@
 
 #include <zeda/zeda_binfile.h>
 
-#define ZBINFILE_DEF_FREADFUNC( bit ) \
-static size_t _fread_int##bit(FILE *fp, int##bit##_t *val){\
+/* endian-conversion-friendly I/O functions */
+
+#define ZEDA_BINFILE_DEF_FREAD( bit ) \
+ZEDA_BINFILE_DEF_FREAD_PROTOTYPE( bit ){\
   return fread( val, sizeof(int##bit##_t), 1, fp );\
 }
 
-#define ZBINFILE_DEF_FREADFUNC_REV( bit ) \
-static size_t _fread_int##bit##_rev(FILE *fp, int##bit##_t *val){\
+#define ZEDA_BINFILE_DEF_FREAD_REV( bit ) \
+ZEDA_BINFILE_DEF_FREAD_REV_PROTOTYPE( bit ){\
   int##bit##_t __tmp;\
   size_t size;\
   if( ( size = fread( &__tmp, sizeof(int##bit##_t), 1, fp ) ) > 0 )\
@@ -20,59 +22,112 @@ static size_t _fread_int##bit##_rev(FILE *fp, int##bit##_t *val){\
   return size;\
 }
 
-#define ZBINFILE_DEF_FWRITEFUNC( bit ) \
-static size_t _fwrite_int##bit(FILE *fp, int##bit##_t *val){\
+#define ZEDA_BINFILE_DEF_FWRITE( bit ) \
+ZEDA_BINFILE_DEF_FWRITE_PROTOTYPE( bit ){\
   return fwrite( val, sizeof(int##bit##_t), 1, fp );\
 }
 
-#define ZBINFILE_DEF_FWRITEFUNC_REV( bit ) \
-static size_t _fwrite_int##bit##_rev(FILE *fp, int##bit##_t *val){\
+#define ZEDA_BINFILE_DEF_FWRITE_REV( bit ) \
+ZEDA_BINFILE_DEF_FWRITE_REV_PROTOTYPE( bit ){\
   int##bit##_t __tmp;\
   __tmp = endian_reverse##bit( *val );\
   return fwrite( &__tmp, sizeof(int##bit##_t), 1, fp );\
 }
 
-ZBINFILE_DEF_FREADFUNC(      16 )
-ZBINFILE_DEF_FREADFUNC_REV(  16 )
-ZBINFILE_DEF_FWRITEFUNC(     16 )
-ZBINFILE_DEF_FWRITEFUNC_REV( 16 )
+ZEDA_BINFILE_DEF_FREAD(       8 )
+ZEDA_BINFILE_DEF_FWRITE(      8 )
 
-ZBINFILE_DEF_FREADFUNC(      32 )
-ZBINFILE_DEF_FREADFUNC_REV(  32 )
-ZBINFILE_DEF_FWRITEFUNC(     32 )
-ZBINFILE_DEF_FWRITEFUNC_REV( 32 )
+ZEDA_BINFILE_DEF_FREAD(      16 )
+ZEDA_BINFILE_DEF_FREAD_REV(  16 )
+ZEDA_BINFILE_DEF_FWRITE(     16 )
+ZEDA_BINFILE_DEF_FWRITE_REV( 16 )
 
-ZBINFILE_DEF_FREADFUNC(      64 )
-ZBINFILE_DEF_FREADFUNC_REV(  64 )
-ZBINFILE_DEF_FWRITEFUNC(     64 )
-ZBINFILE_DEF_FWRITEFUNC_REV( 64 )
+ZEDA_BINFILE_DEF_FREAD(      32 )
+ZEDA_BINFILE_DEF_FREAD_REV(  32 )
+ZEDA_BINFILE_DEF_FWRITE(     32 )
+ZEDA_BINFILE_DEF_FWRITE_REV( 32 )
 
-#define ZBINFILE_DEF_INT_FREADFUNC( bit, type ) \
+ZEDA_BINFILE_DEF_FREAD(      64 )
+ZEDA_BINFILE_DEF_FREAD_REV(  64 )
+ZEDA_BINFILE_DEF_FWRITE(     64 )
+ZEDA_BINFILE_DEF_FWRITE_REV( 64 )
+
+byte fread_byte(FILE *fp){
+  byte val;
+  return fread_int8( fp, &val ) > 0 ? val : 0;
+}
+
+size_t fwrite_byte(FILE *fp, byte val){
+  return fwrite_int8( fp, &val );
+}
+
+float fread_float(FILE *fp){
+  float val;
+  return fread_int32( fp, (int32_t *)&val ) > 0 ? val : 0;
+}
+
+float fread_float_rev(FILE *fp){
+  float val;
+  return fread_int32_rev( fp, (int32_t *)&val ) > 0 ? val : 0;
+}
+
+size_t fwrite_float(FILE *fp, float val){
+  return fwrite_int32( fp, (int32_t *)&val );
+}
+
+size_t fwrite_float_rev(FILE *fp, float val){
+  return fwrite_int32_rev( fp, (int32_t *)&val );
+}
+
+double fread_double(FILE *fp){
+  double val;
+  return fread_int64( fp, (int64_t *)&val ) > 0 ? val : 0;
+}
+
+double fread_double_rev(FILE *fp){
+  double val;
+  return fread_int64_rev( fp, (int64_t *)&val ) > 0 ? val : 0;
+}
+
+size_t fwrite_double(FILE *fp, double val){
+  return fwrite_int64( fp, (int64_t *)&val );
+}
+
+size_t fwrite_double_rev(FILE *fp, double val){
+  return fwrite_int64_rev( fp, (int64_t *)&val );
+}
+
+/* binary-file manipulator */
+
+#define ZBINFILE_DEF_INT_FREAD( bit, type ) \
 static type _zBinFile_##type##_fread##bit(zBinFile *bf){\
   int##bit##_t val;\
   return bf->_fread_int##bit( bf->_fp, &val ) > 0 ? val : 0;\
 }
 
-#define ZBINFILE_DEF_INT_FWRITEFUNC( bit, type ) \
+#define ZBINFILE_DEF_INT_FWRITE( bit, type ) \
 static size_t _zBinFile_##type##_fwrite##bit(zBinFile *bf, type val){\
   int##bit##_t __tmp;\
   __tmp = val;\
   return bf->_fwrite_int##bit( bf->_fp, &__tmp );\
 }
 
-ZBINFILE_DEF_INT_FREADFUNC(  16, int )
-ZBINFILE_DEF_INT_FWRITEFUNC( 16, int )
-ZBINFILE_DEF_INT_FREADFUNC(  32, int )
-ZBINFILE_DEF_INT_FWRITEFUNC( 32, int )
-ZBINFILE_DEF_INT_FREADFUNC(  64, int )
-ZBINFILE_DEF_INT_FWRITEFUNC( 64, int )
+ZBINFILE_DEF_INT_FREAD(  16, int )
+ZBINFILE_DEF_INT_FWRITE( 16, int )
+ZBINFILE_DEF_INT_FREAD(  32, int )
+ZBINFILE_DEF_INT_FWRITE( 32, int )
+ZBINFILE_DEF_INT_FREAD(  64, int )
+ZBINFILE_DEF_INT_FWRITE( 64, int )
 
-ZBINFILE_DEF_INT_FREADFUNC(  16, long )
-ZBINFILE_DEF_INT_FWRITEFUNC( 16, long )
-ZBINFILE_DEF_INT_FREADFUNC(  32, long )
-ZBINFILE_DEF_INT_FWRITEFUNC( 32, long )
-ZBINFILE_DEF_INT_FREADFUNC(  64, long )
-ZBINFILE_DEF_INT_FWRITEFUNC( 64, long )
+ZBINFILE_DEF_INT_FREAD(  16, long )
+ZBINFILE_DEF_INT_FWRITE( 16, long )
+ZBINFILE_DEF_INT_FREAD(  32, long )
+ZBINFILE_DEF_INT_FWRITE( 32, long )
+ZBINFILE_DEF_INT_FREAD(  64, long )
+ZBINFILE_DEF_INT_FWRITE( 64, long )
+
+byte zBinFileByteFRead(zBinFile *bf){ return fread_byte( bf->_fp ); }
+size_t zBinFileByteFWrite(zBinFile *bf, byte val){ return fwrite_byte( bf->_fp, val ); }
 
 static bool _zBinFileEndianIsSame(zBinFile *bf);;
 
@@ -135,13 +190,13 @@ bool zBinFileHeaderFRead(zBinFile *bf)
     return false;
   }
   if( _zBinFileEndianIsSame( bf ) ){
-    bf->_fread_int16 = _fread_int16;
-    bf->_fread_int32 = _fread_int32;
-    bf->_fread_int64 = _fread_int64;
+    bf->_fread_int16 = fread_int16;
+    bf->_fread_int32 = fread_int32;
+    bf->_fread_int64 = fread_int64;
   } else{
-    bf->_fread_int16 = _fread_int16_rev;
-    bf->_fread_int32 = _fread_int32_rev;
-    bf->_fread_int64 = _fread_int64_rev;
+    bf->_fread_int16 = fread_int16_rev;
+    bf->_fread_int32 = fread_int32_rev;
+    bf->_fread_int64 = fread_int64_rev;
   }
   /* read version and byte sizes of some types */
   if( bf->_fread_int16( bf->_fp, &version ) < 1 ){
@@ -224,13 +279,13 @@ size_t zBinFileHeaderFWrite(zBinFile *bf)
   header_size += fwrite( ZBINFILE_ID, sizeof(char), strlen(ZBINFILE_ID), bf->_fp );
   header_size += _zBinFileEndianCheckerFWrite( bf );
   if( _zBinFileEndianIsSame( bf ) ){
-    bf->_fwrite_int16 = _fwrite_int16;
-    bf->_fwrite_int32 = _fwrite_int32;
-    bf->_fwrite_int64 = _fwrite_int64;
+    bf->_fwrite_int16 = fwrite_int16;
+    bf->_fwrite_int32 = fwrite_int32;
+    bf->_fwrite_int64 = fwrite_int64;
   } else{
-    bf->_fwrite_int16 = _fwrite_int16_rev;
-    bf->_fwrite_int32 = _fwrite_int32_rev;
-    bf->_fwrite_int64 = _fwrite_int64_rev;
+    bf->_fwrite_int16 = fwrite_int16_rev;
+    bf->_fwrite_int32 = fwrite_int32_rev;
+    bf->_fwrite_int64 = fwrite_int64_rev;
   }
   header_size += bf->_fwrite_int16( bf->_fp, &bf->version );
   header_size += bf->_fwrite_int16( bf->_fp, &bf->_size_int );
@@ -258,15 +313,6 @@ size_t zBinFileHeaderFWrite(zBinFile *bf)
 }
 
 /* readers / writers */
-
-byte zBinFileByteFRead(zBinFile *bf){
-  byte val;
-  return fread( &val, sizeof(byte), 1, bf->_fp ) > 0 ? val : 0;
-}
-
-size_t zBinFileByteFWrite(zBinFile *bf, byte val){
-  return fwrite( &val, sizeof(byte), 1, bf->_fp );
-}
 
 float zBinFileFloatFRead(zBinFile *bf){
   float val;
