@@ -42,18 +42,37 @@ __EXPORT ZEDA_BINFILE_DEF_FREAD_REV_PROTOTYPE(  64 );
 __EXPORT ZEDA_BINFILE_DEF_FWRITE_PROTOTYPE(     64 );
 __EXPORT ZEDA_BINFILE_DEF_FWRITE_REV_PROTOTYPE( 64 );
 
-__EXPORT byte fread_byte(FILE *fp);
-__EXPORT size_t fwrite_byte(FILE *fp, byte val);
+#define ZEDA_BINFILE_DEF_FREAD_TYPE_PROTOTYPE( type ) \
+  type fread_##type(FILE *fp)
+#define ZEDA_BINFILE_DEF_FREAD_REV_TYPE_PROTOTYPE( type ) \
+  type fread_##type##_rev(FILE *fp)
+#define ZEDA_BINFILE_DEF_FWRITE_TYPE_PROTOTYPE( type ) \
+  size_t fwrite_##type(FILE *fp, type val)
+#define ZEDA_BINFILE_DEF_FWRITE_REV_TYPE_PROTOTYPE( type ) \
+  size_t fwrite_##type##_rev(FILE *fp, type val)
 
-__EXPORT float fread_float(FILE *fp);
-__EXPORT float fread_float_rev(FILE *fp);
-__EXPORT size_t fwrite_float(FILE *fp, float val);
-__EXPORT size_t fwrite_float_rev(FILE *fp, float val);
+__EXPORT ZEDA_BINFILE_DEF_FREAD_TYPE_PROTOTYPE(      byte );
+__EXPORT ZEDA_BINFILE_DEF_FWRITE_TYPE_PROTOTYPE(     byte );
 
-__EXPORT double fread_double(FILE *fp);
-__EXPORT double fread_double_rev(FILE *fp);
-__EXPORT size_t fwrite_double(FILE *fp, double val);
-__EXPORT size_t fwrite_double_rev(FILE *fp, double val);
+__EXPORT ZEDA_BINFILE_DEF_FREAD_TYPE_PROTOTYPE(      word );
+__EXPORT ZEDA_BINFILE_DEF_FREAD_REV_TYPE_PROTOTYPE(  word );
+__EXPORT ZEDA_BINFILE_DEF_FWRITE_TYPE_PROTOTYPE(     word );
+__EXPORT ZEDA_BINFILE_DEF_FWRITE_REV_TYPE_PROTOTYPE( word );
+
+__EXPORT ZEDA_BINFILE_DEF_FREAD_TYPE_PROTOTYPE(      dword );
+__EXPORT ZEDA_BINFILE_DEF_FREAD_REV_TYPE_PROTOTYPE(  dword );
+__EXPORT ZEDA_BINFILE_DEF_FWRITE_TYPE_PROTOTYPE(     dword );
+__EXPORT ZEDA_BINFILE_DEF_FWRITE_REV_TYPE_PROTOTYPE( dword );
+
+__EXPORT ZEDA_BINFILE_DEF_FREAD_TYPE_PROTOTYPE(      float );
+__EXPORT ZEDA_BINFILE_DEF_FREAD_REV_TYPE_PROTOTYPE(  float );
+__EXPORT ZEDA_BINFILE_DEF_FWRITE_TYPE_PROTOTYPE(     float );
+__EXPORT ZEDA_BINFILE_DEF_FWRITE_REV_TYPE_PROTOTYPE( float );
+
+__EXPORT ZEDA_BINFILE_DEF_FREAD_TYPE_PROTOTYPE(      double );
+__EXPORT ZEDA_BINFILE_DEF_FREAD_REV_TYPE_PROTOTYPE(  double );
+__EXPORT ZEDA_BINFILE_DEF_FWRITE_TYPE_PROTOTYPE(     double );
+__EXPORT ZEDA_BINFILE_DEF_FWRITE_REV_TYPE_PROTOTYPE( double );
 
 /* binary-file manipulator */
 

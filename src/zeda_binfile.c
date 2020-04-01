@@ -52,50 +52,50 @@ ZEDA_BINFILE_DEF_FREAD_REV(  64 )
 ZEDA_BINFILE_DEF_FWRITE(     64 )
 ZEDA_BINFILE_DEF_FWRITE_REV( 64 )
 
-byte fread_byte(FILE *fp){
-  byte val;
-  return fread_int8( fp, &val ) > 0 ? val : 0;
+#define ZEDA_BINFILE_DEF_FREAD_TYPE( type, bit ) \
+ZEDA_BINFILE_DEF_FREAD_TYPE_PROTOTYPE( type ){\
+  type val;\
+  return fread_int##bit( fp, (int##bit##_t *)&val ) > 0 ? val : 0;\
 }
 
-size_t fwrite_byte(FILE *fp, byte val){
-  return fwrite_int8( fp, &val );
+#define ZEDA_BINFILE_DEF_FREAD_REV_TYPE( type, bit ) \
+ZEDA_BINFILE_DEF_FREAD_REV_TYPE_PROTOTYPE( type ){\
+  type val;\
+  return fread_int##bit##_rev( fp, (int##bit##_t *)&val ) > 0 ? val : 0;\
 }
 
-float fread_float(FILE *fp){
-  float val;
-  return fread_int32( fp, (int32_t *)&val ) > 0 ? val : 0;
+#define ZEDA_BINFILE_DEF_FWRITE_TYPE( type, bit ) \
+ZEDA_BINFILE_DEF_FWRITE_TYPE_PROTOTYPE( type ){\
+  return fwrite_int##bit( fp, (int##bit##_t *)&val );\
 }
 
-float fread_float_rev(FILE *fp){
-  float val;
-  return fread_int32_rev( fp, (int32_t *)&val ) > 0 ? val : 0;
+#define ZEDA_BINFILE_DEF_FWRITE_REV_TYPE( type, bit ) \
+ZEDA_BINFILE_DEF_FWRITE_REV_TYPE_PROTOTYPE( type ){\
+  return fwrite_int##bit##_rev( fp, (int##bit##_t *)&val );\
 }
 
-size_t fwrite_float(FILE *fp, float val){
-  return fwrite_int32( fp, (int32_t *)&val );
-}
+ZEDA_BINFILE_DEF_FREAD_TYPE(      byte, 8 )
+ZEDA_BINFILE_DEF_FWRITE_TYPE(     byte, 8 )
 
-size_t fwrite_float_rev(FILE *fp, float val){
-  return fwrite_int32_rev( fp, (int32_t *)&val );
-}
+ZEDA_BINFILE_DEF_FREAD_TYPE(      word, 16 )
+ZEDA_BINFILE_DEF_FREAD_REV_TYPE(  word, 16 )
+ZEDA_BINFILE_DEF_FWRITE_TYPE(     word, 16 )
+ZEDA_BINFILE_DEF_FWRITE_REV_TYPE( word, 16 )
 
-double fread_double(FILE *fp){
-  double val;
-  return fread_int64( fp, (int64_t *)&val ) > 0 ? val : 0;
-}
+ZEDA_BINFILE_DEF_FREAD_TYPE(      dword, 32 )
+ZEDA_BINFILE_DEF_FREAD_REV_TYPE(  dword, 32 )
+ZEDA_BINFILE_DEF_FWRITE_TYPE(     dword, 32 )
+ZEDA_BINFILE_DEF_FWRITE_REV_TYPE( dword, 32 )
 
-double fread_double_rev(FILE *fp){
-  double val;
-  return fread_int64_rev( fp, (int64_t *)&val ) > 0 ? val : 0;
-}
+ZEDA_BINFILE_DEF_FREAD_TYPE(      float, 32 )
+ZEDA_BINFILE_DEF_FREAD_REV_TYPE(  float, 32 )
+ZEDA_BINFILE_DEF_FWRITE_TYPE(     float, 32 )
+ZEDA_BINFILE_DEF_FWRITE_REV_TYPE( float, 32 )
 
-size_t fwrite_double(FILE *fp, double val){
-  return fwrite_int64( fp, (int64_t *)&val );
-}
-
-size_t fwrite_double_rev(FILE *fp, double val){
-  return fwrite_int64_rev( fp, (int64_t *)&val );
-}
+ZEDA_BINFILE_DEF_FREAD_TYPE(      double, 64 )
+ZEDA_BINFILE_DEF_FREAD_REV_TYPE(  double, 64 )
+ZEDA_BINFILE_DEF_FWRITE_TYPE(     double, 64 )
+ZEDA_BINFILE_DEF_FWRITE_REV_TYPE( double, 64 )
 
 /* binary-file manipulator */
 

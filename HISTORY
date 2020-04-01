@@ -1,3 +1,8 @@
+2020. 4. 1. Added fread/fwrite_word/dword_rev with a macro ZEDA_BINFILE_DEF_FREAD/FWRITE_REV_TYPE. [zeda_binfile]
+2020. 4. 1. Added fread/fwrite_word/dword with a macro ZEDA_BINFILE_DEF_FREAD/FWRITE_TYPE. [zeda_binfile]
+2020. 4. 1. Reimplemented fread/fwrite_float/double_rev with a macro ZEDA_BINFILE_DEF_FREAD/FWRITE_REV_TYPE. [zeda_binfile]
+2020. 4. 1. Reimplemented fread/fwrite_byte/float/double with a macro ZEDA_BINFILE_DEF_FREAD/FWRITE_TYPE. [zeda_binfile]
+2020. 4. 1. Defined dword and udword. [zeda_defs]
 2020. 4. 1. Redefined fread/fwrite_byte/float/double and added fread/fwrite_float/double_rev. [zeda_binfile]
 2020. 4. 1. Defined fread_int* and fwrite_int* family with a macro ZEDA_BINFILE_DEF_FREAD/FWRITE. [zeda_binfile]
 2020. 3.28. Modified .ztk files in examples to be ready for respecification of ZTK format. [example]
