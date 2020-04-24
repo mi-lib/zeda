@@ -409,6 +409,8 @@ void zListPrint(zList *list);
 
 /*! \} */
 
+zListClass(zIntList, zIntListCell, int);
+
 __END_DECLS
 
 #endif /* __ZEDA_LIST_H__ */

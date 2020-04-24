@@ -1,15 +1,13 @@
 #include <zeda/zeda_list.h>
 
-zListClass(int_list_t, int_list_cell_t, int);
-
-void list_create(int_list_t *list, int from, int to)
+void list_create(zIntList *list, int from, int to)
 {
   register int i;
-  int_list_cell_t *cp;
+  zIntListCell *cp;
 
   zListInit( list );
   for( i=from; i<=to; i++ ){
-    if( !( cp = zAlloc( int_list_cell_t, 1 ) ) ){
+    if( !( cp = zAlloc( zIntListCell, 1 ) ) ){
       ZALLOCERROR();
       exit( 1 );
     }
@@ -18,9 +16,9 @@ void list_create(int_list_t *list, int from, int to)
   }
 }
 
-void list_write(int_list_t *list, char *name)
+void list_write(zIntList *list, char *name)
 {
-  int_list_cell_t *cp;
+  zIntListCell *cp;
 
   printf( "<%s>\n", name );
   zListForEach( list, cp )
@@ -29,7 +27,7 @@ void list_write(int_list_t *list, char *name)
 
 int main(void)
 {
-  int_list_t l1, l2;
+  zIntList l1, l2;
 
   printf( "+++ append A +++\n" );
   list_create( &l1, 0, 4 );
@@ -39,8 +37,8 @@ int main(void)
   zListAppendA( &l1, &l2 );
   list_write( &l1, "list1" );
   list_write( &l2, "list2" );
-  zListDestroy( int_list_cell_t, &l1 );
-  zListDestroy( int_list_cell_t, &l2 );
+  zListDestroy( zIntListCell, &l1 );
+  zListDestroy( zIntListCell, &l2 );
 
   printf( "+++ append Z +++\n" );
   list_create( &l1, 0, 4 );
@@ -50,8 +48,8 @@ int main(void)
   zListAppendZ( &l1, &l2 );
   list_write( &l1, "list1" );
   list_write( &l2, "list2" );
-  zListDestroy( int_list_cell_t, &l1 );
-  zListDestroy( int_list_cell_t, &l2 );
+  zListDestroy( zIntListCell, &l1 );
+  zListDestroy( zIntListCell, &l2 );
 
   printf( "+++ append void lists +++\n" );
   zListAppendA( &l1, &l2 );

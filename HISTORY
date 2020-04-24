@@ -1,3 +1,4 @@
+2020. 4.25. Added zIntList and zIntListCell classes. [zeda_list, example]
 2020. 4. 1. Added fread/fwrite_word/dword_rev with a macro ZEDA_BINFILE_DEF_FREAD/FWRITE_REV_TYPE. [zeda_binfile]
 2020. 4. 1. Added fread/fwrite_word/dword with a macro ZEDA_BINFILE_DEF_FREAD/FWRITE_TYPE. [zeda_binfile]
 2020. 4. 1. Reimplemented fread/fwrite_float/double_rev with a macro ZEDA_BINFILE_DEF_FREAD/FWRITE_REV_TYPE. [zeda_binfile]
