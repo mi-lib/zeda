@@ -84,6 +84,14 @@ typedef long long int      int64_t;      /*!< 64-bit signed integer */
 #endif
 #endif
 
+#ifndef INT_MAX
+#define INT_MAX ((int)0x7fffffff)
+#endif
+
+#ifndef UINT_MAX
+#define UINT_MAX ((uint)0xffffffffU)
+#endif
+
 typedef int8_t   byte;   /*!< signed one-byte data. */
 typedef uint8_t  ubyte;  /*!< unsigned one-byte data. */
 typedef int16_t  word;   /*!< signed two-byte data. */
