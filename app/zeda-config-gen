@@ -3,6 +3,7 @@
 INCLUDE=
 LIB=
 LINK=
+DEF=
 VERSION=
 
 while [ "$1" != "" ]
@@ -16,6 +17,9 @@ do
     ;;
   -l)
     shift; LINK=$1; shift
+    ;;
+  -D)
+    shift; DEF=$1; shift
     ;;
   -v)
     shift; VERSION=$1; shift
@@ -38,6 +42,11 @@ fi
 if [ "$LIB" != "" ]; then
   echo "-L)"
   echo "  echo -L$LIB"
+  echo "  ;;"
+fi
+if [ "$DEF" != "" ]; then
+  echo "-D)"
+  echo "  echo $DEF"
   echo "  ;;"
 fi
 if [ "$LINK" != "" ]; then
