@@ -1,3 +1,4 @@
+2020. 6.18. Added zClone. [zeda_misc]
 2020. 5.17. Added -D option in zeda-config-gen. [app]
 2020. 4.26. Added INT_MAX and UINT_MAX. [zeda_defs]
 2020. 4.25. Added zIntList and zIntListCell classes. [zeda_list, example]

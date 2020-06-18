@@ -17,6 +17,17 @@ void assert_swap(void)
   zAssert( zSwap, ac == bc0 && bc == ac0 && ai == bi0 && bi == ai0 );
 }
 
+void assert_clone(void)
+{
+  byte src[BUFSIZ], *dest;
+  register int i;
+
+  for( i=0; i<BUFSIZ; i++ )
+    src[i] = zRandI(0,0xff);
+  zAssert( zClone, ( dest = zClone( src, BUFSIZ ) ) && memcmp( dest, src, BUFSIZ ) == 0 );
+  free( dest );
+}
+
 void assert_itoa(void)
 {
   char str[BUFSIZ];
@@ -66,6 +77,7 @@ int main(void)
   zAssert( zLimit, zLimit( 0.5, 0, 1 ) == 0.5 && zLimit( -1, 0, 1 ) == 0 && zLimit( 10, 0, 1 ) == 1 );
   zAssert( zBound, zBound( 0.5, 1, 0 ) == zBound( 0.5, 0, 1 ) );
   assert_swap();
+  assert_clone();
   zAssert( atox, atox( "1g2h3i" ) == 0x102030 && atox( "1a2b3c" ) == 0x1a2b3c );
   assert_itoa();
   assert_ftoa();

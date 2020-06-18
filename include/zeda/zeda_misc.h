@@ -61,7 +61,7 @@ __EXPORT double zBound(double x, double b1, double b2);
 } while(0)
 
 /* ********************************************************** */
-/*! \defgroup mem_man macros for dynamic memory allocation.
+/*! \defgroup mem_man dynamic memory allocation.
  * \{ *//* ************************************************** */
 
 /*!
@@ -72,19 +72,30 @@ __EXPORT double zBound(double x, double b1, double b2);
  * \def zFree(m)
  * free memory space at \a m.
  * \a m is reset to be the null pointer after freeing the memory.
- *
+ */
+#define zAlloc(t,n) ( (n) == 0 ? NULL : (t *)calloc( (n), sizeof(t) ) )
+#define zFree(m)    do{ if((m)){ free(m); (m)=NULL; } } while(0)
+#define zCopy(t,s,d) ( (t *)memcpy( d, s, sizeof(t) ) )
+
+/*!
  * \def zRealloc(m,t,n)
  * reallocate memories where \a m points.
  * \a n is the number of data set to be reallocated.
  * \a type is the data type.
  * \note zRealloc() is not available in the kernel space.
  */
-#define zAlloc(t,n) ( (n) == 0 ? NULL : (t *)calloc( (n), sizeof(t) ) )
-#define zFree(m)    do{ if((m)){ free(m); (m)=NULL; } } while(0)
-#define zCopy(t,s,d) ( (t *)memcpy( d, s, sizeof(t) ) )
-
 #ifndef __KERNEL__
 #define zRealloc(m,t,n) (t *)realloc( (void *)m, sizeof(t)*(n) )
+#endif /* __KERNEL__ */
+
+/*! \brief clone a memory space.
+ *
+ * zClone() clones a memory space \a src with a size \a size and
+ * returns a pointer to the newly allocated memory if succeeding.
+ * Otherwise, the null pointer is returned.
+ */
+#ifndef __KERNEL__
+__EXPORT void *zClone(void *src, size_t size);
 #endif /* __KERNEL__ */
 
 /*! \} */

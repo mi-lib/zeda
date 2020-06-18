@@ -32,6 +32,22 @@ double zBound(double x, double b1, double b2)
 }
 
 /* ********************************************************** */
+/* dynamic memory allocation.
+ * ********************************************************** */
+
+/* clone a memory space. */
+void *zClone(void *src, size_t size)
+{
+  void *dest;
+
+  if( !( dest = malloc( size ) ) ){
+    ZALLOCERROR();
+    return NULL;
+  }
+  return memcpy( dest, src, size );
+}
+
+/* ********************************************************** */
 /* stream manipulation
  * ********************************************************** */
 
