@@ -43,14 +43,14 @@ __EXPORT char *zStrCopy(char *dest, const char *src, size_t size);
 
 /*! \brief clone a string.
  *
- * zStrClone() duplicates a string, namely, allocates
- * memory for a string \a str and copies it there.
+ * zStrClone() duplicates a string, namely, allocates memory for
+ * a string \a str and copies it there.
  * \return
  * a pointer to the memory allocated.
- * When it fails to allocate memory or \a str is the
- * null pointer, the null pointer is returned.
+ * When it fails to allocate memory or \a str is the null pointer,
+ * the null pointer is returned.
  */
-__EXPORT char *zStrClone(char str[]);
+__EXPORT char *zStrClone(char *str);
 
 /*! \brief concatenate a string to another.
  *
