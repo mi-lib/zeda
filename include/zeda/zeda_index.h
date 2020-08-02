@@ -55,20 +55,22 @@ typedef zIndexStruct *zIndex;
 
 /*! \brief allocate an array of integer values.
  *
- * zIndexAlloc() allocates an internal array of a zIndex instance
- * \a idx with a requested size \a size.
- * \return a pointer \a idx. Or, the null pointer if failing
- * to allocate new memories.
+ * zIndexAlloc() allocates a vector of integer values with a size
+ * \a size.
+ * \return
+ * zIndexAlloc() returns a pointer to the allocated memory if
+ * it succeeds. Otherwise, the null pointer is returned.
  */
-__EXPORT zIndex zIndexAlloc(zIndex idx, int size);
+__EXPORT zIndex zIndexAlloc(int size);
 
 /*! \brief create an array of integer values.
  *
- * zIndexCreate() creates a new array of integer values
- * with a size \a size. It initializes all values of the
- * array as { 0, 1, 2, ..., \a size -1 }.
- * \return a pointer to the zIndex instance newly allocated.
- * Or, the null pointer when failing to allocate new zIndex instance.
+ * zIndexCreate() creates an array of integer values with a size
+ * \a size. It initializes all values of the array as
+ * { 0, 1, 2, ..., \a size -1 }.
+ * \return
+ * zIndexCreate() returns a pointer to the allocated array if it
+ * succeeds. Otherwise, the null pointer is returned.
  */
 __EXPORT zIndex zIndexCreate(int size);
 

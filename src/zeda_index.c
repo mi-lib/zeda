@@ -13,19 +13,7 @@
  * ********************************************************** */
 
 /* allocate internal array of integer vector. */
-zIndex zIndexAlloc(zIndex idx, int size)
-{
-  register int i;
-
-  zArrayAlloc( idx, int, size );
-  if( !zArrayBuf(idx) ) return NULL;
-  for( i=0; i<size; i++ )
-    zIndexSetElemNC( idx, i, i ); /* ordered index as default */
-  return idx;
-}
-
-/* create an integer vector. */
-zIndex zIndexCreate(int size)
+zIndex zIndexAlloc(int size)
 {
   zIndex idx;
 
@@ -33,7 +21,23 @@ zIndex zIndexCreate(int size)
     ZALLOCERROR();
     return NULL;
   }
-  if( !zIndexAlloc( idx, size ) ) zFree( idx );
+  zArrayAlloc( idx, int, size );
+  if( !zArrayBuf(idx) ){
+    free( idx );
+    return NULL;
+  }
+  return idx;
+}
+
+/* create an integer vector. */
+zIndex zIndexCreate(int size)
+{
+  register int i;
+  zIndex idx;
+
+  if( !( idx = zIndexAlloc( size ) ) ) return NULL;
+  for( i=0; i<size; i++ )
+    zIndexSetElemNC( idx, i, i ); /* ordered index as default */
   return idx;
 }
 
