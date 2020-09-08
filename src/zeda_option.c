@@ -87,7 +87,7 @@ bool zOptionRead(zOption *opts, char **argv, zStrAddrList *arglist)
   bool cnt;
   bool ret = true;
 
-  zListInit( arglist );
+  if( arglist ) zListInit( arglist );
   for( cur=NULL, cnt=false; *argv; argv++ ){
     if( (*argv)[0] != '-' || cnt ){
       if( cur ){
