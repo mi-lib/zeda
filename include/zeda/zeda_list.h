@@ -21,9 +21,8 @@ __BEGIN_DECLS
 /*! \def zListClass(list_t,cell_t,data_t)
  * \brief generate bidirectional ring list class.
  *
- * A macro zListClass() can simultaneously generate
- * a new (bidirectional) list class and a new list cell
- * class.
+ * A macro zListClass() simultaneously generates a new
+ * (bidirectional) list class and a new list cell class.
  *
  * The list cell class, which is named \a cell_t has
  * pointers to the previous and the next cells, and

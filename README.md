@@ -11,6 +11,7 @@ algorithms including:
 - bit operations
 - array operations
 - list operations
+- heap operations
 - round-robin table operations
 - string operations
 - command line option manipulations
