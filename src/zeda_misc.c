@@ -51,6 +51,20 @@ void *zClone(void *src, size_t size)
 /* stream manipulation
  * ********************************************************** */
 
+/* count the size of a file. */
+size_t zFileSize(FILE *fp)
+{
+  long pos, pos_beg, pos_end;
+
+  pos = ftell( fp );
+  fseek( fp, 0, SEEK_SET );
+  pos_beg = ftell( fp );
+  fseek( fp, 0, SEEK_END );
+  pos_end = ftell( fp );
+  fseek( fp, pos, SEEK_SET );
+  return pos_end - pos_beg;
+}
+
 #ifndef __KERNEL__
 /* peek a charactor from file. */
 int fpeek(FILE *fp)

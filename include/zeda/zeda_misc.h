@@ -100,6 +100,11 @@ __EXPORT void *zClone(void *src, size_t size);
 
 /*! \} */
 
+/*! \brief count the size of a file. */
+#ifndef __KERNEL__
+__EXPORT size_t zFileSize(FILE *fp);
+#endif /* __KERNEL__ */
+
 /*! \brief peek charactor.
  *
  * fpeek() picks up a charactor from the current position
