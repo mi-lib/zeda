@@ -66,22 +66,34 @@ __EXPORT double zBound(double x, double b1, double b2);
 
 /*!
  * \def zAlloc(t,n)
- * allocate memories for \a n data set.
- * \a type is the data type.
+ * allocate memory for \a n data of a data type \a type.
+ *
+ * \def zAllocZero(t,n)
+ * allocate memory for \a n data of a data type \a type and clear it by zero.
  *
  * \def zFree(m)
- * free memory space at \a m.
+ * free memory allocated at \a m.
  * \a m is reset to be the null pointer after freeing the memory.
  */
-#define zAlloc(t,n) ( (n) == 0 ? NULL : (t *)calloc( (n), sizeof(t) ) )
-#define zFree(m)    do{ if((m)){ free(m); (m)=NULL; } } while(0)
-#define zCopy(t,s,d) ( (t *)memcpy( d, s, sizeof(t) ) )
+/* NOTE: now zAlloc is implemented with calloc but will be replaced
+ * by malloc for faster operations.
+ */
+#define zAlloc(t,n)     ( (n) == 0 ? NULL : (t *)calloc( (n), sizeof(t) ) )
+#define zAllocZero(t,n) ( (n) == 0 ? NULL : (t *)calloc( (n), sizeof(t) ) )
+
+#define zFree(m)        do{ if( (m) ){ free( m ); (m) = NULL; } } while(0)
+
+/*!
+ * \def zCopy(t,s,d)
+ * copy \a s to \a d, where both are supposed to be types of \a t.
+ */
+#define zCopy(t,s,d)    ( (t *)memcpy( d, s, sizeof(t) ) )
 
 /*!
  * \def zRealloc(m,t,n)
- * reallocate memories where \a m points.
- * \a n is the number of data set to be reallocated.
- * \a type is the data type.
+ * reallocate memory where \a m points.
+ * \a n is the number of data to be reallocated.
+ * \a type is the type of the data.
  * \note zRealloc() is not available in the kernel space.
  */
 #ifndef __KERNEL__

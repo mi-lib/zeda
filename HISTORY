@@ -1,3 +1,4 @@
+2021. 3.16. Added zAllocZero. [zeda_misc]
 2021. 3.16. Modified ZTKParse to detect keys by post-checking. [zeda_ztk]
 2021. 3.16. Added zFPostCheckKey. [zeda_string]
 2021. 3.16. Added zSetTagIdent, zResetTagIdent, zSetKeyIdent and zResetKeyIdent. [zeda_string]
