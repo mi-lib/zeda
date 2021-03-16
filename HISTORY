@@ -1,3 +1,7 @@
+2021. 3.16. Modified ZTKParse to detect keys by post-checking. [zeda_ztk]
+2021. 3.16. Added zFPostCheckKey. [zeda_string]
+2021. 3.16. Added zSetTagIdent, zResetTagIdent, zSetKeyIdent and zResetKeyIdent. [zeda_string]
+2021. 3.16. Modified zFSkipComment and zFToken. [zeda_string]
 2021. 2.19. Added zFileSize. [zeda_misc]
 2020.11.14. Added zHeapClass and zHeapClassMethod. [zeda_heap]
 2020. 9. 8. Modified zOptionRead to accept the null pointer for a list of argument. [zeda_option]

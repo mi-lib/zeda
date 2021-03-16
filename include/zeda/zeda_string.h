@@ -264,7 +264,7 @@ __EXPORT bool zIsIncludedChar(char c, char *s);
  * a charactor \a c is either the whitespace or the
  * tab charactor.
  */
-#define zIsWS(c) ( (c)==' ' || (c)=='\t' )
+#define zIsWS(c) ( (c) == ' ' || (c) == '\t' )
 
 /*! \brief check if a charactor is a delimiter.
  *
@@ -293,7 +293,7 @@ __EXPORT bool zIsOperator(char c);
  * zIsQuotation() is a boolean. It is the true value
  * if \a c is either ' or ".
  */
-#define zIsQuotation(c) ( (c)=='\'' || (c)=='\"' )
+#define zIsQuotation(c) ( (c) == '\'' || (c) == '\"' )
 
 /*! \brief check if a string represents a hexadecimal number.
  *
@@ -529,6 +529,15 @@ __EXPORT double zSDouble(char *str);
 
 /*! \} */
 
+#define ZDEFAULT_TAG_BEGIN_IDENT '['
+#define ZDEFAULT_TAG_END_IDENT   ']'
+
+/*! \brief specify the tag identifiers. */
+__EXPORT void zSetTagIdent(char begin_ident, char end_ident);
+
+/*! \brief reset the tag identifiers. */
+__EXPORT void zResetTagIdent(void);
+
 /*! \brief check if a token is a tag.
  *
  * zTokenIsTag() checks if a token pointed by \a tkn
@@ -564,20 +573,6 @@ __EXPORT char *zExtractTag(char *tag, char *notag);
  */
 __EXPORT int zFCountTag(FILE *fp, char *tag);
 
-/*! \brief count keywords in a file.
- *
- * zFCountKey() counts keywords which coincide with
- * a string pointed by \a key in a file \a fp between a
- * tag and the next tag.
- * After counting, the current position of \a fp is
- * rewinded where it pointed before counting.
- * \return
- * The number of the counted keywords is returned.
- * \sa
- * zFCountTag
- */
-__EXPORT int zFCountKey(FILE *fp, char *key);
-
 /*! \brief scan tagged fields in a file.
  *
  * zTagFScan() scans all tagged fields in a file \a fp.
@@ -598,6 +593,31 @@ __EXPORT int zFCountKey(FILE *fp, char *key);
  * the true value is returned.
  */
 __EXPORT bool zTagFScan(FILE *fp, bool (* tag_fscan)(FILE*,void*,char*,bool*), void *instance);
+
+#define ZDEFAULT_KEY_IDENT ':'
+
+/*! \brief specify the key identifier. */
+__EXPORT void zSetKeyIdent(char ident);
+
+/*! \brief reset the key identifier. */
+__EXPORT void zResetKeyIdent(void);
+
+/*! \brief  check if the last token is a key. */
+__EXPORT bool zFPostCheckKey(FILE *fp);
+
+/*! \brief count keywords in a file.
+ *
+ * zFCountKey() counts keywords which coincide with
+ * a string pointed by \a key in a file \a fp between a
+ * tag and the next tag.
+ * After counting, the current position of \a fp is
+ * rewinded where it pointed before counting.
+ * \return
+ * The number of the counted keywords is returned.
+ * \sa
+ * zFCountTag
+ */
+__EXPORT int zFCountKey(FILE *fp, char *key);
 
 /*! \brief scan a field in a file.
  *

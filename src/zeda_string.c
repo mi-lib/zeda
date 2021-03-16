@@ -152,7 +152,7 @@ char *zToLower(char *src, char *dest)
 #ifndef __KERNEL__
 static char zdelimiter_default[] = {
   EOF, '\t', '\v', '\f', '\n', '\r',
-  ' ', ',', ':', ';', '|', '(', ')', '{', '}', '\0'
+  ' ', ',', ';', ':', '|', '(', ')', '{', '}', '\0'
 };
 static char *zdelimiter = zdelimiter_default;
 
@@ -164,7 +164,8 @@ void zResetDelimiter(void){ zSetDelimiter( zdelimiter_default ); }
 
 static char zoperator_default[] = {
   '!', '%', '&', '*', '+', '-', '/', '<', '=', '>',
-  '?', '@', '\\', '^', '~', '\0' };
+  '?', '@', '\\', '^', '~', '\0',
+};
 static char *zoperator = zoperator_default;
 
 /* specify a set of operators. */
@@ -200,7 +201,7 @@ bool zStrIsHex(char *str)
   return true;
 }
 
-/* skip whitespaces in file. */
+/* skip whitespaces in a file. */
 char zFSkipWS(FILE *fp)
 {
   char c;
@@ -212,14 +213,14 @@ char zFSkipWS(FILE *fp)
   return c;
 }
 
-/* skip whitespaces in string. */
+/* skip whitespaces in a string. */
 char *zSSkipWS(char *str)
 {
   for( ; *str && zIsWS(*str); str++ );
   return str;
 }
 
-/* skip certain charactors in file. */
+/* skip certain charactors in a file. */
 char zFSkipIncludedChar(FILE *fp, char *s)
 {
   char c;
@@ -231,20 +232,20 @@ char zFSkipIncludedChar(FILE *fp, char *s)
   return c;
 }
 
-/* skip certain charactors in string. */
+/* skip certain charactors in a string. */
 char *zSSkipIncludedChar(char *str, char *s)
 {
   for( ; *str && zIsIncludedChar(*str,s); str++ );
   return str;
 }
 
-/* skip delimiters in file. */
+/* skip delimiters in a file. */
 char zFSkipDelimiter(FILE *fp)
 {
   return zFSkipIncludedChar( fp, zdelimiter );
 }
 
-/* skip delimiters in string. */
+/* skip delimiters in a string. */
 char *zSSkipDelimiter(char *str)
 {
   return zSSkipIncludedChar( str, zdelimiter );
@@ -258,25 +259,22 @@ void zSetCommentIdent(char ident){ zcommentident = ident; }
 /* reset the comment identifier. */
 void zResetCommentIdent(void){ zSetCommentIdent( ZDEFAULT_COMMENT_IDENT ); }
 
-/* skip comments in file. */
+/* skip comments in a file. */
 char zFSkipComment(FILE *fp)
 {
   char c;
   char dummy[BUFSIZ];
 
-  while( 1 )
-    switch( ( c = fgetc( fp ) ) ){
-    case ' ': case '\t': zFSkipWS( fp ); break;
-    case '\n': case '\r': break;
-    case EOF: return (char)0;
-    default:
-      if( c == zcommentident ){
-        if( !fgets( dummy, BUFSIZ, fp ) ) return (char)0;
-      } else{
-        ungetc( c, fp );
-        return c;
-      }
+  while( 1 ){
+    if( !zFSkipDelimiter( fp ) ) return (char)0;
+    if( ( c = fgetc( fp ) ) == zcommentident ){
+      if( !fgets( dummy, BUFSIZ, fp ) ) return (char)0;
+    } else{
+      ungetc( c, fp );
+      return c;
     }
+  }
+  return 0; /* never reaches this statement */
 }
 #endif /* __KERNEL__ */
 
@@ -298,7 +296,7 @@ char *_zFString(FILE *fp, char *tkn, size_t size)
       break;
     }
     tkn[i] = fgetc( fp );
-    if( zIsQuotation(tkn[i]) && ( i == 0 || tkn[i-1] != '\\' ) )
+    if( zIsQuotation( tkn[i] ) && ( i == 0 || tkn[i-1] != '\\' ) )
       break;
   }
   tkn[i] = '\0';
@@ -313,7 +311,7 @@ char *_zSString(char *str, char *tkn, size_t size)
 
   size--;
   for( sp=str, i=0; *sp; sp++, i++ ){
-    if( zIsQuotation(*sp) && ( i == 0 || tkn[i-1] != '\\' ) )
+    if( zIsQuotation( *sp ) && ( i == 0 || tkn[i-1] != '\\' ) )
       break;
     if( i >= size ){
       ZRUNWARN( ZEDA_WARN_TOOLNG_STR );
@@ -327,14 +325,13 @@ char *_zSString(char *str, char *tkn, size_t size)
   return tkn;
 }
 
-/* get a token in file. */
+/* get a token in a file. */
 char *zFToken(FILE *fp, char *tkn, size_t size)
 {
   register int i;
 
-  *tkn = '\0';
+  *tkn = '\0'; /* initialize buffer */
   if( !zFSkipComment( fp ) ) return NULL;
-  if( !zFSkipDelimiter( fp ) ) return NULL;
   *tkn = fgetc( fp );
   if( zIsQuotation( *tkn ) )
     return _zFString( fp, tkn, size );
@@ -345,7 +342,10 @@ char *zFToken(FILE *fp, char *tkn, size_t size)
       i = _zMax( size, 0 );
       break;
     }
-    if( zIsDelimiter( ( tkn[i] = fgetc( fp ) ) ) ) break;
+    if( zIsDelimiter( ( tkn[i] = fgetc( fp ) ) ) ){
+      ungetc( tkn[i], fp );
+      break;
+    }
   }
   tkn[i] = '\0';
   return tkn;
@@ -579,10 +579,24 @@ double zSDouble(char *str)
   return zSToken( str, buf, BUFSIZ ) ? atof( buf ) : 0;
 }
 
+/* for tag-and-key format */
+
+static char ztagbeginident = ZDEFAULT_TAG_BEGIN_IDENT;
+static char ztagendident   = ZDEFAULT_TAG_END_IDENT;
+
+/* specify the tag identifiers. */
+void zSetTagIdent(char begin_ident, char end_ident){
+  ztagbeginident = begin_ident;
+  ztagendident   = end_ident;
+}
+
+/* reset the tag identifiers. */
+void zResetTagIdent(void){ zSetTagIdent( ZDEFAULT_TAG_BEGIN_IDENT, ZDEFAULT_TAG_END_IDENT ); }
+
 /* check if a token is a tag. */
 bool zTokenIsTag(char *tkn)
 {
-  return tkn && ( tkn[0] == '[' && tkn[strlen(tkn)-1] == ']' )
+  return tkn && ( tkn[0] == ztagbeginident && tkn[strlen(tkn)-1] == ztagendident )
     ? true : false;
 }
 
@@ -596,7 +610,8 @@ char *zExtractTag(char *tag, char *notag)
   return notag;
 }
 
-/* count specified tags in file. */
+/* count specified tags in a file. */
+/* TO BE OBSOLETED. */
 int zFCountTag(FILE *fp, char *tag)
 {
   char buf[BUFSIZ];
@@ -611,23 +626,8 @@ int zFCountTag(FILE *fp, char *tag)
   return count;
 }
 
-/* count specified keys in file. */
-int zFCountKey(FILE *fp, char *key)
-{
-  char buf[BUFSIZ];
-  int cur, count = 0;
-
-  cur = ftell( fp );
-  while( !feof( fp ) ){
-    if( zFToken( fp, buf, BUFSIZ ) && zTokenIsTag( buf ) )
-      break;
-    if( strcmp( buf, key ) == 0 ) count++;
-  }
-  fseek( fp, cur, SEEK_SET );
-  return count;
-}
-
 /* scan tagged fields from a file. */
+/* TO BE OBSOLETED. */
 bool zTagFScan(FILE *fp, bool (* fscan_tag)(FILE*,void*,char*,bool*), void *instance)
 {
   char buf[BUFSIZ];
@@ -643,7 +643,48 @@ bool zTagFScan(FILE *fp, bool (* fscan_tag)(FILE*,void*,char*,bool*), void *inst
   return success;
 }
 
+static char zkeyident = ZDEFAULT_KEY_IDENT;
+
+/* specify the key identifier. */
+void zSetKeyIdent(char ident){ zkeyident = ident; }
+
+/* reset the key identifier. */
+void zResetKeyIdent(void){ zSetKeyIdent( ZDEFAULT_KEY_IDENT ); }
+
+/* check if the last token is a key. */
+bool zFPostCheckKey(FILE *fp)
+{
+  char c;
+
+  while( ( c = fgetc( fp ) ) != EOF ){
+    if( c == zkeyident ) return true;
+    if( !zIsDelimiter( c ) ){
+      ungetc( c, fp );
+      break;
+    }
+  }
+  return false;
+}
+
+/* count specified keys in a file. */
+/* TO BE OBSOLETED. */
+int zFCountKey(FILE *fp, char *key)
+{
+  char buf[BUFSIZ];
+  int cur, count = 0;
+
+  cur = ftell( fp );
+  while( !feof( fp ) ){
+    if( zFToken( fp, buf, BUFSIZ ) && zTokenIsTag( buf ) )
+      break;
+    if( strcmp( buf, key ) == 0 ) count++;
+  }
+  fseek( fp, cur, SEEK_SET );
+  return count;
+}
+
 /* scan a field from a file. */
+/* TO BE OBSOLETED. */
 bool zFieldFScan(FILE *fp, bool (* fscan_field)(FILE*,void*,char*,bool*), void *instance)
 {
   char buf[BUFSIZ];

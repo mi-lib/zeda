@@ -362,7 +362,7 @@ bool ZTKParse(ZTK *ztk, char *path)
         _ZTKParseTag( ztk, "" );
         if( !ztk->tf_cp ) continue; /* tagged field unactivated. */
       }
-      if( ZTKDefFindKey( &ztk->def->data, buf ) ){ /* token is a key. */
+      if( zFPostCheckKey( fs->fp ) ){ /* token is a key. */
         if( !( ztk->kf_cp = ZTKKeyFieldListNew( &ztk->tf_cp->data.kflist, buf ) ) ){
           ret = false;
           break;

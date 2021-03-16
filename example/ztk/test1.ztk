@@ -4,7 +4,7 @@
 key1: val1 val2 val3 % comment in a field
 key2: val4
 key3: val5 val6
-key4: val7
+key4: key4 val7
 
 % include another ZTK file
 
@@ -15,4 +15,4 @@ key1: val1 val2 val3
 key2; val4
 % comment in a field
 include: test3.ztk % include test 3
-key3: val5 val6
+key3: val5 val6 key3

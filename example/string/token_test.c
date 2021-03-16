@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
   printf( "[file]\n" );
   fp = fopen( "test.txt", "r" );
   while( 1 ){
-    if( !zFSkipDefaultComment( fp ) ||
+    if( !zFSkipComment( fp ) ||
         !zFToken( fp, tkn, size ) ) break;
     printf( "token-> %s\n", tkn );
   }
