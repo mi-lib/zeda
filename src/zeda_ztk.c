@@ -72,117 +72,6 @@ void zFileStackDestroy(zFileStack *head)
 }
 
 /* ********************************************************** */
-/* definition of ZTK (a set of tag and keys).
- *//* ******************************************************* */
-
-/* destroy a definition of ZTK. */
-void ZTKDefDestroy(ZTKDef *def)
-{
-  free( def->tag );
-  zStrListDestroy( &def->keylist );
-}
-
-/* find a key in a definition of ZTK. */
-bool ZTKDefFindKey(ZTKDef *def, char *key)
-{
-  return zStrListFind( &def->keylist, key ) ? true : false;
-}
-
-/* print out a definition of ZTK (for debug). */
-void ZTKDefFPrint(FILE *fp, ZTKDef *def)
-{
-  fprintf( fp, "[%s]\n", def->tag );
-  fprintf( fp, "(keys)\n" );
-  zStrListFPrint( fp, &def->keylist );
-}
-
-/* ********************************************************** */
-/* a definition list of ZTK.
- *//* ******************************************************* */
-
-/* destroy a definition list of ZTK. */
-void ZTKDefListDestroy(ZTKDefList *list)
-{
-  ZTKDefListCell *cp;
-
-  while( !zListIsEmpty( list ) ){
-    zListDeleteHead( list, &cp );
-    free( cp->data.tag );
-    zStrListDestroy( &cp->data.keylist );
-    free( cp );
-  }
-}
-
-/* find tag in a definition list of ZTK. */
-ZTKDefListCell *ZTKDefListFindTag(ZTKDefList *list, char *tag)
-{
-  ZTKDefListCell *cp;
-
-  zListForEach( list, cp )
-    if( strcmp( cp->data.tag, tag ) == 0 ) return cp;
-  return NULL;
-}
-
-/* find tag in a definition list of ZTK, and if not found, allocate a new definition. */
-ZTKDefListCell *ZTKDefListFindAndAddTag(ZTKDefList *list, char *tag)
-{
-  ZTKDefListCell *cp;
-
-  if( ( cp = ZTKDefListFindTag( list, tag ) ) ) return cp;
-  if( !( cp = zAlloc( ZTKDefListCell, 1 ) ) ){
-    ZALLOCERROR();
-    return NULL;
-  }
-  if( !( cp->data.tag = zStrClone( tag ) ) ){
-    ZALLOCERROR();
-    free( cp );
-    return NULL;
-  }
-  zListInit( &cp->data.keylist );
-  zListInsertHead( list, cp );
-  return cp;
-}
-
-/* register a new definition of ZTK to a list. */
-ZTKDefListCell *ZTKDefListRegOne(ZTKDefList *list, char *tag, char *key)
-{
-  ZTKDefListCell *cp;
-
-  if( !( cp = ZTKDefListFindAndAddTag( list, tag ) ) ) return NULL;
-  if( !zStrListFindAndAdd( &cp->data.keylist, key ) ){
-    ZTKDefDestroy( &cp->data );
-    free( cp );
-    return NULL;
-  }
-  return cp;
-}
-
-/* register a new definition of ZTK to a list. */
-ZTKDefListCell *ZTKDefListReg(ZTKDefList *list, char *tag, char **key, int keynum)
-{
-  ZTKDefListCell *cp;
-  register int i;
-
-  if( !( cp = ZTKDefListFindAndAddTag( list, tag ) ) ) return NULL;
-  for( i=0; i<keynum; i++ )
-    if( !zStrListFindAndAdd( &cp->data.keylist, key[i] ) ){
-      ZTKDefDestroy( &cp->data );
-      free( cp );
-      return NULL;
-    }
-  return cp;
-}
-
-/* print out a definition list of ZTK (for debug). */
-void ZTKDefListFPrint(FILE *fp, ZTKDefList *list)
-{
-  ZTKDefListCell *cp;
-
-  zListForEach( list, cp )
-    ZTKDefFPrint( fp, &cp->data );
-}
-
-/* ********************************************************** */
 /* key field of ZTK format.
  *//* ******************************************************* */
 
@@ -305,8 +194,6 @@ void ZTKTagFieldListFPrint(FILE *fp, ZTKTagFieldList *list)
 ZTK *ZTKInit(ZTK *ztk)
 {
   zFileStackInit( &ztk->fs );
-  zListInit( &ztk->deflist );
-  ztk->def = NULL;
   zListInit( &ztk->tflist );
   ztk->tf_cp = NULL;
   ztk->kf_cp = NULL;
@@ -318,22 +205,16 @@ ZTK *ZTKInit(ZTK *ztk)
 void ZTKDestroy(ZTK *ztk)
 {
   zFileStackDestroy( &ztk->fs );
-  ZTKDefListDestroy( &ztk->deflist );
   ZTKTagFieldListDestroy( &ztk->tflist );
 }
 
 /* parse a tag with a ZTK format processor. */
 static bool _ZTKParseTag(ZTK *ztk, char *buf)
 {
-  if( !( ztk->def = ZTKDefListFindTag( &ztk->deflist, buf ) ) ){
-    /* unregisterred tagged field, skipped */
-    ztk->tf_cp = NULL;
-  } else{
-    if( !( ztk->tf_cp = ZTKTagFieldListNew( buf ) ) ) /* allocate a new tagged field */
-      return false;
-    zListInsertHead( &ztk->tflist, ztk->tf_cp );
-    ztk->kf_cp = NULL; /* unactivate the key field */
-  }
+  if( !( ztk->tf_cp = ZTKTagFieldListNew( buf ) ) ) /* allocate a new tagged field */
+    return false;
+  zListInsertHead( &ztk->tflist, ztk->tf_cp );
+  ztk->kf_cp = NULL; /* unactivate the key field */
   return true;
 }
 
@@ -358,10 +239,8 @@ bool ZTKParse(ZTK *ztk, char *path)
         ZTKParse( ztk, zFToken(fs->fp,buf,BUFSIZ) );
         continue;
       }
-      if( !ztk->def ){
-        _ZTKParseTag( ztk, "" );
-        if( !ztk->tf_cp ) continue; /* tagged field unactivated. */
-      }
+      if( !ztk->tf_cp )
+        if( !_ZTKParseTag( ztk, "" ) ) continue; /* tagged field unactivated. */
       if( zFPostCheckKey( fs->fp ) ){ /* token is a key. */
         if( !( ztk->kf_cp = ZTKKeyFieldListNew( &ztk->tf_cp->data.kflist, buf ) ) ){
           ret = false;
@@ -515,16 +394,6 @@ void ZTKFPrint(FILE *fp, ZTK *ztk)
 /*! \struct ZTKPrp
  * \brief properties of a class described by a set of tag/key string and call-back functions.
  *//* ******************************************************* */
-
-/* register a tag-and-key property to a ZTK format processor. */
-bool ZTKDefListRegPrp(ZTKDefList *list, char *tag, ZTKPrp prp[], int num)
-{
-  register int i;
-
-  for( i=0; i<num; i++ )
-    if( !ZTKDefListRegOne( list, tag, prp[i].str ) ) return false;
-  return true;
-}
 
 /* evaluate a key field of a ZTK format processor based on a ZTK property. */
 void *_ZTKEvalKey(void *obj, void *arg, ZTK *ztk, ZTKPrp prp[], int num)

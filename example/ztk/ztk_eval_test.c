@@ -75,23 +75,14 @@ void eval_test(ZTK *ztk)
   ZTKEvalTag( &expression, NULL, ztk, ztk_prp_calculator );
 }
 
-/* register a definition set of tag-and-key */
-void reg_def(ZTK *ztk)
-{
-  ZTKDefRegPrp( ztk, "job", ztk_prp_job );
-}
-
 int main(int argc, char *argv[])
 {
   ZTK ztk;
 
   ZTKInit( &ztk );
-  reg_def( &ztk );
   ZTKParse( &ztk, "calcurator.ztk" );
   /* activate the following line in order to see an image of the parsed tree. */
-/*
   ZTKPrint( &ztk );
-*/
   eval_test( &ztk );
   ZTKDestroy( &ztk );
   return 0;

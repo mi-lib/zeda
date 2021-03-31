@@ -44,48 +44,6 @@ __EXPORT zFileStack *zFileStackPop(zFileStack *head);
 __EXPORT void zFileStackDestroy(zFileStack *head);
 
 /* ********************************************************** */
-/*! \struct ZTKDef
- * \brief definition of ZTK (a set of tag and keys).
- *//* ******************************************************* */
-typedef struct{
-  char *tag;        /*!< defined tag */
-  zStrList keylist; /*!< defined set of keys */
-} ZTKDef;
-
-/* destroy a definition of ZTK. */
-__EXPORT void ZTKDefDestroy(ZTKDef *def);
-
-/* find a key in a definition of ZTK. */
-__EXPORT bool ZTKDefFindKey(ZTKDef *def, char *key);
-
-/* print out a definition of ZTK (for debug). */
-__EXPORT void ZTKDefFPrint(FILE *fp, ZTKDef *def);
-
-/* ********************************************************** */
-/*! \struct ZTKDefList
- * \brief a definition list of ZTK.
- *//* ******************************************************* */
-zListClass( ZTKDefList, ZTKDefListCell, ZTKDef );
-
-/*! \brief destroy a definition list of ZTK. */
-__EXPORT void ZTKDefListDestroy(ZTKDefList *list);
-
-/*! \brief find tag in a definition list of ZTK. */
-__EXPORT ZTKDefListCell *ZTKDefListFindTag(ZTKDefList *list, char *tag);
-
-/*! \brief find tag in a definition list of ZTK, and if not, allocate a new definition. */
-__EXPORT ZTKDefListCell *ZTKDefListFindAndAddTag(ZTKDefList *list, char *tag);
-
-/*! \brief register a new definition of ZTK to a list. */
-__EXPORT ZTKDefListCell *ZTKDefListRegOne(ZTKDefList *list, char *tag, char *key);
-
-/*! \brief register a new definition of ZTK to a list. */
-__EXPORT ZTKDefListCell *ZTKDefListReg(ZTKDefList *list, char *tag, char **key, int keynum);
-
-/*! \brief print out a definition list of ZTK (for debug). */
-__EXPORT void ZTKDefListFPrint(FILE *fp, ZTKDefList *list);
-
-/* ********************************************************** */
 /*! \struct ZTKKeyField
  * \brief key field of ZTK format.
  *//* ******************************************************* */
@@ -142,25 +100,11 @@ __EXPORT void ZTKTagFieldListFPrint(FILE *fp, ZTKTagFieldList *list);
  *//* ******************************************************* */
 typedef struct{
   zFileStack fs;
-  ZTKDefList deflist;
-  ZTKDefListCell *def;
   ZTKTagFieldList tflist;
   ZTKTagFieldListCell *tf_cp;
   ZTKKeyFieldListCell *kf_cp;
   zStrListCell *val_cp;
 } ZTK;
-
-/*! \brief register a definition of a tag to a ZTK format processor. */
-#define ZTKDefRegTag(ztk,tag) ZTKDefListFindAndAddTag( &(ztk)->deflist, tag )
-
-/*! \brief register a definition of a set of tag and key to a ZTK format processor. */
-#define ZTKDefRegOne(ztk,tag,key) ZTKDefListRegOne( &(ztk)->deflist, tag, key )
-
-/*! \brief register a definition of a set of tag and keys to a ZTK format processor. */
-#define ZTKDefReg(ztk,tag,keylist) ZTKDefListReg( &(ztk)->deflist, tag, keylist, sizeof(keylist)/sizeof(char*) )
-
-/*! \brief register a definition of a tagless key to a ZTK format processor. */
-#define ZTKDefRegKey(ztk,key) ZTKDefReg(ztk,"",key)
 
 /*! \brief initialize a ZTK format processor. */
 __EXPORT ZTK *ZTKInit(ZTK *ztk);
@@ -225,10 +169,6 @@ typedef struct{
   void *(* _eval)(void *, int, void *, ZTK *); /*!< ZTK evaluation function */
   void (* _fprint)(FILE *, int, void *); /*!< print out function */
 } ZTKPrp;
-
-/* register a tag-and-key property to a ZTK format processor. */
-__EXPORT bool ZTKDefListRegPrp(ZTKDefList *list, char *tag, ZTKPrp prp[], int num);
-#define ZTKDefRegPrp(ztk,tag,prp) ZTKDefListRegPrp( &(ztk)->deflist, tag, prp, sizeof(prp)/sizeof(ZTKPrp) )
 
 /* evaluate a key field of a ZTK format processor based on a ZTK property. */
 __EXPORT void *_ZTKEvalKey(void *obj, void *arg, ZTK *ztk, ZTKPrp prp[], int num);

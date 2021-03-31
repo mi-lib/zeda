@@ -10,8 +10,10 @@ DOCDIR:=$(ROOTDIR)/doc
 TESTDIR:=$(ROOTDIR)/test
 SAMPLEDIR:=$(ROOTDIR)/example
 
-all:
+all: library install application
+library:
 	@cd $(SRCDIR); make
+application:
 	@cd $(APPDIR); make config-gen all
 autotest:
 	@cd $(TESTDIR); ./test.sh
