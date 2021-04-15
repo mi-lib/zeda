@@ -1,3 +1,4 @@
+2021. 4.15. Added zeda_csv. [zeda_csv, zeda_errmsg]
 2021. 3.31. Abolished ZTKDef and ZTKDefReg* operations. [zeda_ztk]
 2021. 3.31. Modified makefile to separately make and install library and applications. [makefile]
 2021. 3.16. Added zAllocZero. [zeda_misc]

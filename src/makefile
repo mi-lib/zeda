@@ -14,7 +14,8 @@ OBJ=zeda_misc.o\
 	zeda_string.o \
 	zeda_bit.o zeda_rand.o\
 	zeda_binfile.o\
-	zeda_array.o zeda_index.o zeda_stream.o zeda_list.o zeda_rrtab.o\
+	zeda_csv.o zeda_stream.o\
+	zeda_array.o zeda_index.o zeda_list.o zeda_rrtab.o\
 	zeda_strlist.o\
 	zeda_option.o zeda_ztk.o
 DLIB=libzeda.so

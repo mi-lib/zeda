@@ -29,6 +29,9 @@
 #define ZEDA_WARN_TOOLNG_TKN           "too long string to tokenize"
 #define ZEDA_WARN_TOOLNG_NUM           "too long number"
 
+#define ZEDA_WARN_CSV_NO_DATA    "no data in a CSV file %s"
+#define ZEDA_WARN_CSV_OUTOFRANGE "out-of-range position %d is specified"
+
 #define ZEDA_WARN_ZTK_INCLUDE_DUP      "%s: duplicate file inclusion, skipped."
 #define ZEDA_WARN_ZTK_NOT_TAGGED       "not in a tagged field, skipped."
 #define ZEDA_WARN_ZTK_DUPDEF           "duplicate entry of tag [%s], skipped."
@@ -46,6 +49,8 @@
 #define ZEDA_ERR_INTSIZ_NOT_FOUND      "size of int not found."
 #define ZEDA_ERR_LNGSIZ_NOT_FOUND      "size of long not found."
 #define ZEDA_ERR_UNKNOWN_ENDIAN        "unknown endian."
+
+#define ZEDA_ERR_CSV_INVALID     "invalid CSV file"
 
 #define ZEDA_ERR_FATAL                 "fatal error! - please report to the author"
 
