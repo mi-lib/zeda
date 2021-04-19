@@ -18,6 +18,17 @@ char *zCSVGetLine(zCSV *csv)
   return ret;
 }
 
+/* go to a specified line in a CSV file. */
+char *zCSVGoToLine(zCSV *csv, int i)
+{
+  if( i >= zCSVLineNum(csv) ){
+    ZRUNERROR( ZEDA_ERR_CSV_INVALID_LINE, i );
+    return NULL;
+  }
+  fseek( csv->fp, csv->pos[i], SEEK_SET );
+  return zCSVGetLine( csv );
+}
+
 /* get a field from the current buffer of a CSV file. */
 char *zCSVGetField(zCSV *csv, char *field, size_t size)
 {
@@ -56,7 +67,7 @@ double zCSVGetDouble(zCSV *csv)
 /* rewind the stream of a CSV file. */
 void zCSVRewind(zCSV *csv)
 {
-  fseek( csv->fp, csv->pos0, SEEK_SET );
+  fseek( csv->fp, csv->pos[0], SEEK_SET );
 }
 
 /* count the number of fields per line. */
@@ -65,7 +76,7 @@ static int _zCSVCountField(zCSV *csv)
   char field[BUFSIZ];
 
   zCSVRewind( csv );
-  for( csv->nf=0; zCSVLineIsEmpty(csv); csv->nf++ )
+  for( csv->nf=0; !zCSVLineIsEmpty(csv); csv->nf++ )
     zCSVGetField( csv, field, BUFSIZ );
   zCSVRewind( csv );
   return csv->nf;
@@ -74,21 +85,24 @@ static int _zCSVCountField(zCSV *csv)
 /* open a CSV file. */
 zCSV *zCSVOpen(zCSV *csv, char filename[])
 {
-  csv->pos0 = -1;
-  if( !( csv->fp = fopen( filename, "rt" ) ) ){
-    ZOPENERROR( filename );
+  register int i;
+
+  if( !( csv->fp = zOpenFile( filename, "csv", "rt" ) ) )
+    return NULL;
+  for( csv->nl=0; fgets( csv->buf, BUFSIZ, csv->fp ); )
+    if( csv->buf[0] != '\%' ) csv->nl++;
+  if( !( csv->pos = zAlloc( long, csv->nl ) ) ){
+    ZALLOCERROR();
     return NULL;
   }
-  do{
-    csv->pos0 = ftell( csv->fp );
-    if( !zCSVGetLine( csv ) ){
-      ZRUNWARN( ZEDA_WARN_CSV_NO_DATA, filename );
-      break;
+  rewind( csv->fp );
+  for( i=0; i<csv->nl; ){
+    csv->pos[i] = ftell( csv->fp );
+    if( !fgets( csv->buf, BUFSIZ, csv->fp ) ){
+      ZRUNERROR( ZEDA_ERR_CSV_INVALID );
+      return NULL;
     }
-  } while( csv->buf[0] == '\%' ); /* skip comments */
-  if( csv->pos0 == -1 ){
-    ZRUNERROR( ZEDA_ERR_CSV_INVALID );
-    return NULL;
+    if( csv->buf[0] != '\%' ) i++;
   }
   _zCSVCountField( csv );
   memset( csv->buf, 0, BUFSIZ ); /* clear internal buffer */
@@ -98,9 +112,9 @@ zCSV *zCSVOpen(zCSV *csv, char filename[])
 /* close a CSV file. */
 void zCSVClose(zCSV *csv)
 {
+  free( csv->pos );
   fclose( csv->fp );
-  csv->pos0 = -1;
-  csv->nf = 0;
+  csv->nl = csv->nf = 0;
 }
 
 #endif /* __KERNEL__ */

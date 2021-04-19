@@ -30,10 +30,14 @@ __BEGIN_DECLS
  *//* ******************************************************* */
 typedef struct{
   FILE *fp;         /*!< file pointer */
-  long pos0;        /*!< starting position in the file stream */
+  int nl;           /*!< number of lines */
+  long *pos;        /*!< array of starting positions of lines in the file stream */
   int nf;           /*!< number of fields per line */
   char buf[BUFSIZ]; /*!< internal buffer */
 } zCSV;
+
+/*! \brief number of lines of a CSV file. */
+#define zCSVLineNum(csv) (csv)->nl
 
 /*! \brief open a CSV file. */
 __EXPORT zCSV *zCSVOpen(zCSV *csv, char filename[]);
@@ -52,6 +56,9 @@ __EXPORT void zCSVRewind(zCSV *csv);
 
 /*! \brief get a line from the current stream of a CSV file. */
 __EXPORT char *zCSVGetLine(zCSV *csv);
+
+/*! \brief go to a specified line in a CSV file. */
+__EXPORT char *zCSVGoToLine(zCSV *csv, int i);
 
 /*! \brief get a field from the current buffer of a CSV file. */
 __EXPORT char *zCSVGetField(zCSV *csv, char *field, size_t size);
