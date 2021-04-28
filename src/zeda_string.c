@@ -279,11 +279,8 @@ char zFSkipComment(FILE *fp)
 #endif /* __KERNEL__ */
 
 #ifndef __KERNEL__
-static char *_zFString(FILE *fp, char *tkn, size_t size);
-static char *_zSString(char *str, char *tkn, size_t size);
-
 /* get a string from file. */
-char *_zFString(FILE *fp, char *tkn, size_t size)
+static char *_zFString(FILE *fp, char *tkn, size_t size)
 {
   register int i;
 
@@ -304,7 +301,7 @@ char *_zFString(FILE *fp, char *tkn, size_t size)
 }
 
 /* get a string from string. */
-char *_zSString(char *str, char *tkn, size_t size)
+static char *_zSString(char *str, char *tkn, size_t size)
 {
   register int i;
   char *sp;
@@ -402,12 +399,8 @@ char *zFIntToken(FILE *fp, char *tkn, size_t size)
   return tkn;
 }
 
-static char *_zFFractToken(FILE *fp, char *tkn, size_t size);
-static char *_zFUnsignedToken(FILE *fp, char *tkn, size_t size);
-static char *_zFSignedToken(FILE *fp, char *tkn, size_t size);
-
 /* get a token that represents a fraction part from file. */
-char *_zFFractToken(FILE *fp, char *tkn, size_t size)
+static char *_zFFractToken(FILE *fp, char *tkn, size_t size)
 {
   if( size <= 1 )
     *tkn = '\0';
@@ -423,7 +416,7 @@ char *_zFFractToken(FILE *fp, char *tkn, size_t size)
 }
 
 /* get a token that represents an unsigned real number from file. */
-char *_zFUnsignedToken(FILE *fp, char *tkn, size_t size)
+static char *_zFUnsignedToken(FILE *fp, char *tkn, size_t size)
 {
   int l;
 
@@ -433,7 +426,7 @@ char *_zFUnsignedToken(FILE *fp, char *tkn, size_t size)
 }
 
 /* get a token that represents a signed real number from file. */
-char *_zFSignedToken(FILE *fp, char *tkn, size_t size)
+static char *_zFSignedToken(FILE *fp, char *tkn, size_t size)
 {
   char c;
   long pos;
@@ -494,12 +487,8 @@ char *zSIntToken(char *str, char *tkn, size_t size)
   return tkn;
 }
 
-static char *_zSFractToken(char *str, char *tkn, size_t size);
-static char *_zSUnsignedToken(char *str, char *tkn, size_t size);
-static char *_zSSignedToken(char *str, char *tkn, size_t size);
-
 /* get a token that represents a fraction part from string. */
-char *_zSFractToken(char *str, char *tkn, size_t size)
+static char *_zSFractToken(char *str, char *tkn, size_t size)
 {
   if( *str == '.' ){
     *tkn++ = *str;
@@ -511,7 +500,7 @@ char *_zSFractToken(char *str, char *tkn, size_t size)
 }
 
 /* get a token that represents an unsigned real number from string. */
-char *_zSUnsignedToken(char *str, char *tkn, size_t size)
+static char *_zSUnsignedToken(char *str, char *tkn, size_t size)
 {
   int l;
 
@@ -521,7 +510,7 @@ char *_zSUnsignedToken(char *str, char *tkn, size_t size)
 }
 
 /* get a token that represents a signed real number from string. */
-char *_zSSignedToken(char *str, char *tkn, size_t size)
+static char *_zSSignedToken(char *str, char *tkn, size_t size)
 {
   if( *str != '+' && *str != '-' )
     return _zSUnsignedToken( str, tkn, size );
@@ -610,39 +599,6 @@ char *zExtractTag(char *tag, char *notag)
   return notag;
 }
 
-/* count specified tags in a file. */
-/* TO BE OBSOLETED. */
-int zFCountTag(FILE *fp, char *tag)
-{
-  char buf[BUFSIZ];
-  int count = 0;
-
-  while( !feof( fp ) )
-    if( zFToken( fp, buf, BUFSIZ ) && zTokenIsTag( buf ) ){
-      zExtractTag( buf, buf );
-      if( strcmp( buf, tag ) == 0 ) count++;
-    }
-  rewind( fp );
-  return count;
-}
-
-/* scan tagged fields from a file. */
-/* TO BE OBSOLETED. */
-bool zTagFScan(FILE *fp, bool (* fscan_tag)(FILE*,void*,char*,bool*), void *instance)
-{
-  char buf[BUFSIZ];
-  bool success = true;
-
-  while( !feof( fp ) ){
-    if( zTokenIsTag( zFToken(fp,buf,BUFSIZ) ) ){
-      zExtractTag( buf, buf );
-      fscan_tag( fp, instance, buf, &success );
-    } else
-      if( !fgets( buf, BUFSIZ, fp ) ) break;
-  }
-  return success;
-}
-
 static char zkeyident = ZDEFAULT_KEY_IDENT;
 
 /* specify the key identifier. */
@@ -664,44 +620,6 @@ bool zFPostCheckKey(FILE *fp)
     }
   }
   return false;
-}
-
-/* count specified keys in a file. */
-/* TO BE OBSOLETED. */
-int zFCountKey(FILE *fp, char *key)
-{
-  char buf[BUFSIZ];
-  int cur, count = 0;
-
-  cur = ftell( fp );
-  while( !feof( fp ) ){
-    if( zFToken( fp, buf, BUFSIZ ) && zTokenIsTag( buf ) )
-      break;
-    if( strcmp( buf, key ) == 0 ) count++;
-  }
-  fseek( fp, cur, SEEK_SET );
-  return count;
-}
-
-/* scan a field from a file. */
-/* TO BE OBSOLETED. */
-bool zFieldFScan(FILE *fp, bool (* fscan_field)(FILE*,void*,char*,bool*), void *instance)
-{
-  char buf[BUFSIZ];
-  int cur = 0;
-  bool success = true;
-
-  while( !feof(fp) ){
-    cur = ftell( fp );
-    if( !zFToken(fp,buf,BUFSIZ) ) break;
-    if( zTokenIsTag( buf ) ){
-      fseek( fp, cur, SEEK_SET );
-      break;
-    }
-    if( !fscan_field( fp, instance, buf, &success ) )
-      if( !fgets( buf, BUFSIZ, fp ) ) break;
-  }
-  return success;
 }
 
 #ifndef __KERNEL__
@@ -793,8 +711,7 @@ FILE *zOpenFile(char filename[], char *suffix, char *mode)
 }
 
 /* generate a table for string search by Knuth-Morris-Pratt algorithm. */
-static int *_zStrSearchKMPTable(char *pat, int lp);
-int *_zStrSearchKMPTable(char *pat, int lp)
+static int *_zStrSearchKMPTable(char *pat, int lp)
 {
   register int i=2, j=0;
   int *table;
