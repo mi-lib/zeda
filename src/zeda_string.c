@@ -285,7 +285,7 @@ static char *_zFString(FILE *fp, char *tkn, size_t size)
   register int i;
 
   if( size <= 1 ) return NULL;
-  size--;
+  size--; /* for the null charactor */
   for( i=0; !feof(fp); i++ ){
     if( i >= size ){
       ZRUNWARN( ZEDA_WARN_TOOLNG_STR );
@@ -300,13 +300,13 @@ static char *_zFString(FILE *fp, char *tkn, size_t size)
   return tkn;
 }
 
-/* get a string from string. */
+/* get a string from string and return a pointer immediately after the string. */
 static char *_zSString(char *str, char *tkn, size_t size)
 {
   register int i;
   char *sp;
 
-  size--;
+  size--; /* for the null charactor */
   for( sp=str, i=0; *sp; sp++, i++ ){
     if( zIsQuotation( *sp ) && ( i == 0 || tkn[i-1] != '\\' ) )
       break;
@@ -318,8 +318,7 @@ static char *_zSString(char *str, char *tkn, size_t size)
     tkn[i] = *sp;
   }
   tkn[i] = '\0';
-  zStrCopyNC( str, sp );
-  return tkn;
+  return sp+1;
 }
 
 /* get a token in a file. */
@@ -348,13 +347,13 @@ char *zFToken(FILE *fp, char *tkn, size_t size)
   return tkn;
 }
 
-/* get a token in a string. */
-char *zSToken(char *str, char *tkn, size_t size)
+/* skim a token in a string. */
+char *zSTokenSkim(char *str, char *tkn, size_t size)
 {
   register int i;
   char *sp;
 
-  *tkn = *( sp = zSSkipDelimiter( str ) );
+  if( !( *tkn = *( sp = zSSkipDelimiter( str ) ) ) ) return sp;
   if( zIsQuotation( *sp ) ){
     zStrCopyNC( str, sp+1 );
     return _zSString( str, tkn, size );
@@ -373,7 +372,13 @@ char *zSToken(char *str, char *tkn, size_t size)
     tkn[i] = *sp++;
   }
   tkn[i] = '\0';
-  zStrCopyNC( str, sp );
+  return sp;
+}
+
+/* get a token in a string. */
+char *zSToken(char *str, char *tkn, size_t size)
+{
+  zStrCopyNC( str, zSTokenSkim( str, tkn, size ) );
   return tkn;
 }
 

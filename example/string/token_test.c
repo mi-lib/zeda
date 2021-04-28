@@ -19,11 +19,22 @@ int main(int argc, char *argv[])
   fclose( fp );
 
   printf( "[string]\n" );
-  while( zSToken( str, tkn, size ) )
+  printf( "(skim)\n" );
+  zSTokenSkim( str, tkn, size ); printf( "token-> %s\n", tkn );
+  zSTokenSkim( str, tkn, size ); printf( "token-> %s\n", tkn );
+  zSTokenSkim( str, tkn, size ); printf( "token-> %s\n", tkn );
+  printf( "(full tokenization)\n" );
+  do{
+    zSToken( str, tkn, size );
     printf( "token-> %s\n", tkn );
+    fflush( stdout );
+  } while( *str );
 
   printf( "[expression string]\n" );
-  while( zSToken( expstr, tkn, size ) )
+  do{
+    zSToken( expstr, tkn, size );
     printf( "token-> %s\n", tkn );
+    fflush( stdout );
+  } while( *expstr );
   return 0;
 }

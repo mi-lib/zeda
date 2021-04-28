@@ -1,3 +1,5 @@
+2021. 4.28. Modified _zSString. [zeda_string]
+2021. 4.28. Added zSTokenSkim. [zeda_string]
 2021. 4.28. Abolished zFCountTag, zTagFScan, zFCountKey and zFieldFScan. [zeda_string]
 2021. 4.28. Abolished prototypes of static functions. [zeda_string]
 2021. 4.19. Added zCSVGoToLine. [zeda_csv, zeda_errmsg]

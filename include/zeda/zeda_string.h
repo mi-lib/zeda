@@ -426,24 +426,31 @@ __EXPORT char *zFToken(FILE *fp, char *tkn, size_t size);
 
 /*! \brief tokenize a string.
  *
- * zSSoken() acquires a first token in a string
- * \a str, and copies it where \a tkn points. Token
- * is a charactor set segmented by a delimiter,
- * charactors enclosed in quotation marks or double
- * quotation marks. The token size is limited up to
- * \a size. If the first quotation mark does not have
- * a corresponding closing mark, the token buffer is
- * filled with the rest charactors in the string.
- * \a str is overridden by the remaining string
- * destructively.
+ * zSToken() acquires the first token in a string \a str and
+ * copies it where \a tkn points. Token is a charactor set
+ * segmented by a delimiter, charactors enclosed in quotation
+ * marks or double quotation marks. The token size is limited
+ * up to \a size. If the first quotation mark does not have
+ * a corresponding closing mark, the token buffer is filled
+ * with the rest charactors in the string.
+ * \a str is overridden by the remaining string destructively.
+ *
+ * zSTokenSkim() also acquires the first token in a string
+ * \a str and copies it where \a tkn points. The difference
+ * from zSToken() is that it returns a pointer immediately
+ * after \a tkn in \a str and does not destroy \a str.
  * \return
  * zSToken() returns a pointer \a tkn. If a token is
  * not found, the null pointer is returned.
+ *
+ * zSTokenSkim() returns a pointer immediately after \a tkn,
+ * which corresponds to a charactor in \a str.
  * \sa zSetDelimiter, zIsDelimiter, zFToken
  * \note
  * If the size of buffer pointed by \a tkn is less
  * than \a size, anything might happen.
  */
+__EXPORT char *zSTokenSkim(char *str, char *tkn, size_t size);
 __EXPORT char *zSToken(char *str, char *tkn, size_t size);
 
 /*! \brief tokenize an integer value in a file.
