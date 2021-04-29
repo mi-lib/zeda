@@ -7,8 +7,9 @@ UNINSTALL=rm -f
 
 INCLUDE=-I$(PREFIX)/include
 LIB=-L$(PREFIX)/lib
-LINK=-lzeda -lm
 DEF=
+
+LINK=-lzeda -lm
 
 ifeq ($(CONFIG_USE_LIBXML),y)
 	INCLUDE += "`xml2-config --cflags`"
