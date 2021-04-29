@@ -17,8 +17,12 @@ OBJ=zeda_misc.o\
 	zeda_csv.o zeda_stream.o\
 	zeda_array.o zeda_index.o zeda_list.o zeda_rrtab.o\
 	zeda_strlist.o\
-	zeda_option.o zeda_ztk.o
+	zeda_option.o zeda_ztk.o zeda_xml.o
 DLIB=libzeda.so
+
+ifeq ($(CONFIG_USE_LIBXML),y)
+	INCLUDE += "`xml2-config --cflags`"
+endif
 
 TARGET=$(DLIB)
 

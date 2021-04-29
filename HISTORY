@@ -1,3 +1,5 @@
+2021. 4.29. Added zeda_xml. [zeda_xml]
+2021. 4.29. Modified specification of zeda-config-gen. [app]
 2021. 4.28. Modified _zSString. [zeda_string]
 2021. 4.28. Added zSTokenSkim. [zeda_string]
 2021. 4.28. Abolished zFCountTag, zTagFScan, zFCountKey and zFieldFScan. [zeda_string]

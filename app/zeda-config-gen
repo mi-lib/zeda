@@ -36,12 +36,12 @@ echo "#!/bin/sh"
 echo "case \$1 in"
 if [ "$INCLUDE" != "" ]; then
   echo "-I)"
-  echo "  echo -I$INCLUDE"
+  echo "  echo $INCLUDE"
   echo "  ;;"
 fi
 if [ "$LIB" != "" ]; then
   echo "-L)"
-  echo "  echo -L$LIB"
+  echo "  echo $LIB"
   echo "  ;;"
 fi
 if [ "$DEF" != "" ]; then

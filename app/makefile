@@ -5,7 +5,16 @@ BINDIR=$(PREFIX)/bin
 INSTALL=install -m 755
 UNINSTALL=rm -f
 
+INCLUDE=-I$(PREFIX)/include
+LIB=-L$(PREFIX)/lib
 LINK=-lzeda -lm
+DEF=
+
+ifeq ($(CONFIG_USE_LIBXML),y)
+	INCLUDE += "`xml2-config --cflags`"
+	LINK += "`xml2-config --libs`"
+	DEF += -D__ZEDA_USE_LIBXML
+endif
 
 CONFIG=zeda-config
 CONFIGGEN=zeda-config-gen
@@ -21,7 +30,7 @@ config-gen: $(CONFIGGEN)
 $(CONFIG):
 	@echo " GENERATE" $(CONFIG)
 	-@rm -f $(CONFIG)
-	@$(CONFIGGEN) -I $(PREFIX)/include -L $(PREFIX)/lib -l "$(LINK)" -v $(VERSION) > $(CONFIG)
+	@$(CONFIGGEN) -I "$(INCLUDE)" -L "$(LIB)" -D "$(DEF)" -l "$(LINK)" -v $(VERSION) > $@
 install: $(CHKDEP) $(TARGET)
 	@echo " INSTALL	" $^
 	@$(INSTALL) $^ $(BINDIR)
