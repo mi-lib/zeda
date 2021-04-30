@@ -1,3 +1,4 @@
+2021. 4.30. Included zeda_csv.h in zeda.h. [zeda]
 2021. 4.29. Modified app/makefile. [app]
 2021. 4.29. Defined __ZEDA_USE_LIBXML to enable/disable the use of libxml2. [makefile]
 2021. 4.29. Included zeda_xml.h in zeda.h. [zeda]

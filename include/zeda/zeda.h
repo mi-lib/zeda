@@ -17,6 +17,7 @@
  - generalized I/O stream
  - random number generator
  - ZTK format parser
+ - CSV file manipulation
  - XML parser (wrapper of libxml2)
  */
 
@@ -41,6 +42,7 @@
 #include <zeda/zeda_name.h>
 
 #include <zeda/zeda_ztk.h>
+#include <zeda/zeda_csv.h>
 
 #ifdef __ZEDA_USE_LIBXML
 #include <zeda/zeda_xml.h>
