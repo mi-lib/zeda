@@ -40,6 +40,8 @@ __BEGIN_DECLS
 
 __EXPORT xmlNode *zXMLFindNodeElement(xmlNode *node, char *name);
 #define zXMLFindNodeAttr(node,name) ( (char *)xmlGetProp( node, (xmlChar*)name ) )
+#define zXMLAddNodeAttr(node,name,val)     xmlNewProp( node, (xmlChar *)name, (xmlChar *)val )
+#define zXMLReplaceNodeAttr(node,name,val) xmlSetProp( node, (xmlChar *)name, (xmlChar *)val )
 
 /* attributes */
 
