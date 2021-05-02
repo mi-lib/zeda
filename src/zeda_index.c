@@ -134,6 +134,26 @@ int zIndexMove(zIndex idx, int from, int to)
   return zIndexSetElemNC( idx, to, tmp );
 }
 
+#include <zeda/zeda_list.h>
+
+/* create an integer vector from a list of integers. */
+zIndex zIndexCreateFromList(zIntList *list)
+{
+  zIndex index;
+  zIntListCell *cp;
+  register int i;
+
+  if( zListIsEmpty(list) ){
+    ZRUNERROR( ZEDA_ERR_LIST2INDEX_FAILED );
+    return NULL;
+  }
+  if( !( index = zIndexCreate( zListSize(list) ) ) ) return NULL;
+  i=0;
+  zListForEach( list, cp )
+    zIndexElemNC(index,i++) = cp->data;
+  return index;
+}
+
 #ifndef __KERNEL__
 /* scan an integer vector from a file. */
 zIndex zIndexFScan(FILE *fp)

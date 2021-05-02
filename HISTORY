@@ -1,3 +1,5 @@
+2021. 5. 2. Added zIndexCreateFromList. [zeda_errmsg, zeda_index]
+2021. 5. 2. Added zIntListAdd. [zeda_list]
 2021. 5. 1. Added zXMLAddNodeAttr and zXMLReplaceNodeAttr. [zeda_xml]
 2021. 4.30. Included zeda_csv.h in zeda.h. [zeda]
 2021. 4.29. Modified app/makefile. [app]

@@ -408,7 +408,11 @@ void zListPrint(zList *list);
 
 /*! \} */
 
+/*! \brief a list of integer numbers */
 zListClass(zIntList, zIntListCell, int);
+
+/*! \brief a list of integer numbers */
+__EXPORT bool zIntListAdd(zIntList *list, int i);
 
 __END_DECLS
 

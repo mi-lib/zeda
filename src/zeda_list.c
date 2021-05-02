@@ -42,3 +42,14 @@ void zListPrint(zList *list)
   }
 }
 #endif /* __KERNEL__ */
+
+/*! \brief a list of integer numbers */
+bool zIntListAdd(zIntList *list, int i)
+{
+  zIntListCell *cp;
+
+  if( !( cp = zAlloc( zIntListCell, 1 ) ) ) return false;
+  cp->data = i;
+  zListInsertHead( list, cp );
+  return true;
+}

@@ -47,6 +47,8 @@
 #define ZEDA_ERR_LNGSIZ_NOT_FOUND      "size of long not found."
 #define ZEDA_ERR_UNKNOWN_ENDIAN        "unknown endian."
 
+#define ZEDA_ERR_LIST2INDEX_FAILED     "cannot create an integer vector from an empty list"
+
 #define ZEDA_ERR_CSV_INVALID           "invalid CSV file"
 #define ZEDA_ERR_CSV_INVALID_LINE      "out-of-range line number %d specified"
 
