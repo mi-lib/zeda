@@ -48,7 +48,10 @@ bool zIntListAdd(zIntList *list, int i)
 {
   zIntListCell *cp;
 
-  if( !( cp = zAlloc( zIntListCell, 1 ) ) ) return false;
+  if( !( cp = zAlloc( zIntListCell, 1 ) ) ){
+    ZALLOCERROR();
+    return false;
+  }
   cp->data = i;
   zListInsertHead( list, cp );
   return true;
