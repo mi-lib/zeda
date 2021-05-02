@@ -209,6 +209,11 @@ __EXPORT void zIndexDataFPrint(FILE *fp, zIndex idx);
 void zIndexPrint(zIndex idx);
 #endif /* __KERNEL__ */
 
+#include <zeda/zeda_list.h>
+
+/*! \brief create an integer vector from a list of integers. */
+__EXPORT zIndex zIndexCreateFromList(zIntList *list);
+
 /*! \} */
 
 __END_DECLS

@@ -134,8 +134,6 @@ int zIndexMove(zIndex idx, int from, int to)
   return zIndexSetElemNC( idx, to, tmp );
 }
 
-#include <zeda/zeda_list.h>
-
 /* create an integer vector from a list of integers. */
 zIndex zIndexCreateFromList(zIntList *list)
 {
