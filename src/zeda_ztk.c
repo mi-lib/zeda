@@ -13,6 +13,7 @@
 /* initialize a file stack. */
 void zFileStackInit(zFileStack *stack)
 {
+  stack->pathname = NULL;
   stack->fp = NULL;
   stack->prev = NULL;
 }
@@ -30,7 +31,11 @@ static zFileStack *_zFileStackNew(char *pathname)
     free( cp );
     return NULL;
   }
-  zStrCopy( cp->pathname, pathname, BUFSIZ );
+  if( !( cp->pathname = zStrClone( pathname ) ) ){
+    fclose( cp->fp );
+    free( cp );
+    return NULL;
+  }
   cp->prev = NULL;
   return cp;
 }
@@ -60,6 +65,7 @@ zFileStack *zFileStackPop(zFileStack *head)
 
   if( !( cp = head->prev ) ) return NULL;
   head->prev = cp->prev;
+  zFree( cp->pathname );
   fclose( cp->fp );
   free( cp );
   return head->prev;
@@ -218,16 +224,26 @@ static bool _ZTKParseTag(ZTK *ztk, char *buf)
   return true;
 }
 
-/* scan a file and parse it into a tag-and-key list of a ZTK format processor. */
-bool ZTKParse(ZTK *ztk, char *path)
+/* internally scan and parse a file into a tag-and-key list of a ZTK format processor. */
+bool _ZTKParse(ZTK *ztk, char *path)
 {
-  char buf[BUFSIZ];
   bool ret = true;
   zFileStack *fs;
 
   if( !( fs = zFileStackPush( &ztk->fs, path ) ) ) return false;
-  while( !feof( fs->fp ) ){
-    if( !zFToken( fs->fp, buf, BUFSIZ ) ) break;
+  ret = ZTKParseFP( ztk, fs->fp );
+  zFileStackPop( &ztk->fs );
+  return ret;
+}
+
+/* scan and parse a file stream into a tag-and-key list of a ZTK format processor. */
+bool ZTKParseFP(ZTK *ztk, FILE *fp)
+{
+  char buf[BUFSIZ];
+  bool ret = true;
+
+  while( !feof( fp ) ){
+    if( !zFToken( fp, buf, BUFSIZ ) ) break;
     if( zTokenIsTag( buf ) ){
       zExtractTag( buf, buf );
       if( !_ZTKParseTag( ztk, buf ) ){
@@ -236,12 +252,12 @@ bool ZTKParse(ZTK *ztk, char *path)
       }
     } else{ /* might be a key or a value */
       if( strcmp( buf, "include" ) == 0 ){ /* include a file */
-        ZTKParse( ztk, zFToken(fs->fp,buf,BUFSIZ) );
+        _ZTKParse( ztk, zFToken(fp,buf,BUFSIZ) );
         continue;
       }
       if( !ztk->tf_cp )
         if( !_ZTKParseTag( ztk, "" ) ) continue; /* tagged field unactivated. */
-      if( zFPostCheckKey( fs->fp ) ){ /* token is a key. */
+      if( zFPostCheckKey( fp ) ){ /* token is a key. */
         if( !( ztk->kf_cp = ZTKKeyFieldListNew( &ztk->tf_cp->data.kflist, buf ) ) ){
           ret = false;
           break;
@@ -260,8 +276,14 @@ bool ZTKParse(ZTK *ztk, char *path)
       }
     }
   }
-  zFileStackPop( &ztk->fs );
   return ret;
+}
+
+/* scan and parse a file into a tag-and-key list of a ZTK format processor. */
+bool ZTKParse(ZTK *ztk, char *path)
+{
+  ZTKInit( ztk );
+  return _ZTKParse( ztk, path );
 }
 
 /* count the number of tagged fields with a specified tag in a tag-and-key list of a ZTK format processor. */

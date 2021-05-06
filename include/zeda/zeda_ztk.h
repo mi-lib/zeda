@@ -25,7 +25,7 @@ __BEGIN_DECLS
  * a stack cell for B is pushed on that for A.
  *//* ******************************************************* */
 typedef struct _zFileStack{
-  char pathname[BUFSIZ];    /*!< pathname of a file */
+  char *pathname;           /*!< pathname of a file */
   FILE *fp;                 /*!< a file pointer */
   struct _zFileStack *prev; /*!< a pointer to the caller file */
 } zFileStack;
@@ -112,6 +112,9 @@ __EXPORT ZTK *ZTKInit(ZTK *ztk);
 /*! \brief destroy a ZTK format processor. */
 __EXPORT void ZTKDestroy(ZTK *ztk);
 
+/*! \brief scan and parse a file stream into a tag-and-key list of a ZTK format processor. */
+__EXPORT bool ZTKParseFP(ZTK *ztk, FILE *fp);
+
 /*! \brief scan a file and parse it into a tag-and-key list of a ZTK format processor. */
 __EXPORT bool ZTKParse(ZTK *ztk, char *path);
 
@@ -149,6 +152,9 @@ __EXPORT ZTKTagFieldListCell *ZTKTagNext(ZTK *ztk);
 __EXPORT ZTKTagFieldListCell *ZTKTagRewind(ZTK *ztk);
 /*! \brief check if a string is the same with the current tag in a tag-and-key list of a ZTK format processor. */
 #define ZTKTagCmp(ztk,str) ( strcmp( ZTKTag(ztk), str ) == 0 )
+
+/*! \brief rewind a tag-and-key list of a ZTK format processor. */
+#define ZTKRewind(ztk) ZTKTagRewind( ztk )
 
 /*! \brief retrieve an integer value from the current key field of the current tagged field in a tag-and-key list of a ZTK format processor. */
 __EXPORT int ZTKInt(ZTK *ztk);

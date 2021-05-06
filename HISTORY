@@ -1,3 +1,7 @@
+2021. 5. 6. Added ZTKParseFP. [zeda_ztk]
+2021. 5. 6. Added ZTKRewind. [zeda_ztk]
+2021. 5. 6. Renamed ZTKParse to _ZTKParse, and newly added ZTKParse. [zeda_ztk]
+2021. 5. 6. Modified specification of zFileStack. [zeda_ztk]
 2021. 5. 2. Modified zIndexCreateFromList. [zeda_index]
 2021. 5. 2. Modified zIntListAdd. [zeda_list]
 2021. 5. 2. Added zIndexCreateFromList. [zeda_errmsg, zeda_index]
