@@ -36,15 +36,12 @@ install:
 	@echo " INSTALL	header files"
 	-@install -m 755 -d $(PREFIX)/include/$(PROJNAME)
 	-@install -m 644 $(INCDIR)/*.h $(PREFIX)/include/$(PROJNAME)/
-	@echo " INSTALL	tools"
-	@cd $(TOOLDIR); make install
+	@echo " INSTALL	tools"; cd $(TOOLDIR); make install
 	@echo " INSTALL	applications"; cd $(APPDIR); make && make install
 uninstall:
 	@echo " UNINSTALL	library"
 	-@rm $(PREFIX)/lib/lib$(PROJNAME).so
 	@echo " UNINSTALL	header files"
 	-@rm -r $(PREFIX)/include/$(PROJNAME)
-	@echo " UNINSTALL	tools"
-	@cd $(TOOLDIR); make uninstall
-	@echo " UNINSTALL	applications"
-	@cd $(APPDIR); make uninstall
+	@echo " UNINSTALL	tools"; cd $(TOOLDIR); make uninstall
+	@echo " UNINSTALL	applications"; cd $(APPDIR); make uninstall
