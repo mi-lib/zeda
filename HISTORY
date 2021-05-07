@@ -1,3 +1,4 @@
+2021. 5. 7. Moved zeda-chkdep and zeda-config-gen to tools/, and modified makefiles. [app, tools]
 2021. 5. 6. Added ZTKParseFP. [zeda_ztk]
 2021. 5. 6. Added ZTKRewind. [zeda_ztk]
 2021. 5. 6. Renamed ZTKParse to _ZTKParse, and newly added ZTKParse. [zeda_ztk]

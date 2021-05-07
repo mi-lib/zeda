@@ -1,47 +1,38 @@
 include ../config
 
+CONFIG=zeda-config
 BINDIR=$(PREFIX)/bin
 
+INCLUDE=`$(CONFIG) -I`
+LIB=`$(CONFIG) -L`
+DEF=`$(CONFIG) -D`
+LINK=`$(CONFIG) -l`
+
+CC=gcc
+CFLAGS=-ansi -Wall -O3 $(INCLUDE) $(LIB) $(DEF)
+
+COMPILE=$(CC) $(CFLAGS) -o $@ $< $(LINK)
 INSTALL=install -m 755
 UNINSTALL=rm -f
 
-INCLUDE=-I$(PREFIX)/include
-LIB=-L$(PREFIX)/lib
-DEF=
-
-LINK=-lzeda -lm
-
-ifeq ($(CONFIG_USE_LIBXML),y)
-	INCLUDE += "`xml2-config --cflags`"
-	LINK += "`xml2-config --libs`"
-	DEF += -D__ZEDA_USE_LIBXML
-endif
-
-CONFIG=zeda-config
-CONFIGGEN=zeda-config-gen
-CHKDEP=zeda-chkdep
-TARGET=$(CONFIG)
+TARGET=
 
 #####################################################################
 all: $(TARGET)
 
-config-gen: $(CONFIGGEN)
-	@echo " INSTALL" $(CONFIGGEN)
-	@$(INSTALL) $(CONFIGGEN) $(BINDIR)
-$(CONFIG):
-	@echo " GENERATE" $(CONFIG)
-	-@rm -f $(CONFIG)
-	@$(CONFIGGEN) -I "$(INCLUDE)" -L "$(LIB)" -D "$(DEF)" -l "$(LINK)" -v $(VERSION) > $@
-install: $(CHKDEP) $(TARGET)
-	@echo " INSTALL	" $^
-	@$(INSTALL) $^ $(BINDIR)
+%: %.c
+	@echo " CC	" $<
+	@$(COMPILE)
 clean:
 	@echo " CLEAN"
 	-@rm -f *.o *~ core $(TARGET)
+install: $(TARGET)
+ifneq ($(TARGET),)
+	@echo " INSTALL	" $^
+	@$(INSTALL) $^ $(BINDIR)
+endif
 uninstall:
-	@echo " UNINSTALL	" $(CONFIGGEN)
-	@$(UNINSTALL) $(BINDIR)/$(CONFIGGEN)
-	@echo " UNINSTALL	" $(CHKDEP)
-	@$(UNINSTALL) $(BINDIR)/$(CHKDEP)
+ifneq ($(TARGET),)
 	@echo " UNINSTALL	" $(TARGET)
 	@$(UNINSTALL) $(BINDIR)/$(TARGET)
+endif
