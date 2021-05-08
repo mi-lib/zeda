@@ -5,39 +5,27 @@ BINDIR=$(PREFIX)/bin
 INSTALL=install -m 755
 UNINSTALL=rm -f
 
-INCLUDE=-I$(PREFIX)/include
-LIB=-L$(PREFIX)/lib
-DEF=
+LINK=-l$(PROJNAME)
+CONFIGTOOL=$(PROJNAME)-config
 
-LINK=-lzeda -lm
+include config.tools
 
-ifeq ($(CONFIG_USE_LIBXML),y)
-	INCLUDE += "`xml2-config --cflags`"
-	LINK += "`xml2-config --libs`"
-	DEF += -D__ZEDA_USE_LIBXML
-endif
-
-CHKDEP=zeda-chkdep
 CONFIGGEN=zeda-config-gen
-CONFIG=zeda-config
+TOOLS=zeda-chkdep zeda-makefile-gen $(CONFIGGEN) $(CONFIGTOOL)
 
 #####################################################################
-all: $(CONFIG)
+all: $(CONFIGTOOL)
 
-$(CONFIG):
-	@echo " GENERATE	" $(CONFIG)
-	-@rm -f $(CONFIG)
+$(CONFIGTOOL):
+	@echo " GENERATE	" $@
+	-@rm -f $@
 	@./$(CONFIGGEN) -I "$(INCLUDE)" -L "$(LIB)" -D "$(DEF)" -l "$(LINK)" -v $(VERSION) > $@
-install: $(CHKDEP) $(CONFIGGEN) $(CONFIG)
+install: $(TOOLS)
 	@echo " INSTALL	" $^
 	@$(INSTALL) $^ $(BINDIR)
+uninstall:
+	@echo " UNINSTALL	" $(TOOLS)
+	@cd $(BINDIR); $(UNINSTALL) $(TOOLS)
 clean:
 	@echo " CLEAN"
-	-@rm -f *.o *~ core $(CONFIG)
-uninstall:
-	@echo " UNINSTALL	" $(CONFIGGEN)
-	@$(UNINSTALL) $(BINDIR)/$(CONFIGGEN)
-	@echo " UNINSTALL	" $(CHKDEP)
-	@$(UNINSTALL) $(BINDIR)/$(CHKDEP)
-	@echo " UNINSTALL	" $(CONFIG)
-	@$(UNINSTALL) $(BINDIR)/$(CONFIG)
+	-@rm -f *.o *~ core $(CONFIGTOOL)
