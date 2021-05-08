@@ -1,3 +1,4 @@
+2021. 5. 8. Added selective -ansi option to zeda-makefile-gen. [tools]
 2021. 5. 8. Created zeda-makefile-gen and applied it to makefile in app/. [tools, app]
 2021. 5. 7. Modified makefile. [zeda]
 2021. 5. 7. Moved zeda-chkdep and zeda-config-gen to tools/, and modified makefiles. [zeda, app, tools]
