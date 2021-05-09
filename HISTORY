@@ -1,3 +1,6 @@
+2021. 5. 9. Added zCSVSkipField. [zeda_csv]
+2021. 5. 9. Added zCSVGetIntN and zCSVGetDoubleN. [zeda_csv]
+2021. 5. 9. Modified specifications of zCSVGetInt and zCSVGetDouble. [zeda_csv]
 2021. 5. 8. Added selective -ansi option to zeda-makefile-gen. [tools]
 2021. 5. 8. Created zeda-makefile-gen and applied it to makefile in app/. [tools, app]
 2021. 5. 7. Modified makefile. [zeda]

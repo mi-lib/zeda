@@ -48,20 +48,58 @@ char *zCSVGetField(zCSV *csv, char *field, size_t size)
   return field;
 }
 
+/* skip a field from the current buffer of a CSV file. */
+char *zCSVSkipField(zCSV *csv)
+{
+  char buf[BUFSIZ];
+
+  return zCSVGetField( csv, buf, BUFSIZ );
+}
+
 /* get an integer value from the current buffer of a CSV file. */
-int zCSVGetInt(zCSV *csv)
+bool zCSVGetInt(zCSV *csv, int *val)
 {
   char field[BUFSIZ];
 
-  return zCSVGetField( csv, field, BUFSIZ ) ? atoi( field ) : 0;
+  if( !zCSVGetField( csv, field, BUFSIZ ) ){
+    ZRUNWARN( ZEDA_WARN_CSV_FIELD_EMPTY );
+    return false;
+  }
+  *val = atoi( field );
+  return true;
+}
+
+/* get multiple integer values from the current buffer of a CSV file. */
+bool zCSVGetIntN(zCSV *csv, int val[], int n)
+{
+  register int i;
+
+  for( i=0; i<n; i++ )
+    if( !zCSVGetInt( csv, &val[i] ) ) return false;
+  return true;
 }
 
 /* get a double-precision floating-point value from the current buffer of a CSV file. */
-double zCSVGetDouble(zCSV *csv)
+bool zCSVGetDouble(zCSV *csv, double *val)
 {
   char field[BUFSIZ];
 
-  return zCSVGetField( csv, field, BUFSIZ ) ? atof( field ) : 0;
+  if( !zCSVGetField( csv, field, BUFSIZ ) ){
+    ZRUNWARN( ZEDA_WARN_CSV_FIELD_EMPTY );
+    return false;
+  }
+  *val = atof( field );
+  return true;
+}
+
+/* get multiple double-precision floating-point values from the current buffer of a CSV file. */
+bool zCSVGetDoubleN(zCSV *csv, double val[], int n)
+{
+  register int i;
+
+  for( i=0; i<n; i++ )
+    if( !zCSVGetDouble( csv, &val[i] ) ) return false;
+  return true;
 }
 
 /* rewind the stream of a CSV file. */

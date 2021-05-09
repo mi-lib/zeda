@@ -62,12 +62,18 @@ __EXPORT char *zCSVGoToLine(zCSV *csv, int i);
 
 /*! \brief get a field from the current buffer of a CSV file. */
 __EXPORT char *zCSVGetField(zCSV *csv, char *field, size_t size);
+/*! \brief skip a field from the current buffer of a CSV file. */
+__EXPORT char *zCSVSkipField(zCSV *csv);
 
 /*! \brief get an integer value from the current buffer of a CSV file. */
-__EXPORT int zCSVGetInt(zCSV *csv);
+__EXPORT bool zCSVGetInt(zCSV *csv, int *val);
+/*! \brief get multiple integer values from the current buffer of a CSV file. */
+__EXPORT bool zCSVGetIntN(zCSV *csv, int val[], int n);
 
 /*! \brief get a double-precision floating-point value from the current buffer of a CSV file. */
-__EXPORT double zCSVGetDouble(zCSV *csv);
+__EXPORT bool zCSVGetDouble(zCSV *csv, double *val);
+/*! \brief get multiple double-precision floating-point values from the current buffer of a CSV file. */
+__EXPORT bool zCSVGetDoubleN(zCSV *csv, double val[], int n);
 
 /*! \} */
 

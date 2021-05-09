@@ -32,28 +32,26 @@ int main(int argc, char *argv[])
   }
   zCSVOpen( &csv, argv[1] );
   eprintf( "number of field = %d\n", csv.nf );
-#if 0
   while( !zCSVIsEOF( &csv ) ){
     if( !zCSVGetField( &csv, buf, BUFSIZ ) ) break;
-    t = zCSVGetInt( &csv );
-    zCSVGetInt( &csv ); /* dummy */
-    x = zCSVGetDouble( &csv );
-    y = zCSVGetDouble( &csv );
-    z = zCSVGetDouble( &csv );
+    zCSVGetInt( &csv, &t );
+    zCSVGetInt( &csv, &i ); /* dummy */
+    zCSVGetDouble( &csv, &x );
+    zCSVGetDouble( &csv, &y );
+    zCSVGetDouble( &csv, &z );
     printf( "%d: x=%g, y=%g, z=%g\n", t, x, y, z );
   }
-#else
+  zCSVRewind( &csv );
   for( i=0; i<zCSVLineNum(&csv); i++ ){
     zCSVGoToLine( &csv, i );
-    zCSVGetField( &csv, buf, BUFSIZ ); /* dummy */
-    t = zCSVGetInt( &csv );
-    zCSVGetInt( &csv ); /* dummy */
-    x = zCSVGetDouble( &csv );
-    y = zCSVGetDouble( &csv );
-    z = zCSVGetDouble( &csv );
+    zCSVSkipField( &csv ); /* dummy */
+    zCSVGetInt( &csv, &t );
+    zCSVSkipField( &csv ); /* dummy */
+    zCSVGetDouble( &csv, &x );
+    zCSVGetDouble( &csv, &y );
+    zCSVGetDouble( &csv, &z );
     printf( "%d: x=%g, y=%g, z=%g\n", t, x, y, z );
   }
-#endif
   zCSVClose( &csv );
   return 0;
 }
