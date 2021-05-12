@@ -263,6 +263,7 @@ zListClass(zList, zListCell, void*);
   zListCellBind( zListRoot(dst), zListTail(src) );\
   zListCellBind( zListHead(src), zListRoot(dst) );\
   zListSetSize( dst, zListSize(src) );\
+  zListInit( src );\
 } while(0)
 
 /*! \brief swap two lists \a l1 and \a l2.

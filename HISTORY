@@ -1,3 +1,4 @@
+2021. 5.12. Modified zListMove. [zeda_list]
 2021. 5. 9. Added zCSVSkipField. [zeda_csv]
 2021. 5. 9. Added zCSVGetIntN and zCSVGetDoubleN. [zeda_csv]
 2021. 5. 9. Modified specifications of zCSVGetInt and zCSVGetDouble. [zeda_csv]
