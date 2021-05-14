@@ -1,3 +1,8 @@
+2021. 5.15. Renamed zeda_heap.h to zeda_tree.h. [zeda, zeda_tree]
+2021. 5.15. Redefined zHeapClass and zHeapClassMethod separately. [zeda_heap]
+2021. 5.15. Renamed node_t##Add node_t##Delete to node_t##AddHeap and node_t##DeleteHeap, respectively. [zeda_heap]
+2021. 5.15. Renamed node_t##MaskInit to node_t##InitHeapMask. [zeda_heap]
+2021. 5.15. Renamed zHeapClass and zHeadClassMethod to zTreeClass and zTreeClassMethod, respectively. [zeda_heap]
 2021. 5.12. Modified zListMove. [zeda_list]
 2021. 5. 9. Added zCSVSkipField. [zeda_csv]
 2021. 5. 9. Added zCSVGetIntN and zCSVGetDoubleN. [zeda_csv]

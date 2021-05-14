@@ -10,7 +10,7 @@
  - bit operations
  - array operation
  - list operation
- - heap operation
+ - tree operation
  - round-robin table
  - string operations
  - command line option manipulation
@@ -32,7 +32,7 @@
 #include <zeda/zeda_rrtab.h>
 #include <zeda/zeda_stream.h>
 #include <zeda/zeda_list.h>
-#include <zeda/zeda_heap.h>
+#include <zeda/zeda_tree.h>
 
 #include <zeda/zeda_string.h>
 

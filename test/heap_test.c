@@ -1,24 +1,24 @@
 #include <zeda/zeda.h>
 
-zHeapClass( Heap, int );
-zHeapClassMethod( Heap, int );
+zHeapClass( Tree, int );
+zHeapClassMethod( Tree, int );
 
 #if 0
-void HeapNodePrint(Heap *node, int indent)
+void TreeNodePrint(Heap *node, int indent)
 {
   printf( "%*d\n", indent, node->data );
-  if( node->child[0] ) HeapNodePrint( node->child[0], indent+2 );
-  if( node->child[1] ) HeapNodePrint( node->child[1], indent+2 );
+  if( node->child[0] ) TreeNodePrint( node->child[0], indent+2 );
+  if( node->child[1] ) TreeNodePrint( node->child[1], indent+2 );
 }
 
-void HeapPrint(Heap *tree)
+void TreePrint(Heap *tree)
 {
-  if( !HeapIsEmpty( tree ) )
-    HeapNodePrint( tree->child[0], 0 );
+  if( !TreeIsEmpty( tree ) )
+    TreeNodePrint( tree->child[0], 0 );
 }
 #endif
 
-int HeapComp(Heap *node1, Heap *node2, void *util)
+int TreeComp(Tree *node1, Tree *node2, void *util)
 {
   return node1->data <= node2->data ? 1 : 0;
 }
@@ -27,22 +27,22 @@ int HeapComp(Heap *node1, Heap *node2, void *util)
 
 int main(int argc, char *argv[])
 {
-  Heap tree, *node;
+  Tree tree, *node;
   int i, prev;
   bool result = true;
 
   zRandInit();
-  HeapInit( &tree );
+  TreeInit( &tree );
   for( i=0; i<N; i++ )
-    HeapAdd( &tree, zRandI(0,10), HeapComp, NULL );
+    TreeAddHeap( &tree, zRandI(0,10), TreeComp, NULL );
 
-  prev = ( node = HeapDelete( &tree, HeapComp, NULL ) )->data;
+  prev = ( node = TreeDeleteHeap( &tree, TreeComp, NULL ) )->data;
   free( node );
-  while( !HeapIsEmpty( &tree ) ){
-    if( ( node = HeapDelete( &tree, HeapComp, NULL ) )->data < prev ) result = false;
+  while( !TreeIsEmpty( &tree ) ){
+    if( ( node = TreeDeleteHeap( &tree, TreeComp, NULL ) )->data < prev ) result = false;
     free( node );
   }
-  HeapDestroy( &tree );
+  TreeDestroy( &tree );
   zAssert( zHeapClass, result );
   return 0;
 }
