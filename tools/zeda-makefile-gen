@@ -50,14 +50,11 @@ INSTALL=install -m 755
 UNINSTALL=rm -f
 
 CONFIGTOOL=\$(PROJNAME)-config
-INCLUDE=\`\$(CONFIGTOOL) -I\`
-LIB=\`\$(CONFIGTOOL) -L\`
-DEF=\`\$(CONFIGTOOL) -D\`
 LINK=\`\$(CONFIGTOOL) -l\`
 
 CC=gcc
 EOF
-    echo "CFLAGS=$2 -Wall -O3 \$(INCLUDE) \$(LIB) \$(DEF)"
+    echo "CFLAGS=$2 -Wall -O3 \`\$(CONFIGTOOL) --cflags\`"
     cat << EOF
 TARGET=\$(shell ls *.c | xargs -i basename {} .c | xargs)
 

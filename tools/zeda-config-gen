@@ -49,6 +49,11 @@ if [ "$DEF" != "" ]; then
   echo "  echo $DEF"
   echo "  ;;"
 fi
+if [ "$INCLUDE" != "" ] || [ "$LIB" != "" ] || [ "$DEF" != "" ]; then
+  echo "--cflags)"
+  echo "  echo $INCLUDE $LIB $DEF"
+  echo "  ;;"
+fi
 if [ "$LINK" != "" ]; then
   echo "-l)"
   echo "  echo $LINK"

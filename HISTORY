@@ -1,3 +1,5 @@
+2021. 5.15. Modified zeda-makefile-gen to use --cflags option. [tools]
+2021. 5.15. Modified zeda-config-gen to generate correspondence to --cflags option. [tools]
 2021. 5.15. Abolished node_t##AssignDataInit and node_t##AssignDataDestroy. [zeda_tree]
 2021. 5.15. Modified zTreeClassMethod to accept initializer and destructor. [zeda_tree]
 2021. 5.15. Modified specifications of zTreeClass and zTreeClassMethod. [zeda_tree]
