@@ -1,3 +1,5 @@
+2021. 5.15. Modified zTreeClassMethod to export node_t##NodeAlloc. [zeda_tree]
+2021. 5.15. Modified zTreeClass and zTreeClassMethod to define _##node_t##DataInit, _##node_t##DataDestroy, node_t##DefDataInit and node_t##DefDataDestroy. [zeda_tree]
 2021. 5.15. Renamed zeda_heap.h to zeda_tree.h. [zeda, zeda_tree]
 2021. 5.15. Redefined zHeapClass and zHeapClassMethod separately. [zeda_heap]
 2021. 5.15. Renamed node_t##Add node_t##Delete to node_t##AddHeap and node_t##DeleteHeap, respectively. [zeda_heap]
