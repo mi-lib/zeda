@@ -48,8 +48,8 @@ typedef struct __##node_t{\
 __EXPORT bool node_t##IsEmpty(node_t *tree);\
 __EXPORT node_t *node_t##Init(node_t *node);\
 __EXPORT void node_t##Destroy(node_t *tree);\
-__EXPORT void node_t##DefDataInit(node_t *(* init)(node_t *));\
-__EXPORT void node_t##DefDataDestroy(node_t (* destroy)(node_t *));\
+__EXPORT void node_t##AssignDataInit(data_t *(* init)(data_t *));\
+__EXPORT void node_t##AssignDataDestroy(void (* destroy)(data_t *));\
 __EXPORT node_t *node_t##NodeAlloc(data_t val)
 
 #define zHeapClass(node_t,data_t) \
@@ -62,11 +62,11 @@ bool node_t##IsEmpty(node_t *tree){\
   return tree->size == 0;\
 }\
 \
-static node_t *_##node_t##DataInit(node_t *) = NULL;\
-static void _##node_t##DataDestroy(node_t *) = NULL;\
+static data_t *(* _##node_t##DataInit)(data_t *) = NULL;\
+static void (* _##node_t##DataDestroy)(data_t *) = NULL;\
 \
 node_t *node_t##Init(node_t *node){\
-  if( _##node_t##DataInit ) _##node_t##DataInit( node );\
+  if( _##node_t##DataInit ) _##node_t##DataInit( &(node)->data );\
   node->child[0] = node->child[1] = NULL;\
   node->size = 0;\
   return node;\
@@ -77,7 +77,7 @@ static void __##node_t##NodeDestroy(node_t *node){\
     __##node_t##NodeDestroy( node->child[0] );\
   if( node->child[1] )\
     __##node_t##NodeDestroy( node->child[1] );\
-  if( _##node_t##DataDestroy ) _##node_t##DataDestroy( node );\
+  if( _##node_t##DataDestroy ) _##node_t##DataDestroy( &(node)->data );\
   free( node );\
 }\
 \
@@ -87,8 +87,8 @@ void node_t##Destroy(node_t *tree){\
   node_t##Init( tree );\
 }\
 \
-void node_t##DefDataInit(node_t *(* init)(node_t *)){ _##node_t##DataInit = init; }\
-void node_t##DefDataDestroy(node_t (* destroy)(node_t *)){ _##node_t##DataDestroy = destroy; }\
+void node_t##AssignDataInit(data_t *(* init)(data_t *)){ _##node_t##DataInit = init; }\
+void node_t##AssignDataDestroy(void (* destroy)(data_t *)){ _##node_t##DataDestroy = destroy; }\
 \
 node_t *node_t##NodeAlloc(data_t val){\
   node_t *node;\
