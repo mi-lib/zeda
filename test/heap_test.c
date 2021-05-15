@@ -1,7 +1,7 @@
 #include <zeda/zeda.h>
 
 zHeapClass( Tree, int );
-zHeapClassMethod( Tree, int );
+zHeapClassMethod( Tree, int, NULL, NULL );
 
 #if 0
 void TreeNodePrint(Heap *node, int indent)
