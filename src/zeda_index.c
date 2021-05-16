@@ -156,15 +156,21 @@ zIndex zIndexCreateFromList(zIntList *list)
 /* scan an integer vector from a file. */
 zIndex zIndexFScan(FILE *fp)
 {
-  register int i, size;
+  register int i;
+  int size;
   zIndex idx;
 
-  size = zFInt( fp );
-  if( !( idx = zIndexCreate( size ) ) )
+  if( !zFInt( fp, &size ) ){
+    ZRUNERROR( ZEDA_ERR_SIZUNFOUND_INDEX );
     return NULL;
-
-  for( i=0; i<size; i++ )
-    zIndexSetElemNC( idx, i, zFInt( fp ) );
+  }
+  if( !( idx = zIndexCreate( size ) ) ) return NULL;
+  for( i=0; i<size; i++ ){
+    if( zFInt( fp, zArrayElemNC(idx,i) ) ){
+      ZRUNERROR( ZEDA_WARN_INDEX_SIZMIS, i, size );
+      break;
+    }
+  }
   return idx;
 }
 

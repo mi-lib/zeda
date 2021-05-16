@@ -29,6 +29,8 @@
 #define ZEDA_WARN_TOOLNG_TKN           "too long string to tokenize"
 #define ZEDA_WARN_TOOLNG_NUM           "too long number"
 
+#define ZEDA_WARN_INDEX_SIZMIS         "index has only %d components, while specified size is %d"
+
 #define ZEDA_WARN_CSV_FIELD_EMPTY      "field empty"
 
 #define ZEDA_WARN_ZTK_INCLUDE_DUP      "%s: duplicate file inclusion, skipped."
@@ -48,6 +50,8 @@
 #define ZEDA_ERR_INTSIZ_NOT_FOUND      "size of int not found."
 #define ZEDA_ERR_LNGSIZ_NOT_FOUND      "size of long not found."
 #define ZEDA_ERR_UNKNOWN_ENDIAN        "unknown endian."
+
+#define ZEDA_ERR_SIZUNFOUND_INDEX      "index size not specified"
 
 #define ZEDA_ERR_LIST2INDEX_FAILED     "cannot create an integer vector from an empty list"
 

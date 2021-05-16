@@ -507,7 +507,7 @@ __EXPORT char *zSNumToken(char *str, char *tkn, size_t size);
  * from the current position. If no integer value is
  * recognized at the current position, zero is returned.
  */
-__EXPORT int zFInt(FILE *fp);
+__EXPORT char *zFInt(FILE *fp, int *val);
 
 /*! \brief get an integer value from a string.
  *
@@ -515,7 +515,7 @@ __EXPORT int zFInt(FILE *fp);
  * If no integer value is recognized at the head of the
  * string, zero is returned.
  */
-__EXPORT int zSInt(char *str);
+__EXPORT char *zSInt(char *str, int *val);
 
 /*! \brief get a d-float value in a file.
  *
@@ -524,7 +524,7 @@ __EXPORT int zSInt(char *str);
  * If no value is recognized at the current position,
  * zero is returned.
  */
-__EXPORT double zFDouble(FILE *fp);
+__EXPORT char *zFDouble(FILE *fp, double *val);
 
 /*! \brief get a d-float value in a string.
  *
@@ -532,7 +532,7 @@ __EXPORT double zFDouble(FILE *fp);
  * value in a string \a str. If no value is recognized
  * at the head of the string, zero is returned.
  */
-__EXPORT double zSDouble(char *str);
+__EXPORT char *zSDouble(char *str, double *val);
 
 /*! \} */
 

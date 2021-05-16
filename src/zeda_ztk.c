@@ -370,7 +370,7 @@ int ZTKInt(ZTK *ztk)
   int retval;
 
   if( !ZTKVal(ztk) ) return 0;
-  retval = zSInt( ZTKVal(ztk) );
+  zSInt( ZTKVal(ztk), &retval );
   ZTKValNext( ztk );
   return retval;
 }
@@ -381,7 +381,7 @@ double ZTKDouble(ZTK *ztk)
   double retval;
 
   if( !ZTKVal(ztk) ) return 0;
-  retval = zSDouble( ZTKVal(ztk) );
+  zSDouble( ZTKVal(ztk), &retval );
   ZTKValNext( ztk );
   return retval;
 }

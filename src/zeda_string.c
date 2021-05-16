@@ -546,31 +546,35 @@ char *zSNumToken(char *str, char *tkn, size_t size)
 }
 
 /* get an integer value from file. */
-int zFInt(FILE *fp)
+char *zFInt(FILE *fp, int *val)
 {
-  char buf[BUFSIZ];
-  return zFToken( fp, buf, BUFSIZ ) ? atoi( buf ) : 0;
+  char buf[BUFSIZ], *ret;
+  if( ( ret = zFToken( fp, buf, BUFSIZ ) ) ) *val = atoi( buf );
+  return ret;
 }
 
 /* get an integer value from string. */
-int zSInt(char *str)
+char *zSInt(char *str, int *val)
 {
-  char buf[BUFSIZ];
-  return zSToken( str, buf, BUFSIZ ) ? atoi( buf ) : 0;
+  char buf[BUFSIZ], *ret;
+  if( ( ret = zSToken( str, buf, BUFSIZ ) ) ) *val = atoi( buf );
+  return ret;
 }
 
 /* get a double-precision floating-point value from file. */
-double zFDouble(FILE *fp)
+char *zFDouble(FILE *fp, double *val)
 {
-  char buf[BUFSIZ];
-  return zFToken( fp, buf, BUFSIZ ) ? atof( buf ) : 0;
+  char buf[BUFSIZ], *ret;
+  if( ( ret = zFToken( fp, buf, BUFSIZ ) ) ) *val = atof( buf );
+  return ret;
 }
 
 /* get a double-precision floating-point value from string. */
-double zSDouble(char *str)
+char *zSDouble(char *str, double *val)
 {
-  char buf[BUFSIZ];
-  return zSToken( str, buf, BUFSIZ ) ? atof( buf ) : 0;
+  char buf[BUFSIZ], *ret;
+  if( ( ret = zSToken( str, buf, BUFSIZ ) ) ) *val = atof( buf );
+  return ret;
 }
 
 /* for tag-and-key format */
