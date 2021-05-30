@@ -1,0 +1,46 @@
+#!/bin/sh
+
+DEBROOT=Debian
+
+if [ "$1" = "clean" ]; then
+   rm -rf ${DEBROOT}
+   exit 0
+fi
+
+PROJNAME=`grep PROJNAME= config | sed 's/PROJNAME=//'`
+VERSION=`grep VERSION config | sed 's/VERSION=//'`-debian1
+USERNAME=`git config --list | grep user.name | sed 's/user.name=//'`
+USEREMAIL=`git config --list | grep user.email | sed 's/user.email=//'`
+DESCRIPTION=`head -n 1 README.md`
+
+DEBDIR=${DEBROOT}/DEBIAN
+BINDIR=${DEBROOT}/usr/bin
+INCLUDEDIR=${DEBROOT}/usr/include
+LIBDIR=${DEBROOT}/usr/lib
+DOCDIR=${DEBROOT}/usr/share/doc/${PROJNAME}
+
+mkdir -p ${DEBDIR}
+mkdir -p ${BINDIR}
+mkdir -p ${INCLUDEDIR}
+mkdir -p ${LIBDIR}
+mkdir -p ${DOCDIR}
+
+cp -r lib/*.so ${LIBDIR}
+cp -r include/* ${INCLUDEDIR}
+install -m 755 tools/* ${BINDIR}; rm ${BINDIR}/makefile ${BINDIR}/config.tools
+ls app/*.c 2> /dev/null | xargs -I{} install -m 755 `basename {} .c` ${BINDIR}
+
+cat << EOF > ${DEBDIR}/control
+Package: ${PROJNAME}
+Maintainer: ${USERNAME} <${USEREMAIL}>
+Architecture: all
+Version: ${VERSION}
+Description: ${DESCRIPTION}
+EOF
+
+git log --pretty="${PROJNAME} %n%n  * %s%n%N%n -- %cn <%ce> %cd%n" --decorate-refs=tag |gzip > ${DOCDIR}/ChangeLog.gz
+cp COPYING ${DOCDIR}
+
+fakeroot dpkg-deb --build ${DEBROOT} .
+
+exit 0

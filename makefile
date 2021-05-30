@@ -1,4 +1,5 @@
 MAKEFILEGEN=./tools/zeda-makefile-gen
+MAKEDEB=./tools/zeda-deb-gen
 
 all:
 	@$(MAKEFILEGEN) | make -f -
@@ -12,3 +13,6 @@ install:
 	@$(MAKEFILEGEN) | make -f - install
 uninstall:
 	@$(MAKEFILEGEN) | make -f - uninstall
+deb:
+	@$(MAKEDEB)
+	@$(MAKEDEB) clean

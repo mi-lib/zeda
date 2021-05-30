@@ -70,7 +70,7 @@ typedef unsigned long int  uint64_t;     /*!< 64-bit unsigned integer */
 #else
 typedef unsigned long long int uint64_t; /*!< 64-bit unsigned integer */
 #endif
-#endif
+#endif /* __uint32_t_defined */
 
 #ifndef __int8_t_defined
 #define __int8_t_defined
@@ -82,7 +82,7 @@ typedef long int           int64_t;      /*!< 64-bit signed integer */
 #else
 typedef long long int      int64_t;      /*!< 64-bit signed integer */
 #endif
-#endif
+#endif /* __int8_t_defined */
 
 #ifndef INT_MAX
 #define INT_MAX ((int)0x7fffffff)

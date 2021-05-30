@@ -1,3 +1,6 @@
+2021. 5.30. Modified zeda-makefile-gen to be quiet when *.c is not found in app/. [tools]
+2021. 5.30. Added zeda-deb-gen. [tools]
+2021. 5.30. Modified zeda-makefile-gen not to use -i option of xargs (thanks to Michel Boudinot). [tools]
 2021. 5.16. Reflected changes of specifications of FInt and SInt. [zeda_errmsg, zeda_index, zeda_ztk]
 2021. 5.16. Modified specification of FInt, SInt, FDouble and SDouble. [zeda_string]
 2021. 5.15. Modified zeda-makefile-gen to use --cflags option. [tools]

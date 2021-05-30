@@ -8,16 +8,18 @@ Copyright (C) Tomomichi Sugihara (Zhidao) since 1998
 ZEDA is a collection of frequently used data structures and
 algorithms including:
 
-- bit operations
-- array operations
-- list operations
-- heap operations
-- round-robin table operations
-- string operations
-- command line option manipulations
-- generalized I/O stream
-- random number generator
-- ZTK format processor
+ - bit operations
+ - array operation
+ - list operation
+ - tree operation
+ - round-robin table
+ - string operations
+ - command line option manipulation
+ - generalized I/O stream
+ - random number generator
+ - ZTK format parser
+ - CSV file manipulation
+ - XML parser (wrapper of libxml2)
 
 -----------------------------------------------------------------
 ## [Installation / Uninstallation]

@@ -56,7 +56,7 @@ CC=gcc
 EOF
     echo "CFLAGS=$2 -Wall -O3 \`\$(CONFIGTOOL) --cflags\`"
     cat << EOF
-TARGET=\$(shell ls *.c | xargs -i basename {} .c | xargs)
+TARGET=\$(shell ls *.c 2> /dev/null | xargs -I{} basename {} .c | xargs)
 
 all: \$(TARGET)
 
