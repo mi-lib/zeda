@@ -11,7 +11,7 @@ CONFIGTOOL=$(PROJNAME)-config
 include config.tools
 
 CONFIGGEN=zeda-config-gen
-TOOLS=zeda-chkdep zeda-makefile-gen $(CONFIGGEN) $(CONFIGTOOL)
+TOOLS=zeda-chkdep zeda-makefile-gen zeda-deb-gen $(CONFIGGEN) $(CONFIGTOOL)
 
 #####################################################################
 all: $(CONFIGTOOL)
