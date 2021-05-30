@@ -28,11 +28,7 @@ mkdir -p ${DOCDIR}
 cp -r lib/*.so ${LIBDIR}
 cp -r include/* ${INCLUDEDIR}
 install -m 755 tools/* ${BINDIR}; rm ${BINDIR}/makefile ${BINDIR}/config.tools
-<<<<<<< HEAD
 ls app/*.c 2> /dev/null | xargs -I{} basename {} .c | xargs -I{} install -m 755 app/{} ${BINDIR}
-=======
-ls app/*.c 2> /dev/null | xargs -I{} basename {} .c | xargs -I{} install -m 755 {} ${BINDIR}
->>>>>>> 60b0f80c40b4e3e1bf3b0d445388a5b47d763a8b
 
 cat << EOF > ${DEBDIR}/control
 Package: ${PROJNAME}
