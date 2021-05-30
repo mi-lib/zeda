@@ -1,3 +1,4 @@
+2021. 5.30. Debugged zeda-deb-gen about the use of xargs. [tools]
 2021. 5.30. Modified makefile for tools. [tools]
 2021. 5.30. Modified zeda-makefile-gen to be quiet when *.c is not found in app/. [tools]
 2021. 5.30. Added zeda-deb-gen. [tools]
