@@ -1,42 +1,6 @@
-include ../config
+MAKEFILEGEN=`which zeda-makefile-gen`
 
-ROOTDIR=..
-LIBDIR=$(ROOTDIR)/lib
-INCLUDE=-I$(ROOTDIR)/include
-
-CC=gcc
-CFLAGS=-ansi -Wall -fPIC -O3 $(INCLUDE) -funroll-loops
-LD=gcc
-LDFLAGS=-shared
-SIGNUP=echo "ZEDA ver."$(VERSION)" Copyright (C) 1998 Tomomichi Sugihara (Zhidao)" >>
-
-OBJ=zeda_misc.o\
-	zeda_string.o \
-	zeda_bit.o zeda_rand.o\
-	zeda_binfile.o\
-	zeda_csv.o zeda_stream.o\
-	zeda_array.o zeda_index.o zeda_list.o zeda_rrtab.o\
-	zeda_strlist.o\
-	zeda_option.o zeda_ztk.o
-DLIB=libzeda.so
-
-ifeq ($(CONFIG_USE_LIBXML),y)
-	INCLUDE += "`xml2-config --cflags`"
-	OBJ += zeda_xml.o
-	CFLAGS += -D__ZEDA_USE_LIBXML
-endif
-
-TARGET=$(DLIB)
-
-all: $(TARGET)
-
-$(DLIB): $(OBJ)
-	@echo " LD	" $^
-	@$(LD) $(LDFLAGS) -o $@ $^ > /dev/null; $(SIGNUP) $@
-	-@mv $@ $(LIBDIR)
-%.o: %.c
-	@echo " CC	" $<
-	@$(CC) $(CFLAGS) -c $< > /dev/null
+all:
+	@$(MAKEFILEGEN) lib | make -f -
 clean:
-	@echo " CLEAN"
-	-@rm -f *.o *~ \#* $(TARGET)
+	@$(MAKEFILEGEN) lib | make -f - clean

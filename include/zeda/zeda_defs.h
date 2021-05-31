@@ -56,33 +56,28 @@ __BEGIN_DECLS
 #define BUFSIZ 512
 #endif /* BUFSIZ */
 
+#if __STDC_VERSION__ < 199901L
 /* size-fixed integer family */
 /* might be already defined in stdint.h or sys/types.h conforming to C99 */
-#include <bits/wordsize.h>
 typedef unsigned char      uint8_t;      /*!< 8-bit unsigned integer */
 typedef unsigned short int uint16_t;     /*!< 16-bit unsigned integer */
-
-#ifndef __uint32_t_defined
-#define __uint32_t_defined
 typedef unsigned int       uint32_t;     /*!< 32-bit unsigned integer */
-#if __WORDSIZE == 64
+#ifdef __LP64__
 typedef unsigned long int  uint64_t;     /*!< 64-bit unsigned integer */
 #else
 typedef unsigned long long int uint64_t; /*!< 64-bit unsigned integer */
-#endif
-#endif /* __uint32_t_defined */
-
-#ifndef __int8_t_defined
-#define __int8_t_defined
+#endif /* __LP64__ */
 typedef signed char        int8_t;       /*!< 8-bit signed integer */
 typedef short int          int16_t;      /*!< 16-bit signed integer */
 typedef int                int32_t;      /*!< 32-bit signed integer */
-#if __WORDSIZE == 64
+#ifdef __LP64__
 typedef long int           int64_t;      /*!< 64-bit signed integer */
 #else
 typedef long long int      int64_t;      /*!< 64-bit signed integer */
-#endif
-#endif /* __int8_t_defined */
+#endif /* __LP64__ */
+#else
+#include <stdint.h>
+#endif /* __STDC_VERSION__ */
 
 #ifndef INT_MAX
 #define INT_MAX ((int)0x7fffffff)
@@ -93,10 +88,11 @@ typedef long long int      int64_t;      /*!< 64-bit signed integer */
 #endif
 
 typedef int8_t   byte;   /*!< signed one-byte data. */
-typedef uint8_t  ubyte;  /*!< unsigned one-byte data. */
 typedef int16_t  word;   /*!< signed two-byte data. */
-typedef uint16_t uword;  /*!< unsigned two-byte data. */
 typedef int32_t  dword;  /*!< signed four-byte data. */
+
+typedef uint8_t  ubyte;  /*!< unsigned one-byte data. */
+typedef uint16_t uword;  /*!< unsigned two-byte data. */
 typedef uint32_t udword; /*!< unsigned four-byte data. */
 
 #if !defined( _NETBSD_SOURCE )

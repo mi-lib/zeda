@@ -1,5 +1,11 @@
 #include <zeda/zeda.h>
 
+#ifdef __APPLE__
+#define __BYTE_ORDER __BYTE_ORDER__
+#else
+#include <endian.h>
+#endif
+
 ulong gen_bit_rand(ubyte b[], int bitwidth)
 {
   ulong val = 0;

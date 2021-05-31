@@ -15,4 +15,3 @@ uninstall:
 	@$(MAKEFILEGEN) | make -f - uninstall
 deb:
 	@$(MAKEDEB)
-	@$(MAKEDEB) clean
