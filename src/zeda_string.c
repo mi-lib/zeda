@@ -57,6 +57,41 @@ char *zStrCatPrint(char *str, size_t size, char *fmt, ...)
   return zStrCat( str, buf, size );
 }
 
+/* find a specified charactor in a string. */
+char *zStrChar(const char *s, size_t size, int c)
+{
+  for( ; *s && size > 0; s++, size-- )
+    if( *s == c ) return (char *)s;
+  return NULL;
+}
+
+/* find a specified charactor in a string. */
+char *zStrCharNul(const char *s, size_t size, int c)
+{
+  char *cp;
+  int len;
+
+  if( ( cp = zStrChar( s, size, c ) ) ) return cp;
+  if( ( len = strlen( s ) ) <= size ) len = size;
+  return (char *)&s[len];
+}
+
+/* find a specified charactor from the last in a string. */
+char *zStrrChar(const char *s, size_t size, int c)
+{
+  int l;
+  char *cp;
+
+  if( ( l = strlen( s ) ) > size ) l = size;
+  if( l == 0 ){
+    ZRUNERROR( ZEDA_ERR_EMPTY_STRING );
+    return NULL;
+  }
+  for( ; *( cp = (char*)s+l-1 ); l-- )
+    if( *cp == c ) return cp;
+  return NULL;
+}
+
 /* concatenate a string with a charactor. */
 char *zStrAddChar(char *str, size_t size, char c)
 {

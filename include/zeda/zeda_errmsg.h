@@ -51,6 +51,8 @@
 #define ZEDA_ERR_LNGSIZ_NOT_FOUND      "size of long not found."
 #define ZEDA_ERR_UNKNOWN_ENDIAN        "unknown endian."
 
+#define ZEDA_ERR_EMPTY_STRING "empty string"
+
 #define ZEDA_ERR_SIZUNFOUND_INDEX      "index size not specified"
 
 #define ZEDA_ERR_LIST2INDEX_FAILED     "cannot create an integer vector from an empty list"

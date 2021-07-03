@@ -78,6 +78,51 @@ __EXPORT char *zStrCat(char *dest, const char *src, size_t size);
  */
 __EXPORT char *zStrCatPrint(char *str, size_t size, char *fmt, ...);
 
+/*! \brief find a specified charactor in a string.
+ *
+ * zStrChar() finds the first occurence of a specified charactor
+ * \a c in a string \s. \a size is the maximum size of the buffer
+ * where \a s points.
+ * \return
+ * zStrChar() returns a pointer to the charactor where \a c
+ * appears first in \a s. If \a c is not found in \a s, the null
+ * pointer is returned.
+ * \sa
+ * zStrCharNul, zStrrChar
+ */
+__EXPORT char *zStrChar(const char *s, size_t size, int c);
+
+/*! \brief find a specified charactor in a string.
+ *
+ * zStrCharNul() finds the first occurence of a specified charactor
+ * \a c in a string \s. \a size is the maximum size of the buffer
+ * where \a s points.
+ * The functions is almost the same with zStrChar() except that
+ * it returns the pointer to the last null charactor if \a c is
+ * not found in \a s.
+ * \return
+ * zStrCharNul() returns a pointer to the charactor where \a c
+ * appears first in \a s. If \a c is not found in \a s, the
+ * pointer to the last null charactor is returned.
+ * \sa
+ * zStrChar, zStrrChar
+ */
+__EXPORT char *zStrCharNul(const char *s, size_t size, int c);
+
+/*! \brief find a specified charactor from the last in a string.
+ *
+ * zStrrChar() finds the last occurence of a specified charactor
+ * \a c in a string \s. \a size is the maximum size of the buffer
+ * where \a s points.
+ * \return
+ * zStrrChar() returns a pointer to the charactor where \a c
+ * appears the last in \a s. If \a c is not found in \a s, the
+ * null pointer is returned.
+ * \sa
+ * zStrChar, zStrCharNul
+ */
+__EXPORT char *zStrrChar(const char *s, size_t size, int c);
+
 /*! \brief concatenate a string and a charactor.
  *
  * zStrAddChar() appends a charactor \a c to a string

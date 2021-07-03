@@ -1,5 +1,19 @@
 #include <zeda/zeda.h>
 
+void assert_strchr(void)
+{
+  const char *str = ".,;:/abcde.,;:/abcde.,;:/abcde";
+
+  zAssert( zStrChar (true case), strcmp( zStrChar( str, strlen(str), 'a' ), "abcde.,;:/abcde.,;:/abcde" ) == 0 );
+  zAssert( zStrChar (false case1), !zStrChar( str, 5, 'a' ) );
+  zAssert( zStrChar (false case2), !zStrChar( str, strlen(str), '+' ) );
+  zAssert( zStrrChar (true case), strcmp( zStrrChar( str, strlen(str), 'a' ), "abcde" ) == 0 );
+  zAssert( zStrrChar (false case1), !zStrrChar( str, 5, 'a' ) );
+  zAssert( zStrrChar (false case2), !zStrrChar( str, strlen(str), '+' ) );
+  zAssert( zStrCharNul (true case), strcmp( zStrCharNul( str, strlen(str), 'a' ), "abcde.,;:/abcde.,;:/abcde" ) == 0 );
+  zAssert( zStrCharNul (false case), !*zStrCharNul( str, strlen(str), '+' ) );
+}
+
 void assert_strmanip(void)
 {
   char str1[BUFSIZ], str2[BUFSIZ], *strp;
@@ -147,6 +161,7 @@ void assert_strsearch(void)
 
 int main(void)
 {
+  assert_strchr();
   assert_strmanip();
   assert_token();
   assert_num_token();
