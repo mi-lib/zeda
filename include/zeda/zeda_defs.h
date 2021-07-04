@@ -79,12 +79,14 @@ typedef long long int      int64_t;      /*!< 64-bit signed integer */
 #include <stdint.h>
 #endif /* __STDC_VERSION__ */
 
+#define INT_BIT ( sizeof(int) << 3 )
+
 #ifndef INT_MAX
-#define INT_MAX ((int)0x7fffffff)
+#define INT_MAX ( ( ( ( 1 << ( ( INT_BIT >> 1 ) - 1 ) ) - 1 ) << ( INT_BIT >> 1 ) ) | ( ( 1 << ( INT_BIT >> 1 ) ) - 1 ) )
 #endif
 
 #ifndef UINT_MAX
-#define UINT_MAX ((uint)0xffffffffU)
+#define UINT_MAX ( (uint)( ( ( ( 1 << ( INT_BIT >> 1 ) ) - 1 ) << ( INT_BIT >> 1 ) ) | ( ( 1 << ( INT_BIT >> 1 ) ) - 1 ) ) )
 #endif
 
 typedef int8_t   byte;   /*!< signed one-byte data. */
