@@ -1,4 +1,4 @@
-MAKEFILEGEN=`which zeda-makefile-gen`
+MAKEFILEGEN=../tools/zeda-makefile-gen
 
 all:
 	@$(MAKEFILEGEN) lib | make -f -

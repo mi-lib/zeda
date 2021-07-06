@@ -1,3 +1,4 @@
+2021. 7. 6. Debugged makefile in src (thanks to Naoki Wakisaka). [src]
 2021. 7. 3. Reimplemented INT_MAX and UINT_MAX. [zeda_defs]
 2021. 7. 3. Added zStrChar, zStrrChar and zStrCharNul. [zeda_errmsg, zeda_string]
 2021. 6. 1. Abolished clean option in zeda-deb-gen. Modified zeda-deb-gen to add information about architecture, section, priority and dependencies. [tools]
