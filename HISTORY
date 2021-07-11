@@ -1,3 +1,5 @@
+2021. 7.11. Added node_t##IsLeaf, __##node_t##Heapify and node_t##Heapify. [zeda_tree]
+2021. 7.11. Modified node_t##NodeAlloc and __##node_t##NodeAddHeap to store size of the partial tree. [zeda_tree]
 2021. 7. 6. Debugged makefile in src (thanks to Naoki Wakisaka). [src]
 2021. 7. 3. Reimplemented INT_MAX and UINT_MAX. [zeda_defs]
 2021. 7. 3. Added zStrChar, zStrrChar and zStrCharNul. [zeda_errmsg, zeda_string]

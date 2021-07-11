@@ -18,6 +18,28 @@ void TreePrint(Heap *tree)
 }
 #endif
 
+static Tree *__TreeNodeAddComplete(Tree *parent, int id, Tree *node, Tree *node_new, uint mask, uint totalsize){
+  uint cid;
+  cid = mask & totalsize ? 1 : 0;
+  if( mask == 1 )
+    node->child[cid] = node_new;
+  else
+    __TreeNodeAddComplete( node, cid, node->child[cid], node_new, mask >> 1, totalsize );
+  return node_new;
+}
+
+Tree *TreeAddComplete(Tree *tree, int val){
+  Tree *np_new;
+  uint mask;
+  if( !( np_new = TreeNodeAlloc( val ) ) ) return NULL;
+  if( ++tree->size == 1 ){
+    tree->child[0] = np_new;
+    return tree->child[0];
+  }
+  mask = __TreeInitHeapMask( tree );
+  return __TreeNodeAddComplete( tree, 0, tree->child[0], np_new, mask, tree->size );
+}
+
 int TreeComp(Tree *node1, Tree *node2, void *util)
 {
   return node1->data <= node2->data ? 1 : 0;
@@ -25,24 +47,49 @@ int TreeComp(Tree *node1, Tree *node2, void *util)
 
 #define N 1000
 
-int main(int argc, char *argv[])
+bool check_heap(Tree *tree)
 {
-  Tree tree, *node;
-  int i, prev;
+  Tree *node;
+  int prev;
   bool result = true;
 
-  zRandInit();
+  prev = ( node = TreeDeleteHeap( tree, TreeComp, NULL ) )->data;
+  free( node );
+  while( !TreeIsEmpty( tree ) ){
+    if( ( node = TreeDeleteHeap( tree, TreeComp, NULL ) )->data < prev ) result = false;
+    free( node );
+  }
+  TreeDestroy( tree );
+  return result;
+}
+
+void assert_heap(void)
+{
+  Tree tree;
+  int i;
+
   TreeInit( &tree );
   for( i=0; i<N; i++ )
     TreeAddHeap( &tree, zRandI(0,10), TreeComp, NULL );
+  zAssert( zHeapClass, check_heap( &tree ) );
+}
 
-  prev = ( node = TreeDeleteHeap( &tree, TreeComp, NULL ) )->data;
-  free( node );
-  while( !TreeIsEmpty( &tree ) ){
-    if( ( node = TreeDeleteHeap( &tree, TreeComp, NULL ) )->data < prev ) result = false;
-    free( node );
-  }
-  TreeDestroy( &tree );
-  zAssert( zHeapClass, result );
+void assert_heapify(void)
+{
+  Tree tree;
+  int i;
+
+  TreeInit( &tree );
+  for( i=0; i<N; i++ )
+    TreeAddComplete( &tree, zRandI(0,10) );
+  TreeHeapify( &tree, TreeComp, NULL );
+  zAssert( zHeapClass (Heapify), check_heap( &tree ) );
+}
+
+int main(int argc, char *argv[])
+{
+  zRandInit();
+  assert_heap();
+  assert_heapify();
   return 0;
 }

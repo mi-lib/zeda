@@ -46,6 +46,7 @@ typedef struct __##node_t{\
 } node_t;\
 \
 __EXPORT bool node_t##IsEmpty(node_t *tree);\
+__EXPORT bool node_t##IsLeaf(node_t *tree);\
 __EXPORT node_t *node_t##Init(node_t *node);\
 __EXPORT void node_t##Destroy(node_t *tree);\
 __EXPORT node_t *node_t##NodeAlloc(data_t val)
@@ -58,6 +59,10 @@ __EXPORT node_t *node_t##DeleteHeap(node_t *tree, int (* cmp)(node_t*,node_t*,vo
 #define zTreeClassMethod(node_t,data_t,init,destroy) \
 bool node_t##IsEmpty(node_t *tree){\
   return tree->size == 0;\
+}\
+\
+bool node_t##IsLeaf(node_t *tree){\
+  return !tree->child[0] && !tree->child[1];\
 }\
 \
 static data_t *(* _##node_t##DataInit)(data_t *) = init;\
@@ -115,13 +120,13 @@ static uint __##node_t##InitHeapMask(node_t *tree){\
   return mask >> 1;\
 }\
 \
-static node_t *__##node_t##NodeAddHeap(node_t *parent, int id, node_t *node, node_t *node_new, uint mask, uint size, int (* cmp)(node_t*,node_t*,void*), void *util){\
+static node_t *__##node_t##NodeAddHeap(node_t *parent, int id, node_t *node, node_t *node_new, uint mask, uint totalsize, int (* cmp)(node_t*,node_t*,void*), void *util){\
   uint cid;\
-  cid = mask & size ? 1 : 0;\
+  cid = mask & totalsize ? 1 : 0;\
   if( mask == 1 )\
     node->child[cid] = node_new;\
   else\
-    __##node_t##NodeAddHeap( node, cid, node->child[cid], node_new, mask >> 1, size, cmp, util );\
+    __##node_t##NodeAddHeap( node, cid, node->child[cid], node_new, mask >> 1, totalsize, cmp, util );\
   if( !cmp( node, node->child[cid], util ) )\
     __##node_t##NodeSwapHeap( parent, id, node, cid );\
   return node_new;\
@@ -169,6 +174,18 @@ node_t *node_t##DeleteHeap(node_t *tree, int (* cmp)(node_t*,node_t*,void*), voi
   ret->child[0] = ret->child[1] = NULL;\
   tree->size--;\
   return ret;\
+}\
+\
+static void __##node_t##Heapify(node_t *parent, int id, node_t *tree, int (* cmp)(node_t*,node_t*,void*), void *util){\
+  if( node_t##IsLeaf( tree ) ) return;\
+  if( tree->child[0] ) __##node_t##Heapify( tree, 0, tree->child[0], cmp, util );\
+  if( tree->child[1] ) __##node_t##Heapify( tree, 1, tree->child[1], cmp, util );\
+  __##node_t##DownHeap( parent, id, tree, cmp, util );\
+}\
+\
+void node_t##Heapify(node_t *tree, int (* cmp)(node_t*,node_t*,void*), void *util){\
+  if( node_t##IsEmpty( tree ) ) return;\
+  __##node_t##Heapify( tree, 0, tree->child[0], cmp, util );\
 }
 
 /*! \} */
