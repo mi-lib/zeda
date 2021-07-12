@@ -31,7 +31,7 @@ static Tree *__TreeNodeAddComplete(Tree *parent, int id, Tree *node, Tree *node_
 Tree *TreeAddComplete(Tree *tree, int val){
   Tree *np_new;
   uint mask;
-  if( !( np_new = TreeNodeAlloc( val ) ) ) return NULL;
+  if( !( np_new = TreeNodeAlloc( &val ) ) ) return NULL;
   if( ++tree->size == 1 ){
     tree->child[0] = np_new;
     return tree->child[0];
@@ -66,11 +66,13 @@ bool check_heap(Tree *tree)
 void assert_heap(void)
 {
   Tree tree;
-  int i;
+  int i, val;
 
   TreeInit( &tree );
-  for( i=0; i<N; i++ )
-    TreeAddHeap( &tree, zRandI(0,10), TreeComp, NULL );
+  for( i=0; i<N; i++ ){
+    val = zRandI(0,10);
+    TreeAddHeap( &tree, &val, TreeComp, NULL );
+  }
   zAssert( zHeapClass, check_heap( &tree ) );
 }
 
