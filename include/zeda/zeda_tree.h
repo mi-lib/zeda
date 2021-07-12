@@ -51,11 +51,6 @@ __EXPORT node_t *node_t##Init(node_t *node);\
 __EXPORT void node_t##Destroy(node_t *tree);\
 __EXPORT node_t *node_t##NodeAlloc(data_t *val)
 
-#define zHeapClass(node_t,data_t) \
-zTreeClass(node_t,data_t); \
-__EXPORT node_t *node_t##AddHeap(node_t *tree, data_t *val, int (* cmp)(node_t*,node_t*,void*), void *util);\
-__EXPORT node_t *node_t##DeleteHeap(node_t *tree, int (* cmp)(node_t*,node_t*,void*), void *util)
-
 #define zTreeClassMethod(node_t,data_t,init,destroy) \
 bool node_t##IsEmpty(node_t *tree){\
   return tree->size == 0;\
@@ -100,6 +95,12 @@ node_t *node_t##NodeAlloc(data_t *val){\
   memcpy( &node->data, val, sizeof(data_t) );\
   return node;\
 }
+
+#define zHeapClass(node_t,data_t) \
+zTreeClass(node_t,data_t); \
+__EXPORT node_t *node_t##AddHeap(node_t *tree, data_t *val, int (* cmp)(node_t*,node_t*,void*), void *util);\
+__EXPORT node_t *node_t##DeleteHeap(node_t *tree, int (* cmp)(node_t*,node_t*,void*), void *util);\
+__EXPORT void node_t##Heapify(node_t *tree, int (* cmp)(node_t*,node_t*,void*), void *util)
 
 #define zHeapClassMethod(node_t,data_t,init,destroy) \
 zTreeClassMethod(node_t,data_t,init,destroy) \
