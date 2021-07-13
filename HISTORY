@@ -1,3 +1,7 @@
+2021. 7.13. Added zTreeInit, zTreeDestroy, zTreeNodeAlloc, zTreeAddComplete, zTreeUpHeap, zTreeAddHeap, zTreeDownHeap, zTreeDeleteHeap, and zTreeHeapify. [zeda_tree]
+2021. 7.13. Abolished node_t##NodeAddHeap and added definitions of node_t##AddComplete and node_t##UpHeap. [zeda_tree]
+2021. 7.13. Added parent member in zTreeClass and modified definitions of node_t##DownHeap. [zeda_tree]
+2021. 7.13. Defined zTreeIsEmpty, zTreeIsLeaf, _zTreeParentID and _zTreeInitHeapMask. [zeda_tree]
 2021. 7.12. Modified zHeapClass to export node_t##Heapify. [zeda_tree]
 2021. 7.12. Modified node_t##NodeAlloc and node_t##AddHeap to accept a pointer to a data to be stored. [zeda_tree]
 2021. 7.11. Added node_t##IsLeaf, __##node_t##Heapify and node_t##Heapify. [zeda_tree]
