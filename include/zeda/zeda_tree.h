@@ -93,7 +93,7 @@ static void __##node_t##BindParentChild(node_t *parent, int id, node_t *child){\
 
 #define zHeapClass(node_t,data_t) \
 zTreeClass(node_t,data_t); \
-__EXPORT node_t *node_t##AddComplete(node_t *tree, int *val);\
+__EXPORT node_t *node_t##AddComplete(node_t *tree, data_t *val);\
 __EXPORT node_t *node_t##UpHeap(node_t *tree, node_t *node, int (* cmp)(node_t*,node_t*,void*), void *util);\
 __EXPORT node_t *node_t##AddHeap(node_t *tree, data_t *val, int (* cmp)(node_t*,node_t*,void*), void *util);\
 __EXPORT node_t *node_t##DownHeap(node_t *node, int (* cmp)(node_t*,node_t*,void*), void *util);\
@@ -115,7 +115,7 @@ static void __##node_t##NodeSwapHeap(node_t *node, int cid){\
   __##node_t##BindParentChild( parent->child[id], 1-cid, tmp );\
 }\
 \
-node_t *node_t##AddComplete(node_t *tree, int *val){\
+node_t *node_t##AddComplete(node_t *tree, data_t *val){\
   node_t *node, *np_new;\
   uint mask, cid;\
   if( !( np_new = node_t##NodeAlloc( val ) ) ) return NULL;\
@@ -138,7 +138,7 @@ node_t *node_t##UpHeap(node_t *tree, node_t *node, int (* cmp)(node_t*,node_t*,v
   return node;\
 }\
 \
-node_t *node_t##AddHeap(node_t *tree, int *val, int (* cmp)(node_t*,node_t*,void*), void *util){\
+node_t *node_t##AddHeap(node_t *tree, data_t *val, int (* cmp)(node_t*,node_t*,void*), void *util){\
   return node_t##UpHeap( tree, node_t##AddComplete( tree, val ), cmp, util );\
 }\
 \
