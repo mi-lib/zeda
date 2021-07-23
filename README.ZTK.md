@@ -10,15 +10,11 @@ ZTK is a file format to describe data.
 -----------------------------------------------------------------
 ## [Concept]
 
-The design concept of ZTK is summarized as follows.
-
-- Syntax is not for computers but for humans. Too strong rules of
-  syntax should be ruled out.
- - Parenthesization, indentation, delimination and line feed
-   provides better readability for humans, but should not constrain
-   the way of description.
-- Humans can understand sentences mainly by context supported by
-  keywords, so do computers as well.
+Syntax is not for computers but for humans. Too strong rules of
+syntax should be ruled out. Parenthesization, indentation,
+elimination and line-feed rovides better readability for humans,
+ut should not constrain the way of description. This is the
+esign concept of ZTK.
 
 -----------------------------------------------------------------
 ## [Syntax]
@@ -40,33 +36,30 @@ key2: val13
 key1: val14 val15 val6
 ```
 
-As you do, humans can understand the above [tag1] is not in the
-same level with [Syntax] even though both are bracketted as well.
-
-All the following lines are parsed in the same way.
+But, all the following lines are parsed also in the same way.
 
 ```
-key1 val1 val2 val3
 key1: val1 val2 val3
-key1;val1,val2,val3
-key1 (val1, val2, val3)
+key1: val1 val2 val3
+key1:val1,val2,val3
+key1: (val1, val2, val3)
 key1: { val1, val2, val3 }
-key1 val1:val2:val3
+key1: val1;val2;val3
 ```
 
-Obviously, the whitespaces, colons, semicolons, commas, parentheses
+Obviously, the whitespaces, semicolons, commas, parentheses
 and braces are all identified as delimiters. Even the following
-lines are accepted.
+ines are accepted.
 
 ```
-key1 (val1 val2 val3}
-key1 (val1 val2 val3
+key1: (val1 val2 val3}
+key1: (val1 val2 val3
 ```
 
 The following also works.
 
 ```
-key1
+key1:
  val1
  val2
  val3
@@ -82,7 +75,7 @@ Single/double quotations concatenate several splitted words into
 one string. Actually, the parse unit of ZTK format is not a word
 but a string.
 
-Brackets have a special role to make tags.
+Brackets and colons have special roles to make tags and keys.
 
 -----------------------------------------------------------------
 ## [How to parse]

@@ -85,10 +85,6 @@ node_t *node_t##NodeAlloc(data_t *val){\
   node_t##Init( node );\
   memcpy( &node->data, val, sizeof(data_t) );\
   return node;\
-}\
-\
-static void __##node_t##BindParentChild(node_t *parent, int id, node_t *child){\
-  if( ( parent->child[id] = child ) ) child->parent = parent;\
 }
 
 #define zHeapClass(node_t,data_t) \
@@ -102,6 +98,10 @@ __EXPORT void node_t##Heapify(node_t *tree, int (* cmp)(node_t*,node_t*,void*), 
 
 #define zHeapClassMethod(node_t,data_t,init,destroy) \
 zTreeClassMethod(node_t,data_t,init,destroy) \
+static void __##node_t##BindParentChild(node_t *parent, int id, node_t *child){\
+  if( ( parent->child[id] = child ) ) child->parent = parent;\
+}\
+\
 static void __##node_t##NodeSwapHeap(node_t *node, int cid){\
   node_t *parent, *tmp;\
   int id;\
