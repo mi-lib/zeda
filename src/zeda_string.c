@@ -26,8 +26,9 @@ char *zStrCopy(char *dest, const char *src, size_t size)
   if( ( len = strlen(src) ) > size - 1 ){
     len = size - 1; /* clamped if length is beyond the buffer size */
   }
+  memmove( dest, src, len ); 
   dest[len] = '\0'; /* surely terminate the string */
-  return memmove( dest, src, len ); 
+  return dest;
 }
 
 /* clone a string. */
@@ -737,6 +738,12 @@ char *zGetBasename(char *org, char *name, size_t size)
   zStrCopy( name, cp, size );
   zCutSuffix( name );
   return name;
+}
+
+/* directly simplify a pathname. */
+char *zGetBasenameDRC(char *name)
+{
+  return zGetBasename( name, name, strlen(name) );
 }
 
 /* open file with specified suffix. */

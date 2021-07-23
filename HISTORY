@@ -1,3 +1,5 @@
+2021. 7.24. Added zGetBasenameDRC. [zeda_string]
+2021. 7.24. Debugged zStrCopy. [zeda_string]
 2021. 7.23. Moved __##node_t##BindParentChild to zHeadClassMethod. [zeda_tree]
 2021. 7.13. Debugged node_t##AddComplete and node_t##AddHeap. [zeda_tree]
 2021. 7.13. Added zTreeInit, zTreeDestroy, zTreeNodeAlloc, zTreeAddComplete, zTreeUpHeap, zTreeAddHeap, zTreeDownHeap, zTreeDeleteHeap, and zTreeHeapify. [zeda_tree]

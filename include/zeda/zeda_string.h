@@ -724,18 +724,21 @@ void zIndent(int n);
 #ifndef __KERNEL__
 /*! \brief strip a directory from a filename.
  *
- * zGetBasename() acquires a filename from a path string
- * \a org with any leading directory names removed, and
- * puts it where \a name points.
- * ex. if \a org is "/home/user/dummy.suf", \a name will
- * be "dummy.suf".
+ * zGetBasename() acquires a filename from a path string \a org
+ * with any leading directory names removed, and puts it where
+ * \a name points.
+ * ex. if \a org is "/home/user/dummy.suf", \a name will be
+ * "dummy.suf".
+ *
+ * zGetBasenameDRC() overrides a given string \a name by the
+ * stripped string.
  * \return
- * a pointer \a name is returned.
+ * zGetBasename() and zGetBasenameDRC() return a pointer \a name.
  * \note
- * Both '/' and '\\' are accepted as delimiters of the path
- * name.
+ * Both '/' and '\\' are accepted as delimiters of the path name.
  */
 __EXPORT char *zGetBasename(char *org, char *name, size_t size);
+__EXPORT char *zGetBasenameDRC(char *name);
 
 /*! \brief get a suffix from a filename.
  *

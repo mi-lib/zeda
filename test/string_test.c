@@ -140,6 +140,9 @@ void assert_pathname(void)
   zGetBasename( "C:\\user\\foo\\baa.d\\woo\\yeah.sfx", str1, BUFSIZ );
   zGetBasename( "C:\\user\\foo\\baa.d\\woo\\yeah", str2, BUFSIZ );
   zAssert( zGetBasename, strcmp( str1, "yeah" ) == 0 && strcmp( str2, "yeah" ) == 0 );
+  zStrCopy( str1, "C:\\user\\foo\\baa.d\\woo\\yeah.sfx", BUFSIZ );
+  zGetBasenameDRC( str1 );
+  zAssert( zGetBasenameDRC, strcmp( str1, "yeah" ) == 0 );
   zStrCopy( str1, "path/test.dummy.suffix", BUFSIZ );
   zCutSuffix( str1 );
   zAssert( zCutSuffix, strcmp( str1, "path/test.dummy" ) == 0 );
