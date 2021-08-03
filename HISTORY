@@ -1,3 +1,4 @@
+2021. 8. 3. Modified zeda-deb-gen to set modes of directories as 755. [tools]
 2021. 7.24. Added zGetBasenameDRC. [zeda_string]
 2021. 7.24. Debugged zStrCopy. [zeda_string]
 2021. 7.23. Moved __##node_t##BindParentChild to zHeadClassMethod. [zeda_tree]

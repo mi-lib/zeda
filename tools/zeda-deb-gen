@@ -30,11 +30,13 @@ INCLUDEDIR=${DEBROOT}/usr/include
 LIBDIR=${DEBROOT}/usr/lib
 DOCDIR=${DEBROOT}/usr/share/doc/${PROJNAME}
 
-mkdir -p ${DEBDIR}
-mkdir -p ${BINDIR}
-mkdir -p ${INCLUDEDIR}
-mkdir -p ${LIBDIR}
-mkdir -p ${DOCDIR}
+MAKEDIR=mkdir -m 755 -p
+
+${MAKEDIR} ${DEBDIR}
+${MAKEDIR} ${BINDIR}
+${MAKEDIR} ${INCLUDEDIR}
+${MAKEDIR} ${LIBDIR}
+${MAKEDIR} ${DOCDIR}
 
 cp -r lib/*.so ${LIBDIR}
 cp -r include/* ${INCLUDEDIR}
