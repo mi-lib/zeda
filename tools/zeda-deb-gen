@@ -30,7 +30,7 @@ INCLUDEDIR=${DEBROOT}/usr/include
 LIBDIR=${DEBROOT}/usr/lib
 DOCDIR=${DEBROOT}/usr/share/doc/${PROJNAME}
 
-MAKEDIR=mkdir -m 755 -p
+MAKEDIR="mkdir -m 755 -p"
 
 ${MAKEDIR} ${DEBDIR}
 ${MAKEDIR} ${BINDIR}
@@ -44,7 +44,7 @@ install -m 755 tools/* ${BINDIR}; rm ${BINDIR}/makefile ${BINDIR}/config.tools
 ls app/*.c 2> /dev/null | xargs -I{} basename {} .c | xargs -I{} install -m 755 app/{} ${BINDIR}
 
 cat << EOF > ${DEBDIR}/control
-Package: ${PROJNAME}
+Package: ${PROJNAME}-dev
 Version: ${VERSION}
 Maintainer: ${USERNAME} <${USEREMAIL}>
 Homepage: ${URL}
