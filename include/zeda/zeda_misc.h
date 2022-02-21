@@ -158,8 +158,6 @@ extern bool __zeda_echo;
 #define zEchoOff() ( __zeda_echo = false )
 
 /*!
- * \def ZSYSERROR()
- * output system error message.
  * \def ZRUNERROR(msg,...)
  * output a run-time error message.
  * \def ZRUNWARN(msg,...)

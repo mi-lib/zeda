@@ -433,10 +433,12 @@ void *_ZTKEvalKey(void *obj, void *arg, ZTK *ztk, ZTKPrp prp[], int num)
       if( ZTKKeyCmp( ztk, prp[i].str ) && prp[i]._eval ){
         if( prp[i].num > 0 && count[i] >= prp[i].num ){
           ZRUNWARN( ZEDA_WARN_ZTK_TOOMANY_KEYS, prp[i].str );
-        } else
-        if( !prp[i]._eval( obj, count[i]++, arg, ztk ) ){
-          obj = NULL;
-          goto TERMINATE;
+        } else{
+          if( !prp[i]._eval( obj, count[i]++, arg, ztk ) ){
+            ZECHO( "error when evaluating key: %s", prp[i].str );
+            obj = NULL;
+            goto TERMINATE;
+          }
         }
         break;
       }
@@ -477,10 +479,12 @@ void *_ZTKEvalTag(void *obj, void *arg, ZTK *ztk, ZTKPrp prp[], int num)
       if( ZTKTagCmp( ztk, prp[i].str ) ){
         if( prp[i].num > 0 && count[i] >= prp[i].num ){
           ZRUNWARN( ZEDA_WARN_ZTK_TOOMANY_TAGS, prp[i].str );
-        } else
-        if( !prp[i]._eval( obj, count[i]++, arg, ztk ) ){
-          obj = NULL;
-          goto TERMINATE;
+        } else{
+          if( !prp[i]._eval( obj, count[i]++, arg, ztk ) ){
+            ZECHO( "error when evaluating tag [%s]", prp[i].str );
+            obj = NULL;
+            goto TERMINATE;
+          }
         }
       }
     } while( ZTKTagNext(ztk) );
