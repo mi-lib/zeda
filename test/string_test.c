@@ -128,6 +128,15 @@ void assert_num_token(void)
   fclose( fp );
 }
 
+bool test_getdirfilename(char *pathname, char *dir, char *file, int ret)
+{
+  char dirname[BUFSIZ], filename[BUFSIZ];
+  int retval;
+
+  retval = zGetDirFilename( pathname, dirname, filename, BUFSIZ );
+  return strncmp( dirname, dir, BUFSIZ ) == 0 && strncmp( filename, file, BUFSIZ ) == 0 && retval == ret;
+}
+
 void assert_pathname(void)
 {
   char str1[BUFSIZ], str2[BUFSIZ];
@@ -143,6 +152,13 @@ void assert_pathname(void)
   zStrCopy( str1, "C:\\user\\foo\\baa.d\\woo\\yeah.sfx", BUFSIZ );
   zGetBasenameDRC( str1 );
   zAssert( zGetBasenameDRC, strcmp( str1, "yeah" ) == 0 );
+  zAssert( zGetDirFilename,
+    test_getdirfilename( "C:\\abcde\\fghij\\klmno\\pqr.stu", "C:\\abcde\\fghij\\klmno\\", "pqr.stu", 3 ) &&
+    test_getdirfilename( "/usr/local/src/", "/usr/local/src/", "", 2 ) &&
+    test_getdirfilename( "/etc/passwd", "/etc/", "passwd", 3 ) &&
+    test_getdirfilename( "/root", "/", "root", 3 ) &&
+    test_getdirfilename( "vmlinuz-5.4.0-100-generic", "", "vmlinuz-5.4.0-100-generic", 1 ) &&
+    test_getdirfilename( "", "", "", 0 ) );
   zStrCopy( str1, "path/test.dummy.suffix", BUFSIZ );
   zCutSuffix( str1 );
   zAssert( zCutSuffix, strcmp( str1, "path/test.dummy" ) == 0 );

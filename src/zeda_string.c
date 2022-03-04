@@ -729,11 +729,12 @@ char *zCutSuffix(char *name)
 }
 
 /* simplify a pathname. */
-char *zGetBasename(char *org, char *name, size_t size)
+char *zGetBasename(char *path, char *name, size_t size)
 {
   char *cp;
 
-  for( cp=org+strlen(org); cp>org; cp-- )
+  if( !name ) return NULL;
+  for( cp=path+strlen(path); cp>path; cp-- )
     if( *(cp-1) == '/' || *(cp-1) == '\\' ) break;
   zStrCopy( name, cp, size );
   zCutSuffix( name );
@@ -744,6 +745,21 @@ char *zGetBasename(char *org, char *name, size_t size)
 char *zGetBasenameDRC(char *name)
 {
   return zGetBasename( name, name, strlen(name) );
+}
+
+/* get a directory name and a file name from a path. */
+int zGetDirFilename(char *path, char *dirname, char *filename, size_t size)
+{
+  char *cp;
+  int retval = 0;
+
+  if( !dirname || !filename ) return 0;
+  for( cp=path+strlen(path); cp>path; cp-- )
+    if( *(cp-1) == '/' || *(cp-1) == '\\' ) break;
+  zStrCopy( filename, cp, size );
+  zStrCopy( dirname, path, cp - path + 1 );
+  retval |= ( *filename ? 0x1 : 0 ) | ( *dirname ? 0x2 : 0 );
+  return retval;
 }
 
 /* open file with specified suffix. */

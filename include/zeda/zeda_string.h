@@ -724,10 +724,10 @@ void zIndent(int n);
 #ifndef __KERNEL__
 /*! \brief strip a directory from a filename.
  *
- * zGetBasename() acquires a filename from a path string \a org
+ * zGetBasename() acquires a filename from a path string \a path
  * with any leading directory names removed, and puts it where
  * \a name points.
- * ex. if \a org is "/home/user/dummy.suf", \a name will be
+ * ex. if \a path is "/home/user/dummy.suf", \a name will be
  * "dummy.suf".
  *
  * zGetBasenameDRC() overrides a given string \a name by the
@@ -737,8 +737,22 @@ void zIndent(int n);
  * \note
  * Both '/' and '\\' are accepted as delimiters of the path name.
  */
-__EXPORT char *zGetBasename(char *org, char *name, size_t size);
+__EXPORT char *zGetBasename(char *path, char *name, size_t size);
 __EXPORT char *zGetBasenameDRC(char *name);
+
+/*! \brief get a directory name and a file name from a path.
+ *
+ * zGetDirFilename() acquires a directory name and a file name
+ * from a path \a path, and puts them into \a dirname and \a filename,
+ * respectively. More than or equal to \a size bytes have to be
+ * allocated for all \a path, \a dirname and \a filename.
+ * \return
+ * zGetDirFilename() returns an integer value from 0 to 3. If
+ * \a filename is non-empty, the least bit of the value turns 1.
+ * If \a dirname is non-empty, the second least bit of the value
+ * turns 1. Otherwise, the corresponding bit turns 0.
+ */
+__EXPORT int zGetDirFilename(char *path, char *dirname, char *filename, size_t size);
 
 /*! \brief get a suffix from a filename.
  *
