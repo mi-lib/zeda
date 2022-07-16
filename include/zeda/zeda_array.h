@@ -227,6 +227,34 @@ __EXPORT void zQuickSort(void *array, size_t nmemb, size_t size, int (*cmp)(void
  */
 #define zArrayQuickSort(arr,cmp,priv) zQuickSort( (void*)zArrayBuf(arr), zArraySize(arr), zArrayElemSize(arr), cmp, priv )
 
+/*! \brief insert a member into a pointer array at sorted position.
+ *
+ * zInsertSort() inserts a new member \a memb into an array pointed by
+ * \a array in a sorted way. \a nmemb is the number of components of
+ * \a array, and \a size is the size of each component. It supposes
+ * that the array is occupied up to the \a i -1 th component.
+ * 
+ * The components of \a array will be sorted in ascending order according
+ * to the comparison function \a cmp. Namely, a factor 'a' in the \a array
+ * is put after another factor 'b' if cmp(a,b,priv) > 0, where \a priv is
+ * for programmer's utility.
+ * \return
+ * zInsertSort() returns a pointer \a memb in the case of success, or the
+ * null pointer if \a i is larger than or equal to \a size.
+ */
+__EXPORT void *zInsertSort(void *array, void *memb, int i, size_t nmemb, size_t size, int (* cmp)(void*,void*,void*), void *priv);
+
+/*! \brief insert a member into an array at sorted position.
+ *
+ * zArrayInsertSort() is a macro which is a wrapper of zInsertSort() that
+ * inserts a new member \a memb into an array pointed by \a array in a
+ * sorted way. \a cmp and \a priv have the same roles with those for
+ * zInsertSort().
+ * \sa
+ * zInsertSort()
+ */
+#define zArrayInsertSort(arr,memb,i,cmp,priv) zInsertSort( (void*)zArrayBuf(arr), (memb), (i), zArraySize(arr), zArrayElemSize(arr), cmp, priv )
+
 /*! \} */
 
 /* ********************************************************** */

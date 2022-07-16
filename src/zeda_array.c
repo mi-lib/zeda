@@ -6,11 +6,7 @@
 
 #include <zeda/zeda_array.h>
 
-/* quick sort for static list structure */
-
-/* zQuickSort
- * - quick sort for an array of pointers.
- */
+/* quick sort for an array of pointers. */
 void zQuickSort(void *array, size_t nmemb, size_t size, int (* cmp)(void*,void*,void*), void *priv)
 {
   byte *base, *pivot;
@@ -35,4 +31,19 @@ void zQuickSort(void *array, size_t nmemb, size_t size, int (* cmp)(void*,void*,
     zQuickSort( base, t, size, cmp, priv );
   if( ( nmemb -= t ) > 1 )
     zQuickSort( base+size*t, nmemb, size, cmp, priv );
+}
+
+/* insert a member into an array at sorted position. */
+void *zInsertSort(void *array, void *memb, int i, size_t nmemb, size_t size, int (* cmp)(void*,void*,void*), void *priv)
+{
+  void *p;
+
+  if( i >= nmemb ){
+    ZRUNERROR( "array already occupied" );
+    return NULL;
+  }
+  for( p=array+size*i; p > array && cmp( p-size, memb, priv ) > 0; p-=size ){
+    memcpy( p, p-size, size );
+  }
+  return memcpy( p, memb, size );
 }

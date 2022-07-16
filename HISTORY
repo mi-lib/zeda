@@ -1,3 +1,4 @@
+2022. 7.16. Added zInsertSort and zArrayInsertSort. [zeda_array]
 2022. 3. 4. Added zGetDirFilename. [zeda_string]
 2022. 2.21. Added message-echo in failure cases of tag/key evaluation. [zeda_ztk]
 2021. 9.22. Debugged zeda-deb-gen. [tools]
