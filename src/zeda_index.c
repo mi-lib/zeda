@@ -134,6 +134,14 @@ int zIndexMove(zIndex idx, int from, int to)
   return zIndexSetElemNC( idx, to, tmp );
 }
 
+/* remove a component from an integer vector. */
+zIndex zIndexRemove(zIndex idx, int i)
+{
+  memcpy( &zIndexElemNC(idx,i), &zIndexElemNC(idx,i+1), sizeof(int)*(zArraySize(idx)-i-1) );
+  zArraySize(idx)--;
+  return idx;
+}
+
 /* create an integer vector from a list of integers. */
 zIndex zIndexCreateFromList(zIntList *list)
 {

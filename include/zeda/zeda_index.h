@@ -155,6 +155,16 @@ __EXPORT int zIndexSwap(zIndex idx, int p1, int p2);
  */
 __EXPORT int zIndexMove(zIndex idx, int from, int to);
 
+/*! \brief remove a component from an integer vector.
+ *
+ * zIndexRemove() removes the \a i th component from an integer vector
+ * \a idx. All the posterior components are shifted forward, and the
+ * size of \a idx is decreased. Note that the memory allocated for
+ * \a idx is remained, and only the value of the size is modified.
+ * \return a pointer \a idx.
+ */
+__EXPORT zIndex zIndexRemove(zIndex idx, int i);
+
 #ifndef __KERNEL__
 /*! \brief scan an array of integer values from a file.
  *
