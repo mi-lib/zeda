@@ -137,7 +137,7 @@ int zIndexMove(zIndex idx, int from, int to)
 /* remove a component from an integer vector. */
 zIndex zIndexRemove(zIndex idx, int i)
 {
-  memcpy( &zIndexElemNC(idx,i), &zIndexElemNC(idx,i+1), sizeof(int)*(zArraySize(idx)-i-1) );
+  memmove( &zIndexElemNC(idx,i), &zIndexElemNC(idx,i+1), sizeof(int)*(zArraySize(idx)-i-1) );
   zArraySize(idx)--;
   return idx;
 }
