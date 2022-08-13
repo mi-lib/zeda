@@ -9,6 +9,31 @@
 #ifndef __ZEDA_COMPAT_H__
 #define __ZEDA_COMPAT_H__
 
+/* for Windows */
+#if defined(__Windows) || defined(_WIN16) || defined(_WIN32) || defined(__WIN32__)
+# ifndef __WINDOWS__
+#  define __WINDOWS__ /* unify compiler-dependent macros */
+# endif
+# ifdef __BORLANDC__ /* Borland C++ */
+#  include <vcl.h>
+# endif
+# ifdef __MSC_VER /* Microsoft Visual C++ */
+#  include <windows.h>
+#  undef min /* undefine notorious min/max macros */
+#  undef max
+# endif
+#endif
+
+/* int8_t already defined in Windows. */
+#ifdef __WINDOWS__
+#define _DEFINED_INT8
+#endif
+
+/* NetBSD and GNU C already defines uint and ulong in sys/types.h */
+#if defined(_NETBSD_SOURCE) || defined( __USE_GNU ) || defined( __USE_MISC )
+#define _DEFINED_UINT
+#endif
+
 /* for symbol visibility in DLLs */
 #ifdef __EXPORT
 #undef __EXPORT
@@ -18,7 +43,7 @@
 #undef __FASTCALL
 #endif
 
-#if ( defined(__WINDOWS__) || defined(_WIN32) || defined(__WIN32__)) && !defined(__CYGWIN__)
+#if defined(__WINDOWS__) && !defined(__CYGWIN__)
 # if defined(__BUILD_DLL__)
 #  define __EXPORT __declspec(dllexport)
 # else
@@ -40,9 +65,6 @@
  __DEF_WINDLL
  */
 #ifdef __WINDOWS__
-#include <vcl.h>
-#include <windows.h>
-
 #define __DEF_WINDLL \
 extern HINSTANCE _hInstance;\
 int WINAPI DllEntryPoint(HINSTANCE hinst, unsigned long reason, void *reserved)\

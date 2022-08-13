@@ -89,7 +89,9 @@ typedef long long int      int64_t;      /*!< 64-bit signed integer */
 #define UINT_MAX ( (uint)( ( ( ( 1 << ( INT_BIT >> 1 ) ) - 1 ) << ( INT_BIT >> 1 ) ) | ( ( 1 << ( INT_BIT >> 1 ) ) - 1 ) ) )
 #endif
 
+#ifndef _DEFINED_INT8
 typedef int8_t   byte;   /*!< signed one-byte data. */
+#endif /* _DEFINED_INT8 */
 typedef int16_t  word;   /*!< signed two-byte data. */
 typedef int32_t  dword;  /*!< signed four-byte data. */
 
@@ -97,14 +99,10 @@ typedef uint8_t  ubyte;  /*!< unsigned one-byte data. */
 typedef uint16_t uword;  /*!< unsigned two-byte data. */
 typedef uint32_t udword; /*!< unsigned four-byte data. */
 
-#if !defined( _NETBSD_SOURCE )
-/* NetBSD already defines uint and ulong in sys/types.h */
-#if !defined( __USE_GNU ) && !defined( __USE_MISC ) && !defined( __KERNEL__ )
-/* GNU C already defines uint and ulong in sys/types.h */
+#ifndef _DEFINED_UINT
 typedef unsigned int   uint;  /*!< unsigned integer. */
 typedef unsigned long  ulong; /*!< unsigned long integer. */
-#endif
-#endif
+#endif /* _DEFINED_UINT */
 
 #ifndef __cplusplus
 /*! \brief boolean type (for Language C). */
