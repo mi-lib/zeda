@@ -27,12 +27,21 @@
 /* int8_t already defined in Windows. */
 #ifdef __WINDOWS__
 #define _DEFINED_INT8
-#endif
+#endif /* __WINDOWS__ */
 
 /* NetBSD and GNU C already defines uint and ulong in sys/types.h */
 #if defined(_NETBSD_SOURCE) || defined( __USE_GNU ) || defined( __USE_MISC )
 #define _DEFINED_UINT
 #endif
+
+/* endian */
+#ifdef __WINDOWS__
+#define __BYTE_ORDER __BYTE_ORDER__
+#define __BIG_ENDIAN __ORDER_BIG_ENDIAN__
+#define __LITTLE_ENDIAN __ORDER_LITTLE_ENDIAN__
+#else
+#include <endian.h>
+#endif /* __WINDOWS__ */
 
 /* for symbol visibility in DLLs */
 #ifdef __EXPORT

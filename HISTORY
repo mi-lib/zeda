@@ -1,3 +1,4 @@
+2022. 8.13. Added definitions related to endian. [zeda_compat]
 2022. 8.13. Modified byte-fixed type definition for Windows/GNU C compatibility. [zeda_compat, zeda_defs]
 2022. 8.13. Modified Windows compatibility for Borland C++ and Microsoft Visual C++. [zeda_compat]
 2022. 8.13. Added assertion tests for INT_MAX and UINT_MAX. [test]
