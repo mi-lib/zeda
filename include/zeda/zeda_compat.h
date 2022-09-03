@@ -26,7 +26,9 @@
 
 /* int8_t already defined in Windows. */
 #ifdef __WINDOWS__
-#define _DEFINED_INT8
+# ifndef _DEFINED_INT8
+# define _DEFINED_INT8
+# endif /* _DEFINED_INT8 */
 #endif /* __WINDOWS__ */
 
 /* NetBSD and GNU C already defines uint and ulong in sys/types.h */

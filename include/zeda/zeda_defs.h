@@ -67,7 +67,10 @@ typedef unsigned long int  uint64_t;     /*!< 64-bit unsigned integer */
 #else
 typedef unsigned long long int uint64_t; /*!< 64-bit unsigned integer */
 #endif /* __LP64__ */
+#ifndef _DEFINED_INT8
+#define _DEFINED_INT8
 typedef signed char        int8_t;       /*!< 8-bit signed integer */
+#endif /* _DEFINED_INT8 */
 typedef short int          int16_t;      /*!< 16-bit signed integer */
 typedef int                int32_t;      /*!< 32-bit signed integer */
 #ifdef __LP64__
@@ -79,7 +82,11 @@ typedef long long int      int64_t;      /*!< 64-bit signed integer */
 #include <stdint.h>
 #endif /* __STDC_VERSION__ */
 
+#ifdef __SIZEOF_INT__
+#define INT_BIT ( __SIZEOF_INT__ << 3 )
+#else
 #define INT_BIT ( sizeof(int) << 3 )
+#endif /* __SIZEOF_INT__ */
 
 #ifndef INT_MAX
 #define INT_MAX ( ( ( ( 1 << ( ( INT_BIT >> 1 ) - 1 ) ) - 1 ) << ( INT_BIT >> 1 ) ) | ( ( 1 << ( INT_BIT >> 1 ) ) - 1 ) )
@@ -89,8 +96,10 @@ typedef long long int      int64_t;      /*!< 64-bit signed integer */
 #define UINT_MAX ( (uint)( ( ( ( 1 << ( INT_BIT >> 1 ) ) - 1 ) << ( INT_BIT >> 1 ) ) | ( ( 1 << ( INT_BIT >> 1 ) ) - 1 ) ) )
 #endif
 
-#ifndef _DEFINED_INT8
+#ifdef _DEFINED_INT8
 typedef int8_t   byte;   /*!< signed one-byte data. */
+#else
+typedef char     byte;   /*!< signed one-byte data. */
 #endif /* _DEFINED_INT8 */
 typedef int16_t  word;   /*!< signed two-byte data. */
 typedef int32_t  dword;  /*!< signed four-byte data. */
@@ -104,14 +113,18 @@ typedef unsigned int   uint;  /*!< unsigned integer. */
 typedef unsigned long  ulong; /*!< unsigned long integer. */
 #endif /* _DEFINED_UINT */
 
-#ifndef __cplusplus
+#if __STDC_VERSION__ >= 199901L
+#include <stdbool.h>
+#else
+# ifndef __cplusplus
 /*! \brief boolean type (for Language C). */
 typedef ubyte bool;
 /*! these values are available for boolean. */
 enum{
   false = 0, true = 1
 };
-#endif /* __cplusplus */
+# endif /* __cplusplus */
+#endif /* __STDC_VERSION__ */
 
 /*! convert a boolean value to a string. */
 #define zBoolStr(b) ( (b) ? "true" : "false" )

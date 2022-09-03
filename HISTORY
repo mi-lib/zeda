@@ -1,3 +1,6 @@
+2022. 9. 3. Modified definition of the boolean type. [zeda_defs]
+2022. 9. 3. Debugged definitions around int8_t. [zeda_compat, zeda_defs]
+2022. 9. 3. Redefined INT_BIT by using __SIZEOF_INT__ if it exists. [zeda_defs]
 2022. 9. 3. Modified zeda-makefile-gen to accept standards. [tools]
 2022. 8.13. Added definitions related to endian. [zeda_compat]
 2022. 8.13. Modified byte-fixed type definition for Windows/GNU C compatibility. [zeda_compat, zeda_defs]
