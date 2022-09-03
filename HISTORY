@@ -1,3 +1,4 @@
+2022. 9. 3. Removed register keyword. [zeda_bit, zeda_csv, zeda_index, zeda_list, zeda_misc, zeda_rand, zeda_string, zeda_ztk]
 2022. 9. 3. Modified definition of the boolean type. [zeda_defs]
 2022. 9. 3. Debugged definitions around int8_t. [zeda_compat, zeda_defs]
 2022. 9. 3. Redefined INT_BIT by using __SIZEOF_INT__ if it exists. [zeda_defs]

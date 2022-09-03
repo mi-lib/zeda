@@ -32,7 +32,7 @@ zIndex zIndexAlloc(int size)
 /* create an integer vector. */
 zIndex zIndexCreate(int size)
 {
-  register int i;
+  int i;
   zIndex idx;
 
   if( !( idx = zIndexAlloc( size ) ) ) return NULL;
@@ -45,7 +45,7 @@ zIndex zIndexCreate(int size)
 /* create an integer vector from argument list. */
 zIndex zIndexCreateList(int size, ...)
 {
-  register int i;
+  int i;
   zIndex idx;
   va_list args;
 
@@ -62,7 +62,7 @@ zIndex zIndexCreateList(int size, ...)
 /* set components of an integer vector from argument list. */
 zIndex zIndexSetList(zIndex idx, ...)
 {
-  register int i;
+  int i;
   va_list args;
 
   va_start( args, idx );
@@ -92,7 +92,7 @@ zIndex zIndexZero(zIndex idx)
 /* ordinate an integer vector. */
 zIndex zIndexOrder(zIndex idx, int s)
 {
-  register uint i;
+  uint i;
 
   for( i=0; i<zArraySize(idx); i++ )
     zIndexSetElemNC( idx, i, s+i );
@@ -102,7 +102,7 @@ zIndex zIndexOrder(zIndex idx, int s)
 /* check if two integer vectors are equal. */
 bool zIndexIsEqual(zIndex idx1, zIndex idx2)
 {
-  register uint i;
+  uint i;
 
   if( zArraySize(idx1) != zArraySize(idx2) ) return false;
   for( i=0; i<zArraySize(idx1); i++ )
@@ -120,7 +120,7 @@ int zIndexSwap(zIndex idx, int p1, int p2)
 /* move a component of an integer vector to another position. */
 int zIndexMove(zIndex idx, int from, int to)
 {
-  register int i;
+  int i;
   int tmp;
 
   tmp = zIndexElemNC( idx, from );
@@ -147,7 +147,7 @@ zIndex zIndexCreateFromList(zIntList *list)
 {
   zIndex index;
   zIntListCell *cp;
-  register int i;
+  int i;
 
   if( zListIsEmpty(list) ){
     ZRUNERROR( ZEDA_ERR_LIST2INDEX_FAILED );
@@ -164,7 +164,7 @@ zIndex zIndexCreateFromList(zIntList *list)
 /* scan an integer vector from a file. */
 zIndex zIndexFScan(FILE *fp)
 {
-  register int i;
+  int i;
   int size;
   zIndex idx;
 
@@ -185,7 +185,7 @@ zIndex zIndexFScan(FILE *fp)
 /* print out components of an integer vector to a file. */
 void zIndexDataFPrint(FILE *fp, zIndex idx)
 {
-  register uint i;
+  uint i;
 
   if( !idx ) return;
   for( i=0; i<zArraySize(idx); i++ )
@@ -196,7 +196,7 @@ void zIndexDataFPrint(FILE *fp, zIndex idx)
 /* print out an integer vector to a file. */
 void zIndexFPrint(FILE *fp, zIndex idx)
 {
-  register uint i;
+  uint i;
 
   if( !idx )
     fprintf( fp, "(null integer vector)\n" );
@@ -211,7 +211,7 @@ void zIndexFPrint(FILE *fp, zIndex idx)
 /* print out an integer vector (for kernel space programming). */
 void zIndexPrint(zIndex idx)
 {
-  register int i;
+  int i;
 
   if( !idx )
     printk( "(null integer vector)\n" );

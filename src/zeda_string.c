@@ -318,7 +318,7 @@ char zFSkipComment(FILE *fp)
 /* get a string from file. */
 static char *_zFString(FILE *fp, char *tkn, size_t size)
 {
-  register int i;
+  int i;
 
   if( size <= 1 ) return NULL;
   size--; /* for the null charactor */
@@ -339,7 +339,7 @@ static char *_zFString(FILE *fp, char *tkn, size_t size)
 /* get a string from string and return a pointer immediately after the string. */
 static char *_zSString(char *str, char *tkn, size_t size)
 {
-  register int i;
+  int i;
   char *sp;
 
   size--; /* for the null charactor */
@@ -360,7 +360,7 @@ static char *_zSString(char *str, char *tkn, size_t size)
 /* get a token in a file. */
 char *zFToken(FILE *fp, char *tkn, size_t size)
 {
-  register int i;
+  int i;
 
   *tkn = '\0'; /* initialize buffer */
   if( !zFSkipComment( fp ) ) return NULL;
@@ -386,7 +386,7 @@ char *zFToken(FILE *fp, char *tkn, size_t size)
 /* skim a token in a string. */
 char *zSTokenSkim(char *str, char *tkn, size_t size)
 {
-  register int i;
+  int i;
   char *sp;
 
   if( !( *tkn = *( sp = zSSkipDelimiter( str ) ) ) ) return sp;
@@ -421,7 +421,7 @@ char *zSToken(char *str, char *tkn, size_t size)
 /* get a token that represents an integer number from file. */
 char *zFIntToken(FILE *fp, char *tkn, size_t size)
 {
-  register int i;
+  int i;
 
   size--;
   for( i=0; ; i++ ){
@@ -513,7 +513,7 @@ char *zFNumToken(FILE *fp, char *tkn, size_t size)
 /* get a token that represents an integer number from string. */
 char *zSIntToken(char *str, char *tkn, size_t size)
 {
-  register int i;
+  int i;
   char *sp;
 
   size--;
@@ -780,7 +780,7 @@ FILE *zOpenFile(char filename[], char *suffix, char *mode)
 /* generate a table for string search by Knuth-Morris-Pratt algorithm. */
 static int *_zStrSearchKMPTable(char *pat, int lp)
 {
-  register int i=2, j=0;
+  int i=2, j=0;
   int *table;
 
   if( !( table = zAlloc( int, lp ) ) ){
@@ -806,7 +806,7 @@ static int *_zStrSearchKMPTable(char *pat, int lp)
 /* search a string by Knuth-Morris-Pratt algorithm. */
 char *zStrSearchKMP(char *text, char *pat)
 {
-  register int m=0, i=0, lt, lp;
+  int m=0, i=0, lt, lp;
   int *table;
 
   lt = strlen( text );
@@ -826,7 +826,7 @@ char *zStrSearchKMP(char *text, char *pat)
 /* search a string by Boyer-Moore algorithm. */
 char *zStrSearchBM(char *text, char *pat)
 {
-  register int i, j, n, m;
+  int i, j, n, m;
   ubyte skip[0x80];
 
   m = strlen( pat ) - 1;

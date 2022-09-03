@@ -38,7 +38,7 @@ static ulong _zRandMTVal(zRandMT *mt)
 {
   static ulong mag[] = { 0, Z_RAND_MT_MGC2 };
   ulong r;
-  register int i;
+  int i;
 
   if( !mt && !( mt = __z_rand_mt ) ){
     zRandInitMT( NULL );
@@ -72,7 +72,7 @@ static ulong _zRandMTVal(zRandMT *mt)
 void zRandInitMT(zRandMT *mt)
 {
   static ulong seed;
-  register uint i;
+  uint i;
 
   seed = time( NULL );
   if( !mt )

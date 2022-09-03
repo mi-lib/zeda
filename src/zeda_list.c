@@ -19,7 +19,7 @@
 /* print information of a list to a file. */
 void _zListFPrint(FILE *fp, zList *list)
 {
-  register int i = 0;
+  int i = 0;
   zListCell *cp;
 
   fprintf( fp, "size = %d\n", zListSize( list ) );

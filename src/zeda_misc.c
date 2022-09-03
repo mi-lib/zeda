@@ -158,8 +158,7 @@ char *ftoa(double val, char *buf)
 {
 #ifdef __KERNEL__
 #define Z_FTOA_FLOATSIZE 10
-  register int i;
-  int fig;
+  int i, fig;
   double val10 = 0;
   char *cp;
 
@@ -228,8 +227,8 @@ char *ftoa(double val, char *buf)
 #define ULONG_MAX_BUFSIZ 25
 char *itoa_fill(int val, int size, char pat, char *buf)
 {
-  static char _itoa_fill_buf[ULONG_MAX_BUFSIZ];
-  register char *cp;
+  char _itoa_fill_buf[ULONG_MAX_BUFSIZ];
+  char *cp;
   int len;
 
   if( ( len = strlen( itoa( val, _itoa_fill_buf ) ) ) > size ){

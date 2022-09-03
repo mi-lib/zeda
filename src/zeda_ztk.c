@@ -420,7 +420,7 @@ void ZTKFPrint(FILE *fp, ZTK *ztk)
 /* evaluate a key field of a ZTK format processor based on a ZTK property. */
 void *_ZTKEvalKey(void *obj, void *arg, ZTK *ztk, ZTKPrp prp[], int num)
 {
-  register int i;
+  int i;
   int *count;
 
   if( !ZTKKeyRewind( ztk ) ) return NULL;
@@ -451,7 +451,7 @@ void *_ZTKEvalKey(void *obj, void *arg, ZTK *ztk, ZTKPrp prp[], int num)
 /* print out a key field of a ZTK format processor based on a ZTK property. */
 void _ZTKPrpKeyFPrint(FILE *fp, void *obj, ZTKPrp prp[], int num)
 {
-  register int i, j;
+  int i, j;
 
   for( i=0; i<num; i++ )
     if( prp[i]._fprint ){
@@ -465,8 +465,7 @@ void _ZTKPrpKeyFPrint(FILE *fp, void *obj, ZTKPrp prp[], int num)
 /* evaluate a tag field of a ZTK format processor based on a ZTK property. */
 void *_ZTKEvalTag(void *obj, void *arg, ZTK *ztk, ZTKPrp prp[], int num)
 {
-  register int i;
-  int *count;
+  int i, *count;
 
   if( !ZTKTagRewind( ztk ) ) return NULL;
   if( !( count = zAlloc( int, num ) ) ){
@@ -497,7 +496,7 @@ void *_ZTKEvalTag(void *obj, void *arg, ZTK *ztk, ZTKPrp prp[], int num)
 /* print out a tag field of a ZTK format processor based on a ZTK property. */
 void _ZTKPrpTagFPrint(FILE *fp, void *obj, ZTKPrp prp[], int num)
 {
-  register int i, j;
+  int i, j;
 
   for( i=0; i<num; i++ )
     if( prp[i]._fprint ){

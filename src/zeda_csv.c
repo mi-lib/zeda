@@ -32,8 +32,7 @@ char *zCSVGoToLine(zCSV *csv, int i)
 /* get a field from the current buffer of a CSV file. */
 char *zCSVGetField(zCSV *csv, char *field, size_t size)
 {
-  register int i;
-  int len;
+  int i, len;
 
   if( zCSVLineIsEmpty( csv ) )
     if( !zCSVGetLine( csv ) ) return NULL;
@@ -72,7 +71,7 @@ bool zCSVGetInt(zCSV *csv, int *val)
 /* get multiple integer values from the current buffer of a CSV file. */
 bool zCSVGetIntN(zCSV *csv, int val[], int n)
 {
-  register int i;
+  int i;
 
   for( i=0; i<n; i++ )
     if( !zCSVGetInt( csv, &val[i] ) ) return false;
@@ -95,7 +94,7 @@ bool zCSVGetDouble(zCSV *csv, double *val)
 /* get multiple double-precision floating-point values from the current buffer of a CSV file. */
 bool zCSVGetDoubleN(zCSV *csv, double val[], int n)
 {
-  register int i;
+  int i;
 
   for( i=0; i<n; i++ )
     if( !zCSVGetDouble( csv, &val[i] ) ) return false;
@@ -123,7 +122,7 @@ static int _zCSVCountField(zCSV *csv)
 /* open a CSV file. */
 zCSV *zCSVOpen(zCSV *csv, char filename[])
 {
-  register int i;
+  int i;
 
   if( !( csv->fp = zOpenFile( filename, "csv", "rt" ) ) )
     return NULL;

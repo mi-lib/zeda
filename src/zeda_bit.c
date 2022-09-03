@@ -82,7 +82,7 @@ ulong bit_reverse(ulong val, int width)
 /* convert a bit sequence to a string. */
 void sprintf_bit(char *str, ulong val, int width)
 {
-  register int i;
+  int i;
   ulong mask;
 
   mask = 1 << ( width - 1 );
