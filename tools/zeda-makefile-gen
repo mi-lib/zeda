@@ -19,7 +19,12 @@ ifneq (\$(CHKDEP),)
 endif
 
 CC=gcc
-CFLAGS=${ANSI_FLAGS} -Wall -fPIC -fno-common -O3 \$(INCLUDE) -funroll-loops
+STD=c89
+CFLAGS=-Wall -fPIC -fno-common -O3 \$(INCLUDE) -funroll-loops
+ifneq (\$(STD),)
+      CFLAGS+="-std=\$(STD)"
+endif
+
 LD=gcc
 LDFLAGS=-shared
 
@@ -46,11 +51,6 @@ EOF
 
 case $1 in
 lib)
-    ANSI_FLAGS=-ansi
-    output_make_src
-    ;;
-lib-no-ansi)
-    ANSI_FLAGS=
     output_make_src
     ;;
 tools)
