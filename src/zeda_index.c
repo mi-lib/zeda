@@ -62,7 +62,7 @@ zIndex zIndexCreateList(int size, ...)
 /* set components of an integer vector from argument list. */
 zIndex zIndexSetList(zIndex idx, ...)
 {
-  int i;
+  uint i;
   va_list args;
 
   va_start( args, idx );

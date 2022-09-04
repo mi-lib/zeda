@@ -32,7 +32,7 @@ char *zCSVGoToLine(zCSV *csv, int i)
 /* get a field from the current buffer of a CSV file. */
 char *zCSVGetField(zCSV *csv, char *field, size_t size)
 {
-  int i, len;
+  uint i, len;
 
   if( zCSVLineIsEmpty( csv ) )
     if( !zCSVGetLine( csv ) ) return NULL;
@@ -124,7 +124,7 @@ zCSV *zCSVOpen(zCSV *csv, char filename[])
 {
   int i;
 
-  if( !( csv->fp = zOpenFile( filename, "csv", "rt" ) ) )
+  if( !( csv->fp = zOpenFile( filename, (char *)"csv", (char *)"rt" ) ) )
     return NULL;
   for( csv->nl=0; fgets( csv->buf, BUFSIZ, csv->fp ); )
     if( csv->buf[0] != '\%' ) csv->nl++;

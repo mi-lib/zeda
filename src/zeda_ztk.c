@@ -27,7 +27,7 @@ static zFileStack *_zFileStackNew(char *pathname)
     ZALLOCERROR();
     return NULL;
   }
-  if( !( cp->fp = zOpenZTKFile( pathname, "r" ) ) ){
+  if( !( cp->fp = zOpenZTKFile( pathname, (char *)"r" ) ) ){
     free( cp );
     return NULL;
   }
@@ -256,7 +256,7 @@ bool ZTKParseFP(ZTK *ztk, FILE *fp)
         continue;
       }
       if( !ztk->tf_cp )
-        if( !_ZTKParseTag( ztk, "" ) ) continue; /* tagged field unactivated. */
+        if( !_ZTKParseTag( ztk, (char *)"" ) ) continue; /* tagged field unactivated. */
       if( zFPostCheckKey( fp ) ){ /* token is a key. */
         if( !( ztk->kf_cp = ZTKKeyFieldListNew( &ztk->tf_cp->data.kflist, buf ) ) ){
           ret = false;
@@ -264,7 +264,7 @@ bool ZTKParseFP(ZTK *ztk, FILE *fp)
         }
       } else{
         if( !ztk->kf_cp ){ /* add and activate a null key field */
-          if( !( ztk->kf_cp = ZTKKeyFieldListNew( &ztk->tf_cp->data.kflist, "" ) ) ){
+          if( !( ztk->kf_cp = ZTKKeyFieldListNew( &ztk->tf_cp->data.kflist, (char *)"" ) ) ){
             ret = false;
             break;
           }

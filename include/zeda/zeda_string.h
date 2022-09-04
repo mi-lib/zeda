@@ -149,7 +149,7 @@ __EXPORT char *zStrAddChar(char *str, size_t size, char c);
  * If the buffer is already exhausted, the null pointer
  * is returned.
  */
-__EXPORT char *zStrInsChar(char *str, size_t size, int cur, char c);
+__EXPORT char *zStrInsChar(char *str, size_t size, uint cur, char c);
 
 /*! \brief override a charactor to a string.
  *
@@ -163,7 +163,7 @@ __EXPORT char *zStrInsChar(char *str, size_t size, int cur, char c);
  * a pointer to the overridden charactor is returned if
  * successful.
  */
-__EXPORT char *zStrOvrChar(char *str, size_t size, int cur, char c);
+__EXPORT char *zStrOvrChar(char *str, size_t size, uint cur, char c);
 
 /*! \brief delete a charactor from a string.
  *
@@ -173,7 +173,7 @@ __EXPORT char *zStrOvrChar(char *str, size_t size, int cur, char c);
  * \return
  * a pointer to the deleted location is returned.
  */
-__EXPORT char *zStrDelChar(char *str, int cur);
+__EXPORT char *zStrDelChar(char *str, uint cur);
 
 /*! \brief backspace a charactor from a string.
  *
@@ -828,7 +828,7 @@ __EXPORT FILE *zOpenFile(char filename[], char *suffix, char *mode);
 #define ZEDA_ZTK_SUFFIX "ztk"
 
 /*! \brief open a .ztk file. */
-#define zOpenZTKFile(filename,mode) zOpenFile( filename, ZEDA_ZTK_SUFFIX, mode )
+#define zOpenZTKFile(filename,mode) zOpenFile( filename, (char *)ZEDA_ZTK_SUFFIX, mode )
 
 /*! \} */
 

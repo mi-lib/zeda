@@ -1,3 +1,8 @@
+2022. 9. 4. Corrected arithmetic of void pointers. [zeda_array]
+2022. 9. 4. Corrected arithmetic of signed integer values. [zeda_string, zeda_array, zeda_binfile, zeda_csv, zeda_index]
+2022. 9. 4. Added castings from const char * to char *. [zeda_string, zeda_ztk, zeda_csv]
+2022. 9. 4. Added explicit castings from void *. [zeda_string, zeda_array]
+2022. 9. 4. Modified definition around _DEFINED_INT8 and _DEFINED_UINT. [zeda_defs, zeda_compat]
 2022. 9. 3. Removed register keyword. [zeda_bit, zeda_csv, zeda_index, zeda_list, zeda_misc, zeda_rand, zeda_string, zeda_ztk]
 2022. 9. 3. Modified definition of the boolean type. [zeda_defs]
 2022. 9. 3. Debugged definitions around int8_t. [zeda_compat, zeda_defs]

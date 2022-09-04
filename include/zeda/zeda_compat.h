@@ -27,13 +27,13 @@
 /* int8_t already defined in Windows. */
 #ifdef __WINDOWS__
 # ifndef _DEFINED_INT8
-# define _DEFINED_INT8
+# define _DEFINED_INT8 1
 # endif /* _DEFINED_INT8 */
 #endif /* __WINDOWS__ */
 
 /* NetBSD and GNU C already defines uint and ulong in sys/types.h */
 #if defined(_NETBSD_SOURCE) || defined( __USE_GNU ) || defined( __USE_MISC )
-#define _DEFINED_UINT
+#define _DEFINED_UINT 1
 #endif
 
 /* endian */

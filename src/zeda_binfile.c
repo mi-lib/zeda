@@ -159,8 +159,8 @@ bool zBinFileHeaderFRead(zBinFile *bf)
   int id_len;
   int16_t version;
   union{
-    int8_t byte[4];
-    int32_t val;
+    uint8_t byte[4];
+    uint32_t val;
   } endian_checker;
   bool ret = true;
 
@@ -218,7 +218,7 @@ bool zBinFileHeaderFRead(zBinFile *bf)
   case 8: bf->_fread_int = _zBinFile_int_fread64; break;
   default: ZRUNWARN( ZEDA_WARN_INVALID_INTSIZ, bf->_size_int ); ret = false;
   }
-  if( bf->_size_int > sizeof(int) ){
+  if( bf->_size_int > (int16_t)sizeof(int) ){
     ZRUNWARN( ZEDA_WARN_INT_SHRTSIZ, bf->_size_int, sizeof(int) );
   }
   switch( bf->_size_long ){
@@ -227,7 +227,7 @@ bool zBinFileHeaderFRead(zBinFile *bf)
   case 8: bf->_fread_long = _zBinFile_long_fread64; break;
   default: ZRUNWARN( ZEDA_WARN_INVALID_LNGSIZ, bf->_size_long ); ret = false;
   }
-  if( bf->_size_long > sizeof(long) ){
+  if( bf->_size_long > (int16_t)sizeof(long) ){
     ZRUNWARN( ZEDA_WARN_LNG_SHRTSIZ, bf->_size_long, sizeof(long) );
   }
   return ret;
@@ -297,7 +297,7 @@ size_t zBinFileHeaderFWrite(zBinFile *bf)
   case 8: bf->_fwrite_int = _zBinFile_int_fwrite64; break;
   default: ZRUNWARN( ZEDA_WARN_INVALID_INTSIZ, bf->_size_int ); ret = false;
   }
-  if( bf->_size_int < sizeof(int) ){
+  if( bf->_size_int < (int16_t)sizeof(int) ){
     ZRUNWARN( ZEDA_WARN_INT_SHRTSIZ, bf->_size_int, sizeof(int) );
   }
   switch( bf->_size_long ){
@@ -306,7 +306,7 @@ size_t zBinFileHeaderFWrite(zBinFile *bf)
   case 8: bf->_fwrite_long = _zBinFile_long_fwrite64; break;
   default: ZRUNWARN( ZEDA_WARN_INVALID_LNGSIZ, bf->_size_long ); ret = false;
   }
-  if( bf->_size_long < sizeof(long) ){
+  if( bf->_size_long < (int16_t)sizeof(long) ){
     ZRUNWARN( ZEDA_WARN_LNG_SHRTSIZ, bf->_size_long, sizeof(long) );
   }
   return ret ? header_size : 0;

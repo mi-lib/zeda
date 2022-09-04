@@ -13,7 +13,7 @@ void zQuickSort(void *array, size_t nmemb, size_t size, int (* cmp)(void*,void*,
   size_t i, t, h, m;
 
   if( nmemb <= 1 ) return;
-  base = array;
+  base = (byte *)array;
   for( t=0, h=nmemb-1, m=(t+h)/2; ; t++, h-- ){
     pivot = base + size*m;
     while( cmp( pivot, base+size*t, priv ) > 0 ) t++;
@@ -34,15 +34,15 @@ void zQuickSort(void *array, size_t nmemb, size_t size, int (* cmp)(void*,void*,
 }
 
 /* insert a member into an array at sorted position. */
-void *zInsertSort(void *array, void *memb, int i, size_t nmemb, size_t size, int (* cmp)(void*,void*,void*), void *priv)
+void *zInsertSort(void *array, void *memb, uint i, size_t nmemb, size_t size, int (* cmp)(void*,void*,void*), void *priv)
 {
-  void *p;
+  byte *p;
 
   if( i >= nmemb ){
     ZRUNERROR( "array already occupied" );
     return NULL;
   }
-  for( p=array+size*i; p > array && cmp( p-size, memb, priv ) > 0; p-=size ){
+  for( p=(byte*)array+size*i; p > (byte*)array && cmp( p-size, memb, priv ) > 0; p-=size ){
     memcpy( p, p-size, size );
   }
   return memcpy( p, memb, size );

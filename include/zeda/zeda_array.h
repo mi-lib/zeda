@@ -242,7 +242,7 @@ __EXPORT void zQuickSort(void *array, size_t nmemb, size_t size, int (*cmp)(void
  * zInsertSort() returns a pointer \a memb in the case of success, or the
  * null pointer if \a i is larger than or equal to \a size.
  */
-__EXPORT void *zInsertSort(void *array, void *memb, int i, size_t nmemb, size_t size, int (* cmp)(void*,void*,void*), void *priv);
+__EXPORT void *zInsertSort(void *array, void *memb, uint i, size_t nmemb, size_t size, int (* cmp)(void*,void*,void*), void *priv);
 
 /*! \brief insert a member into an array at sorted position.
  *

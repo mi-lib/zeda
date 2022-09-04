@@ -68,7 +68,7 @@ typedef unsigned long int  uint64_t;     /*!< 64-bit unsigned integer */
 typedef unsigned long long int uint64_t; /*!< 64-bit unsigned integer */
 #endif /* __LP64__ */
 #ifndef _DEFINED_INT8
-#define _DEFINED_INT8
+#define _DEFINED_INT8 1
 typedef signed char        int8_t;       /*!< 8-bit signed integer */
 #endif /* _DEFINED_INT8 */
 typedef short int          int16_t;      /*!< 16-bit signed integer */
@@ -109,6 +109,7 @@ typedef uint16_t uword;  /*!< unsigned two-byte data. */
 typedef uint32_t udword; /*!< unsigned four-byte data. */
 
 #ifndef _DEFINED_UINT
+#define _DEFINED_UINT 1
 typedef unsigned int   uint;  /*!< unsigned integer. */
 typedef unsigned long  ulong; /*!< unsigned long integer. */
 #endif /* _DEFINED_UINT */

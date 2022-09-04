@@ -15,7 +15,7 @@ char *zNullStr(void){ return (char *)znullstring; }
 char *zStrCopyNC(char *dest, const char *src)
 {
   /* length should include the terminating \0 */
-  return memmove( dest, src, strlen(src)+1 );
+  return (char *)memmove( dest, src, strlen(src)+1 );
 }
 
 /* copy a string. */
@@ -34,7 +34,7 @@ char *zStrCopy(char *dest, const char *src, size_t size)
 /* clone a string. */
 char *zStrClone(char *str)
 {
-  return str ? zClone( str, strlen(str)+1 ) : NULL;
+  return str ? (char *)zClone( str, strlen(str)+1 ) : NULL;
 }
 
 /* concatenate a string with another. */
@@ -70,7 +70,7 @@ char *zStrChar(const char *s, size_t size, int c)
 char *zStrCharNul(const char *s, size_t size, int c)
 {
   char *cp;
-  int len;
+  size_t len;
 
   if( ( cp = zStrChar( s, size, c ) ) ) return cp;
   if( ( len = strlen( s ) ) <= size ) len = size;
@@ -80,15 +80,15 @@ char *zStrCharNul(const char *s, size_t size, int c)
 /* find a specified charactor from the last in a string. */
 char *zStrrChar(const char *s, size_t size, int c)
 {
-  int l;
+  size_t len;
   char *cp;
 
-  if( ( l = strlen( s ) ) > size ) l = size;
-  if( l == 0 ){
+  if( ( len = strlen( s ) ) > size ) len = size;
+  if( len == 0 ){
     ZRUNERROR( ZEDA_ERR_EMPTY_STRING );
     return NULL;
   }
-  for( ; *( cp = (char*)s+l-1 ); l-- )
+  for( ; *( cp = (char*)s+len-1 ); len-- )
     if( *cp == c ) return cp;
   return NULL;
 }
@@ -96,7 +96,7 @@ char *zStrrChar(const char *s, size_t size, int c)
 /* concatenate a string with a charactor. */
 char *zStrAddChar(char *str, size_t size, char c)
 {
-  int len;
+  size_t len;
 
   if( ( len = strlen(str) ) >= size - 1 ){
     ZRUNWARN( ZEDA_WARN_BUF_EXHAUSTED );
@@ -108,9 +108,9 @@ char *zStrAddChar(char *str, size_t size, char c)
 }
 
 /* insert a charactor into a string. */
-char *zStrInsChar(char *str, size_t size, int cur, char c)
+char *zStrInsChar(char *str, size_t size, uint cur, char c)
 {
-  int len;
+  size_t len;
 
   if( cur >= ( len = strlen(str) ) )
     return zStrAddChar( str, size, c );
@@ -125,7 +125,7 @@ char *zStrInsChar(char *str, size_t size, int cur, char c)
 }
 
 /* override a charactor in a string. */
-char *zStrOvrChar(char *str, size_t size, int cur, char c)
+char *zStrOvrChar(char *str, size_t size, uint cur, char c)
 {
   if( cur >= strlen(str) )
     return zStrAddChar( str, size, c );
@@ -135,7 +135,7 @@ char *zStrOvrChar(char *str, size_t size, int cur, char c)
 }
 
 /* delete a charactor from a string. */
-char *zStrDelChar(char *str, int cur)
+char *zStrDelChar(char *str, uint cur)
 {
   char *cp;
 
@@ -318,7 +318,7 @@ char zFSkipComment(FILE *fp)
 /* get a string from file. */
 static char *_zFString(FILE *fp, char *tkn, size_t size)
 {
-  int i;
+  uint i;
 
   if( size <= 1 ) return NULL;
   size--; /* for the null charactor */
@@ -339,7 +339,7 @@ static char *_zFString(FILE *fp, char *tkn, size_t size)
 /* get a string from string and return a pointer immediately after the string. */
 static char *_zSString(char *str, char *tkn, size_t size)
 {
-  int i;
+  uint i;
   char *sp;
 
   size--; /* for the null charactor */
@@ -360,7 +360,7 @@ static char *_zSString(char *str, char *tkn, size_t size)
 /* get a token in a file. */
 char *zFToken(FILE *fp, char *tkn, size_t size)
 {
-  int i;
+  uint i;
 
   *tkn = '\0'; /* initialize buffer */
   if( !zFSkipComment( fp ) ) return NULL;
@@ -386,7 +386,7 @@ char *zFToken(FILE *fp, char *tkn, size_t size)
 /* skim a token in a string. */
 char *zSTokenSkim(char *str, char *tkn, size_t size)
 {
-  int i;
+  uint i;
   char *sp;
 
   if( !( *tkn = *( sp = zSSkipDelimiter( str ) ) ) ) return sp;
@@ -421,7 +421,7 @@ char *zSToken(char *str, char *tkn, size_t size)
 /* get a token that represents an integer number from file. */
 char *zFIntToken(FILE *fp, char *tkn, size_t size)
 {
-  int i;
+  uint i;
 
   size--;
   for( i=0; ; i++ ){
@@ -459,10 +459,10 @@ static char *_zFFractToken(FILE *fp, char *tkn, size_t size)
 /* get a token that represents an unsigned real number from file. */
 static char *_zFUnsignedToken(FILE *fp, char *tkn, size_t size)
 {
-  int l;
+  size_t len;
 
-  if( ( l = strlen( zFIntToken( fp, tkn, size ) ) ) < size - 1 )
-    _zFFractToken( fp, tkn+l, size-l );
+  if( ( len = strlen( zFIntToken( fp, tkn, size ) ) ) < size - 1 )
+    _zFFractToken( fp, tkn+len, size-len );
   return tkn;
 }
 
@@ -491,19 +491,19 @@ static char *_zFSignedToken(FILE *fp, char *tkn, size_t size)
 char *zFNumToken(FILE *fp, char *tkn, size_t size)
 {
   char c;
-  int l;
+  size_t len;
   long pos;
 
   if( !*_zFSignedToken( fp, tkn, size ) ) goto END;
-  if( ( l = strlen( tkn ) + 1 ) >= size ) goto END;
+  if( ( len = strlen( tkn ) + 1 ) >= size ) goto END;
   pos = ftell( fp );
   c = fgetc( fp );
   if( c == 'e' || c == 'E' ){
-    if( !*_zFSignedToken( fp, tkn+l, size-l ) ){
+    if( !*_zFSignedToken( fp, tkn+len, size-len ) ){
       fseek( fp, pos, SEEK_SET );
       goto END;
     }
-    tkn[l-1] = c;
+    tkn[len-1] = c;
   } else
     ungetc( c, fp );
  END:
@@ -513,7 +513,7 @@ char *zFNumToken(FILE *fp, char *tkn, size_t size)
 /* get a token that represents an integer number from string. */
 char *zSIntToken(char *str, char *tkn, size_t size)
 {
-  int i;
+  uint i;
   char *sp;
 
   size--;
@@ -543,10 +543,10 @@ static char *_zSFractToken(char *str, char *tkn, size_t size)
 /* get a token that represents an unsigned real number from string. */
 static char *_zSUnsignedToken(char *str, char *tkn, size_t size)
 {
-  int l;
+  size_t len;
 
-  if( ( l = strlen( zSIntToken( str, tkn, size ) ) ) < size - 1 )
-    _zSFractToken( str, tkn+l, size-l );
+  if( ( len = strlen( zSIntToken( str, tkn, size ) ) ) < size - 1 )
+    _zSFractToken( str, tkn+len, size-len );
   return tkn;
 }
 
@@ -566,15 +566,15 @@ static char *_zSSignedToken(char *str, char *tkn, size_t size)
 /* get a token that represents a number from string. */
 char *zSNumToken(char *str, char *tkn, size_t size)
 {
-  int l;
+  size_t len;
   char *sp;
 
   sp = str;
   if( !*_zSSignedToken( sp, tkn, size ) ) goto END;
-  if( ( l = strlen( tkn ) + 1 ) >= size ) goto END;
+  if( ( len = strlen( tkn ) + 1 ) >= size ) goto END;
   if( *sp && ( *sp == 'e' || *sp == 'E' ) ){
-    if( !*_zSSignedToken( sp+1, tkn+l, size-l ) ) goto END;
-    tkn[l-1] = *sp++;
+    if( !*_zSSignedToken( sp+1, tkn+len, size-len ) ) goto END;
+    tkn[len-1] = *sp++;
   }
  END:
   zStrCopyNC( str, sp );

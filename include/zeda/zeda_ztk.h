@@ -127,7 +127,7 @@ __EXPORT int ZTKCountKey(ZTK *ztk, const char *key);
 /*! \brief return a pointer to the current value string of the current key field of the current tagged field in a tag-and-key list of a ZTK format processor. */
 #define ZTKValPtr(ztk) (ztk)->val_cp
 /*! \brief return the current value string of the current key field of the current tagged field in a tag-and-key list of a ZTK format processor. */
-#define ZTKVal(ztk) ( (ztk)->val_cp ? (ztk)->val_cp->data : "" )
+#define ZTKVal(ztk) ( (ztk)->val_cp ? (ztk)->val_cp->data : (char *)"" )
 /*! \brief move to the next value string in the current key field of the current tagged field in a tag-and-key list of a ZTK format processor. */
 __EXPORT zStrListCell *ZTKValNext(ZTK *ztk);
 /*! \brief rewind the list of value strings of the current key field of the current tagged field in a tag-and-key list of a ZTK format processor. */
@@ -136,7 +136,7 @@ __EXPORT zStrListCell *ZTKValRewind(ZTK *ztk);
 #define ZTKValCmp(ztk,str) ( strcmp( ZTKVal(ztk), str ) == 0 )
 
 /*! \brief return the current key of the current tagged field in a tag-and-key list of a ZTK format processor. */
-#define ZTKKey(ztk) ( (ztk)->kf_cp ? (ztk)->kf_cp->data.key : "" )
+#define ZTKKey(ztk) ( (ztk)->kf_cp ? (ztk)->kf_cp->data.key : (char *)"" )
 /*! \brief move to the next key field of the current tagged field in a tag-and-key list of a ZTK format processor. */
 __EXPORT ZTKKeyFieldListCell *ZTKKeyNext(ZTK *ztk);
 /*! \brief rewind the list of key fields of the current tagged field in a tag-and-key list of a ZTK format processor. */
@@ -145,7 +145,7 @@ __EXPORT ZTKKeyFieldListCell *ZTKKeyRewind(ZTK *ztk);
 #define ZTKKeyCmp(ztk,str) ( strcmp( ZTKKey(ztk), str ) == 0 )
 
 /*! \brief return the current tag in a tag-and-key list of a ZTK format processor. */
-#define ZTKTag(ztk) ( (ztk)->tf_cp ? (ztk)->tf_cp->data.tag : "" )
+#define ZTKTag(ztk) ( (ztk)->tf_cp ? (ztk)->tf_cp->data.tag : (char *)"" )
 /*! \brief move to the next tagged field in a tag-and-key list of a ZTK format processor. */
 __EXPORT ZTKTagFieldListCell *ZTKTagNext(ZTK *ztk);
 /*! \brief rewind the list of tagged field in a tag-and-key list of a ZTK format processor. */
