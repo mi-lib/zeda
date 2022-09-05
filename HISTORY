@@ -1,3 +1,4 @@
+2022. 9. 5. Modified specification of zXMLCheckAttrVal to accept the name of attribute as const char *. [zeda_xml]
 2022. 9. 5. Modified specification of zXMLFindNodeElement to accept the name of element as const char *. [zeda_xml]
 2022. 9. 5. Modified specification of zAddSuffix and zOpenFile to accept suffix as const char *. [zeda_string]
 2022. 9. 5. Modified specification of zOpenFile to accept mode string as const char *. [zeda_string]
