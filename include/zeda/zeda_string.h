@@ -822,7 +822,7 @@ __EXPORT char *zCutSuffix(char *name);
  * zOpenFile() returns a pointer to the opened file if
  * succeeds. Otherwise, the null pointer is returned.
  */
-__EXPORT FILE *zOpenFile(char filename[], char *suffix, char *mode);
+__EXPORT FILE *zOpenFile(char filename[], char *suffix, const char *mode);
 
 /*! \brief default suffix of .ztk (Z-Tag-and-Key) file format. */
 #define ZEDA_ZTK_SUFFIX "ztk"

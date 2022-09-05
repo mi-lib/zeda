@@ -763,7 +763,7 @@ int zGetDirFilename(char *path, char *dirname, char *filename, size_t size)
 }
 
 /* open file with specified suffix. */
-FILE *zOpenFile(char filename[], char *suffix, char *mode)
+FILE *zOpenFile(char filename[], char *suffix, const char *mode)
 {
   char fullname[BUFSIZ];
   FILE *fp;
