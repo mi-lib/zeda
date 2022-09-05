@@ -40,7 +40,7 @@ struct cell_t{\
   cell_t(){ prev = next = this; };\
 };\
 struct list_t{\
-  int size;\
+  uint size;\
   cell_t root;\
   list_t(){ size = 0; };\
 }

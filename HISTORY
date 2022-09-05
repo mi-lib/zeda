@@ -1,3 +1,4 @@
+2022. 9. 5. Modified the 'size' member of zListClass to be an unsigned value. [zeda_list]
 2022. 9. 4. Corrected arithmetic of void pointers. [zeda_array]
 2022. 9. 4. Corrected arithmetic of signed integer values. [zeda_string, zeda_array, zeda_binfile, zeda_csv, zeda_index]
 2022. 9. 4. Added castings from const char * to char *. [zeda_string, zeda_ztk, zeda_csv]
