@@ -57,7 +57,7 @@ __EXPORT xmlNode *zXMLFindNodeElement(xmlNode *node, const char *name);
 #define zXMLCheckAttrAndExec(attr,str,op) \
   if( zXMLCheckStr( (attr)->name, str ) ){ (op); }
 
-__EXPORT bool zXMLCheckAttrVal(xmlAttr *attr, const char *name, char *str);
+__EXPORT bool zXMLCheckAttrVal(xmlAttr *attr, const char *name, const char *str);
 
 __END_DECLS
 

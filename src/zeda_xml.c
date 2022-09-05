@@ -15,7 +15,7 @@ xmlNode *zXMLFindNodeElement(xmlNode *node, const char *name)
   return NULL;
 }
 
-bool zXMLCheckAttrVal(xmlAttr *attr, const char *name, char *str)
+bool zXMLCheckAttrVal(xmlAttr *attr, const char *name, const char *str)
 {
   return zXMLCheckAttr( attr, name ) && zXMLCheckStr( zXMLGetAttrVal(attr), str );
 }
