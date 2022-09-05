@@ -44,8 +44,8 @@ __BEGIN_DECLS
 
 #define zNamePtr(c)      (c)->name
 #define zNameSetPtr(c,p) ( (c)->name = (p) )
-#define zName(c)         ( (c) && zNamePtr(c) ? zNamePtr(c) : ZNONAME )
-#define zNameSet(c,n)    zNameSetPtr( c, zStrClone(n) )
+#define zName(c)         ( (c) && zNamePtr(c) ? zNamePtr(c) : (char *)ZNONAME )
+#define zNameSet(c,n)    zNameSetPtr( c, zStrClone( (char *)n ) )
 #define zNameFree(c)     zFree( zNamePtr(c) )
 
 #define zNameFind(array,n,name,ptr) do{\
