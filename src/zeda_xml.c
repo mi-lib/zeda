@@ -6,7 +6,7 @@
 
 #include <zeda/zeda_xml.h>
 
-xmlNode *zXMLFindNodeElement(xmlNode *node, char *name)
+xmlNode *zXMLFindNodeElement(xmlNode *node, const char *name)
 {
   xmlNode *np;
 

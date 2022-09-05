@@ -38,7 +38,7 @@ __BEGIN_DECLS
 #define zXMLCheckElementAndExec(node,name,op) \
   if( zXMLCheckElement(node,name) ){ if( !op ) return false; }
 
-__EXPORT xmlNode *zXMLFindNodeElement(xmlNode *node, char *name);
+__EXPORT xmlNode *zXMLFindNodeElement(xmlNode *node, const char *name);
 #define zXMLFindNodeAttr(node,name) ( (char *)xmlGetProp( node, (xmlChar*)name ) )
 #define zXMLAddNodeAttr(node,name,val)     xmlNewProp( node, (xmlChar *)name, (xmlChar *)val )
 #define zXMLReplaceNodeAttr(node,name,val) xmlSetProp( node, (xmlChar *)name, (xmlChar *)val )
