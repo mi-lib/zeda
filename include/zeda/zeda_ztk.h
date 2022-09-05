@@ -170,7 +170,7 @@ __EXPORT void ZTKFPrint(FILE *fp, ZTK *ztk);
  * \brief properties of a class described by a set of tag/key string and call-back functions.
  *//* ******************************************************* */
 typedef struct{
-  char *str; /*!< a string for a tag/key */
+  const char *str; /*!< a string for a tag/key */
   int num;   /*!< the number of tags/keys */
   void *(* _eval)(void *, int, void *, ZTK *); /*!< ZTK evaluation function */
   void (* _fprint)(FILE *, int, void *); /*!< print out function */

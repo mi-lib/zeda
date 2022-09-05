@@ -1,3 +1,4 @@
+2022. 9. 5. Modified zNameFind to seek the list of names by an unsigned value. [zeda_name]
 2022. 9. 5. Modified zName and zNameSet to automatically cast pointer type. [zeda_name]
 2022. 9. 5. Modified zListItem to count the number of items by an unsigned value. [zeda_list]
 2022. 9. 5. Modified the 'size' member of zListClass to be an unsigned value. [zeda_list]

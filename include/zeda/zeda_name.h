@@ -49,7 +49,7 @@ __BEGIN_DECLS
 #define zNameFree(c)     zFree( zNamePtr(c) )
 
 #define zNameFind(array,n,name,ptr) do{\
-  int __z_name_find_id;\
+  uint __z_name_find_id;\
   (ptr) = NULL;\
   if( (name) != NULL && strcmp( (name), ZNONAME ) && (array) != NULL )\
     for( __z_name_find_id=0; __z_name_find_id<(n); __z_name_find_id++ )\
