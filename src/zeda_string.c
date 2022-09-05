@@ -692,7 +692,7 @@ char *zGetSuffix(char *name)
 }
 
 /* concatenate suffix to a pathname. */
-char *zAddSuffix(char *org, char *suffix, char *dest, size_t size)
+char *zAddSuffix(char *org, const char *suffix, char *dest, size_t size)
 {
   char *sfx;
 
@@ -763,7 +763,7 @@ int zGetDirFilename(char *path, char *dirname, char *filename, size_t size)
 }
 
 /* open file with specified suffix. */
-FILE *zOpenFile(char filename[], char *suffix, const char *mode)
+FILE *zOpenFile(char filename[], const char *suffix, const char *mode)
 {
   char fullname[BUFSIZ];
   FILE *fp;

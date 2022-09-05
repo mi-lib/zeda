@@ -779,7 +779,7 @@ __EXPORT char *zGetSuffix(char *name);
  * \a dest must have enough size for \a org, '.' and
  * the additional \a suffix.
  */
-__EXPORT char *zAddSuffix(char *org, char *suffix, char *dest, size_t size);
+__EXPORT char *zAddSuffix(char *org, const char *suffix, char *dest, size_t size);
 
 /*! \brief replace the suffix of a filename to a specified one.
  *
@@ -822,13 +822,13 @@ __EXPORT char *zCutSuffix(char *name);
  * zOpenFile() returns a pointer to the opened file if
  * succeeds. Otherwise, the null pointer is returned.
  */
-__EXPORT FILE *zOpenFile(char filename[], char *suffix, const char *mode);
+__EXPORT FILE *zOpenFile(char filename[], const char *suffix, const char *mode);
 
 /*! \brief default suffix of .ztk (Z-Tag-and-Key) file format. */
 #define ZEDA_ZTK_SUFFIX "ztk"
 
 /*! \brief open a .ztk file. */
-#define zOpenZTKFile(filename,mode) zOpenFile( filename, (char *)ZEDA_ZTK_SUFFIX, mode )
+#define zOpenZTKFile(filename,mode) zOpenFile( filename, ZEDA_ZTK_SUFFIX, mode )
 
 /*! \} */
 
