@@ -297,7 +297,7 @@ zListClass(zList, zListCell, void*);
     \brief refer the \a i 'th cell of a list \a list, and let
     \a cp point the cell. */
 #define zListItem(list,i,cp) do{\
-  int __z_list_item_tmp;\
+  uint __z_list_item_tmp;\
   *(cp) = NULL;\
   if( (i) >= 0 && (i) < zListSize(list) ){\
     if( (i) <= zListSize(list) - (i) ){\
