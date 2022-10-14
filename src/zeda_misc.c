@@ -1,4 +1,4 @@
-/* ZEDA - Elementary Data and Algorithms
+﻿/* ZEDA - Elementary Data and Algorithms
  * Copyright (C) 1998 Tomomichi Sugihara (Zhidao)
  *
  * zeda_misc - miscellanies.
@@ -16,6 +16,10 @@ __DEF_WINDLL
 #include <math.h>
 #include <stdarg.h>
 #include <ctype.h>
+
+#ifdef __WINDOWS__
+#include <stdlib.h>
+#endif
 
 /* return the larger of two values. */
 double zMax(double x, double y){ return _zMax( x, y ); }
@@ -128,6 +132,7 @@ void _ftoa_advance(double val, char *fig)
 }
 #endif /* __KERNEL__ */
 
+#ifndef __WINDOWS__
 /* translate an integer value to an ASCII string. */
 char *itoa(int val, char *buf)
 {
@@ -152,6 +157,7 @@ char *itoa(int val, char *buf)
 #endif /* __KERNEL__ */
   return buf;
 }
+#endif /* __WINDOWS__ */
 
 /* translate a floating point number to an ASCII string. */
 char *ftoa(double val, char *buf)
@@ -231,7 +237,11 @@ char *itoa_fill(int val, int size, char pat, char *buf)
   char *cp;
   int len;
 
+#ifdef __WINDOWS__
+  if( ( len = strlen( itoa( val, _itoa_fill_buf, 10 ) ) ) > size ){
+#else
   if( ( len = strlen( itoa( val, _itoa_fill_buf ) ) ) > size ){
+#endif /* __WINDOWS__ */
     strcpy( buf, _itoa_fill_buf );
     return buf;
   }
@@ -245,7 +255,11 @@ char *itoa_fill(int val, int size, char pat, char *buf)
 /* convert an integer number to a string that represents an ordinal. */
 char *itoa_ordinal(int val, char *buf, size_t size)
 {
+#ifdef __WINDOWS__
+  itoa( val, buf, 10 );
+#else
   itoa( val, buf );
+#endif /* __WINDOWS__ */
   if( val % 10 == 1 && val % 100 != 11 )
     strcat( buf, "st" );
   else

@@ -67,10 +67,12 @@ typedef unsigned long int  uint64_t;     /*!< 64-bit unsigned integer */
 #else
 typedef unsigned long long int uint64_t; /*!< 64-bit unsigned integer */
 #endif /* __LP64__ */
-#ifndef _DEFINED_INT8
-#define _DEFINED_INT8 1
+#if !defined( _DEFINED_INT8 ) || defined( __WINDOWS__ )
 typedef signed char        int8_t;       /*!< 8-bit signed integer */
-#endif /* _DEFINED_INT8 */
+# ifndef _DEFINED_INT8
+# define _DEFINED_INT8 1
+# endif /* _DEFINED_INT8 */
+#endif /* _DEFINED_INT8 || __WINDOWS__ */
 typedef short int          int16_t;      /*!< 16-bit signed integer */
 typedef int                int32_t;      /*!< 32-bit signed integer */
 #ifdef __LP64__
@@ -97,7 +99,9 @@ typedef long long int      int64_t;      /*!< 64-bit signed integer */
 #endif
 
 #ifdef _DEFINED_INT8
+# ifndef __WINDOWS__
 typedef int8_t   byte;   /*!< signed one-byte data. */
+# endif /* WINDOWS */
 #else
 typedef char     byte;   /*!< signed one-byte data. */
 #endif /* _DEFINED_INT8 */

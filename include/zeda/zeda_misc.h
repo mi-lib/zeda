@@ -1,4 +1,4 @@
-/* ZEDA - Elementary Data and Algorithms
+﻿/* ZEDA - Elementary Data and Algorithms
  * Copyright (C) 1998 Tomomichi Sugihara (Zhidao)
  */
 /*! \file zeda_misc.h
@@ -212,7 +212,9 @@ __EXPORT int atox(char *str);
  * itoa() does not check the size of \a buf.
  * It assumes that \a 'buf' has an enough size.
  */
+#ifndef __WINDOWS__
 __EXPORT char *itoa(int val, char *buf);
+#endif
 
 /*! \brief convert a d-float value to a string.
  *

@@ -1,4 +1,4 @@
-/* ZEDA - Elementary Data and Algorithms
+﻿/* ZEDA - Elementary Data and Algorithms
  * Copyright (C) 1998 Tomomichi Sugihara (Zhidao)
  */
 /*! \file zeda_compat.h
@@ -54,6 +54,9 @@
 #undef __FASTCALL
 #endif
 
+#if __STATIC_BUILD
+# define __EXPORT
+#else
 #if defined(__WINDOWS__) && !defined(__CYGWIN__)
 # if defined(__BUILD_DLL__)
 #  define __EXPORT __declspec(dllexport)
@@ -68,6 +71,7 @@
 # define __EXPORT
 # define __FASTCALL
 #endif
+#endif
 
 /* in order to create .dll for MS-Windows, define __WINDOWS__ and
  add the following three lines:
@@ -76,6 +80,10 @@
  __DEF_WINDLL
  */
 #ifdef __WINDOWS__
+#include <windows.h>
+#if __STATIC_BUILD
+#define __DEF_WINDLL
+#else
 #define __DEF_WINDLL \
 extern HINSTANCE _hInstance;\
 int WINAPI DllEntryPoint(HINSTANCE hinst, unsigned long reason, void *reserved)\
@@ -93,8 +101,7 @@ BOOL WINAPI DllMain(HINSTANCE hinst, DWORD reason, LPVOID reserved)\
   }\
   return TRUE;\
 }
-#else
-#define __DEF_WINDLL
+#endif /* __STATIC_BUILD */
 #endif /* __WINDOWS__ */
 
 #endif /* __ZEDA_COMPAT_H__ */
