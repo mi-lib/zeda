@@ -1,5 +1,9 @@
-#include <unistd.h>
 #include <zeda/zeda.h>
+
+#ifndef __WINDOWS__
+#include <unistd.h>
+#endif /* __WINDOWS_ */
+
 
 #define N 100
 

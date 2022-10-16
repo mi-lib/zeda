@@ -32,7 +32,9 @@ void assert_itoa(void)
 {
   char str[BUFSIZ];
 
+#ifndef __WINDOWS__
   zAssert( itoa, strcmp( itoa( 123, str ), "123" ) == 0 );
+#endif /* __WINDOWS__ */
   zAssert( itoa_fill, strcmp( itoa_fill( 123, 5, '*', str ), "**123" ) == 0 && strcmp( itoa_fill( 123, 2, '*', str ), "123" ) == 0 );
   zAssert( itoa_zerofill, strcmp( itoa_zerofill( 123, 5, str ), "00123" ) == 0 && strcmp( itoa_zerofill( 123, 2, str ), "123" ) == 0 );
 }
