@@ -140,7 +140,13 @@ __EXPORT int fpeek(FILE *fp);
  * specification.
  */
 #ifndef __KERNEL__
+
+#ifdef __WINDOWS__
+#define eprintf(fmt,...) printf( fmt, ##__VA_ARGS__ )
+#else
 #define eprintf(fmt,...) fprintf( stderr, fmt, ##__VA_ARGS__ )
+#endif
+
 #else
 #define eprintf printk
 #endif /* __KERNEL__ */
