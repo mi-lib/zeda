@@ -97,21 +97,21 @@ typedef long long int      int64_t;      /*!< 64-bit signed integer */
 #endif
 
 #ifdef _DEFINED_INT8
-typedef int8_t   byte;   /*!< signed one-byte data. */
+typedef int8_t         byte;   /*!< signed one-byte data. */
 #else
-typedef char     byte;   /*!< signed one-byte data. */
+typedef signed char    byte;   /*!< signed one-byte data. */
 #endif /* _DEFINED_INT8 */
-typedef int16_t  word;   /*!< signed two-byte data. */
-typedef int32_t  dword;  /*!< signed four-byte data. */
+typedef int16_t        word;   /*!< signed two-byte data. */
+typedef int32_t        dword;  /*!< signed four-byte data. */
 
-typedef uint8_t  ubyte;  /*!< unsigned one-byte data. */
-typedef uint16_t uword;  /*!< unsigned two-byte data. */
-typedef uint32_t udword; /*!< unsigned four-byte data. */
+typedef uint8_t        ubyte;  /*!< unsigned one-byte data. */
+typedef uint16_t       uword;  /*!< unsigned two-byte data. */
+typedef uint32_t       udword; /*!< unsigned four-byte data. */
 
 #ifndef _DEFINED_UINT
 #define _DEFINED_UINT 1
-typedef unsigned int   uint;  /*!< unsigned integer. */
-typedef unsigned long  ulong; /*!< unsigned long integer. */
+typedef unsigned int   uint;   /*!< unsigned integer. */
+typedef unsigned long  ulong;  /*!< unsigned long integer. */
 #endif /* _DEFINED_UINT */
 
 #if __STDC_VERSION__ >= 199901L
