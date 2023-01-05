@@ -45,12 +45,19 @@ typedef struct{
 
 /*! \brief initialize a random number generator based on Mersenne twister.
  *
- * zRandInitMT() initializes Mersenne twister \a mt
- * by seeding the current time for a new history.
- * If the null pointer is given for \a mt, it makes
- * use of the internal default instance.
+ * zRandInitMT() initializes Mersenne twister \a mt by seeding the current
+ * time for a new history.
+ *
+ * zRandInitSeedMT() initializes \a mt by explicitly seeding a number
+ * \a seed.
+ *
+ * For both functions, if the null pointer is given for \a mt, the internal
+ * default generator instance is used.
+ * \return
+ * Neither zRandInitMT() nor zRandInitSeedMT() return any value.
  */
 __EXPORT void zRandInitMT(zRandMT *mt);
+__EXPORT void zRandInitSeedMT(zRandMT *mt, ulong seed);
 
 /*! \brief a pseudo-random integer between \a min and \a max. */
 __EXPORT int zRandMTI(zRandMT *mt, int min, int max);
@@ -69,11 +76,12 @@ __EXPORT double zRandMTNU(zRandMT *mt);
 /*! \brief return a pointer to the default random number generator. */
 __EXPORT zRandMT *zRandMTDefault(void);
 
-#define zRandInit()     zRandInitMT( NULL )
-#define zRandI(min,max) zRandMTI( NULL, min, max )
-#define zRandF(min,max) zRandMTF( NULL, min, max )
-#define zRandN()        zRandMTN( NULL )
-#define zRandNU()       zRandMTNU( NULL )
+#define zRandInitSeed( s )  zRandInitSeedMT( NULL, (s) )
+#define zRandInit()         zRandInitMT( NULL )
+#define zRandI(min,max)     zRandMTI( NULL, min, max )
+#define zRandF(min,max)     zRandMTF( NULL, min, max )
+#define zRandN()            zRandMTN( NULL )
+#define zRandNU()           zRandMTNU( NULL )
 
 /*! \} */
 
