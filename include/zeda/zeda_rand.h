@@ -54,7 +54,8 @@ typedef struct{
  * For both functions, if the null pointer is given for \a mt, the internal
  * default generator instance is used.
  * \return
- * Neither zRandInitMT() nor zRandInitSeedMT() return any value.
+ * zRandInitMT() and zRandInitSeedMT() return the seed value provided to
+ * the generator.
  */
 __EXPORT ulong zRandInitMT(zRandMT *mt);
 __EXPORT ulong zRandInitSeedMT(zRandMT *mt, ulong seed);

@@ -1,3 +1,4 @@
+2023. 1. 6. Corrected the comment about the return value ofzRandInitMT and zRandInitSeedMT. [zeda_rand]
 2023. 1. 6. Modified specification of zRandInitMT and zRandInitSeedMT to return the seed value. [zeda_rand]
 2023. 1. 6. Added zRandInitSeedMT and reimplemented zRandInitMT. [zeda_rand]
 2022.12.19. Redefined byte type as signed char. [zeda_defs]
