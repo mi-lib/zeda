@@ -56,8 +56,8 @@ typedef struct{
  * \return
  * Neither zRandInitMT() nor zRandInitSeedMT() return any value.
  */
-__EXPORT void zRandInitMT(zRandMT *mt);
-__EXPORT void zRandInitSeedMT(zRandMT *mt, ulong seed);
+__EXPORT ulong zRandInitMT(zRandMT *mt);
+__EXPORT ulong zRandInitSeedMT(zRandMT *mt, ulong seed);
 
 /*! \brief a pseudo-random integer between \a min and \a max. */
 __EXPORT int zRandMTI(zRandMT *mt, int min, int max);

@@ -69,32 +69,33 @@ static ulong _zRandMTVal(zRandMT *mt)
 }
 
 /* initialize Mersenne twister with an explicit seed. */
-void zRandInitSeedMT(zRandMT *mt, ulong seed)
+ulong zRandInitSeedMT(zRandMT *mt, ulong seed)
 {
   uint i;
+  ulong s;
 
-  if( !mt )
-    mt = __z_rand_mt = &__z_rand_mt_default;
-  mt->x[0] = ( seed &= Z_RAND_MT_MAX );
+  if( !mt ) mt = __z_rand_mt = &__z_rand_mt_default;
+  s = seed;
+  mt->x[0] = ( s &= Z_RAND_MT_MAX );
   for( i=1; i<=Z_RAND_MT_HISTORY; i++ )
-    mt->x[i] = seed
-      = ( Z_RAND_MT_MGC1 * (seed^(seed>>30)) + i ) & Z_RAND_MT_MAX;
+    mt->x[i] = s = ( Z_RAND_MT_MGC1 * (s^(s>>30)) + i ) & Z_RAND_MT_MAX;
   mt->index = 0;
   for( i=0; i<Z_RAND_MT_HISTORY; i++ )
     _zRandMTVal( mt ); /* skip the first Z_RAND_MT_HISTORY numbers. */
   /* for normal distribution */
   mt->nd_sw = false;
   mt->nd_last = 0;
+  return seed;
 }
 
 /* initialize Mersenne twister. */
-void zRandInitMT(zRandMT *mt)
+ulong zRandInitMT(zRandMT *mt)
 {
   static ulong seed;
 
   seed = time( NULL );
   if( mt ) seed++;
-  zRandInitSeedMT( mt, seed );
+  return zRandInitSeedMT( mt, seed );
 }
 
 /* random integer number by Mersenne twister. */
