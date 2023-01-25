@@ -22,9 +22,9 @@ while [ "${DEPLIST}" ]; do
     continue
   elif [ "$2" = "-deb" ]; then
     if [ "${liball}" = "" ]; then
-	liball="${lib} (>= ${rqrver})"
+	liball="${lib}-dev (>= ${rqrver})"
     else
-	liball="${liball}, ${lib} (>= ${rqrver})"
+	liball="${liball}, ${lib}-dev (>= ${rqrver})"
     fi
     continue
   fi

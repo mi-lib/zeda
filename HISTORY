@@ -1,3 +1,4 @@
+2023. 1.25. Modified zeda-chkdep to output dependency between deb packages correctly. [tools]
 2023. 1. 6. Corrected the comment about the return value ofzRandInitMT and zRandInitSeedMT. [zeda_rand]
 2023. 1. 6. Modified specification of zRandInitMT and zRandInitSeedMT to return the seed value. [zeda_rand]
 2023. 1. 6. Added zRandInitSeedMT and reimplemented zRandInitMT. [zeda_rand]
