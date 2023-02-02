@@ -137,6 +137,8 @@ __EXPORT zStrListCell *ZTKValRewind(ZTK *ztk);
 
 /*! \brief return the current key of the current tagged field in a tag-and-key list of a ZTK format processor. */
 #define ZTKKey(ztk) ( (ztk)->kf_cp ? (ztk)->kf_cp->data.key : (char *)"" )
+/*! \brief return the number of values of the current key field of a ZTK format processor. */
+#define ZTKKeyFieldSize(ztk) ( (ztk)->kf_cp ? zListSize(&(ztk)->kf_cp->data.vallist): 0 )
 /*! \brief move to the next key field of the current tagged field in a tag-and-key list of a ZTK format processor. */
 __EXPORT ZTKKeyFieldListCell *ZTKKeyNext(ZTK *ztk);
 /*! \brief rewind the list of key fields of the current tagged field in a tag-and-key list of a ZTK format processor. */
