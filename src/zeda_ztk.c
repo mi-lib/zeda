@@ -409,6 +409,7 @@ void ZTKFPrint(FILE *fp, ZTK *ztk)
         }
       }
     } while( ZTKKeyNext(ztk) );
+    fprintf( fp, "\n" );
   } while( ZTKTagNext(ztk) );
 }
 

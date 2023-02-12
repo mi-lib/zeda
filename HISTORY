@@ -1,3 +1,5 @@
+2023. 2.12. Added ztkdump. [app]
+2023. 2.12. Modified ZTKFPrint. [zeda_ztk]
 2023. 2. 2. Added ZTKKeyFieldSize. [zeda_ztk]
 2023. 1.25. Modified zeda-chkdep to output dependency between deb packages correctly. [tools]
 2023. 1. 6. Corrected the comment about the return value ofzRandInitMT and zRandInitSeedMT. [zeda_rand]

@@ -4,14 +4,12 @@ int main(int argc, char *argv[])
 {
   ZTK ztk;
 
-  if( argc <= 1 ) return 1;
-
+  if( argc <= 1 ){
+    eprintf( "Usage: %s <.ztk file>\n", argv[0] );
+    return 0;
+  }
   ZTKInit( &ztk );
-
-  eprintf("\nparsing...\n");
   ZTKParse( &ztk, argv[1] );
-  eprintf("done.\n\n");
-
   ZTKPrint( &ztk );
   ZTKDestroy( &ztk );
   return 0;
