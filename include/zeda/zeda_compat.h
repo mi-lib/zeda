@@ -62,11 +62,11 @@
 # endif
 # define __FASTCALL __fastcall
 #elif defined(__GNUC__) && (__GNUC__ * 100 + __GNUC_MINOR__) >= 303
-# define __EXPORT __attribute__((visibility("default")))
-# define __FASTCALL __attribute__((regparm(3)))
+# define __EXPORT   extern __attribute__((visibility("default")))
+# define __FASTCALL extern __attribute__((regparm(3)))
 #else
-# define __EXPORT
-# define __FASTCALL
+# define __EXPORT   extern
+# define __FASTCALL extern
 #endif
 
 /* in order to create .dll for MS-Windows, define __WINDOWS__ and
@@ -77,7 +77,7 @@
  */
 #ifdef __WINDOWS__
 #define __DEF_WINDLL \
-extern HINSTANCE _hInstance;\
+__EXPORT HINSTANCE _hInstance;\
 int WINAPI DllEntryPoint(HINSTANCE hinst, unsigned long reason, void *reserved)\
 {\
   return 1;\

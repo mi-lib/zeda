@@ -152,7 +152,7 @@ __EXPORT int fpeek(FILE *fp);
  * make echo off.
  */
 /*! \cond */
-extern bool __zeda_echo;
+__EXPORT bool __zeda_echo;
 /*! \endcond */
 #define zEchoOn()  ( __zeda_echo = true )
 #define zEchoOff() ( __zeda_echo = false )
