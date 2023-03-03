@@ -34,15 +34,15 @@ __BEGIN_DECLS
 
 #ifdef __cplusplus
 #define zListClass(list_t,cell_t,data_t) \
-struct cell_t{\
-  cell_t *prev, *next;\
-  data_t data;\
-  cell_t(){ prev = next = this; };\
-};\
-struct list_t{\
-  uint size;\
-  cell_t root;\
-  list_t(){ size = 0; };\
+struct cell_t{ \
+  cell_t *prev, *next; \
+  data_t data; \
+  cell_t() : prev{this}, next{this} {} \
+}; \
+struct list_t{ \
+  uint size; \
+  cell_t root; \
+  list_t() : size{0} {} \
 }
 #else
 #define zListClass(list_t,cell_t,data_t) \

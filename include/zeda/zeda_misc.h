@@ -16,6 +16,24 @@
 __BEGIN_DECLS
 
 /*!
+ * \def ZDEF_STRUCT, ZDEF_UNION
+ * defines a struct/union in a way that is compatible with C++.
+ */
+#ifdef __cplusplus
+#define ZDEF_STRUCT( __struct_name ) struct __struct_name
+#define ZDEF_UNION( __struct_name )  union __struct_name
+#else
+#define ZDEF_STRUCT( __struct_name ) \
+struct _##__struct_name; \
+typedef struct _##__struct_name __struct_name; \
+struct _##__struct_name
+#define ZDEF_UNION( __struct_name ) \
+union _##__struct_name; \
+typedef union _##__struct_name __struct_name; \
+union _##__struct_name
+#endif /* __cplusplus */
+
+/*!
  * \def zAssert( func, expr )
  * asserts \a expr and echo a message that \a func works fine;
  * if not, it aborts.
