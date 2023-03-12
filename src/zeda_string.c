@@ -166,23 +166,27 @@ char *zCutNL(char *str)
 }
 
 /* convert charactors in a string to uppercases. */
-char *zToUpper(char *src, char *dest)
+static char *_zStrConv(char *src, size_t size, char *dest, int (* _method)(int))
 {
-  char *cp = dest;
+  char *cp;
+  size_t s;
 
-  while( *src ) *cp++ = toupper( *src++ );
+  for( cp=dest, s=0; s<size && *src; s++ )
+    *cp++ = _method( *src++ );
   *cp = '\0';
   return dest;
 }
 
-/* convert charactors in a string to lowercases. */
-char *zToLower(char *src, char *dest)
+/* convert charactors in a string to uppercases. */
+char *zStrToUpper(char *src, size_t size, char *dest)
 {
-  char *cp = dest;
+  return _zStrConv( src, size, dest, toupper );
+}
 
-  while( *src ) *cp++ = tolower( *src++ );
-  *cp = '\0';
-  return dest;
+/* convert charactors in a string to lowercases. */
+char *zStrToLower(char *src, size_t size, char *dest)
+{
+  return _zStrConv( src, size, dest, tolower );
 }
 
 #ifndef __KERNEL__

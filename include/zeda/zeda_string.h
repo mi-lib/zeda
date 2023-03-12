@@ -197,23 +197,21 @@ __EXPORT char *zCutNL(char *str);
 
 /*! \brief convert a string to the uppercase set.
  *
- * zToUpper() copies a string \a str to \a dest with
- * all lowercase alphabets included in \a str converted
- * to uppercase charactors.
+ * zStrToUpper() copies a string \a str to \a dest with all lowercase alphabets
+ * included in \a str converted to uppercase charactors.
  * \return
- * a pointer \a dest is returned.
+ * zStrToUpper() returns a pointer \a dest.
  */
-__EXPORT char *zToUpper(char *src, char *dest);
+__EXPORT char *zStrToUpper(char *src, size_t size, char *dest);
 
 /*! \brief convert a string to the lowercase set.
  *
- * zToLower() copies a string \a str to \a dest with
- * all uppercase alphabets included in \a str converted
- * to lowercase charactors.
+ * zStrToLower() copies a string \a str to \a dest with all uppercase alphabets
+ * included in \a str converted to lowercase charactors.
  * \return
- * a pointer \a dest is returned.
+ * zStrToLower() returns a pointer \a dest.
  */
-__EXPORT char *zToLower(char *src, char *dest);
+__EXPORT char *zStrToLower(char *src, size_t size, char *dest);
 
 /* ********************************************************** */
 /*! \defgroup token tokenization.
