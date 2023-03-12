@@ -1,3 +1,5 @@
+2023. 3.12. Added zFComma and zComma. [zeda_misc]
+2023. 3.12. Added zFEndl, and redefined zEndl. [zeda_misc]
 2023. 3. 3. Modified definition of zListClass. [zeda_list]
 2023. 3. 3. Added ZDEF_STRUCT and ZDEF_UNION. [zeda_misc]
 2023. 3. 3. Modified definition of __EXPORT to export global variables. [zeda_compat, zeda_misc]

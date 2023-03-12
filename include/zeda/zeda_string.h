@@ -708,11 +708,20 @@ __EXPORT void zFIndent(FILE *fp, int n);
 void zIndent(int n);
 #endif /* __KERNEL__ */
 
-/*! \brief output a newline charactor to the standard
- * output.
+/*! \brief output a comma to the standard output.
  */
 #ifndef __KERNEL__
-#define zEndl() printf( "\n" )
+#define zFComma(fp) fprintf( fp, ", " )
+#define zComma()    zFComma( stdout )
+#else
+#define zComma()    printk( ", " )
+#endif /* __KERNEL__ */
+
+/*! \brief output a newline charactor to the standard output.
+ */
+#ifndef __KERNEL__
+#define zFEndl(fp) fprintf( fp, "\n" )
+#define zEndl()    zFEndl( stdout )
 #else
 #define zEndl() printk( "\n" )
 #endif /* __KERNEL__ */
