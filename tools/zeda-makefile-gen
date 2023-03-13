@@ -20,7 +20,7 @@ endif
 
 CC=gcc
 STD=c89
-CFLAGS=-Wall -fPIC -fno-common -O3 \$(INCLUDE) -funroll-loops
+CFLAGS=-Wall -fPIC -fno-common -O3 \$(INCLUDE) -funroll-loops -D __BUILD_DLL__=1
 ifneq (\$(STD),)
       CFLAGS+="-std=\$(STD)"
 endif
