@@ -101,6 +101,17 @@ __EXPORT double zBound(double x, double b1, double b2);
 
 #define zFree(m)        do{ if( (m) ){ free( m ); (m) = NULL; } } while(0)
 
+#define ZDEF_ALLOC_FUNCTION_PROTOTYPE(type) type *type##Alloc(void)
+#define ZDEF_ALLOC_FUNCTION(type) \
+ZDEF_ALLOC_FUNCTION_PROTOTYPE( type ){ \
+  type *instance; \
+  if( !( instance = zAlloc( type, 1 ) ) ){ \
+    ZALLOCERROR(); \
+    return NULL; \
+  } \
+  return instance; \
+}
+
 /*!
  * \def zCopy(t,s,d)
  * copy \a s to \a d, where both are supposed to be types of \a t.
