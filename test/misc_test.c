@@ -20,7 +20,7 @@ void assert_swap(void)
 void assert_clone(void)
 {
   byte src[BUFSIZ], *dest;
-  register int i;
+  int i;
 
   for( i=0; i<BUFSIZ; i++ )
     src[i] = zRandI(0,0xff);

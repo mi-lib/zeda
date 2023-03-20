@@ -2,7 +2,7 @@
 
 void list_create(zIntList *list, int from, int to)
 {
-  register int i;
+  int i;
   zIntListCell *cp;
 
   zListInit( list );

@@ -9,7 +9,7 @@ void read_write_float_test(void)
 {
   FILE *fp;
   float data[N], val;
-  register int i;
+  int i;
   bool result = true;
 
   if( !( fp = fopen( FILENAME, "w" ) ) ){
@@ -40,7 +40,7 @@ void read_write_rev_float_test(void)
 {
   FILE *fp;
   float data[N], val;
-  register int i;
+  int i;
   bool result = true;
 
   if( !( fp = fopen( FILENAME, "w" ) ) ){
@@ -71,7 +71,7 @@ void read_write_double_test(void)
 {
   FILE *fp;
   double data[N], val;
-  register int i;
+  int i;
   bool result = true;
 
   if( !( fp = fopen( FILENAME, "w" ) ) ){
@@ -102,7 +102,7 @@ void read_write_rev_double_test(void)
 {
   FILE *fp;
   double data[N], val;
-  register int i;
+  int i;
   bool result = true;
 
   if( !( fp = fopen( FILENAME, "w" ) ) ){
@@ -142,7 +142,7 @@ void assert_read_write_float_double(void)
 
 void binfile_write_test(zBinFile *bf, int ival[], long lval[], float fval[], double dval[])
 {
-  register int i;
+  int i;
 
   zRandInit();
   for( i=0; i<N; i++ ){
@@ -165,7 +165,7 @@ void binfile_write_test(zBinFile *bf, int ival[], long lval[], float fval[], dou
 
 void binfile_read_test(zBinFile *bf, int ival[], long lval[], float fval[], double dval[])
 {
-  register int i;
+  int i;
 
   for( i=0; i<N; i++ ){
     ival[i] = zBinFileIntFRead( bf );
@@ -183,7 +183,7 @@ void binfile_read_test(zBinFile *bf, int ival[], long lval[], float fval[], doub
 
 bool binfile_check(int ival_src[], int ival_out[], long lval_src[], long lval_out[], float fval_src[], float fval_out[], double dval_src[], double dval_out[])
 {
-  register int i;
+  int i;
 
   for( i=0; i<N; i++ ){
     if( ival_src[i] != ival_out[i] ||
