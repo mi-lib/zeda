@@ -1,3 +1,4 @@
+2023. 3.20. Modified zeda-makefile-gen to accept DEBUG and enable -g flag of gcc. [tools]
 2023. 3.20. Added list_test in test/. [test]
 2023. 3.14. Defined ZDEF_ALLOC_FUNCTION_PROTOTYPE and ZDEF_ALLOC_FUNCTION. [zeda_misc]
 2023. 3.13. Modified zeda-makefile-gen to define __BUILD_DLL__ when copiling the library. [tools]

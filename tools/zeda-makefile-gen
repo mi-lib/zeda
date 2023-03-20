@@ -25,6 +25,10 @@ ifneq (\$(STD),)
       CFLAGS+="-std=\$(STD)"
 endif
 
+ifneq (\$(DEBUG),)
+      CFLAGS+="-g"
+endif
+
 LD=gcc
 LDFLAGS=-shared
 
@@ -41,7 +45,11 @@ all: \$(DLIB)
 	@\$(LD) \$(LDFLAGS) -o \$@ \$^ > /dev/null
 	-@mv \$@ \$(LIBDIR)
 %.o: %.c
+ifneq (\$(DEBUG),)
+	@echo " CC	" \$< "	(debug mode enabled)"
+else
 	@echo " CC	" \$<
+endif
 	@\$(CC) \$(CFLAGS) -c \$< > /dev/null
 clean:
 	@echo " CLEAN"

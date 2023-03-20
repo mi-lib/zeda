@@ -1,6 +1,6 @@
 PREFIX=$(HOME)/usr
 PROJNAME=zeda
-VERSION=1.6.42
+VERSION=1.6.43
 
 # XML parser (libxml2)
 CONFIG_USE_LIBXML=y
