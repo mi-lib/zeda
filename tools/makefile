@@ -6,6 +6,7 @@ INSTALL=install -m 755
 UNINSTALL=rm -f
 
 LINK=-l$(PROJNAME)
+LINKCPP=-l$(PROJNAME)_cpp
 CONFIGTOOL=$(PROJNAME)-config
 
 include config.tools
@@ -19,7 +20,7 @@ all: $(CONFIGTOOL)
 $(CONFIGTOOL):
 	@echo " GENERATE	" $@
 	-@rm -f $@
-	@./$(CONFIGGEN) -I "$(INCLUDE)" -L "$(LIB)" -D "$(DEF)" -l "$(LINK)" -v $(VERSION) > $@
+	@./$(CONFIGGEN) -I "$(INCLUDE)" -L "$(LIB)" -D "$(DEF)" -l "$(LINK)" -lcpp "$(LINKCPP)" -v $(VERSION) > $@
 install: $(TOOLS)
 	@echo " INSTALL	" $^
 	@$(INSTALL) $^ $(BINDIR)

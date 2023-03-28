@@ -26,13 +26,21 @@ ifneq (\$(STD),)
 endif
 
 ifneq (\$(DEBUG),)
-      CFLAGS+="-g"
+      CFLAGS+=-g
 endif
 
-LD=gcc
+LD=\$(CC)
 LDFLAGS=-shared
 
 include config.lib
+
+ifeq (\$(CC),g++)
+      DLIB=lib\$(PROJNAME)_cpp.so
+      CCCMD=" CXX	"
+else
+      DLIB=lib\$(PROJNAME).so
+      CCCMD=" CC	"
+endif
 
 ifneq (\$(shell \$(CC) --version | grep darwin),)
 	LDFLAGS+="-install_name \$(PREFIX)/lib/\$(DLIB)"
@@ -41,14 +49,14 @@ endif
 all: \$(DLIB)
 
 \$(DLIB): \$(OBJ)
-	@echo " LD	" \$^
+	@echo " LD	" \$^ "-o" \$@
 	@\$(LD) \$(LDFLAGS) -o \$@ \$^ > /dev/null
 	-@mv \$@ \$(LIBDIR)
 %.o: %.c
 ifneq (\$(DEBUG),)
-	@echo " CC	" \$< "	(debug mode enabled)"
+	@echo \$(CCCMD) \$< "	(debug mode enabled)"
 else
-	@echo " CC	" \$<
+	@echo \$(CCCMD) \$<
 endif
 	@\$(CC) \$(CFLAGS) -c \$< > /dev/null
 clean:
@@ -77,6 +85,7 @@ INCLUDE=
 LIB=
 DEF=
 LINK=-l\$(PROJNAME)
+LINKCPP=-l\$(PROJNAME)_cpp
 
 include config.tools
 
@@ -85,7 +94,7 @@ all: \$(CONFIGTOOL)
 \$(CONFIGTOOL):
 	@echo " GENERATE	" \$@
 	-@rm -f \$@
-	@\$(CONFIGGEN) -I "\$(INCLUDE)" -L "\$(LIB)" -D "\$(DEF)" -l "\$(LINK)" -v \$(VERSION) > \$@
+	@\$(CONFIGGEN) -I "\$(INCLUDE)" -L "\$(LIB)" -D "\$(DEF)" -l "\$(LINK)" -lcpp "\$(LINKCPP)" -v \$(VERSION) > \$@
 install: \$(CONFIGTOOL)
 	@echo " INSTALL	" \$^
 	@\$(INSTALL) \$^ \$(BINDIR)
@@ -108,8 +117,10 @@ UNINSTALL=rm -f
 
 CONFIGTOOL=\$(PROJNAME)-config
 LINK=\`\$(CONFIGTOOL) -l\`
+LINKCPP=\`\$(CONFIGTOOL) -lcpp\`
 
 CC=gcc
+CXX=g++
 CFLAGS=$2 -Wall -O3 \`\$(CONFIGTOOL) --cflags\`
 TARGET=\$(shell ls *.c 2> /dev/null | xargs -I{} basename {} .c | xargs)
 
@@ -118,6 +129,9 @@ all: \$(TARGET)
 %: %.c
 	@echo " CC	" $<
 	@\$(CC) \$(CFLAGS) -o \$@ \$< \$(LINK)
+%: %.cpp
+	@echo " CXX	" $<
+	@\$(CXX) \$(CFLAGS) -o \$@ \$< \$(LINKCPP)
 clean:
 	@echo " CLEAN"
 	-@rm -f *.o *~ core \$(TARGET)
