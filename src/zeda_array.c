@@ -7,10 +7,10 @@
 #include <zeda/zeda_array.h>
 
 /* quick sort for an array of pointers. */
-void zQuickSort(void *array, size_t nmemb, size_t size, int (* cmp)(void*,void*,void*), void *priv)
+void zQuickSort(void *array, int nmemb, int size, int (* cmp)(void*,void*,void*), void *priv)
 {
   byte *base, *pivot;
-  size_t i, t, h, m;
+  int i, t, h, m;
 
   if( nmemb <= 1 ) return;
   base = (byte *)array;
@@ -34,7 +34,7 @@ void zQuickSort(void *array, size_t nmemb, size_t size, int (* cmp)(void*,void*,
 }
 
 /* insert a member into an array at sorted position. */
-void *zInsertSort(void *array, void *memb, uint i, size_t nmemb, size_t size, int (* cmp)(void*,void*,void*), void *priv)
+void *zInsertSort(void *array, void *memb, int i, int nmemb, int size, int (* cmp)(void*,void*,void*), void *priv)
 {
   byte *p;
 

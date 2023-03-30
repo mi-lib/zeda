@@ -1,3 +1,6 @@
+2023. 3.29. Modified specifications of zQuickSort and zInsertSort. [zeda_array]
+2023. 3.29. Modified zListClass (C++) to redefine size member as int types. [zeda_list]
+2023. 3.28. Modified zArrayClass and zArray2Class to redefine size member as int types. [zeda_array, zeda_index, zeda_name]
 2023. 3.28. Modified zeda-makefile-gen to create makefiles for C++ compilation. [tools]
 2023. 3.28. Modified zeda-config-gen to create output for -lcpp option. [tools]
 2023. 3.20. Modified zeda-makefile-gen to accept DEBUG and enable -g flag of gcc. [tools]

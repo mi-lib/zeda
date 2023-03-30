@@ -62,7 +62,7 @@ zIndex zIndexCreateList(int size, ...)
 /* set components of an integer vector from argument list. */
 zIndex zIndexSetList(zIndex idx, ...)
 {
-  uint i;
+  int i;
   va_list args;
 
   va_start( args, idx );
@@ -92,7 +92,7 @@ zIndex zIndexZero(zIndex idx)
 /* ordinate an integer vector. */
 zIndex zIndexOrder(zIndex idx, int s)
 {
-  uint i;
+  int i;
 
   for( i=0; i<zArraySize(idx); i++ )
     zIndexSetElemNC( idx, i, s+i );
@@ -102,7 +102,7 @@ zIndex zIndexOrder(zIndex idx, int s)
 /* check if two integer vectors are equal. */
 bool zIndexIsEqual(zIndex idx1, zIndex idx2)
 {
-  uint i;
+  int i;
 
   if( zArraySize(idx1) != zArraySize(idx2) ) return false;
   for( i=0; i<zArraySize(idx1); i++ )
@@ -185,7 +185,7 @@ zIndex zIndexFScan(FILE *fp)
 /* print out components of an integer vector to a file. */
 void zIndexDataFPrint(FILE *fp, zIndex idx)
 {
-  uint i;
+  int i;
 
   if( !idx ) return;
   for( i=0; i<zArraySize(idx); i++ )
@@ -196,7 +196,7 @@ void zIndexDataFPrint(FILE *fp, zIndex idx)
 /* print out an integer vector to a file. */
 void zIndexFPrint(FILE *fp, zIndex idx)
 {
-  uint i;
+  int i;
 
   if( !idx )
     fprintf( fp, "(null integer vector)\n" );

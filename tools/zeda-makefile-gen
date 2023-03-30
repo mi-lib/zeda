@@ -196,7 +196,7 @@ install:
 	@echo " INSTALL	applications"; cd \$(APPDIR); make && make install
 uninstall:
 	@echo " UNINSTALL	library"
-	-@rm \$(PREFIX)/lib/lib\$(PROJNAME).so
+	-@rm -f \$(PREFIX)/lib/lib\$(PROJNAME).so \$(PREFIX)/lib/lib\$(PROJNAME)_cpp.so
 	@echo " UNINSTALL	header files"
 	-@rm -r \$(PREFIX)/include/\$(PROJNAME)
 	@echo " UNINSTALL	tools"; cd \$(TOOLDIR); make uninstall
