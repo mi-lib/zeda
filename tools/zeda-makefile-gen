@@ -9,7 +9,11 @@ CC=gcc
 CFLAGS=-Wall -O3
 
 %: %.c
+<<<<<<< HEAD
 	\$(CC) \$(CFLAGS) -o \$@ \$<
+=======
+	\$(CC) \$(CFLAGS) \$< \$@
+>>>>>>> 1696ff2f3d33e0765fa9785ae4f7c4e36e850e2e
 clean:
 	rm -f *~
 EOF
