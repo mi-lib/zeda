@@ -213,15 +213,15 @@ __EXPORT bool __zeda_echo;
 
 /*! \brief convert a hexadecimal note to a value.
  *
- * atox_c() converts a charactor \a c which denotes a
+ * zA2X_c() converts a charactor \a c which denotes a
  * hexadecimal value to an integer value.
  * \return an integer value converted.
  */
-__EXPORT int atox_c(char c);
+__EXPORT int zA2X_c(char c);
 
 /*! \brief convert hexadecimal string to value.
  *
- * atox() converts a string \a str which denotes hexadecimal
+ * zA2X() converts a string \a str which denotes hexadecimal
  * value to an integer value.
  *
  * if \a c is neither 0-9 nor a-f, it warns and returns zero.
@@ -230,70 +230,70 @@ __EXPORT int atox_c(char c);
  * Ex. a string "1g2h3i" is converted to 102030.
  * \return an integer value converted.
  */
-__EXPORT int atox(char *str);
+__EXPORT int zA2X(char *str);
 
 /*! \brief convert an integer to a string.
  *
- * itoa() converts an integer \a val to an ASCII string
+ * zI2A() converts an integer \a val to an ASCII string
  * and copies it to an array pointed by \a buf.
  * \return a pointer \a buf.
  * \note
- * itoa() does not check the size of \a buf.
+ * zI2A() does not check the size of \a buf.
  * It assumes that \a 'buf' has an enough size.
  */
-__EXPORT char *itoa(int val, char *buf);
+__EXPORT char *zI2A(int val, char *buf);
 
 /*! \brief convert a d-float value to a string.
  *
- * ftoa() converts a double-precision floating point
+ * zF2A() converts a double-precision floating point
  * value \a val to an ASCII string and copies it to an
  * array pointed by \a buf.
  * \return a pointer \a buf.
  * \note
- * itoa() does not check the size of \a buf.
+ * zI2A() does not check the size of \a buf.
  * It assumes that \a 'buf' has an enough size.
  */
-__EXPORT char *ftoa(double val, char *buf);
+__EXPORT char *zF2A(double val, char *buf);
 
 #ifndef __KERNEL__
 /*! \brief convert an integer to a string with a blank
  * filled by a charactor.
  *
- * itoa_fill() converts a given integer \a val to a string with
+ * zI2AFill() converts a given integer \a val to a string with
  * its blank filled by \a pat.
  * \a size is the length of the string. If the digit of \a val is
  * more than \a size, \a size is ignored.
  *
  *  Examples:
  *
- *  1.when calling itoa_fill( 12, 5, '*', buf );,
+ *  1.when calling zI2AFill( 12, 5, '*', buf );,
  *    the string will be "***12".
  *
- *  2.when calling 'itoa_fill( 123, 2, '?', buf );',
+ *  2.when calling 'zI2AFill( 123, 2, '?', buf );',
  *    the string will be "123".
  * \return a pointer \a buf.
  * \note
- * itoa_fill() is not available in ther kernel space.
+ * zI2AFill() is not available in ther kernel space.
  */
-__EXPORT char *itoa_fill(int val, int size, char pat, char *buf);
+__EXPORT char *zI2AFill(int val, int size, char pat, char *buf);
 
-/*! \def itoa_zerofill
+/*! \def zI2AZeroFill
  * \brief convert an integer to a string with blank
  * filled by a charactor-zero.
  * \return a pointer \a buf.
- * \sa itoa_fill
+ * \sa zI2AFill
  */
-#define itoa_zerofill(v,s,b) itoa_fill( (v), (s), '0', (b) )
+#define zI2AZeroFill(v,s,b) zI2AFill( (v), (s), '0', (b) )
 
 /*! \brief convert an integer number to a string that represents an ordinal.
  *
- * itoa_ordinal() converts an integer number \a val into a string
+ * zI2AOrdinal() converts an integer number \a val into a string
  * that represents an ordinal, and stores it into \a buf.
  * \a size is the size of \a buf.
  * \return
- * itoa_ordinal() returns a pointer \a buf.
+ * zI2AOrdinal() returns a pointer \a buf.
  */
-__EXPORT char *itoa_ordinal(int val, char *buf, size_t size);
+__EXPORT char *zI2AOrdinal(int val, char *buf, size_t size);
 #endif /* __KERNEL__ */
 
 /*! \} */

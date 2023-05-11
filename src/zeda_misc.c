@@ -89,7 +89,7 @@ bool __zeda_echo = true;
  * ********************************************************** */
 
 /* convert a hexadecimal charactor to a value. */
-int atox_c(char c)
+int zA2X_c(char c)
 {
   if( !isxdigit(c) ){
     ZRUNERROR( ZEDA_WARN_INVHEX, c );
@@ -99,37 +99,19 @@ int atox_c(char c)
 }
 
 /* convert a hexadecimal string to a value. */
-int atox(char *str)
+int zA2X(char *str)
 {
   int ret = 0;
 
   while( *str ){
     ret <<= 4;
-    ret |= atox_c( *str++ );
+    ret |= zA2X_c( *str++ );
   }
   return ret;
 }
 
-#ifdef __KERNEL__
-#define _ftoa_fig1_val(val) \
- ( (int)floor(val) % 10 )
-#define _ftoa_fig1(val,val_ten) \
- ( ( *(val_ten) = _zftoa_fig1_val((val)) ) + '0' )
-
-static void _ftoa_advance(double val, char *fig);
-
-/* pick up the bottom figure of the value. */
-void _ftoa_advance(double val, char *fig)
-{
-  if( _ftoa_fig1_val(val) <= 5 ) return;
-  for( ; *fig=='9' || *fig=='.'; fig-- )
-    if( *fig != '.' ) *fig = '0';
-  (*fig)++;
-}
-#endif /* __KERNEL__ */
-
 /* translate an integer value to an ASCII string. */
-char *itoa(int val, char *buf)
+char *zI2A(int val, char *buf)
 {
 #ifdef __KERNEL__
   int fig, base;
@@ -153,11 +135,29 @@ char *itoa(int val, char *buf)
   return buf;
 }
 
+#ifdef __KERNEL__
+#define _zF2AFig1Val(val) \
+ ( (int)floor(val) % 10 )
+#define _zF2AFig1(val,val_ten) \
+ ( ( *(val_ten) = _zF2AFig1Val((val)) ) + '0' )
+
+static void _zF2AAdvance(double val, char *fig);
+
+/* pick up the bottom figure of the value. */
+void _zF2AAdvance(double val, char *fig)
+{
+  if( _zF2AFig1Val(val) <= 5 ) return;
+  for( ; *fig=='9' || *fig=='.'; fig-- )
+    if( *fig != '.' ) *fig = '0';
+  (*fig)++;
+}
+#endif /* __KERNEL__ */
+
 /* translate a floating point number to an ASCII string. */
-char *ftoa(double val, char *buf)
+char *zF2A(double val, char *buf)
 {
 #ifdef __KERNEL__
-#define Z_FTOA_FLOATSIZE 10
+#define ZF2A_FLOATSIZE 10
   int i, fig;
   double val10 = 0;
   char *cp;
@@ -170,50 +170,50 @@ char *ftoa(double val, char *buf)
   if( val == 0 )
     strcpy( buf, "0" );
   else if( val >= 1.0 ){
-    if( ( fig = (int)floor(log10(val)) + 1 ) <= Z_FTOA_FLOATSIZE ){
+    if( ( fig = (int)floor(log10(val)) + 1 ) <= ZF2A_FLOATSIZE ){
       val *= pow( 0.1, fig-1 );
-      for( i=0; i<Z_FTOA_FLOATSIZE+fig; val*=10, i++ ){
+      for( i=0; i<ZF2A_FLOATSIZE+fig; val*=10, i++ ){
         val -= val10 * 10;
         if( i == fig ) *cp++ = '.';
-        *cp++ = _ftoa_fig1( val, &val10 );
+        *cp++ = _zF2AFig1( val, &val10 );
       }
-      _ftoa_advance( val, cp-1 );
+      _zF2AAdvance( val, cp-1 );
       *cp = '\0';
     } else{
       val *= pow( 0.1, fig-1 );
-      *cp++ = _ftoa_fig1( val, &val10 );
+      *cp++ = _zF2AFig1( val, &val10 );
       *cp++ = '.';
-      for( val*=10, i=0; i<Z_FTOA_FLOATSIZE; val*=10, i++ ){
+      for( val*=10, i=0; i<ZF2A_FLOATSIZE; val*=10, i++ ){
         val -= val10 * 10;
-        *cp++ = _ftoa_fig1( val, &val10 );
+        *cp++ = _zF2AFig1( val, &val10 );
       }
-      _ftoa_advance( val, cp-1 );
+      _zF2AAdvance( val, cp-1 );
       *cp++ = 'e';
-      itoa( fig-1, cp );
+      zI2A( fig-1, cp );
     }
   } else{
-    if( ( fig = -(int)floor(log10(val)) ) < Z_FTOA_FLOATSIZE ){
+    if( ( fig = -(int)floor(log10(val)) ) < ZF2A_FLOATSIZE ){
       *cp++ = '0';
       *cp++ = '.';
       for( i=1; i<fig; val*=10, i++ ) *cp++='0';
-      for( i=0; i<=Z_FTOA_FLOATSIZE-fig; i++ ){
+      for( i=0; i<=ZF2A_FLOATSIZE-fig; i++ ){
         val = ( val - val10 ) * 10;
-        *cp++ = _ftoa_fig1( val, &val10 );
+        *cp++ = _zF2AFig1( val, &val10 );
       }
-      _ftoa_advance( val, cp-1 );
+      _zF2AAdvance( val, cp-1 );
       *cp = '\0';
     } else{
       val *= pow( 10, fig );
-      *cp++ = _ftoa_fig1( val, &val10 );
+      *cp++ = _zF2AFig1( val, &val10 );
       *cp++ = '.';
-      for( i=0; i<Z_FTOA_FLOATSIZE; i++ ){
+      for( i=0; i<ZF2A_FLOATSIZE; i++ ){
         val = ( val - val10 ) * 10;
-        *cp++ = _ftoa_fig1( val, &val10 );
+        *cp++ = _zF2AFig1( val, &val10 );
       }
-      _ftoa_advance( val, cp-1 );
+      _zF2AAdvance( val, cp-1 );
       *cp++ = 'e';
       *cp++ = '-';
-      itoa( fig, cp );
+      zI2A( fig, cp );
     }
   }
 #else
@@ -225,27 +225,27 @@ char *ftoa(double val, char *buf)
 #ifndef __KERNEL__
 /* convert an integer number to a string with blank filled by a specified charactor. */
 #define ULONG_MAX_BUFSIZ 25
-char *itoa_fill(int val, int size, char pat, char *buf)
+char *zI2AFill(int val, int size, char pat, char *buf)
 {
-  char _itoa_fill_buf[ULONG_MAX_BUFSIZ];
+  char _fill_buf[ULONG_MAX_BUFSIZ];
   char *cp;
   int len;
 
-  if( ( len = strlen( itoa( val, _itoa_fill_buf ) ) ) > size ){
-    strcpy( buf, _itoa_fill_buf );
+  if( ( len = strlen( zI2A( val, _fill_buf ) ) ) > size ){
+    strcpy( buf, _fill_buf );
     return buf;
   }
   for( cp=buf; size>len; size--, cp++ ) *cp = pat;
-  strcpy( cp, _itoa_fill_buf );
+  strcpy( cp, _fill_buf );
   return buf;
 }
 #endif /* __KERNEL__ */
 
 #ifndef __KERNEL__
 /* convert an integer number to a string that represents an ordinal. */
-char *itoa_ordinal(int val, char *buf, size_t size)
+char *zI2AOrdinal(int val, char *buf, size_t size)
 {
-  itoa( val, buf );
+  zI2A( val, buf );
   if( val % 10 == 1 && val % 100 != 11 )
     strcat( buf, "st" );
   else

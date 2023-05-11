@@ -1,3 +1,4 @@
+2023. 5.12. Renamed atox_c, atox, itoa, ftoa, itoa_fill, itoa_zerofill, and itoa_ordinal to zA2X_c, zA2X, zI2A, zF2A, zI2AFill, zI2AZeroFill, and zI2AOrdinal, respectively. [zeda_misc]
 2023. 5. 7. Modified zeda-makefile-gen to generate a plain makefile. [tools]
 2023. 3.29. Modified specifications of zQuickSort and zInsertSort. [zeda_array]
 2023. 3.29. Modified zListClass (C++) to redefine size member as int types. [zeda_list]
