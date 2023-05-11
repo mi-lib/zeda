@@ -33,11 +33,7 @@ __BEGIN_DECLS
  * fails to find a corresponding element, the null pointer
  * set for \a ptr.
  */
-#ifdef __cplusplus
-#define Z_NAMED_CLASS    public: char *name;
-#else
 #define Z_NAMED_CLASS    char *name;
-#endif /* __cplusplus */
 
 /*! \brief the default name for no-name. */
 #define ZNONAME          "noname"

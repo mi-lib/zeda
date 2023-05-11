@@ -17,7 +17,7 @@
 # ifdef __BORLANDC__ /* Borland C++ */
 #  include <vcl.h>
 # endif
-# ifdef __MSC_VER /* Microsoft Visual C++ */
+# ifdef __MSC_VER || __clang__ /* Microsoft Visual C++ or Clang */
 #  include <windows.h>
 #  undef min /* undefine notorious min/max macros */
 #  undef max

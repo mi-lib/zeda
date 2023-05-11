@@ -31,9 +31,15 @@
 #endif
 
 #ifndef __KERNEL__
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+# ifdef __cplusplus
+#  include <cstdio>
+#  include <cstdlib>
+#  include <cstring>
+# else
+#  include <stdio.h>
+#  include <stdlib.h>
+#  include <string.h>
+# endif /* __cplusplus */
 #endif /* __KERNEL__ */
 
 #include <time.h>
@@ -56,30 +62,34 @@ __BEGIN_DECLS
 #define BUFSIZ 512
 #endif /* BUFSIZ */
 
-#if __STDC_VERSION__ < 199901L
+#if ( defined( __cplusplus ) && __cplusplus < 201103L ) || __STDC_VERSION__ < 199901L
 /* size-fixed integer family */
 /* might be already defined in stdint.h or sys/types.h conforming to C99 */
 typedef unsigned char      uint8_t;      /*!< 8-bit unsigned integer */
 typedef unsigned short int uint16_t;     /*!< 16-bit unsigned integer */
 typedef unsigned int       uint32_t;     /*!< 32-bit unsigned integer */
-#ifdef __LP64__
+# ifdef __LP64__
 typedef unsigned long int  uint64_t;     /*!< 64-bit unsigned integer */
-#else
+# else
 typedef unsigned long long int uint64_t; /*!< 64-bit unsigned integer */
-#endif /* __LP64__ */
-#ifndef _DEFINED_INT8
-#define _DEFINED_INT8 1
+# endif /* __LP64__ */
+# ifndef _DEFINED_INT8
+# define _DEFINED_INT8 1
 typedef signed char        int8_t;       /*!< 8-bit signed integer */
-#endif /* _DEFINED_INT8 */
+# endif /* _DEFINED_INT8 */
 typedef short int          int16_t;      /*!< 16-bit signed integer */
 typedef int                int32_t;      /*!< 32-bit signed integer */
-#ifdef __LP64__
+# ifdef __LP64__
 typedef long int           int64_t;      /*!< 64-bit signed integer */
-#else
+# else
 typedef long long int      int64_t;      /*!< 64-bit signed integer */
-#endif /* __LP64__ */
+# endif /* __LP64__ */
 #else
-#include <stdint.h>
+# ifdef __cplusplus
+# include <cstdint>
+# else
+# include <stdint.h>
+# endif
 #endif /* __STDC_VERSION__ */
 
 #ifdef __SIZEOF_INT__

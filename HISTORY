@@ -1,3 +1,6 @@
+2023. 5.12. Added a condition to detect Clang on Windows and include windows.h. [zeda_compat]
+2023. 5.12. Conditionally branched inclusion of stdio.h, stdlib.h, and string.h to inclusion of cstdio, cstdlib, and cstring for C++ building. [zeda_defs]
+2023. 5.12. Removed keyword public from Z_NAMED_CLASS macro. [zeda_name]
 2023. 5.12. Renamed atox_c, atox, itoa, ftoa, itoa_fill, itoa_zerofill, and itoa_ordinal to zA2X_c, zA2X, zI2A, zF2A, zI2AFill, zI2AZeroFill, and zI2AOrdinal, respectively. [zeda_misc]
 2023. 5. 7. Modified zeda-makefile-gen to generate a plain makefile. [tools]
 2023. 3.29. Modified specifications of zQuickSort and zInsertSort. [zeda_array]
