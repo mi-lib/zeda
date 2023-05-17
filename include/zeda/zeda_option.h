@@ -82,7 +82,7 @@ typedef struct{
  * \sa
  * zOptionRead
  */
-__EXPORT void zOptionHelp(zOption *opts);
+__ZEDA_EXPORT void zOptionHelp(zOption *opts);
 
 /*! \brief diagnose option flags.
  *
@@ -93,7 +93,7 @@ __EXPORT void zOptionHelp(zOption *opts);
  * \sa
  * zOptionRead
  */
-__EXPORT void zOptionDiag(zOption *opts);
+__ZEDA_EXPORT void zOptionDiag(zOption *opts);
 
 /*! \brief read command line options.
  *
@@ -140,7 +140,7 @@ __EXPORT void zOptionDiag(zOption *opts);
  * Note that the string "--" disables the following string
  * to be parsed as an option even if it begins with '-'.
  */
-__EXPORT bool zOptionRead(zOption *opts, char **argv, zStrAddrList *arglist);
+__ZEDA_EXPORT bool zOptionRead(zOption *opts, char **argv, zStrAddrList *arglist);
 
 /* ********************************************************** */
 /* integer range
@@ -170,7 +170,7 @@ __EXPORT bool zOptionRead(zOption *opts, char **argv, zStrAddrList *arglist);
  * represent the beginning, or for \a to to represent
  * the last.
  */
-__EXPORT void zParseIntRange(char *expr, int *from, int *to);
+__ZEDA_EXPORT void zParseIntRange(char *expr, int *from, int *to);
 
 /* ********************************************************** */
 /* commandline argument vector
@@ -197,7 +197,7 @@ __EXPORT void zParseIntRange(char *expr, int *from, int *to);
  * a pointer to the next argument, if it exists, is
  * returned. Otherwise, the null pointer is returned.
  */
-__EXPORT char *zGetArg(char ***argv);
+__ZEDA_EXPORT char *zGetArg(char ***argv);
 
 /*! \brief check if an argument string is an option switch.
  *

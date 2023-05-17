@@ -38,7 +38,7 @@ __BEGIN_DECLS
  * of zTreeClass() and zTreeClassMethod().
  *//* ******************************************************* */
 
-#define zTreeClass(node_t,data_t) \
+#define zTreeClass(METHOD_EXPORT,node_t,data_t) \
 typedef struct __##node_t{\
   struct __##node_t *parent;\
   struct __##node_t *child[2];\
@@ -46,9 +46,9 @@ typedef struct __##node_t{\
   data_t data;\
 } node_t;\
 \
-__EXPORT node_t *node_t##Init(node_t *node);\
-__EXPORT void node_t##Destroy(node_t *tree);\
-__EXPORT node_t *node_t##NodeAlloc(data_t *val)
+METHOD_EXPORT node_t *node_t##Init(node_t *node);\
+METHOD_EXPORT void node_t##Destroy(node_t *tree);\
+METHOD_EXPORT node_t *node_t##NodeAlloc(data_t *val)
 
 #define zTreeClassMethod(node_t,data_t,init,destroy) \
 static data_t *(* _##node_t##DataInit)(data_t *) = init;\
@@ -89,12 +89,12 @@ node_t *node_t##NodeAlloc(data_t *val){\
 
 #define zHeapClass(node_t,data_t) \
 zTreeClass(node_t,data_t); \
-__EXPORT node_t *node_t##AddComplete(node_t *tree, data_t *val);\
-__EXPORT node_t *node_t##UpHeap(node_t *tree, node_t *node, int (* cmp)(node_t*,node_t*,void*), void *util);\
-__EXPORT node_t *node_t##AddHeap(node_t *tree, data_t *val, int (* cmp)(node_t*,node_t*,void*), void *util);\
-__EXPORT node_t *node_t##DownHeap(node_t *node, int (* cmp)(node_t*,node_t*,void*), void *util);\
-__EXPORT node_t *node_t##DeleteHeap(node_t *tree, int (* cmp)(node_t*,node_t*,void*), void *util);\
-__EXPORT void node_t##Heapify(node_t *tree, int (* cmp)(node_t*,node_t*,void*), void *util)
+METHOD_EXPORT node_t *node_t##AddComplete(node_t *tree, data_t *val);\
+METHOD_EXPORT node_t *node_t##UpHeap(node_t *tree, node_t *node, int (* cmp)(node_t*,node_t*,void*), void *util);\
+METHOD_EXPORT node_t *node_t##AddHeap(node_t *tree, data_t *val, int (* cmp)(node_t*,node_t*,void*), void *util);\
+METHOD_EXPORT node_t *node_t##DownHeap(node_t *node, int (* cmp)(node_t*,node_t*,void*), void *util);\
+METHOD_EXPORT node_t *node_t##DeleteHeap(node_t *tree, int (* cmp)(node_t*,node_t*,void*), void *util);\
+METHOD_EXPORT void node_t##Heapify(node_t *tree, int (* cmp)(node_t*,node_t*,void*), void *util)
 
 #define zHeapClassMethod(node_t,data_t,init,destroy) \
 zTreeClassMethod(node_t,data_t,init,destroy) \

@@ -1,3 +1,8 @@
+2023. 5.17. Removed semicolon at the end of Z_NAMED_CLASS. [zeda_name]
+2023. 5.16. Modified zRRTabClass and zTreeClass to accept METHOD_EXPORT. [zeda_rrtab, zeda_tree]
+2023. 5.16. Replaced __EXPORT to __ZEDA_EXPORT. [all]
+2023. 5.16. Modified src/makefile to automatically create zeda_export.h. [src]
+2023. 5.16. Modified zeda-makefile-gen to define __(PROJNAME_CAPITAL)_BUILD_DLL__ for build of DLL on Windows. [tools]
 2023. 5.12. Added a condition to detect Clang on Windows and include windows.h. [zeda_compat]
 2023. 5.12. Conditionally branched inclusion of stdio.h, stdlib.h, and string.h to inclusion of cstdio, cstdlib, and cstring for C++ building. [zeda_defs]
 2023. 5.12. Removed keyword public from Z_NAMED_CLASS macro. [zeda_name]

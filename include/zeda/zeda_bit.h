@@ -33,7 +33,7 @@ __BEGIN_DECLS
  *  Z_ENDIAN_LITTLE  ... little endian
  *  Z_ENDIAN_BIG     ... big endian
  */
-__EXPORT int endian_check(void);
+__ZEDA_EXPORT int endian_check(void);
 
 /*! \brief convert 16-bit little/big endian to big/little endian.
  *
@@ -43,7 +43,7 @@ __EXPORT int endian_check(void);
  * \note
  * PDP endian is not dealt with.
  */
-__EXPORT uint16_t endian_reverse16(uint16_t val);
+__ZEDA_EXPORT uint16_t endian_reverse16(uint16_t val);
 
 /*! \brief convert 32-bit little/big endian to big/little endian.
  *
@@ -53,7 +53,7 @@ __EXPORT uint16_t endian_reverse16(uint16_t val);
  * \note
  * PDP endian is not dealt with.
  */
-__EXPORT uint32_t endian_reverse32(uint32_t val);
+__ZEDA_EXPORT uint32_t endian_reverse32(uint32_t val);
 
 /*! \brief convert 64-bit little/big endian to big/little endian.
  *
@@ -63,7 +63,7 @@ __EXPORT uint32_t endian_reverse32(uint32_t val);
  * \note
  * PDP endian is not dealt with.
  */
-__EXPORT uint64_t endian_reverse64(uint64_t val);
+__ZEDA_EXPORT uint64_t endian_reverse64(uint64_t val);
 
 /*! \} */
 
@@ -78,7 +78,7 @@ __EXPORT uint64_t endian_reverse64(uint64_t val);
  * \a d is a rotation displacement.
  * \return the value converted.
  */
-__EXPORT ulong bit_rotate(ulong val, int bitwidth, int d);
+__ZEDA_EXPORT ulong bit_rotate(ulong val, int bitwidth, int d);
 
 /*! \brief reverse a bit sequence.
  *
@@ -86,7 +86,7 @@ __EXPORT ulong bit_rotate(ulong val, int bitwidth, int d);
  * the bit width \a bitwidth.
  * \return the value converted.
  */
-__EXPORT ulong bit_reverse(ulong val, int bitwidth);
+__ZEDA_EXPORT ulong bit_reverse(ulong val, int bitwidth);
 
 /*! \brief convert a bit sequence to a string in binary format.
  *
@@ -99,7 +99,7 @@ __EXPORT ulong bit_reverse(ulong val, int bitwidth);
  * The size of \a str has to be more than \a width + 1 bytes.
  * \sa fprintf_bit
  */
-__EXPORT void sprintf_bit(char *str, ulong val, int width);
+__ZEDA_EXPORT void sprintf_bit(char *str, ulong val, int width);
 
 #ifndef __KERNEL__
 /*! \brief output a bit sequence to a file in binary format.
@@ -110,7 +110,7 @@ __EXPORT void sprintf_bit(char *str, ulong val, int width);
  * \note
  * fprintf_bit() is not available in the kernel space.
  */
-__EXPORT void fprintf_bit(FILE *fp, ulong val, int width);
+__ZEDA_EXPORT void fprintf_bit(FILE *fp, ulong val, int width);
 /*! \brief output a bit sequence to the standard output. */
 #define printf_bit(v,w) fprintf_bit( stdout, (v), (w) )
 #else

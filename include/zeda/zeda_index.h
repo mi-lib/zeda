@@ -61,7 +61,7 @@ typedef zIndexStruct *zIndex;
  * zIndexAlloc() returns a pointer to the allocated memory if
  * it succeeds. Otherwise, the null pointer is returned.
  */
-__EXPORT zIndex zIndexAlloc(int size);
+__ZEDA_EXPORT zIndex zIndexAlloc(int size);
 
 /*! \brief create an array of integer values.
  *
@@ -72,7 +72,7 @@ __EXPORT zIndex zIndexAlloc(int size);
  * zIndexCreate() returns a pointer to the allocated array if it
  * succeeds. Otherwise, the null pointer is returned.
  */
-__EXPORT zIndex zIndexCreate(int size);
+__ZEDA_EXPORT zIndex zIndexCreate(int size);
 
 /*! \brief create an array of integer according to a
  * specified list of arguments.
@@ -106,7 +106,7 @@ zIndex zIndexSetList(zIndex idx, ...);
  * zIndexFree() frees a zIndex instance \a idx,
  * freeing the assigned memory space.
  */
-__EXPORT void zIndexFree(zIndex idx);
+__ZEDA_EXPORT void zIndexFree(zIndex idx);
 
 /*! \brief zero an array of integer values.
  *
@@ -114,7 +114,7 @@ __EXPORT void zIndexFree(zIndex idx);
  * \a idex for zeros.
  * \retval a pointer \a idx.
  */
-__EXPORT zIndex zIndexZero(zIndex idx);
+__ZEDA_EXPORT zIndex zIndexZero(zIndex idx);
 
 /*! \brief order an array of integer values.
  *
@@ -122,7 +122,7 @@ __EXPORT zIndex zIndexZero(zIndex idx);
  * beginning from \a s as { \a s, \a s+1, \a s+2, ... }.
  * \retval a pointer \a idx.
  */
-__EXPORT zIndex zIndexOrder(zIndex idx, int s);
+__ZEDA_EXPORT zIndex zIndexOrder(zIndex idx, int s);
 
 /*! \brief check if two arrays of integer values are equal.
  *
@@ -131,7 +131,7 @@ __EXPORT zIndex zIndexOrder(zIndex idx, int s);
  * \return the true value if \a idx1 and \a idx2 are equal,
  * or the false values, otherwise.
  */
-__EXPORT bool zIndexIsEqual(zIndex idx1, zIndex idx2);
+__ZEDA_EXPORT bool zIndexIsEqual(zIndex idx1, zIndex idx2);
 
 /*! \brief swap two elements of an array of integer values.
  *
@@ -141,7 +141,7 @@ __EXPORT bool zIndexIsEqual(zIndex idx1, zIndex idx2);
  * \note
  * if \a p1 or \a p2 is invalid, anything might happen.
  */
-__EXPORT int zIndexSwap(zIndex idx, int p1, int p2);
+__ZEDA_EXPORT int zIndexSwap(zIndex idx, int p1, int p2);
 
 /*! \brief move an element of an array of integer values.
  *
@@ -153,7 +153,7 @@ __EXPORT int zIndexSwap(zIndex idx, int p1, int p2);
  * \note
  * if \a from or \a to is invalid, anything might happen.
  */
-__EXPORT int zIndexMove(zIndex idx, int from, int to);
+__ZEDA_EXPORT int zIndexMove(zIndex idx, int from, int to);
 
 /*! \brief remove a component from an integer vector.
  *
@@ -163,7 +163,7 @@ __EXPORT int zIndexMove(zIndex idx, int from, int to);
  * \a idx is remained, and only the value of the size is modified.
  * \return a pointer \a idx.
  */
-__EXPORT zIndex zIndexRemove(zIndex idx, int i);
+__ZEDA_EXPORT zIndex zIndexRemove(zIndex idx, int i);
 
 #ifndef __KERNEL__
 /*! \brief scan an array of integer values from a file.
@@ -182,7 +182,7 @@ __EXPORT zIndex zIndexRemove(zIndex idx, int i);
  * \return a pointer to the newly allocated zIndex instance.
  * \sa zIndexScan, zIndexFPrint
  */
-__EXPORT zIndex zIndexFScan(FILE *fp);
+__ZEDA_EXPORT zIndex zIndexFScan(FILE *fp);
 #define zIndexScan() zIndexFScan( stdin )
 
 /*! \brief print an array of integer values to a file.
@@ -199,7 +199,7 @@ __EXPORT zIndex zIndexFScan(FILE *fp);
  * the standard output.
  * \sa zIndexFScan, zIndexPrint, zIndexDataFPrint
  */
-__EXPORT void zIndexFPrint(FILE *fp, zIndex idx);
+__ZEDA_EXPORT void zIndexFPrint(FILE *fp, zIndex idx);
 #define zIndexPrint(i) zIndexFPrint( stdout, i )
 /*! \brief print an array of integer values out to a file.
  *
@@ -213,7 +213,7 @@ __EXPORT void zIndexFPrint(FILE *fp, zIndex idx);
  * to the standard output.
  * \sa zIndexFScan, zIndexFPrint, zIndexDataPrint
  */
-__EXPORT void zIndexDataFPrint(FILE *fp, zIndex idx);
+__ZEDA_EXPORT void zIndexDataFPrint(FILE *fp, zIndex idx);
 #define zIndexDataPrint(i) zIndexDataFPrint( stdout, i )
 #else
 void zIndexPrint(zIndex idx);
@@ -222,7 +222,7 @@ void zIndexPrint(zIndex idx);
 #include <zeda/zeda_list.h>
 
 /*! \brief create an integer vector from a list of integers. */
-__EXPORT zIndex zIndexCreateFromList(zIntList *list);
+__ZEDA_EXPORT zIndex zIndexCreateFromList(zIntList *list);
 
 /*! \} */
 

@@ -57,25 +57,25 @@ typedef struct{
  * zRandInitMT() and zRandInitSeedMT() return the seed value provided to
  * the generator.
  */
-__EXPORT ulong zRandInitMT(zRandMT *mt);
-__EXPORT ulong zRandInitSeedMT(zRandMT *mt, ulong seed);
+__ZEDA_EXPORT ulong zRandInitMT(zRandMT *mt);
+__ZEDA_EXPORT ulong zRandInitSeedMT(zRandMT *mt, ulong seed);
 
 /*! \brief a pseudo-random integer between \a min and \a max. */
-__EXPORT int zRandMTI(zRandMT *mt, int min, int max);
+__ZEDA_EXPORT int zRandMTI(zRandMT *mt, int min, int max);
 
 /*! \brief a pseudo-random double-precision floating-point value
  * between \a min and \a max. */
-__EXPORT double zRandMTF(zRandMT *mt, double min, double max);
+__ZEDA_EXPORT double zRandMTF(zRandMT *mt, double min, double max);
 
 /*! \brief a pseudo-random double-precision floating-point value
  * in the range of [0,1]. */
-__EXPORT double zRandMTN(zRandMT *mt);
+__ZEDA_EXPORT double zRandMTN(zRandMT *mt);
 
 /*! \brief a pseudo-random value in the range of [0,1). */
-__EXPORT double zRandMTNU(zRandMT *mt);
+__ZEDA_EXPORT double zRandMTNU(zRandMT *mt);
 
 /*! \brief return a pointer to the default random number generator. */
-__EXPORT zRandMT *zRandMTDefault(void);
+__ZEDA_EXPORT zRandMT *zRandMTDefault(void);
 
 #define zRandInitSeed( s )  zRandInitSeedMT( NULL, (s) )
 #define zRandInit()         zRandInitMT( NULL )

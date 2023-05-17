@@ -215,7 +215,7 @@ typedef struct{\
  * \return
  * zQuickSort() returns no value.
  */
-__EXPORT void zQuickSort(void *array, int nmemb, int size, int (*cmp)(void*,void*,void*), void *priv);
+__ZEDA_EXPORT void zQuickSort(void *array, int nmemb, int size, int (*cmp)(void*,void*,void*), void *priv);
 
 /*! \brief quick sort for an array.
  *
@@ -242,7 +242,7 @@ __EXPORT void zQuickSort(void *array, int nmemb, int size, int (*cmp)(void*,void
  * zInsertSort() returns a pointer \a memb in the case of success, or the
  * null pointer if \a i is larger than or equal to \a size.
  */
-__EXPORT void *zInsertSort(void *array, void *memb, int i, int nmemb, int size, int (* cmp)(void*,void*,void*), void *priv);
+__ZEDA_EXPORT void *zInsertSort(void *array, void *memb, int i, int nmemb, int size, int (* cmp)(void*,void*,void*), void *priv);
 
 /*! \brief insert a member into an array at sorted position.
  *

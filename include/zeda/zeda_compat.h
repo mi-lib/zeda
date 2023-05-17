@@ -50,22 +50,29 @@
 #undef __EXPORT
 #endif
 
-#ifdef __FASTCALL
-#undef __FASTCALL
-#endif
-
 #if defined(__WINDOWS__) && !defined(__CYGWIN__)
+#if 0
 # if defined(__BUILD_DLL__)
 #  define __EXPORT __declspec(dllexport)
 # else
 #  define __EXPORT __declspec(dllimport)
 # endif
-# define __FASTCALL __fastcall
+#endif
 #elif defined(__GNUC__) && (__GNUC__ * 100 + __GNUC_MINOR__) >= 303
 # define __EXPORT   extern __attribute__((visibility("default")))
-# define __FASTCALL extern __attribute__((regparm(3)))
 #else
 # define __EXPORT   extern
+#endif
+
+#ifdef __FASTCALL
+#undef __FASTCALL
+#endif
+
+#if defined(__WINDOWS__) && !defined(__CYGWIN__)
+# define __FASTCALL __fastcall
+#elif defined(__GNUC__) && (__GNUC__ * 100 + __GNUC_MINOR__) >= 303
+# define __FASTCALL extern __attribute__((regparm(3)))
+#else
 # define __FASTCALL extern
 #endif
 

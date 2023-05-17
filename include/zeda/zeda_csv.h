@@ -40,13 +40,13 @@ typedef struct{
 #define zCSVLineNum(csv) (csv)->nl
 
 /*! \brief open a CSV file. */
-__EXPORT zCSV *zCSVOpen(zCSV *csv, char filename[]);
+__ZEDA_EXPORT zCSV *zCSVOpen(zCSV *csv, char filename[]);
 
 /*! \brief close a CSV file. */
-__EXPORT void zCSVClose(zCSV *csv);
+__ZEDA_EXPORT void zCSVClose(zCSV *csv);
 
 /*! \brief rewind the stream of a CSV file. */
-__EXPORT void zCSVRewind(zCSV *csv);
+__ZEDA_EXPORT void zCSVRewind(zCSV *csv);
 
 /*! \brief check if the stream is at the end-of-file. */
 #define zCSVIsEOF(csv) feof( (csv)->fp )
@@ -55,25 +55,25 @@ __EXPORT void zCSVRewind(zCSV *csv);
 #define zCSVLineIsEmpty(csv) ( (csv)->buf[0] == '\0' )
 
 /*! \brief get a line from the current stream of a CSV file. */
-__EXPORT char *zCSVGetLine(zCSV *csv);
+__ZEDA_EXPORT char *zCSVGetLine(zCSV *csv);
 
 /*! \brief go to a specified line in a CSV file. */
-__EXPORT char *zCSVGoToLine(zCSV *csv, int i);
+__ZEDA_EXPORT char *zCSVGoToLine(zCSV *csv, int i);
 
 /*! \brief get a field from the current buffer of a CSV file. */
-__EXPORT char *zCSVGetField(zCSV *csv, char *field, size_t size);
+__ZEDA_EXPORT char *zCSVGetField(zCSV *csv, char *field, size_t size);
 /*! \brief skip a field from the current buffer of a CSV file. */
-__EXPORT char *zCSVSkipField(zCSV *csv);
+__ZEDA_EXPORT char *zCSVSkipField(zCSV *csv);
 
 /*! \brief get an integer value from the current buffer of a CSV file. */
-__EXPORT bool zCSVGetInt(zCSV *csv, int *val);
+__ZEDA_EXPORT bool zCSVGetInt(zCSV *csv, int *val);
 /*! \brief get multiple integer values from the current buffer of a CSV file. */
-__EXPORT bool zCSVGetIntN(zCSV *csv, int val[], int n);
+__ZEDA_EXPORT bool zCSVGetIntN(zCSV *csv, int val[], int n);
 
 /*! \brief get a double-precision floating-point value from the current buffer of a CSV file. */
-__EXPORT bool zCSVGetDouble(zCSV *csv, double *val);
+__ZEDA_EXPORT bool zCSVGetDouble(zCSV *csv, double *val);
 /*! \brief get multiple double-precision floating-point values from the current buffer of a CSV file. */
-__EXPORT bool zCSVGetDoubleN(zCSV *csv, double val[], int n);
+__ZEDA_EXPORT bool zCSVGetDoubleN(zCSV *csv, double val[], int n);
 
 /*! \} */
 

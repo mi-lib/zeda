@@ -24,14 +24,14 @@ __BEGIN_DECLS
  * table class, which consists of the table size and
  * the pointer to the buffer.
  */
-#define zRRTabClass(tab_t,cell_t) \
+#define zRRTabClass(METHOD_EXPORT,tab_t,cell_t) \
 typedef struct{\
   uint num;\
   cell_t *buf;\
 } tab_t;\
-tab_t *tab_t##Alloc(tab_t *tab, uint n);\
-void tab_t##Free(tab_t *tab);\
-cell_t *tab_t##Cell(tab_t *tab, uint i, uint j);\
+METHOD_EXPORT tab_t *tab_t##Alloc(tab_t *tab, uint n);\
+METHOD_EXPORT void tab_t##Free(tab_t *tab);\
+METHOD_EXPORT cell_t *tab_t##Cell(tab_t *tab, uint i, uint j);\
 
 #define zRRTabClassMethod(tab_t,cell_t) \
 tab_t *tab_t##Alloc(tab_t *tab, uint n)\
@@ -71,7 +71,7 @@ cell_t *tab_t##Cell(tab_t *tab, uint i, uint j)\
  * zBoolTabCheck() tells if the pair of \a i th and \a j th
  * turns the boolean cell to be true.
  */
-zRRTabClass( zRRBool, bool );
+zRRTabClass( __ZEDA_EXPORT, zRRBool, bool );
 
 #define zRRBoolCheck(tab,i,j)   ( zRRBoolCell(tab,i,j) ? *zRRBoolCell(tab,i,j) : false )
 #define zRRBoolMark(tab,i,j)    do{ if( zRRBoolCell(tab,i,j) ){ *zRRBoolCell(tab,i,j) = true; } } while( 0 )

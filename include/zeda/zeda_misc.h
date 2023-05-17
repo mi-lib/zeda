@@ -9,6 +9,8 @@
 #ifndef __ZEDA_MISC_H__
 #define __ZEDA_MISC_H__
 
+#include <zeda/zeda_export.h> /* zeda_export.h is automatically generated. */
+
 #include <zeda/zeda_defs.h>
 #include <zeda/zeda_errmsg.h>
 #include <assert.h>
@@ -54,18 +56,18 @@ union _##__struct_name
  * boundary \a l and the upper boundary \a u.
  */
 #define _zMax(x,y)     ( (x)>=(y) ? (x) : (y) )
-__EXPORT double zMax(double x, double y);
+__ZEDA_EXPORT double zMax(double x, double y);
 #define _zMin(x,y)     ( (x)<=(y) ? (x) : (y) )
-__EXPORT double zMin(double x, double y);
+__ZEDA_EXPORT double zMin(double x, double y);
 #define _zLimit(x,l,u) ( (x)<=(l) ? (l) : ( (x)>=(u) ? (u) : (x) ) )
-__EXPORT double zLimit(double x, double l, double u);
+__ZEDA_EXPORT double zLimit(double x, double l, double u);
 
 /*! \brief
  * return a saturated value of \a x with two boundaries \a b1 and
  * \a b2, where the magnitude relation between \a b1 and \a b2 does
  * not matter.
  */
-__EXPORT double zBound(double x, double b1, double b2);
+__ZEDA_EXPORT double zBound(double x, double b1, double b2);
 
 /*! \brief
  * swap values of two data \a a and \a b.
@@ -136,14 +138,14 @@ ZDEF_ALLOC_FUNCTION_PROTOTYPE( type ){ \
  * Otherwise, the null pointer is returned.
  */
 #ifndef __KERNEL__
-__EXPORT void *zClone(void *src, size_t size);
+__ZEDA_EXPORT void *zClone(void *src, size_t size);
 #endif /* __KERNEL__ */
 
 /*! \} */
 
 /*! \brief count the size of a file. */
 #ifndef __KERNEL__
-__EXPORT size_t zFileSize(FILE *fp);
+__ZEDA_EXPORT size_t zFileSize(FILE *fp);
 #endif /* __KERNEL__ */
 
 /*! \brief peek charactor.
@@ -154,7 +156,7 @@ __EXPORT size_t zFileSize(FILE *fp);
  * \return the charactor picked up.
  */
 #ifndef __KERNEL__
-__EXPORT int fpeek(FILE *fp);
+__ZEDA_EXPORT int fpeek(FILE *fp);
 #endif /* __KERNEL__ */
 
 /* ********************************************************** */
@@ -181,7 +183,7 @@ __EXPORT int fpeek(FILE *fp);
  * make echo off.
  */
 /*! \cond */
-__EXPORT bool __zeda_echo;
+__ZEDA_EXPORT bool __zeda_echo;
 /*! \endcond */
 #define zEchoOn()  ( __zeda_echo = true )
 #define zEchoOff() ( __zeda_echo = false )
@@ -217,7 +219,7 @@ __EXPORT bool __zeda_echo;
  * hexadecimal value to an integer value.
  * \return an integer value converted.
  */
-__EXPORT int zA2X_c(char c);
+__ZEDA_EXPORT int zA2X_c(char c);
 
 /*! \brief convert hexadecimal string to value.
  *
@@ -230,7 +232,7 @@ __EXPORT int zA2X_c(char c);
  * Ex. a string "1g2h3i" is converted to 102030.
  * \return an integer value converted.
  */
-__EXPORT int zA2X(char *str);
+__ZEDA_EXPORT int zA2X(char *str);
 
 /*! \brief convert an integer to a string.
  *
@@ -241,7 +243,7 @@ __EXPORT int zA2X(char *str);
  * zI2A() does not check the size of \a buf.
  * It assumes that \a 'buf' has an enough size.
  */
-__EXPORT char *zI2A(int val, char *buf);
+__ZEDA_EXPORT char *zI2A(int val, char *buf);
 
 /*! \brief convert a d-float value to a string.
  *
@@ -253,7 +255,7 @@ __EXPORT char *zI2A(int val, char *buf);
  * zI2A() does not check the size of \a buf.
  * It assumes that \a 'buf' has an enough size.
  */
-__EXPORT char *zF2A(double val, char *buf);
+__ZEDA_EXPORT char *zF2A(double val, char *buf);
 
 #ifndef __KERNEL__
 /*! \brief convert an integer to a string with a blank
@@ -275,7 +277,7 @@ __EXPORT char *zF2A(double val, char *buf);
  * \note
  * zI2AFill() is not available in ther kernel space.
  */
-__EXPORT char *zI2AFill(int val, int size, char pat, char *buf);
+__ZEDA_EXPORT char *zI2AFill(int val, int size, char pat, char *buf);
 
 /*! \def zI2AZeroFill
  * \brief convert an integer to a string with blank
@@ -293,7 +295,7 @@ __EXPORT char *zI2AFill(int val, int size, char pat, char *buf);
  * \return
  * zI2AOrdinal() returns a pointer \a buf.
  */
-__EXPORT char *zI2AOrdinal(int val, char *buf, size_t size);
+__ZEDA_EXPORT char *zI2AOrdinal(int val, char *buf, size_t size);
 #endif /* __KERNEL__ */
 
 /*! \} */

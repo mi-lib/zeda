@@ -9,17 +9,13 @@ CC=gcc
 CFLAGS=-Wall -O3
 
 %: %.c
-<<<<<<< HEAD
 	\$(CC) \$(CFLAGS) -o \$@ \$<
-=======
-	\$(CC) \$(CFLAGS) \$< \$@
->>>>>>> 1696ff2f3d33e0765fa9785ae4f7c4e36e850e2e
 clean:
 	rm -f *~
 EOF
 }
 
-output_make_src(){
+output_make_lib(){
     cat << EOF
 include ../config
 
@@ -36,7 +32,7 @@ endif
 
 CC=gcc
 STD=c89
-CFLAGS=-Wall -fPIC -fno-common -O3 \$(INCLUDE) -funroll-loops -D __BUILD_DLL__=1
+CFLAGS=-Wall -fPIC -fno-common -O3 \$(INCLUDE) -funroll-loops -D __\$(shell echo \${PROJNAME} | tr 'a-z' 'A-Z')_BUILD_DLL__=1
 ifneq (\$(STD),)
       CFLAGS+="-std=\$(STD)"
 endif
@@ -223,7 +219,7 @@ plain)
     output_make_plain
     ;;
 lib)
-    output_make_src
+    output_make_lib
     ;;
 tools)
     output_make_tools

@@ -52,7 +52,7 @@ typedef struct __zstream{
  * zStreamAttachFile() attaches a file stream \a fp to
  * an abstracted stream \a str.
  */
-__EXPORT void zStreamAttachFile(zStream *str, FILE *fp);
+__ZEDA_EXPORT void zStreamAttachFile(zStream *str, FILE *fp);
 
 /*! \brief attach a memory space to a stream.
  *
@@ -60,7 +60,7 @@ __EXPORT void zStreamAttachFile(zStream *str, FILE *fp);
  * by \a mem with the size \a size to an abstracted
  * stream \a str.
  */
-__EXPORT void zStreamAttachMem(zStream *str, byte *mem, size_t size);
+__ZEDA_EXPORT void zStreamAttachMem(zStream *str, byte *mem, size_t size);
 
 /*! \brief open a file and attach to a stream.
  *
@@ -70,7 +70,7 @@ __EXPORT void zStreamAttachMem(zStream *str, byte *mem, size_t size);
  * a pointer \a str is returned if succeeding to open
  * the file. Otherwise, the null pointer is returned.
  */
-__EXPORT zStream *zStreamOpenFile(zStream *str, char filename[], char *mode);
+__ZEDA_EXPORT zStream *zStreamOpenFile(zStream *str, char filename[], char *mode);
 
 /*! \brief allocate a memory space and attach to a stream.
  *
@@ -80,7 +80,7 @@ __EXPORT zStream *zStreamOpenFile(zStream *str, char filename[], char *mode);
  * a pointer \a str is returned if succeeding to allocate
  * the memory space. Otherwise, the null pointer is returned.
  */
-__EXPORT zStream *zStreamOpenMem(zStream *str, size_t size);
+__ZEDA_EXPORT zStream *zStreamOpenMem(zStream *str, size_t size);
 
 /*!
  * \def zStreamRewind

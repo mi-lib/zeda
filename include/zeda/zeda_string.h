@@ -21,7 +21,7 @@ __BEGIN_DECLS
  * \return
  * a pointer to the null string.
  */
-__EXPORT char *zNullStr(void);
+__ZEDA_EXPORT char *zNullStr(void);
 
 /*! \brief copy a string without checking the buffer size.
  *
@@ -29,7 +29,7 @@ __EXPORT char *zNullStr(void);
  * \a dest. It supposes that the destination area pointed by
  * \a dest has enough size.
  */
-__EXPORT char *zStrCopyNC(char *dest, const char *src);
+__ZEDA_EXPORT char *zStrCopyNC(char *dest, const char *src);
 
 /*! \brief copy a string.
  *
@@ -39,7 +39,7 @@ __EXPORT char *zStrCopyNC(char *dest, const char *src);
  * buffer pointed by \a dest. If the length of \a src is beyond
  * \a size, it is clamped and terminated by the null charactor.
  */
-__EXPORT char *zStrCopy(char *dest, const char *src, size_t size);
+__ZEDA_EXPORT char *zStrCopy(char *dest, const char *src, size_t size);
 
 /*! \brief clone a string.
  *
@@ -50,7 +50,7 @@ __EXPORT char *zStrCopy(char *dest, const char *src, size_t size);
  * When it fails to allocate memory or \a str is the null pointer,
  * the null pointer is returned.
  */
-__EXPORT char *zStrClone(char *str);
+__ZEDA_EXPORT char *zStrClone(char *str);
 
 /*! \brief concatenate a string to another.
  *
@@ -59,7 +59,7 @@ __EXPORT char *zStrClone(char *str);
  * If the sum of lengths of \a src and \a dest is beyond \a size,
  * the resulted string is clamped.
  */
-__EXPORT char *zStrCat(char *dest, const char *src, size_t size);
+__ZEDA_EXPORT char *zStrCat(char *dest, const char *src, size_t size);
 
 /*! \brief concatenate a string with a formatted string.
  *
@@ -76,7 +76,7 @@ __EXPORT char *zStrCat(char *dest, const char *src, size_t size);
  * zStrCatPrint() is not sufficiently secure since it internally
  * calls vsprintf(), in which the size of \a fmt is not checked.
  */
-__EXPORT char *zStrCatPrint(char *str, size_t size, char *fmt, ...);
+__ZEDA_EXPORT char *zStrCatPrint(char *str, size_t size, char *fmt, ...);
 
 /*! \brief find a specified charactor in a string.
  *
@@ -90,7 +90,7 @@ __EXPORT char *zStrCatPrint(char *str, size_t size, char *fmt, ...);
  * \sa
  * zStrCharNul, zStrrChar
  */
-__EXPORT char *zStrChar(const char *s, size_t size, int c);
+__ZEDA_EXPORT char *zStrChar(const char *s, size_t size, int c);
 
 /*! \brief find a specified charactor in a string.
  *
@@ -107,7 +107,7 @@ __EXPORT char *zStrChar(const char *s, size_t size, int c);
  * \sa
  * zStrChar, zStrrChar
  */
-__EXPORT char *zStrCharNul(const char *s, size_t size, int c);
+__ZEDA_EXPORT char *zStrCharNul(const char *s, size_t size, int c);
 
 /*! \brief find a specified charactor from the last in a string.
  *
@@ -121,7 +121,7 @@ __EXPORT char *zStrCharNul(const char *s, size_t size, int c);
  * \sa
  * zStrChar, zStrCharNul
  */
-__EXPORT char *zStrrChar(const char *s, size_t size, int c);
+__ZEDA_EXPORT char *zStrrChar(const char *s, size_t size, int c);
 
 /*! \brief concatenate a string and a charactor.
  *
@@ -133,7 +133,7 @@ __EXPORT char *zStrrChar(const char *s, size_t size, int c);
  * If the buffer is already exhausted, the null pointer
  * is returned.
  */
-__EXPORT char *zStrAddChar(char *str, size_t size, char c);
+__ZEDA_EXPORT char *zStrAddChar(char *str, size_t size, char c);
 
 /*! \brief insert a charactor to a string.
  *
@@ -149,7 +149,7 @@ __EXPORT char *zStrAddChar(char *str, size_t size, char c);
  * If the buffer is already exhausted, the null pointer
  * is returned.
  */
-__EXPORT char *zStrInsChar(char *str, size_t size, uint cur, char c);
+__ZEDA_EXPORT char *zStrInsChar(char *str, size_t size, uint cur, char c);
 
 /*! \brief override a charactor to a string.
  *
@@ -163,7 +163,7 @@ __EXPORT char *zStrInsChar(char *str, size_t size, uint cur, char c);
  * a pointer to the overridden charactor is returned if
  * successful.
  */
-__EXPORT char *zStrOvrChar(char *str, size_t size, uint cur, char c);
+__ZEDA_EXPORT char *zStrOvrChar(char *str, size_t size, uint cur, char c);
 
 /*! \brief delete a charactor from a string.
  *
@@ -173,7 +173,7 @@ __EXPORT char *zStrOvrChar(char *str, size_t size, uint cur, char c);
  * \return
  * a pointer to the deleted location is returned.
  */
-__EXPORT char *zStrDelChar(char *str, uint cur);
+__ZEDA_EXPORT char *zStrDelChar(char *str, uint cur);
 
 /*! \brief backspace a charactor from a string.
  *
@@ -183,7 +183,7 @@ __EXPORT char *zStrDelChar(char *str, uint cur);
  * \return
  * a pointer to the withdrawn location is returned.
  */
-__EXPORT char *zStrBSChar(char *str, int cur);
+__ZEDA_EXPORT char *zStrBSChar(char *str, int cur);
 
 /*! \brief cut a newline charactor.
  *
@@ -193,7 +193,7 @@ __EXPORT char *zStrBSChar(char *str, int cur);
  * \return
  * a pointer \a str is returned.
  */
-__EXPORT char *zCutNL(char *str);
+__ZEDA_EXPORT char *zCutNL(char *str);
 
 /*! \brief convert a string to the uppercase set.
  *
@@ -202,7 +202,7 @@ __EXPORT char *zCutNL(char *str);
  * \return
  * zStrToUpper() returns a pointer \a dest.
  */
-__EXPORT char *zStrToUpper(char *src, size_t size, char *dest);
+__ZEDA_EXPORT char *zStrToUpper(char *src, size_t size, char *dest);
 
 /*! \brief convert a string to the lowercase set.
  *
@@ -211,7 +211,7 @@ __EXPORT char *zStrToUpper(char *src, size_t size, char *dest);
  * \return
  * zStrToLower() returns a pointer \a dest.
  */
-__EXPORT char *zStrToLower(char *src, size_t size, char *dest);
+__ZEDA_EXPORT char *zStrToLower(char *src, size_t size, char *dest);
 
 /* ********************************************************** */
 /*! \defgroup token tokenization.
@@ -226,7 +226,7 @@ __EXPORT char *zStrToLower(char *src, size_t size, char *dest);
  * zResetDelimiter, zIsDelimiter,
  * zFSkipDelimiter, zSSkipDelimiter
  */
-__EXPORT void zSetDelimiter(char s[]);
+__ZEDA_EXPORT void zSetDelimiter(char s[]);
 
 /*! \brief reset a delimiter set.
  *
@@ -250,7 +250,7 @@ __EXPORT void zSetDelimiter(char s[]);
  * zSetDelimiter, zIsDelimiter,
  * zFSkipDelimiter, zSSkipDelimiter
  */
-__EXPORT void zResetDelimiter(void);
+__ZEDA_EXPORT void zResetDelimiter(void);
 
 /*! \brief specify an operator set.
  *
@@ -260,7 +260,7 @@ __EXPORT void zResetDelimiter(void);
  * \sa
  * zResetOperator, zIsOperator
  */
-__EXPORT void zSetOperator(char s[]);
+__ZEDA_EXPORT void zSetOperator(char s[]);
 
 /*! \brief reset an operator set.
  *
@@ -286,7 +286,7 @@ __EXPORT void zSetOperator(char s[]);
  * \sa
  * zSetOperator, zIsOperator
  */
-__EXPORT void zResetOperator(void);
+__ZEDA_EXPORT void zResetOperator(void);
 
 /*! \brief check if a charactor is included in a specified set.
  *
@@ -299,7 +299,7 @@ __EXPORT void zResetOperator(void);
  * charactor '\\0'. Also, note that \a s is automatically
  * terminated by the null charactor if it is a string.
  */
-__EXPORT bool zIsIncludedChar(char c, char *s);
+__ZEDA_EXPORT bool zIsIncludedChar(char c, char *s);
 
 /*! \brief check if a charactor is the whitespace.
  *
@@ -318,7 +318,7 @@ __EXPORT bool zIsIncludedChar(char c, char *s);
  * returned. Otherwise, the false value is returned.
  * \sa zSetDelimiter, zResetDelimiter
  */
-__EXPORT bool zIsDelimiter(char c);
+__ZEDA_EXPORT bool zIsDelimiter(char c);
 
 /*! \brief check if a charactor is an operator.
  *
@@ -329,7 +329,7 @@ __EXPORT bool zIsDelimiter(char c);
  * returned. Otherwise, the false value is returned.
  * \sa zSetOperator, zResetOperator
  */
-__EXPORT bool zIsOperator(char c);
+__ZEDA_EXPORT bool zIsOperator(char c);
 
 /*! \brief check if a charactor is a quotation mark.
  *
@@ -349,7 +349,7 @@ __EXPORT bool zIsOperator(char c);
  * hex-style. Namely, a string beginning with a sign
  * such as -ffff is not regarded as a number.
  */
-__EXPORT bool zStrIsHex(char *str);
+__ZEDA_EXPORT bool zStrIsHex(char *str);
 
 /*! \brief skip whitespaces in a file.
  *
@@ -360,7 +360,7 @@ __EXPORT bool zStrIsHex(char *str);
  * not a whitespace appeared in \a fp. If the file
  * reaches EOF, the null charactor '\\0' is returned.
  */
-__EXPORT char zFSkipWS(FILE *fp);
+__ZEDA_EXPORT char zFSkipWS(FILE *fp);
 
 /*! \brief skip whitespaces in a string.
  *
@@ -372,7 +372,7 @@ __EXPORT char zFSkipWS(FILE *fp);
  * all the rest charactors of \a str are whitespaces,
  * the null pointer is returned.
  */
-__EXPORT char *zSSkipWS(char *str);
+__ZEDA_EXPORT char *zSSkipWS(char *str);
 
 /*! \brief skip a certain charactors in a stream.
  *
@@ -384,7 +384,7 @@ __EXPORT char *zSSkipWS(char *str);
  * is not included \a s. If the file reaches EOF, the null
  * charactor '\\0' is returned.
  */
-__EXPORT char zFSkipIncludedChar(FILE *fp, char *s);
+__ZEDA_EXPORT char zFSkipIncludedChar(FILE *fp, char *s);
 
 /*! \brief skip a certain charactors in a string.
  *
@@ -396,7 +396,7 @@ __EXPORT char zFSkipIncludedChar(FILE *fp, char *s);
  * rest charactors of \a str are whitespaces, the null
  * pointer is returned.
  */
-__EXPORT char *zSSkipIncludedChar(char *str, char *s);
+__ZEDA_EXPORT char *zSSkipIncludedChar(char *str, char *s);
 
 /*! \brief skip delimiter in a file.
  *
@@ -407,7 +407,7 @@ __EXPORT char *zSSkipIncludedChar(char *str, char *s);
  * is not a delimiter appeared in \a fp. If the file
  * reaches EOF, the null charactor '\\0' is returned.
  */
-__EXPORT char zFSkipDelimiter(FILE *fp);
+__ZEDA_EXPORT char zFSkipDelimiter(FILE *fp);
 
 /*! \brief skip delimiter in a string.
  *
@@ -419,15 +419,15 @@ __EXPORT char zFSkipDelimiter(FILE *fp);
  * \a str. If all the rest charactors of \a str are
  * whitespaces, the null pointer is returned.
  */
-__EXPORT char *zSSkipDelimiter(char *str);
+__ZEDA_EXPORT char *zSSkipDelimiter(char *str);
 
 #define ZDEFAULT_COMMENT_IDENT '%'
 
 /*! \brief specify the comment identifier. */
-__EXPORT void zSetCommentIdent(char ident);
+__ZEDA_EXPORT void zSetCommentIdent(char ident);
 
 /*! \brief reset the comment identifier. */
-__EXPORT void zResetCommentIdent(void);
+__ZEDA_EXPORT void zResetCommentIdent(void);
 
 /*! \brief skip comments.
  *
@@ -443,7 +443,7 @@ __EXPORT void zResetCommentIdent(void);
  * \sa
  * zSetCommentIdent, zResetCommentIdent
  */
-__EXPORT char zFSkipComment(FILE *fp);
+__ZEDA_EXPORT char zFSkipComment(FILE *fp);
 
 /*! \brief tokenize a file.
  *
@@ -465,7 +465,7 @@ __EXPORT char zFSkipComment(FILE *fp);
  * If the size of buffer pointed by \a tkn is less
  * than \a size, anything might happen.
  */
-__EXPORT char *zFToken(FILE *fp, char *tkn, size_t size);
+__ZEDA_EXPORT char *zFToken(FILE *fp, char *tkn, size_t size);
 
 /*! \brief tokenize a string.
  *
@@ -493,8 +493,8 @@ __EXPORT char *zFToken(FILE *fp, char *tkn, size_t size);
  * If the size of buffer pointed by \a tkn is less
  * than \a size, anything might happen.
  */
-__EXPORT char *zSTokenSkim(char *str, char *tkn, size_t size);
-__EXPORT char *zSToken(char *str, char *tkn, size_t size);
+__ZEDA_EXPORT char *zSTokenSkim(char *str, char *tkn, size_t size);
+__ZEDA_EXPORT char *zSToken(char *str, char *tkn, size_t size);
 
 /*! \brief tokenize an integer value in a file.
  *
@@ -505,7 +505,7 @@ __EXPORT char *zSToken(char *str, char *tkn, size_t size);
  * \return
  * the pointer \a tkn is returned.
  */
-__EXPORT char *zFIntToken(FILE *fp, char *tkn, size_t size);
+__ZEDA_EXPORT char *zFIntToken(FILE *fp, char *tkn, size_t size);
 
 /*! \brief tokenize a real number in a file.
  *
@@ -516,7 +516,7 @@ __EXPORT char *zFIntToken(FILE *fp, char *tkn, size_t size);
  * \return
  * the pointer \a tkn is returned.
  */
-__EXPORT char *zFNumToken(FILE *fp, char *tkn, size_t size);
+__ZEDA_EXPORT char *zFNumToken(FILE *fp, char *tkn, size_t size);
 
 /*! \brief tokenize an integer value in a string.
  *
@@ -529,7 +529,7 @@ __EXPORT char *zFNumToken(FILE *fp, char *tkn, size_t size);
  * \return
  * the pointer \a tkn is returned.
  */
-__EXPORT char *zSIntToken(char *str, char *tkn, size_t size);
+__ZEDA_EXPORT char *zSIntToken(char *str, char *tkn, size_t size);
 
 /*! \brief tokenize a real number in a string.
  *
@@ -542,7 +542,7 @@ __EXPORT char *zSIntToken(char *str, char *tkn, size_t size);
  * \return
  * the pointer \a tkn is returned.
  */
-__EXPORT char *zSNumToken(char *str, char *tkn, size_t size);
+__ZEDA_EXPORT char *zSNumToken(char *str, char *tkn, size_t size);
 
 /*! \brief get an integer value from file.
  *
@@ -550,7 +550,7 @@ __EXPORT char *zSNumToken(char *str, char *tkn, size_t size);
  * from the current position. If no integer value is
  * recognized at the current position, zero is returned.
  */
-__EXPORT char *zFInt(FILE *fp, int *val);
+__ZEDA_EXPORT char *zFInt(FILE *fp, int *val);
 
 /*! \brief get an integer value from a string.
  *
@@ -558,7 +558,7 @@ __EXPORT char *zFInt(FILE *fp, int *val);
  * If no integer value is recognized at the head of the
  * string, zero is returned.
  */
-__EXPORT char *zSInt(char *str, int *val);
+__ZEDA_EXPORT char *zSInt(char *str, int *val);
 
 /*! \brief get a d-float value in a file.
  *
@@ -567,7 +567,7 @@ __EXPORT char *zSInt(char *str, int *val);
  * If no value is recognized at the current position,
  * zero is returned.
  */
-__EXPORT char *zFDouble(FILE *fp, double *val);
+__ZEDA_EXPORT char *zFDouble(FILE *fp, double *val);
 
 /*! \brief get a d-float value in a string.
  *
@@ -575,7 +575,7 @@ __EXPORT char *zFDouble(FILE *fp, double *val);
  * value in a string \a str. If no value is recognized
  * at the head of the string, zero is returned.
  */
-__EXPORT char *zSDouble(char *str, double *val);
+__ZEDA_EXPORT char *zSDouble(char *str, double *val);
 
 /*! \} */
 
@@ -583,10 +583,10 @@ __EXPORT char *zSDouble(char *str, double *val);
 #define ZDEFAULT_TAG_END_IDENT   ']'
 
 /*! \brief specify the tag identifiers. */
-__EXPORT void zSetTagIdent(char begin_ident, char end_ident);
+__ZEDA_EXPORT void zSetTagIdent(char begin_ident, char end_ident);
 
 /*! \brief reset the tag identifiers. */
-__EXPORT void zResetTagIdent(void);
+__ZEDA_EXPORT void zResetTagIdent(void);
 
 /*! \brief check if a token is a tag.
  *
@@ -595,7 +595,7 @@ __EXPORT void zResetTagIdent(void);
  * \return
  * a boolean value is returned.
  */
-__EXPORT bool zTokenIsTag(char *tkn);
+__ZEDA_EXPORT bool zTokenIsTag(char *tkn);
 
 /*! \brief extract a tag.
  *
@@ -608,7 +608,7 @@ __EXPORT bool zTokenIsTag(char *tkn);
  * \a notag is allowed to be the same with \a tag.
  * Namely, zExtractTag( str, str ) is a valid expression.
  */
-__EXPORT char *zExtractTag(char *tag, char *notag);
+__ZEDA_EXPORT char *zExtractTag(char *tag, char *notag);
 
 /*! \brief count a number of tag tokens in a file.
  *
@@ -621,7 +621,7 @@ __EXPORT char *zExtractTag(char *tag, char *notag);
  * \sa
  * zFCountKey
  */
-__EXPORT int zFCountTag(FILE *fp, char *tag);
+__ZEDA_EXPORT int zFCountTag(FILE *fp, char *tag);
 
 /*! \brief scan tagged fields in a file.
  *
@@ -642,18 +642,18 @@ __EXPORT int zFCountTag(FILE *fp, char *tag);
  * catch something illegal in the persing process. At default,
  * the true value is returned.
  */
-__EXPORT bool zTagFScan(FILE *fp, bool (* tag_fscan)(FILE*,void*,char*,bool*), void *instance);
+__ZEDA_EXPORT bool zTagFScan(FILE *fp, bool (* tag_fscan)(FILE*,void*,char*,bool*), void *instance);
 
 #define ZDEFAULT_KEY_IDENT ':'
 
 /*! \brief specify the key identifier. */
-__EXPORT void zSetKeyIdent(char ident);
+__ZEDA_EXPORT void zSetKeyIdent(char ident);
 
 /*! \brief reset the key identifier. */
-__EXPORT void zResetKeyIdent(void);
+__ZEDA_EXPORT void zResetKeyIdent(void);
 
 /*! \brief  check if the last token is a key. */
-__EXPORT bool zFPostCheckKey(FILE *fp);
+__ZEDA_EXPORT bool zFPostCheckKey(FILE *fp);
 
 /*! \brief count keywords in a file.
  *
@@ -667,7 +667,7 @@ __EXPORT bool zFPostCheckKey(FILE *fp);
  * \sa
  * zFCountTag
  */
-__EXPORT int zFCountKey(FILE *fp, char *key);
+__ZEDA_EXPORT int zFCountKey(FILE *fp, char *key);
 
 /*! \brief scan a field in a file.
  *
@@ -688,7 +688,7 @@ __EXPORT int zFCountKey(FILE *fp, char *key);
  * may catch something illegal in the persing process. At default,
  * the true value is returned.
  */
-__EXPORT bool zFieldFScan(FILE *fp, bool (* field_fscan)(FILE*,void*,char*,bool*), void *instance);
+__ZEDA_EXPORT bool zFieldFScan(FILE *fp, bool (* field_fscan)(FILE*,void*,char*,bool*), void *instance);
 
 #endif /* __KERNEL__ */
 
@@ -700,7 +700,7 @@ __EXPORT bool zFieldFScan(FILE *fp, bool (* field_fscan)(FILE*,void*,char*,bool*
  * output, use zIndent().
  */
 #ifndef __KERNEL__
-__EXPORT void zFIndent(FILE *fp, int n);
+__ZEDA_EXPORT void zFIndent(FILE *fp, int n);
 #define zIndent(n) zFIndent( stdout,(n) )
 #else
 void zIndent(int n);
@@ -744,8 +744,8 @@ void zIndent(int n);
  * \note
  * Both '/' and '\\' are accepted as delimiters of the path name.
  */
-__EXPORT char *zGetBasename(char *path, char *name, size_t size);
-__EXPORT char *zGetBasenameDRC(char *name);
+__ZEDA_EXPORT char *zGetBasename(char *path, char *name, size_t size);
+__ZEDA_EXPORT char *zGetBasenameDRC(char *name);
 
 /*! \brief get a directory name and a file name from a path.
  *
@@ -759,7 +759,7 @@ __EXPORT char *zGetBasenameDRC(char *name);
  * If \a dirname is non-empty, the second least bit of the value
  * turns 1. Otherwise, the corresponding bit turns 0.
  */
-__EXPORT int zGetDirFilename(char *path, char *dirname, char *filename, size_t size);
+__ZEDA_EXPORT int zGetDirFilename(char *path, char *dirname, char *filename, size_t size);
 
 /*! \brief get a suffix from a filename.
  *
@@ -770,7 +770,7 @@ __EXPORT int zGetDirFilename(char *path, char *dirname, char *filename, size_t s
  * ex. if \a name is "xxx.yyy.zzz", then the address
  * of the first "z" is returned.
  */
-__EXPORT char *zGetSuffix(char *name);
+__ZEDA_EXPORT char *zGetSuffix(char *name);
 
 /*! \brief add a suffix to a filename.
  *
@@ -786,7 +786,7 @@ __EXPORT char *zGetSuffix(char *name);
  * \a dest must have enough size for \a org, '.' and
  * the additional \a suffix.
  */
-__EXPORT char *zAddSuffix(char *org, const char *suffix, char *dest, size_t size);
+__ZEDA_EXPORT char *zAddSuffix(char *org, const char *suffix, char *dest, size_t size);
 
 /*! \brief replace the suffix of a filename to a specified one.
  *
@@ -802,7 +802,7 @@ __EXPORT char *zAddSuffix(char *org, const char *suffix, char *dest, size_t size
  * \a dest must have enough size for the suffix-exempt \a org, '.'
  * and \a suffix.
  */
-__EXPORT char *zReplaceSuffix(char *org, char *suffix, char *dest, size_t size);
+__ZEDA_EXPORT char *zReplaceSuffix(char *org, char *suffix, char *dest, size_t size);
 
 /*! \brief cut a suffix from a filename
  *
@@ -815,7 +815,7 @@ __EXPORT char *zReplaceSuffix(char *org, char *suffix, char *dest, size_t size);
  * be modified to "xxx.yyy", and a pointer to the first
  * "z" is returned.
  */
-__EXPORT char *zCutSuffix(char *name);
+__ZEDA_EXPORT char *zCutSuffix(char *name);
 
 /*! \brief open a file with default suffix.
  *
@@ -829,7 +829,7 @@ __EXPORT char *zCutSuffix(char *name);
  * zOpenFile() returns a pointer to the opened file if
  * succeeds. Otherwise, the null pointer is returned.
  */
-__EXPORT FILE *zOpenFile(char filename[], const char *suffix, const char *mode);
+__ZEDA_EXPORT FILE *zOpenFile(char filename[], const char *suffix, const char *mode);
 
 /*! \brief default suffix of .ztk (Z-Tag-and-Key) file format. */
 #define ZEDA_ZTK_SUFFIX "ztk"
@@ -852,7 +852,7 @@ __EXPORT FILE *zOpenFile(char filename[], const char *suffix, const char *mode);
  * the pattern in \a text which coincides with \a pat. If \a pat
  * is not included in \a text, the null pointer is returned.
  */
-__EXPORT char *zStrSearchKMP(char *text, char *pat);
+__ZEDA_EXPORT char *zStrSearchKMP(char *text, char *pat);
 
 /*! \brief string search by Boyer-Moore algorithm
  *
@@ -863,7 +863,7 @@ __EXPORT char *zStrSearchKMP(char *text, char *pat);
  * the pattern in \a text which coincides with \a pat. If \a pat
  * is not included in \a text, the null pointer is returned.
  */
-__EXPORT char *zStrSearchBM(char *text, char *pat);
+__ZEDA_EXPORT char *zStrSearchBM(char *text, char *pat);
 
 /*! \} */
 

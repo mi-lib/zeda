@@ -388,7 +388,7 @@ list_t *list_t##QuickSort(list_t *list, int (* cmp)(void*,void*,void*), void *pr
  * zListCellFPrint, zListCellPrint
  */
 #ifndef __KERNEL__
-__EXPORT void _zListFPrint(FILE *fp, zList *list);
+__ZEDA_EXPORT void _zListFPrint(FILE *fp, zList *list);
 #define zListFPrint(f,l) _zListFPrint( f, (zList *)(l) )
 #define zListPrint(l)    zListFPrint( stdout, l )
 #else
@@ -413,7 +413,7 @@ void zListPrint(zList *list);
 zListClass(zIntList, zIntListCell, int);
 
 /*! \brief a list of integer numbers */
-__EXPORT bool zIntListAdd(zIntList *list, int i);
+__ZEDA_EXPORT bool zIntListAdd(zIntList *list, int i);
 
 __END_DECLS
 
