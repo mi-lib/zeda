@@ -17,7 +17,7 @@
 # ifdef __BORLANDC__ /* Borland C++ */
 #  include <vcl.h>
 # endif
-# ifdef __MSC_VER || __clang__ /* Microsoft Visual C++ or Clang */
+# ifdef _MSC_VER /* Microsoft Visual C++ (or Clang) */
 #  include <windows.h>
 #  undef min /* undefine notorious min/max macros */
 #  undef max
@@ -53,9 +53,9 @@
 #if defined(__WINDOWS__) && !defined(__CYGWIN__)
 #if 0
 # if defined(__BUILD_DLL__)
-#  define __EXPORT __declspec(dllexport)
+#  define __EXPORT extern __declspec(dllexport)
 # else
-#  define __EXPORT __declspec(dllimport)
+#  define __EXPORT extern __declspec(dllimport)
 # endif
 #endif
 #elif defined(__GNUC__) && (__GNUC__ * 100 + __GNUC_MINOR__) >= 303
@@ -85,6 +85,7 @@
 #ifdef __WINDOWS__
 #define __DEF_WINDLL \
 __EXPORT HINSTANCE _hInstance;\
+HINSTANCE _hInstance;\
 int WINAPI DllEntryPoint(HINSTANCE hinst, unsigned long reason, void *reserved)\
 {\
   return 1;\

@@ -62,7 +62,7 @@ __BEGIN_DECLS
 #define BUFSIZ 512
 #endif /* BUFSIZ */
 
-#if ( defined( __cplusplus ) && __cplusplus < 201103L ) || __STDC_VERSION__ < 199901L
+#if ( defined( __cplusplus ) && __cplusplus < 201103L ) || ( defined(__STDC_VERSION__) && __STDC_VERSION__ < 199901L )
 /* size-fixed integer family */
 /* might be already defined in stdint.h or sys/types.h conforming to C99 */
 typedef unsigned char      uint8_t;      /*!< 8-bit unsigned integer */

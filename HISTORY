@@ -1,3 +1,7 @@
+2023. 5.20. Added export_header case in zeda-makefile-gen, and modified src/makefile. [tools, src]
+2023. 5.20. Modified definitions of ZEDA_WARN_INT_SHRTSIZ and ZEDA_WARN_LNG_SHRTSIZ to correctly print values of sizeof. [zeda_errmsg]
+2023. 5.20. Modified zeda_defs.h to check if __STDC_VERSION__ is defined before seeing its version (thanks to Mr. Kenta Imanishi). [zeda_defs]
+2023. 5.19. Modified zeda_compat.h to check _MSC_VER for MS C compiler. [zeda_compat]
 2023. 5.19. Modified error message in _ZTKEvalKey and _ZTKEvalTag (thanks to Mr. Kenta Imanishi). [zeda_ztk]
 2023. 5.17. Removed semicolon at the end of Z_NAMED_CLASS. [zeda_name]
 2023. 5.16. Modified zRRTabClass and zTreeClass to accept METHOD_EXPORT. [zeda_rrtab, zeda_tree]
