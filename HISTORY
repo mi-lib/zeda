@@ -1,3 +1,4 @@
+2023. 5.19. Modified error message in _ZTKEvalKey and _ZTKEvalTag (thanks to Mr. Kenta Imanishi). [zeda_ztk]
 2023. 5.17. Removed semicolon at the end of Z_NAMED_CLASS. [zeda_name]
 2023. 5.16. Modified zRRTabClass and zTreeClass to accept METHOD_EXPORT. [zeda_rrtab, zeda_tree]
 2023. 5.16. Replaced __EXPORT to __ZEDA_EXPORT. [all]

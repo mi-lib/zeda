@@ -436,7 +436,7 @@ void *_ZTKEvalKey(void *obj, void *arg, ZTK *ztk, ZTKPrp prp[], int num)
           ZRUNWARN( ZEDA_WARN_ZTK_TOOMANY_KEYS, prp[i].str );
         } else{
           if( !prp[i]._eval( obj, count[i]++, arg, ztk ) ){
-            ZECHO( "error when evaluating key: %s", prp[i].str );
+            ZECHO( "error while evaluating key: %s", prp[i].str );
             obj = NULL;
             goto TERMINATE;
           }
@@ -481,7 +481,7 @@ void *_ZTKEvalTag(void *obj, void *arg, ZTK *ztk, ZTKPrp prp[], int num)
           ZRUNWARN( ZEDA_WARN_ZTK_TOOMANY_TAGS, prp[i].str );
         } else{
           if( !prp[i]._eval( obj, count[i]++, arg, ztk ) ){
-            ZECHO( "error when evaluating tag [%s]", prp[i].str );
+            ZECHO( "error while evaluating tag [%s]", prp[i].str );
             obj = NULL;
             goto TERMINATE;
           }
