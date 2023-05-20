@@ -22,14 +22,14 @@ __BEGIN_DECLS
  * defines a struct/union in a way that is compatible with C++.
  */
 #ifdef __cplusplus
-#define ZDEF_STRUCT( __struct_name ) struct __struct_name
-#define ZDEF_UNION( __struct_name )  union __struct_name
+#define ZDEF_STRUCT( __export, __struct_name ) struct __export __struct_name
+#define ZDEF_UNION( __export, __struct_name )  union __export __struct_name
 #else
-#define ZDEF_STRUCT( __struct_name ) \
+#define ZDEF_STRUCT( __export, __struct_name ) \
 struct _##__struct_name; \
 typedef struct _##__struct_name __struct_name; \
 struct _##__struct_name
-#define ZDEF_UNION( __struct_name ) \
+#define ZDEF_UNION( __export, __struct_name ) \
 union _##__struct_name; \
 typedef union _##__struct_name __struct_name; \
 union _##__struct_name
