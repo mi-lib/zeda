@@ -14,7 +14,6 @@
  - round-robin table
  - string operations
  - command line option manipulation
- - generalized I/O stream
  - random number generator
  - ZTK format parser
  - CSV file manipulation
@@ -30,7 +29,6 @@
 
 #include <zeda/zeda_ring.h>
 #include <zeda/zeda_rrtab.h>
-#include <zeda/zeda_stream.h>
 #include <zeda/zeda_list.h>
 #include <zeda/zeda_tree.h>
 
