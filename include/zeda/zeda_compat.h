@@ -19,6 +19,9 @@
 # endif
 # ifdef _MSC_VER /* Microsoft Visual C++ (or Clang) */
 #  include <windows.h>
+#  ifndef _DEFINED_BYTE
+#  define _DEFINED_BYTE 1
+#  endif
 #  undef min /* undefine notorious min/max macros */
 #  undef max
 # endif
@@ -50,18 +53,10 @@
 #undef __EXPORT
 #endif
 
-#if defined(__WINDOWS__) && !defined(__CYGWIN__)
-#if 0
-# if defined(__BUILD_DLL__)
-#  define __EXPORT extern __declspec(dllexport)
-# else
-#  define __EXPORT extern __declspec(dllimport)
-# endif
-#endif
-#elif defined(__GNUC__) && (__GNUC__ * 100 + __GNUC_MINOR__) >= 303
-# define __EXPORT   extern __attribute__((visibility("default")))
+#if defined(__GNUC__) && (__GNUC__ * 100 + __GNUC_MINOR__) >= 303
+# define __EXPORT extern __attribute__((visibility("default")))
 #else
-# define __EXPORT   extern
+# define __EXPORT extern
 #endif
 
 #ifdef __FASTCALL
@@ -76,15 +71,14 @@
 # define __FASTCALL extern
 #endif
 
-/* in order to create .dll for MS-Windows, define __WINDOWS__ and
- add the following three lines:
- #pragma data_seg( ".share" )
- #pragma data_seg()
- __DEF_WINDLL
+/* in order to create .dll for MS-Windows, add the following three lines:
+#pragma data_seg( ".share" )
+#pragma data_seg()
+__DEF_WINDLL
  */
 #ifdef __WINDOWS__
 #define __DEF_WINDLL \
-__EXPORT HINSTANCE _hInstance;\
+extern __declspec(dllexport) HINSTANCE _hInstance;\
 HINSTANCE _hInstance;\
 int WINAPI DllEntryPoint(HINSTANCE hinst, unsigned long reason, void *reserved)\
 {\

@@ -106,11 +106,14 @@ typedef long long int      int64_t;      /*!< 64-bit signed integer */
 #define UINT_MAX ( (uint)( ( ( ( 1 << ( INT_BIT >> 1 ) ) - 1 ) << ( INT_BIT >> 1 ) ) | ( ( 1 << ( INT_BIT >> 1 ) ) - 1 ) ) )
 #endif
 
-#ifdef _DEFINED_INT8
+#if !defined(_DEFINED_BYTE) || _DEFINED_BYTE != 1
+# if defined(_DEFINED_INT8) && _DEFINED_INT8 == 1
 typedef int8_t         byte;   /*!< signed one-byte data. */
-#else
+# else
 typedef signed char    byte;   /*!< signed one-byte data. */
-#endif /* _DEFINED_INT8 */
+# endif /* _DEFINED_INT8 */
+# define _DEFINED_BYTE 1
+#endif /* _DEFINED_BYTE */
 typedef int16_t        word;   /*!< signed two-byte data. */
 typedef int32_t        dword;  /*!< signed four-byte data. */
 

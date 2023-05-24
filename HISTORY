@@ -1,3 +1,6 @@
+2023. 5.24. Modified __DEF_WINDLL. [zeda_compat]
+2023. 5.24. Removed __EXPORT for Windows DLL. [zeda_defs]
+2023. 5.23. Added a case to define _DEFINED_BYTE. [zeda_compat, zeda_defs]
 2023. 5.20. Abolished zStream. [zeda, zeda_stream]
 2023. 5.20. Redefined ZDEF_STRUCT and ZDEF_UNION to export classes in C++ programings. [zeda_misc]
 2023. 5.20. Added export_header case in zeda-makefile-gen, and modified src/makefile. [tools, src]
