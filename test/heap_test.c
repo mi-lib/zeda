@@ -1,6 +1,6 @@
 #include <zeda/zeda.h>
 
-zHeapClass( Tree, int );
+zHeapClass( ,Tree, int );
 zHeapClassMethod( Tree, int, NULL, NULL );
 
 #if 0

@@ -1,7 +1,7 @@
 #include <zeda/zeda_name.h>
 
 struct test_t{
-  Z_NAMED_CLASS
+  Z_NAMED_CLASS;
   int val;
 } array[] = {
   { "a", 0 },

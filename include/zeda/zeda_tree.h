@@ -87,8 +87,8 @@ node_t *node_t##NodeAlloc(data_t *val){\
   return node;\
 }
 
-#define zHeapClass(node_t,data_t) \
-zTreeClass(node_t,data_t); \
+#define zHeapClass(METHOD_EXPORT,node_t,data_t) \
+zTreeClass(METHOD_EXPORT,node_t,data_t); \
 METHOD_EXPORT node_t *node_t##AddComplete(node_t *tree, data_t *val);\
 METHOD_EXPORT node_t *node_t##UpHeap(node_t *tree, node_t *node, int (* cmp)(node_t*,node_t*,void*), void *util);\
 METHOD_EXPORT node_t *node_t##AddHeap(node_t *tree, data_t *val, int (* cmp)(node_t*,node_t*,void*), void *util);\
