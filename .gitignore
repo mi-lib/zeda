@@ -6,4 +6,3 @@ tools/*-config
 app/*
 !app/*.c
 !app/makefile
-include/*/*_export.h

@@ -1,3 +1,4 @@
+2023. 6. 1. Modified zeda-makefile-gen to create zeda_export.h only when the file does not exist. [tools]
 2023. 5.26. Debugged heap_test and name_test. [test]
 2023. 5.26. Debugged zHeapClass. [zeda_tree]
 2023. 5.24. Modified __DEF_WINDLL. [zeda_compat]

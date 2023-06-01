@@ -19,9 +19,10 @@ output_export_header(){
     cat <<EOF
 include ../config
 EXPORT_HEADER=../include/\${PROJNAME}/\${PROJNAME}_export.h
+EXPORT_HEADER_EXIST=\$(shell test -e \${EXPORT_HEADER} || echo "n")
 PROJNAME_CAPITAL=\$(shell echo \${PROJNAME} | tr 'a-z' 'A-Z')
 all:
-	@rm -f \${EXPORT_HEADER}
+ifeq (\${EXPORT_HEADER_EXIST},n)
 	@touch \${EXPORT_HEADER}
 	@echo "/* \${PROJNAME}_export.h */" >> \${EXPORT_HEADER}
 	@echo "/* This file was automatically generated. */" >> \${EXPORT_HEADER}
@@ -42,6 +43,9 @@ all:
 	@echo "# define __\${PROJNAME_CAPITAL}_CLASS_EXPORT"    >> \${EXPORT_HEADER}
 	@echo "#endif" >> \${EXPORT_HEADER}
 	@echo "#endif /* __\${PROJNAME_CAPITAL}_EXPORT_H__ */" >> \${EXPORT_HEADER}
+else
+	@echo "\${EXPORT_HEADER} already exists."
+endif
 EOF
 }
 
