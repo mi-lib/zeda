@@ -201,6 +201,18 @@ typedef struct{\
   }\
 } while(0)
 
+/*! \brief move an array to another.
+ *
+ * zArrayMove() moves an array pointed by \a src to another \a dest.
+ * As the result, \a src will be emptied.
+ */
+#define zArrayMove(src,dest) do{\
+  zArrayFree( dest );\
+  zArraySize(dest) = zArraySize(src);\
+  zArrayBuf(dest) = zArrayBuf(src);\
+  zArrayInit(src);\
+} while(0)
+
 #endif /* __KERNEL__ */
 
 /*! \brief quick sort for a pointer array.
