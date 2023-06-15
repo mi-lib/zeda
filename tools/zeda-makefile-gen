@@ -72,7 +72,7 @@ ifneq (\$(STD),)
 endif
 
 ifneq (\$(DEBUG),)
-      CFLAGS+=-g
+      CFLAGS+=-g -pg
 endif
 
 LD=\$(CC)
