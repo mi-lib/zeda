@@ -2,7 +2,7 @@
 
 int main(void)
 {
-  register int i;
+  int i;
   zIntList list;
   zIntListCell *cp;
 

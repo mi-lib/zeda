@@ -39,10 +39,10 @@ void assert_strmanip(void)
   zStrBSChar( str1, 100 );
   zAssert( zStrBSChar, strcmp( str1, "abcdefghijklmn" ) == 0 );
   zAssert( zIsIncludedChar, zIsIncludedChar('a',str1) && !zIsIncludedChar('z',str1) );
-  zToUpper( str1, str2 );
-  zAssert( zToUpper, strcmp( str2, "ABCDEFGHIJKLMN" ) == 0 );
-  zToLower( str2, str1 );
-  zAssert( zToLower, strcmp( str1, "abcdefghijklmn" ) == 0 );
+  zStrToUpper( str1, BUFSIZ, str2 );
+  zAssert( zStrToUpper, strcmp( str2, "ABCDEFGHIJKLMN" ) == 0 );
+  zStrToLower( str2, BUFSIZ, str1 );
+  zAssert( zStrToLower, strcmp( str1, "abcdefghijklmn" ) == 0 );
 }
 
 #define TEST_TXT "string_test.txt"

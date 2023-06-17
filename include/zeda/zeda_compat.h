@@ -17,8 +17,11 @@
 # ifdef __BORLANDC__ /* Borland C++ */
 #  include <vcl.h>
 # endif
-# ifdef __MSC_VER /* Microsoft Visual C++ */
+# ifdef _MSC_VER /* Microsoft Visual C++ (or Clang) */
 #  include <windows.h>
+#  ifndef _DEFINED_BYTE
+#  define _DEFINED_BYTE 1
+#  endif
 #  undef min /* undefine notorious min/max macros */
 #  undef max
 # endif
@@ -50,6 +53,12 @@
 #undef __EXPORT
 #endif
 
+#if defined(__GNUC__) && (__GNUC__ * 100 + __GNUC_MINOR__) >= 303
+# define __EXPORT extern __attribute__((visibility("default")))
+#else
+# define __EXPORT extern
+#endif
+
 #ifdef __FASTCALL
 #undef __FASTCALL
 #endif
@@ -58,26 +67,18 @@
 # define __EXPORT
 #else
 #if defined(__WINDOWS__) && !defined(__CYGWIN__)
-# if defined(__BUILD_DLL__)
-#  define __EXPORT __declspec(dllexport)
-# else
-#  define __EXPORT __declspec(dllimport)
-# endif
 # define __FASTCALL __fastcall
 #elif defined(__GNUC__) && (__GNUC__ * 100 + __GNUC_MINOR__) >= 303
-# define __EXPORT __attribute__((visibility("default")))
-# define __FASTCALL __attribute__((regparm(3)))
+# define __FASTCALL extern __attribute__((regparm(3)))
 #else
-# define __EXPORT
-# define __FASTCALL
+# define __FASTCALL extern
 #endif
 #endif
 
-/* in order to create .dll for MS-Windows, define __WINDOWS__ and
- add the following three lines:
- #pragma data_seg( ".share" )
- #pragma data_seg()
- __DEF_WINDLL
+/* in order to create .dll for MS-Windows, add the following three lines:
+#pragma data_seg( ".share" )
+#pragma data_seg()
+__DEF_WINDLL
  */
 #ifdef __WINDOWS__
 #include <windows.h>
@@ -85,7 +86,8 @@
 #define __DEF_WINDLL
 #else
 #define __DEF_WINDLL \
-extern HINSTANCE _hInstance;\
+extern __declspec(dllexport) HINSTANCE _hInstance;\
+HINSTANCE _hInstance;\
 int WINAPI DllEntryPoint(HINSTANCE hinst, unsigned long reason, void *reserved)\
 {\
   return 1;\

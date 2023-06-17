@@ -46,13 +46,13 @@ __BEGIN_DECLS
 #ifdef __cplusplus
 #define zArrayClass(array_t,cell_t) \
 struct array_t{\
-  uint size;\
+  int size;\
   cell_t *buf;\
 }
 #else
 #define zArrayClass(array_t,cell_t) \
 typedef struct{\
-  uint size;\
+  int size;\
   cell_t *buf;\
 } array_t
 #endif /* __cplusplus */
@@ -201,6 +201,18 @@ typedef struct{\
   }\
 } while(0)
 
+/*! \brief move an array to another.
+ *
+ * zArrayMove() moves an array pointed by \a src to another \a dest.
+ * As the result, \a src will be emptied.
+ */
+#define zArrayMove(src,dest) do{\
+  zArrayFree( dest );\
+  zArraySize(dest) = zArraySize(src);\
+  zArrayBuf(dest) = zArrayBuf(src);\
+  zArrayInit(src);\
+} while(0)
+
 #endif /* __KERNEL__ */
 
 /*! \brief quick sort for a pointer array.
@@ -215,7 +227,7 @@ typedef struct{\
  * \return
  * zQuickSort() returns no value.
  */
-__EXPORT void zQuickSort(void *array, size_t nmemb, size_t size, int (*cmp)(void*,void*,void*), void *priv);
+__ZEDA_EXPORT void zQuickSort(void *array, int nmemb, int size, int (*cmp)(void*,void*,void*), void *priv);
 
 /*! \brief quick sort for an array.
  *
@@ -242,7 +254,7 @@ __EXPORT void zQuickSort(void *array, size_t nmemb, size_t size, int (*cmp)(void
  * zInsertSort() returns a pointer \a memb in the case of success, or the
  * null pointer if \a i is larger than or equal to \a size.
  */
-__EXPORT void *zInsertSort(void *array, void *memb, uint i, size_t nmemb, size_t size, int (* cmp)(void*,void*,void*), void *priv);
+__ZEDA_EXPORT void *zInsertSort(void *array, void *memb, int i, int nmemb, int size, int (* cmp)(void*,void*,void*), void *priv);
 
 /*! \brief insert a member into an array at sorted position.
  *
@@ -286,13 +298,13 @@ __EXPORT void *zInsertSort(void *array, void *memb, uint i, size_t nmemb, size_t
 #ifdef __cplusplus
 #define zArray2Class(array_t,cell_t) \
 struct array_t{\
-  uint size[2];\
+  int size[2];\
   cell_t *buf;\
 }
 #else
 #define zArray2Class(array_t,cell_t) \
 typedef struct{\
-  uint size[2];\
+  int size[2];\
   cell_t *buf;\
 } array_t
 #endif /* __cplusplus */

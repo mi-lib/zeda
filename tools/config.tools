@@ -1,10 +1,12 @@
 INCLUDE+=-I$(PREFIX)/include
 LIB+=-L$(PREFIX)/lib
 DEF+=
-LINK+=-l$(PROJNAME) -lm
+LINK+=-lm
+LINKCPP+=-lm
 
 ifeq ($(CONFIG_USE_LIBXML),y)
 	INCLUDE += "`xml2-config --cflags`"
 	LINK += "`xml2-config --libs`"
+	LINKCPP += "`xml2-config --libs`"
 	DEF += -D__ZEDA_USE_LIBXML
 endif

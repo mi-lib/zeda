@@ -33,11 +33,7 @@ __BEGIN_DECLS
  * fails to find a corresponding element, the null pointer
  * set for \a ptr.
  */
-#ifdef __cplusplus
-#define Z_NAMED_CLASS    public: char *name;
-#else
-#define Z_NAMED_CLASS    char *name;
-#endif /* __cplusplus */
+#define Z_NAMED_CLASS    char *name
 
 /*! \brief the default name for no-name. */
 #define ZNONAME          "noname"
@@ -49,7 +45,7 @@ __BEGIN_DECLS
 #define zNameFree(c)     zFree( zNamePtr(c) )
 
 #define zNameFind(array,n,name,ptr) do{\
-  uint __z_name_find_id;\
+  int __z_name_find_id;\
   (ptr) = NULL;\
   if( (name) != NULL && strcmp( (name), ZNONAME ) && (array) != NULL )\
     for( __z_name_find_id=0; __z_name_find_id<(n); __z_name_find_id++ )\

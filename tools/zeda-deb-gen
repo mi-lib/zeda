@@ -11,7 +11,7 @@ fi
 
 DEPSTR=`grep DEPENDENCY config | sed 's/DEPENDENCY=//' | sed 's/\"//' | sed 's/\"//'`
 
-PROJNAME=`grep PROJNAME= config | sed 's/PROJNAME=//'`
+PROJNAME=`grep PROJNAME= config | sed 's/PROJNAME=//' | sed 's/_/-/'`
 VERSION=`grep VERSION config | sed 's/VERSION=//'`-debian1
 USERNAME=`git config --list | grep user.name | sed 's/user.name=//'`
 USEREMAIL=`git config --list | grep user.email | sed 's/user.email=//'`

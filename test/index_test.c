@@ -49,7 +49,7 @@ void assert_index_move(void)
 void assert_index_remove(void)
 {
   zIndex index, index_cmp;
-  register int i, j, k;
+  int i, j, k;
   bool res = true;
 
   index = zIndexCreate( SIZE );

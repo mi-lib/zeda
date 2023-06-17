@@ -34,15 +34,15 @@ __BEGIN_DECLS
 
 #ifdef __cplusplus
 #define zListClass(list_t,cell_t,data_t) \
-struct cell_t{\
-  cell_t *prev, *next;\
-  data_t data;\
-  cell_t(){ prev = next = this; };\
-};\
-struct list_t{\
-  uint size;\
-  cell_t root;\
-  list_t(){ size = 0; };\
+struct cell_t{ \
+  cell_t *prev, *next; \
+  data_t data; \
+  cell_t() : prev{this}, next{this} {} \
+}; \
+struct list_t{ \
+  int size; \
+  cell_t root; \
+  list_t() : size{0} {} \
 }
 #else
 #define zListClass(list_t,cell_t,data_t) \
@@ -297,7 +297,7 @@ zListClass(zList, zListCell, void*);
     \brief refer the \a i 'th cell of a list \a list, and let
     \a cp point the cell. */
 #define zListItem(list,i,cp) do{\
-  uint __z_list_item_tmp;\
+  int __z_list_item_tmp;\
   *(cp) = NULL;\
   if( (i) >= 0 && (i) < zListSize(list) ){\
     if( (i) <= zListSize(list) - (i) ){\
@@ -388,7 +388,7 @@ list_t *list_t##QuickSort(list_t *list, int (* cmp)(void*,void*,void*), void *pr
  * zListCellFPrint, zListCellPrint
  */
 #ifndef __KERNEL__
-__EXPORT void _zListFPrint(FILE *fp, zList *list);
+__ZEDA_EXPORT void _zListFPrint(FILE *fp, zList *list);
 #define zListFPrint(f,l) _zListFPrint( f, (zList *)(l) )
 #define zListPrint(l)    zListFPrint( stdout, l )
 #else
@@ -413,7 +413,7 @@ void zListPrint(zList *list);
 zListClass(zIntList, zIntListCell, int);
 
 /*! \brief a list of integer numbers */
-__EXPORT bool zIntListAdd(zIntList *list, int i);
+__ZEDA_EXPORT bool zIntListAdd(zIntList *list, int i);
 
 __END_DECLS
 

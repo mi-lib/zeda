@@ -12,7 +12,7 @@ int cmp(void *v1, void *v2, void *dummy)
 
 int main(void)
 {
-  register int i;
+  int i;
   zIntList list;
   zIntListCell *cp;
 

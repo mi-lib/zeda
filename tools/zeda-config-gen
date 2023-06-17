@@ -3,6 +3,7 @@
 INCLUDE=
 LIB=
 LINK=
+LINKCPP=
 DEF=
 VERSION=
 
@@ -17,6 +18,9 @@ do
     ;;
   -l)
     shift; LINK=$1; shift
+    ;;
+  -lcpp)
+    shift; LINKCPP=$1; shift
     ;;
   -D)
     shift; DEF=$1; shift
@@ -57,6 +61,11 @@ fi
 if [ "$LINK" != "" ]; then
   echo "-l)"
   echo "  echo $LINK"
+  echo "  ;;"
+fi
+if [ "$LINKCPP" != "" ]; then
+  echo "-lcpp)"
+  echo "  echo $LINKCPP"
   echo "  ;;"
 fi
 if [ "$VERSION" != "" ]; then

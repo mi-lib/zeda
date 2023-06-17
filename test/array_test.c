@@ -11,7 +11,7 @@ int cmp(void *v1, void *v2, void *dummy)
 
 int assert_quicksort(int n)
 {
-  register int i;
+  int i;
   int_array_t array;
   int val;
 
@@ -30,7 +30,7 @@ int assert_quicksort(int n)
 
 int assert_insertsort(int n)
 {
-  register int i;
+  int i;
   int_array_t array;
   int val;
 

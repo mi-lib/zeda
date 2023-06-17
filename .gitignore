@@ -2,7 +2,7 @@ config
 src/*.o
 lib/*
 !lib/.gitkeep
-tools/zeda-config
+tools/*-config
 app/*
 !app/*.c
 !app/makefile

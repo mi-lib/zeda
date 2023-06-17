@@ -45,35 +45,44 @@ typedef struct{
 
 /*! \brief initialize a random number generator based on Mersenne twister.
  *
- * zRandInitMT() initializes Mersenne twister \a mt
- * by seeding the current time for a new history.
- * If the null pointer is given for \a mt, it makes
- * use of the internal default instance.
+ * zRandInitMT() initializes Mersenne twister \a mt by seeding the current
+ * time for a new history.
+ *
+ * zRandInitSeedMT() initializes \a mt by explicitly seeding a number
+ * \a seed.
+ *
+ * For both functions, if the null pointer is given for \a mt, the internal
+ * default generator instance is used.
+ * \return
+ * zRandInitMT() and zRandInitSeedMT() return the seed value provided to
+ * the generator.
  */
-__EXPORT void zRandInitMT(zRandMT *mt);
+__ZEDA_EXPORT ulong zRandInitMT(zRandMT *mt);
+__ZEDA_EXPORT ulong zRandInitSeedMT(zRandMT *mt, ulong seed);
 
 /*! \brief a pseudo-random integer between \a min and \a max. */
-__EXPORT int zRandMTI(zRandMT *mt, int min, int max);
+__ZEDA_EXPORT int zRandMTI(zRandMT *mt, int min, int max);
 
 /*! \brief a pseudo-random double-precision floating-point value
  * between \a min and \a max. */
-__EXPORT double zRandMTF(zRandMT *mt, double min, double max);
+__ZEDA_EXPORT double zRandMTF(zRandMT *mt, double min, double max);
 
 /*! \brief a pseudo-random double-precision floating-point value
  * in the range of [0,1]. */
-__EXPORT double zRandMTN(zRandMT *mt);
+__ZEDA_EXPORT double zRandMTN(zRandMT *mt);
 
 /*! \brief a pseudo-random value in the range of [0,1). */
-__EXPORT double zRandMTNU(zRandMT *mt);
+__ZEDA_EXPORT double zRandMTNU(zRandMT *mt);
 
 /*! \brief return a pointer to the default random number generator. */
-__EXPORT zRandMT *zRandMTDefault(void);
+__ZEDA_EXPORT zRandMT *zRandMTDefault(void);
 
-#define zRandInit()     zRandInitMT( NULL )
-#define zRandI(min,max) zRandMTI( NULL, min, max )
-#define zRandF(min,max) zRandMTF( NULL, min, max )
-#define zRandN()        zRandMTN( NULL )
-#define zRandNU()       zRandMTNU( NULL )
+#define zRandInitSeed( s )  zRandInitSeedMT( NULL, (s) )
+#define zRandInit()         zRandInitMT( NULL )
+#define zRandI(min,max)     zRandMTI( NULL, min, max )
+#define zRandF(min,max)     zRandMTF( NULL, min, max )
+#define zRandN()            zRandMTN( NULL )
+#define zRandNU()           zRandMTNU( NULL )
 
 /*! \} */
 
