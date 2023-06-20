@@ -17,7 +17,7 @@ EOF
 
 output_export_header(){
     cat <<EOF
-include ../config
+include ../libinfo
 PROJNAME_UNDERSCORE=\$(shell echo \${PROJNAME} | sed 's/-/_/')
 EXPORT_HEADER=../include/\${PROJNAME_UNDERSCORE}/\${PROJNAME_UNDERSCORE}_export.h
 EXPORT_HEADER_EXIST=\$(shell test -e \${EXPORT_HEADER} || echo "n")
@@ -52,6 +52,7 @@ EOF
 
 output_make_lib(){
     cat << EOF
+include ../libinfo
 include ../config
 PROJNAME_UNDERSCORE=\$(shell echo \${PROJNAME} | sed 's/-/_/')
 
@@ -115,6 +116,7 @@ EOF
 
 output_make_tools(){
     cat << EOF
+include ../libinfo
 include ../config
 PROJNAME_HYPHEN=\$(shell echo \${PROJNAME} | sed 's/_/-/')
 
@@ -154,6 +156,7 @@ EOF
 
 output_make_app(){
     cat << EOF
+include ../libinfo
 include ../config
 PROJNAME_HYPHEN=\$(shell echo \${PROJNAME} | sed 's/_/-/')
 
@@ -197,6 +200,7 @@ EOF
 
 output_make_default(){
     cat << EOF
+include libinfo
 CONFIG:=\$(shell test -e config || cp config.org config; echo config)
 include \$(CONFIG)
 PROJNAME_UNDERSCORE=\$(shell echo \${PROJNAME} | sed 's/-/_/')

@@ -12,9 +12,9 @@ ZTK is a file format to describe data.
 
 Syntax is not for computers but for humans. Too strong rules of
 syntax should be ruled out. Parenthesization, indentation,
-elimination and line-feed rovides better readability for humans,
-ut should not constrain the way of description. This is the
-esign concept of ZTK.
+delimination and line-feed rovides better readability for humans,
+but should not constrain the way of description. This is the
+design concept of ZTK.
 
 -----------------------------------------------------------------
 ## [Syntax]
@@ -40,7 +40,7 @@ But, all the following lines are parsed also in the same way.
 
 ```
 key1: val1 val2 val3
-key1: val1 val2 val3
+key1: val1, val2, val3
 key1:val1,val2,val3
 key1: (val1, val2, val3)
 key1: { val1, val2, val3 }
@@ -49,7 +49,7 @@ key1: val1;val2;val3
 
 Obviously, the whitespaces, semicolons, commas, parentheses
 and braces are all identified as delimiters. Even the following
-ines are accepted.
+lines are accepted.
 
 ```
 key1: (val1 val2 val3}
@@ -75,7 +75,7 @@ Single/double quotations concatenate several splitted words into
 one string. Actually, the parse unit of ZTK format is not a word
 but a string.
 
-Brackets and colons have special roles to make tags and keys.
+Brackets [] and colons : have special roles to make tags and keys.
 
 -----------------------------------------------------------------
 ## [How to parse]
