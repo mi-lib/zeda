@@ -1,3 +1,4 @@
+2023. 6.20. Modified zeda-makefile-gen to apply project names with underscores to headerfiles and that with hyphens to config tools. [tools]
 2023. 6.16. Modified zeda-deb-gen to replace underscore in the project name for hyphen in order to name the package in accordance with the rule. [tools]
 2023. 6.16. Added -pg option to debug mode compilation of the library in zeda-makefile-gen. [tools]
 2023. 6. 3. Added zArrayMove. [zeda_array]
