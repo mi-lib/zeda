@@ -63,16 +63,12 @@
 #undef __FASTCALL
 #endif
 
-#if __STATIC_BUILD
-# define __EXPORT
-#else
 #if defined(__WINDOWS__) && !defined(__CYGWIN__)
 # define __FASTCALL __fastcall
 #elif defined(__GNUC__) && (__GNUC__ * 100 + __GNUC_MINOR__) >= 303
 # define __FASTCALL extern __attribute__((regparm(3)))
 #else
 # define __FASTCALL extern
-#endif
 #endif
 
 /* in order to create .dll for MS-Windows, add the following three lines:
@@ -81,10 +77,6 @@
 __DEF_WINDLL
  */
 #ifdef __WINDOWS__
-#include <windows.h>
-#if __STATIC_BUILD
-#define __DEF_WINDLL
-#else
 #define __DEF_WINDLL \
 extern __declspec(dllexport) HINSTANCE _hInstance;\
 HINSTANCE _hInstance;\
@@ -103,7 +95,6 @@ BOOL WINAPI DllMain(HINSTANCE hinst, DWORD reason, LPVOID reserved)\
   }\
   return TRUE;\
 }
-#endif /* __STATIC_BUILD */
 #endif /* __WINDOWS__ */
 
 #endif /* __ZEDA_COMPAT_H__ */
