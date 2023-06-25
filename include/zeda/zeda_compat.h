@@ -97,4 +97,12 @@ BOOL WINAPI DllMain(HINSTANCE hinst, DWORD reason, LPVOID reserved)\
 }
 #endif /* __WINDOWS__ */
 
+#ifdef __APPLE__
+#define __BYTE_ORDER __BYTE_ORDER__
+#else
+#ifndef __WINDOWS__
+#include <endian.h>
+#endif /* __WINDOWS__ */
+#endif
+
 #endif /* __ZEDA_COMPAT_H__ */
