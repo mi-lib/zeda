@@ -3,22 +3,17 @@
 int main(void)
 {
   char buf[BUFSIZ];
-  int bufsize;
+  int val[3];
 
   printf( "enter a string: " );
   if( !fgets( buf, BUFSIZ, stdin ) ) return 1;
-  while( buf[0] )
-  {
-    char* ret = zSInt( buf, &bufsize );
-    printf( "%d\n", bufsize );
-  }
+  while( *zSInt(buf, &val[0]) )
+    printf( "%d\n", val[0]);
 
-  int val1, val2, val3;
   printf( "enter 3 numbers: " );
-  char* ret1 = zFInt(stdin, &val1);
-  char* ret2 = zFInt(stdin, &val2);
-  char* ret3 = zFInt(stdin, &val3);
-  printf( "val[1]=%d, val[2]=%d, val[3]=%d\n", val1, val2, val3 );
-  printf( "(probably the result is different from what is expected due to the specification of printf.)\n" );
+  char* ret1 = zFInt(stdin, &val[0]);
+  char* ret2 = zFInt(stdin, &val[1]);
+  char* ret3 = zFInt(stdin, &val[2]);
+  printf( "val[0]=%d, val[1]=%d, val[2]=%d\n", val[0], val[1], val[2]);
   return 0;
 }
