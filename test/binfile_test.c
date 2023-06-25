@@ -1,8 +1,9 @@
+#ifndef _MSC_VER
+#include <unistd.h>
+#endif /* ___MSC_VER_ */
+
 #include <zeda/zeda.h>
 
-#ifndef __WINDOWS__
-#include <unistd.h>
-#endif /* __WINDOWS_ */
 
 
 #define N 100

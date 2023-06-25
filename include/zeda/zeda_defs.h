@@ -110,7 +110,6 @@ typedef long long int      int64_t;      /*!< 64-bit signed integer */
 # if defined(_DEFINED_INT8) && _DEFINED_INT8 == 1
 typedef int8_t         byte;   /*!< signed one-byte data. */
 # else
-/* typedef char           byte;   /\*!< signed one-byte data. *\/ */
 typedef signed char    byte;   /*!< signed one-byte data. */
 # endif /* _DEFINED_INT8 */
 # define _DEFINED_BYTE 1
