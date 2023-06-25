@@ -1,7 +1,3 @@
-include ../config
-
-DIR=..
-
 INCLUDE=`zeda-config -I`
 LIB=`zeda-config -L`
 LINK=`zeda-config -l`

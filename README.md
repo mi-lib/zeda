@@ -15,7 +15,6 @@ algorithms including:
  - round-robin table
  - string operations
  - command line option manipulation
- - generalized I/O stream
  - random number generator
  - ZTK format parser
  - CSV file manipulation
@@ -26,7 +25,7 @@ algorithms including:
 
 ### install
 
-Move to a directly under which you want to install ZEDA, and run:
+Move to a directory under which you want to install ZEDA, and run:
 
    ```
    % git clone https://github.com/zhidao/zeda.git

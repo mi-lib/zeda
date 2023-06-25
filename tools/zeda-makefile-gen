@@ -17,14 +17,15 @@ EOF
 
 output_export_header(){
     cat <<EOF
-include ../config
-EXPORT_HEADER=../include/\${PROJNAME}/\${PROJNAME}_export.h
+include ../libinfo
+PROJNAME_UNDERSCORE=\$(shell echo \${PROJNAME} | sed 's/-/_/')
+EXPORT_HEADER=../include/\${PROJNAME_UNDERSCORE}/\${PROJNAME_UNDERSCORE}_export.h
 EXPORT_HEADER_EXIST=\$(shell test -e \${EXPORT_HEADER} || echo "n")
-PROJNAME_CAPITAL=\$(shell echo \${PROJNAME} | tr 'a-z' 'A-Z')
+PROJNAME_CAPITAL=\$(shell echo \${PROJNAME_UNDERSCORE} | tr 'a-z' 'A-Z')
 all:
 ifeq (\${EXPORT_HEADER_EXIST},n)
 	@touch \${EXPORT_HEADER}
-	@echo "/* \${PROJNAME}_export.h */" >> \${EXPORT_HEADER}
+	@echo "/* \${EXPORT_HEADER} */" >> \${EXPORT_HEADER}
 	@echo "/* This file was automatically generated. */" >> \${EXPORT_HEADER}
 	@echo "/* `date` by `whoami` */" >> \${EXPORT_HEADER}
 	@echo "#ifndef __\${PROJNAME_CAPITAL}_EXPORT_H__" >> \${EXPORT_HEADER}
@@ -51,7 +52,9 @@ EOF
 
 output_make_lib(){
     cat << EOF
+include ../libinfo
 include ../config
+PROJNAME_UNDERSCORE=\$(shell echo \${PROJNAME} | sed 's/-/_/')
 
 ROOTDIR=..
 LIBDIR=\$(ROOTDIR)/lib
@@ -60,13 +63,13 @@ INCLUDE=-I\$(ROOTDIR)/include
 CHKDEP=`which zeda-chkdep`
 ifneq (\$(CHKDEP),)
 	ifneq (\$(DEPENDENCY),)
-		INCLUDE+=\$(shell \$(CHKDEP) \$(DEPENDENCY) -l | tr -s " " "\n" | xargs -I{} echo \\\`{}-config -I\\\` | xargs)
+		INCLUDE+=\$(shell \$(CHKDEP) \$(DEPENDENCY) -l | sed 's/_/-/' | tr -s " " "\n" | xargs -I{} echo \\\`{}-config -I\\\` | xargs)
 	endif
 endif
 
 CC=gcc
 STD=c89
-CFLAGS=-Wall -fPIC -fno-common -O3 \$(INCLUDE) -funroll-loops -D __\$(shell echo \${PROJNAME} | tr 'a-z' 'A-Z')_BUILD_DLL__=1
+CFLAGS=-Wall -fPIC -fno-common -O3 \$(INCLUDE) -funroll-loops -D __\$(shell echo \${PROJNAME_UNDERSCORE} | tr 'a-z' 'A-Z')_BUILD_DLL__=1
 ifneq (\$(STD),)
       CFLAGS+="-std=\$(STD)"
 endif
@@ -113,14 +116,16 @@ EOF
 
 output_make_tools(){
     cat << EOF
+include ../libinfo
 include ../config
+PROJNAME_HYPHEN=\$(shell echo \${PROJNAME} | sed 's/_/-/')
 
 BINDIR=\$(PREFIX)/bin
 
 INSTALL=install -m 755
 UNINSTALL=rm -f
 
-CONFIGTOOL=\$(PROJNAME)-config
+CONFIGTOOL=\$(PROJNAME_HYPHEN)-config
 CONFIGGEN=\`which zeda-config-gen\`
 
 INCLUDE=
@@ -151,14 +156,16 @@ EOF
 
 output_make_app(){
     cat << EOF
+include ../libinfo
 include ../config
+PROJNAME_HYPHEN=\$(shell echo \${PROJNAME} | sed 's/_/-/')
 
 BINDIR=\$(PREFIX)/bin
 
 INSTALL=install -m 755
 UNINSTALL=rm -f
 
-CONFIGTOOL=\$(PROJNAME)-config
+CONFIGTOOL=\$(PROJNAME_HYPHEN)-config
 LINK=\`\$(CONFIGTOOL) -l\`
 LINKCPP=\`\$(CONFIGTOOL) -lcpp\`
 
@@ -193,11 +200,13 @@ EOF
 
 output_make_default(){
     cat << EOF
+include libinfo
 CONFIG:=\$(shell test -e config || cp config.org config; echo config)
 include \$(CONFIG)
+PROJNAME_UNDERSCORE=\$(shell echo \${PROJNAME} | sed 's/-/_/')
 
 ROOTDIR:=.
-INCDIR:=\$(ROOTDIR)/include/\$(PROJNAME)
+INCDIR:=\$(ROOTDIR)/include/\$(PROJNAME_UNDERSCORE)
 SRCDIR:=\$(ROOTDIR)/src
 LIBDIR:=\$(ROOTDIR)/lib
 TOOLDIR:=\$(ROOTDIR)/tools
@@ -234,17 +243,17 @@ install:
 	@echo " INSTALL	library"
 	-@install -m 755 \$(LIBDIR)/*.so \$(PREFIX)/lib/
 	@echo " INSTALL	header files"
-	-@install -m 755 -d \$(PREFIX)/include/\$(PROJNAME)
-	-@install -m 644 \$(INCDIR)/*.h \$(PREFIX)/include/\$(PROJNAME)/
+	-@install -m 755 -d \$(PREFIX)/include/\$(PROJNAME_UNDERSCORE)
+	-@install -m 644 \$(INCDIR)/*.h \$(PREFIX)/include/\$(PROJNAME_UNDERSCORE)/
 	@echo " INSTALL	tools"; cd \$(TOOLDIR); make install
 	@echo " INSTALL	applications"; cd \$(APPDIR); make && make install
 uninstall:
 	@echo " UNINSTALL	library"
 	-@rm -f \$(PREFIX)/lib/lib\$(PROJNAME).so \$(PREFIX)/lib/lib\$(PROJNAME)_cpp.so
 	@echo " UNINSTALL	header files"
-	-@rm -r \$(PREFIX)/include/\$(PROJNAME)
-	@echo " UNINSTALL	tools"; cd \$(TOOLDIR); make uninstall
+	-@rm -r \$(PREFIX)/include/\$(PROJNAME_UNDERSCORE)
 	@echo " UNINSTALL	applications"; cd \$(APPDIR); make uninstall
+	@echo " UNINSTALL	tools"; cd \$(TOOLDIR); make uninstall
 EOF
 }
 

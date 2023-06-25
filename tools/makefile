@@ -1,3 +1,4 @@
+include ../libinfo
 include ../config
 
 BINDIR=$(PREFIX)/bin
@@ -7,7 +8,7 @@ UNINSTALL=rm -f
 
 LINK=-l$(PROJNAME)
 LINKCPP=-l$(PROJNAME)_cpp
-CONFIGTOOL=$(PROJNAME)-config
+CONFIGTOOL=$(shell echo ${PROJNAME} | sed 's/_/-/')-config
 
 include config.tools
 
