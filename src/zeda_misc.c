@@ -17,10 +17,6 @@ __DEF_WINDLL
 #include <stdarg.h>
 #include <ctype.h>
 
-#ifdef __WINDOWS__
-#include <stdlib.h>
-#endif
-
 /* return the larger of two values. */
 double zMax(double x, double y){ return _zMax( x, y ); }
 /* return the smaller of two values. */
