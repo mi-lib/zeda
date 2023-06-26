@@ -1,11 +1,5 @@
 #include <zeda/zeda.h>
 
-#ifdef __APPLE__
-#define __BYTE_ORDER __BYTE_ORDER__
-#else
-#include <endian.h>
-#endif
-
 ulong gen_bit_rand(ubyte b[], int bitwidth)
 {
   ulong val = 0;
@@ -53,6 +47,8 @@ int main(void)
   zAssert( endian_reverse32, endian_reverse32(0x12345678) == 0x78563412 );
   zAssert( endian_reverse64, endian_reverse64(0x12345678abcdefab) == 0xabefcdab78563412 );
 
+#ifndef __WINDOWS__
   zAssert( endian_check, endian_check() == __BYTE_ORDER );
+#endif
   return EXIT_SUCCESS;
 }

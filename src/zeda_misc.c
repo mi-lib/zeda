@@ -1,4 +1,4 @@
-/* ZEDA - Elementary Data and Algorithms
+﻿/* ZEDA - Elementary Data and Algorithms
  * Copyright (C) 1998 Tomomichi Sugihara (Zhidao)
  *
  * zeda_misc - miscellanies.

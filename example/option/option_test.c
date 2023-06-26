@@ -14,8 +14,8 @@ int main(int argc, char *argv[])
 
   zOptionHelp( option );
   zOptionRead( option, argv+1, &arglist );
-  zStrListWrite( &arglist );
-  zStrListDestroy( &arglist, false );
+  zStrListPrint( &arglist );
+  zStrListDestroy( &arglist );
   zOptionDiag( option );
   return 0;
 }

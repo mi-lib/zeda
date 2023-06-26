@@ -1,4 +1,4 @@
-/* ZEDA - Elementary Data and Algorithms
+﻿/* ZEDA - Elementary Data and Algorithms
  * Copyright (C) 1998 Tomomichi Sugihara (Zhidao)
  */
 /*! \file zeda_compat.h
@@ -40,13 +40,15 @@
 #endif
 
 /* endian */
-#ifdef __WINDOWS__
+#if defined( __WINDOWS__ )
 #define __BYTE_ORDER __BYTE_ORDER__
 #define __BIG_ENDIAN __ORDER_BIG_ENDIAN__
 #define __LITTLE_ENDIAN __ORDER_LITTLE_ENDIAN__
+#elif defined( __APPLE__ )
+#define __BYTE_ORDER __BYTE_ORDER__
 #else
 #include <endian.h>
-#endif /* __WINDOWS__ */
+#endif /* __WINDOWS__ || __APPLE__ */
 
 /* for symbol visibility in DLLs */
 #ifdef __EXPORT
@@ -95,8 +97,6 @@ BOOL WINAPI DllMain(HINSTANCE hinst, DWORD reason, LPVOID reserved)\
   }\
   return TRUE;\
 }
-#else
-#define __DEF_WINDLL
 #endif /* __WINDOWS__ */
 
 #endif /* __ZEDA_COMPAT_H__ */
