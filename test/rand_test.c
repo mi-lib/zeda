@@ -1,4 +1,6 @@
+#ifdef __unix__
 #include <unistd.h>
+#endif /* __unix__ */
 #include <zeda/zeda_rand.h>
 
 void assert_rand_int_gen(int min, int max, int val[], int n)
@@ -56,11 +58,20 @@ void assert_rand_init()
   int val1[N*2], val2[N*2];
 
   assert_rand_init_gen( SEED, MIN, MAX, val1, N );
+
+#ifdef __WINDOWS__
+  Sleep(1000);
+#else
   sleep( 1 );
+#endif
   assert_rand_init_gen( SEED, MIN, MAX, val2, N );
   zAssert( zRandInitSeedMT,
     assert_rand_check_equal( val1, val2, N ) && assert_rand_check_diff( val1+N, val2+N, N ) );
-  sleep( 1 );
+#ifdef __WINDOWS__
+  Sleep(1000);
+#else
+  sleep(1);
+#endif
   assert_rand_seed_gen( MIN, MAX, val1, val2, N );
   zAssert( zRandInitMT, assert_rand_check_equal( val1, val2, N ) );
 }

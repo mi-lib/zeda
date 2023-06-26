@@ -1,6 +1,6 @@
-#ifndef _MSC_VER
+#ifdef __unix__
 #include <unistd.h>
-#endif /* ___MSC_VER_ */
+#endif /* __unix__ */
 
 #include <zeda/zeda.h>
 
