@@ -11,9 +11,9 @@ int main(void)
     printf( "%d\n", val[0]);
 
   printf( "enter 3 numbers: " );
-  if( !zFInt(stdin, &val[0]) );
-  if( !zFInt(stdin, &val[1]) );
-  if( !zFInt(stdin, &val[2]) );
-  printf( "val[0]=%d, val[1]=%d, val[2]=%d\n", val[0], val[1], val[2]);
+  if( !zFInt( stdin, &val[0] ) );
+  if( !zFInt( stdin, &val[1] ) );
+  if( !zFInt( stdin, &val[2] ) );
+  printf( "val[0]=%d, val[1]=%d, val[2]=%d\n", val[0], val[1], val[2] );
   return 0;
 }
