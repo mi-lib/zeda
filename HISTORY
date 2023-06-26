@@ -1,3 +1,5 @@
+2023. 6.26. Modified some examples and tests (thanks to Daishi Kaneta). [example, test]
+2023. 6.26. Added OS-dependent conditional branch around endian. [zeda_compat]
 2023. 6.21. Separated config and libinfo, and modified zeda-makefile-gen to read them. [all]
 2023. 6.20. Modified zeda-makefile-gen to apply project names with underscores to headerfiles and that with hyphens to config tools. [tools]
 2023. 6.16. Modified zeda-deb-gen to replace underscore in the project name for hyphen in order to name the package in accordance with the rule. [tools]

@@ -1,10 +1,7 @@
 #ifdef __unix__
 #include <unistd.h>
 #endif /* __unix__ */
-
 #include <zeda/zeda.h>
-
-
 
 #define N 100
 

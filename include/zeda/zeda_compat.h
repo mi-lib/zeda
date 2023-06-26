@@ -10,7 +10,7 @@
 #define __ZEDA_COMPAT_H__
 
 /* for Windows */
-#if defined(__Windows) || defined(_WIN16) || defined(_WIN32) || defined(__WIN32__)
+#if defined( __Windows ) || defined( _WIN16 ) || defined( _WIN32 ) || defined( __WIN32__ )
 # ifndef __WINDOWS__
 #  define __WINDOWS__ /* unify compiler-dependent macros */
 # endif
@@ -35,7 +35,7 @@
 #endif /* __WINDOWS__ */
 
 /* NetBSD and GNU C already defines uint and ulong in sys/types.h */
-#if defined(_NETBSD_SOURCE) || defined( __USE_GNU ) || defined( __USE_MISC )
+#if defined( _NETBSD_SOURCE ) || defined( __USE_GNU ) || defined( __USE_MISC )
 #define _DEFINED_UINT 1
 #endif
 
