@@ -1,11 +1,12 @@
 #include <zeda/zeda_rand.h>
 #ifdef __unix__
 #include <unistd.h>
-#else
+#endif /* __unix__ */
+#include <zeda/zeda_rand.h>
+
 # if defined( __WINDOWS__ )
 # define sleep(s) Sleep( 1000 * (s) )
 # endif /* __WINDOWS__ */
-#endif /* __unix__ */
 
 void assert_rand_int_gen(int min, int max, int val[], int n)
 {
