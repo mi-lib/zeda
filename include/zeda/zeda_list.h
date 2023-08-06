@@ -46,11 +46,11 @@ struct list_t{ \
 }
 #else
 #define zListClass(list_t,cell_t,data_t) \
-typedef struct __##cell_t{\
-  struct __##cell_t *prev, *next;\
+typedef struct _##cell_t{\
+  struct _##cell_t *prev, *next;\
   data_t data;\
 } cell_t;\
-typedef struct __##list_t{\
+typedef struct _##list_t{\
   int size;\
   cell_t root;\
 } list_t
