@@ -1,3 +1,4 @@
+2023. 9.17. Added zIndexSizeNC and zIndexSize. [zeda_index]
 2023. 8. 6. Modified rand_test.c in test (thanks to Daishi Kaneta). [test]
 2023. 8. 1. Modified definition of zListClass. [zeda_list]
 2023. 6.26. Modified some examples and tests (thanks to Daishi Kaneta). [example, test]

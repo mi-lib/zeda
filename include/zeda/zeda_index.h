@@ -36,10 +36,17 @@ __BEGIN_DECLS
 zArrayClass( zIndexStruct, int );
 typedef zIndexStruct *zIndex;
 
+/*! \brief size of an integer value array.
+ * \retval the size of the array if \a i is not null.
+ * \retval 0 if \a i is the null pointer.
+ */
+#define zIndexSizeNC(i)      zArraySize(i)
+#define zIndexSize(i)        ( (i) ? zIndexSizeNC(i) : 0 )
+
 /*! \brief increment size of an index vector. */
-#define zIndexIncSize(i)     ( zArraySize(i)++ )
+#define zIndexIncSize(i)     ( zIndexSizeNC(i)++ )
 /*! \brief decrement size of an index vector. */
-#define zIndexDecSize(i)     ( zArraySize(i) -= ( zArraySize(i) > 0 ? 1 : 0 ) )
+#define zIndexDecSize(i)     ( zIndexSizeNC(i) -= ( zIndexSizeNC(i) > 0 ? 1 : 0 ) )
 
 /*! \brief check if the specified position is valid for an index vector. */
 #define zIndexPosIsValid(i,n) zArrayPosIsValid( i, n )

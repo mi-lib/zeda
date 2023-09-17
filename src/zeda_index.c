@@ -66,7 +66,7 @@ zIndex zIndexSetList(zIndex idx, ...)
   va_list args;
 
   va_start( args, idx );
-  for( i=0; i<zArraySize(idx); i++ )
+  for( i=0; i<zIndexSizeNC(idx); i++ )
     zIndexSetElemNC( idx, i, va_arg( args, int ) );
   va_end( args );
   return idx;
@@ -85,7 +85,7 @@ void zIndexFree(zIndex idx)
 /* zero an integer vector. */
 zIndex zIndexZero(zIndex idx)
 {
-  memset( zArrayBuf(idx), 0, sizeof(int)*zArraySize(idx) );
+  memset( zArrayBuf(idx), 0, sizeof(int)*zIndexSizeNC(idx) );
   return idx;
 }
 
@@ -94,7 +94,7 @@ zIndex zIndexOrder(zIndex idx, int s)
 {
   int i;
 
-  for( i=0; i<zArraySize(idx); i++ )
+  for( i=0; i<zIndexSizeNC(idx); i++ )
     zIndexSetElemNC( idx, i, s+i );
   return idx;
 }
@@ -104,8 +104,8 @@ bool zIndexIsEqual(zIndex idx1, zIndex idx2)
 {
   int i;
 
-  if( zArraySize(idx1) != zArraySize(idx2) ) return false;
-  for( i=0; i<zArraySize(idx1); i++ )
+  if( zIndexSizeNC(idx1) != zIndexSizeNC(idx2) ) return false;
+  for( i=0; i<zIndexSizeNC(idx1); i++ )
     if( zIndexElemNC(idx1,i) != zIndexElemNC(idx2,i) ) return false;
   return true;
 }
@@ -137,8 +137,8 @@ int zIndexMove(zIndex idx, int from, int to)
 /* remove a component from an integer vector. */
 zIndex zIndexRemove(zIndex idx, int i)
 {
-  memmove( &zIndexElemNC(idx,i), &zIndexElemNC(idx,i+1), sizeof(int)*(zArraySize(idx)-i-1) );
-  zArraySize(idx)--;
+  memmove( &zIndexElemNC(idx,i), &zIndexElemNC(idx,i+1), sizeof(int)*(zIndexSizeNC(idx)-i-1) );
+  zIndexSizeNC(idx)--;
   return idx;
 }
 
@@ -188,7 +188,7 @@ void zIndexDataFPrint(FILE *fp, zIndex idx)
   int i;
 
   if( !idx ) return;
-  for( i=0; i<zArraySize(idx); i++ )
+  for( i=0; i<zIndexSizeNC(idx); i++ )
     fprintf( fp, "%d ", zIndexElemNC(idx,i) );
   fprintf( fp, "\n" );
 }
@@ -201,8 +201,8 @@ void zIndexFPrint(FILE *fp, zIndex idx)
   if( !idx )
     fprintf( fp, "(null integer vector)\n" );
   else{
-    fprintf( fp, "%d (", zArraySize(idx) );
-    for( i=0; i<zArraySize(idx); i++ )
+    fprintf( fp, "%d (", zIndexSizeNC(idx) );
+    for( i=0; i<zIndexSizeNC(idx); i++ )
       fprintf( fp, " %d", zIndexElemNC(idx,i) );
     fprintf( fp, " )\n" );
   }
@@ -216,8 +216,8 @@ void zIndexPrint(zIndex idx)
   if( !idx )
     printk( "(null integer vector)\n" );
   else{
-    printk( "%d (", zArraySize(idx) );
-    for( i=0; i<zArraySize(idx); i++ )
+    printk( "%d (", zIndexSizeNC(idx) );
+    for( i=0; i<zIndexSizeNC(idx); i++ )
       printk( " %d", zIndexElemNC(idx,i) );
     printk( " )\n" );
   }
