@@ -203,14 +203,19 @@ __ZEDA_EXPORT bool zIndexRemoveVal(zIndex index, int val);
  * \a index. The position of the newly inserted element is before the first
  * value that is larger than or equal to \a val. The size of \a index is
  * incremented as the result.
+ * \a maxsize is the maximum size of buffer of \a index, which has to be
+ * larger than or equal to the size of \a index.
  * \return
  * zIndexInsertVal() returns the index of the inserted element.
+ * If the buffer of \a index is already occupied, i.e., \a maxsize is equal
+ * to the size of \a index, -1 is returned.
  * \note
- * zIndexInsertVal() does not check the true size of the originally allocated
- * array. This function should not be used unless the safety is guaranteed
- * by some means.
+ * zIndexInsertVal() itself does not check the true size of the originally
+ * allocated array. If a wrong number is given for \a maxsize, anything might
+ * happen. Thus, this function should not be used unless the safety is
+ * guaranteed by some means.
  */
-__ZEDA_EXPORT int zIndexInsertVal(zIndex index, int val);
+__ZEDA_EXPORT int zIndexInsertVal(zIndex index, int maxsize, int val);
 
 /*! \brief sort an integer vector in ascending order.
  */

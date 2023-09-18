@@ -85,7 +85,7 @@ void assert_index_remove_and_insert_test(void)
     i = zRandI( 0, zIndexSizeNC(i1)-1 );
     val = zIndexElemNC(i1,i);
     zIndexRemoveVal( i1, val );
-    zIndexInsertVal( i2, val );
+    zIndexInsertVal( i2, N, val );
   }
   for( i=1; i<zIndexSizeNC(i2); i++ )
     if( zIndexElemNC(i2,i) < zIndexElemNC(i2,i-1) ) result = false;

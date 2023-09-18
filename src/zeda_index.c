@@ -159,10 +159,14 @@ bool zIndexRemoveVal(zIndex index, int val)
 }
 
 /* insert an integer value to an integer vector. */
-int zIndexInsertVal(zIndex index, int val)
+int zIndexInsertVal(zIndex index, int maxsize, int val)
 {
   int i;
 
+  if( zIndexSizeNC(index) >= maxsize ){
+    ZRUNERROR( ZEDA_ERR_INDEX_BUF_OCCUPIED );
+    return -1;
+  }
   for( i=0; i<zIndexSizeNC(index); i++ )
     if( zIndexElemNC(index,i) >= val ){
       memmove( &zIndexElemNC(index,i+1), &zIndexElemNC(index,i), sizeof(int)*(zIndexSizeNC(index)-i) );

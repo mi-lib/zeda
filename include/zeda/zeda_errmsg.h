@@ -56,6 +56,8 @@
 #define ZEDA_ERR_SIZUNFOUND_INDEX      "index size not specified"
 #define ZEDA_ERR_SIZMIS_INDEX          "size mismatch of indices"
 
+#define ZEDA_ERR_INDEX_BUF_OCCUPIED    "buffer for the index vector already occupied"
+
 #define ZEDA_ERR_LIST2INDEX_FAILED     "cannot create an integer vector from an empty list"
 
 #define ZEDA_ERR_CSV_INVALID           "invalid CSV file"
