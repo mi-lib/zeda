@@ -111,7 +111,7 @@ zIndex zIndexCreateList(int num, ...);
 zIndex zIndexSetList(zIndex idx, ...);
 #endif /* __KERNEL__ */
 
-#define zIndexCopyNC(src,dest) memcpy( dest, src, sizeof(int)*zIndexSizeNC(dest) )
+#define zIndexCopyNC(src,dest) memcpy( zIndexBufNC(dest), zIndexBufNC(src), sizeof(int)*zIndexSizeNC(dest) )
 
 /*! \brief copy an integer vector to another.
  *

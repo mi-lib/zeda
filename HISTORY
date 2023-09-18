@@ -1,3 +1,4 @@
+2023. 9.18. Debugged zIndexCopyNC. [zeda_index]
 2023. 9.18. Modified specification of zIndexInsertVal to accept maximum buffer size. [zeda_index, zeda_errmsg]
 2023. 9.18. Modified specification of zIndexInsertVal. [zeda_index]
 2023. 9.18. Added zIndexCopyNC and zIndexCopy. [zeda_index, zeda_errmsg]
