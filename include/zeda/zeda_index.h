@@ -51,7 +51,10 @@ typedef zIndexStruct *zIndex;
 /*! \brief check if the specified position is valid for an index vector. */
 #define zIndexPosIsValid(i,n) zArrayPosIsValid( i, n )
 
-#define zIndexElemNC(i,n)      zArrayBuf(i)[n]
+#define zIndexBufNC(i)         zArrayBuf(i)
+#define zIndexBuf(i)           ( (i) ? zIndexBufNC(i) : NULL )
+
+#define zIndexElemNC(i,n)      zIndexBufNC(i)[n]
 #define zIndexElem(i,n)        ( zIndexPosIsValid(i,n) ? zIndexElemNC(i,n) : -1 )
 #define zIndexSetElemNC(i,n,e) ( zIndexElemNC(i,n) = (e) )
 #define zIndexSetElem(i,n,e)   ( zIndexPosIsValid(i,n) ? zIndexSetElemNC(i,n,e) : -1 )
@@ -107,6 +110,17 @@ zIndex zIndexCreateList(int num, ...);
 #ifndef __KERNEL__
 zIndex zIndexSetList(zIndex idx, ...);
 #endif /* __KERNEL__ */
+
+#define zIndexCopyNC(src,dest) memcpy( dest, src, sizeof(int)*zIndexSizeNC(dest) )
+
+/*! \brief copy an integer vector to another.
+ *
+ * zIndexCopy() copies an integer vector \a src to another vector \a dest.
+ * \return
+ * zIndexCopy() returns a pointer \a dest if it succeeds. If the sizes of
+ * \a src and \a dest are different, it returns the false value.
+ */
+__ZEDA_EXPORT zIndex zIndexCopy(zIndex src, zIndex dest);
 
 /*! \brief free an array of integer values.
  *
@@ -171,6 +185,34 @@ __ZEDA_EXPORT int zIndexMove(zIndex idx, int from, int to);
  * \return a pointer \a idx.
  */
 __ZEDA_EXPORT zIndex zIndexRemove(zIndex idx, int i);
+
+/*! \brief remove an integer value from an integer vector.
+ *
+ * zIndexRemoveVal() removes an integer value \a val from an integer vector
+ * \a index. Namely, if \a val is a member of \a index, \a val is removed
+ * from \a index and decrements the size of \a index.
+ * \return
+ * zIndexRemoveVal() returns the true value if \a val is a member of
+ * \a index. Otherwise, it returns the false value.
+ */
+__ZEDA_EXPORT bool zIndexRemoveVal(zIndex index, int val);
+
+/*! \brief insert an integer value to an integer vector.
+ *
+ * zIndexInsertVal() inserts an integer value \a val to an integer vector
+ * \a index. The position of the newly inserted element is before the first
+ * value that is larger than or equal to \a val. The size of \a index is
+ * incremented as the result.
+ * \note
+ * zIndexInsertVal() does not check the true size of the originally allocated
+ * array. This function should not be used unless the safety is guaranteed
+ * by some means.
+ */
+__ZEDA_EXPORT void zIndexInsertVal(zIndex index, int val);
+
+/*! \brief sort an integer vector in ascending order.
+ */
+__ZEDA_EXPORT void zIndexSort(zIndex index);
 
 #ifndef __KERNEL__
 /*! \brief scan an array of integer values from a file.

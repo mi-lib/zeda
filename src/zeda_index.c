@@ -73,6 +73,16 @@ zIndex zIndexSetList(zIndex idx, ...)
 }
 #endif /* __KERNEL__ */
 
+/* copy an integer vector to another. */
+zIndex zIndexCopy(zIndex src, zIndex dest)
+{
+  if( zIndexSize(src) != zIndexSize(dest) ){
+    ZRUNERROR( ZEDA_ERR_SIZMIS_INDEX );
+    return NULL;
+  }
+  return zIndexCopyNC( src, dest );
+}
+
 /* free an integer vector. */
 void zIndexFree(zIndex idx)
 {
@@ -134,12 +144,53 @@ int zIndexMove(zIndex idx, int from, int to)
   return zIndexSetElemNC( idx, to, tmp );
 }
 
+/* remove an integer value from an integer vector. */
+bool zIndexRemoveVal(zIndex index, int val)
+{
+  int i;
+  bool ret = false;
+
+  for( i=0; i<zIndexSizeNC(index); i++ )
+    if( zIndexElemNC(index,i) == val ){
+      zIndexRemove( index, i );
+      ret = true;
+    }
+  return ret;
+}
+
+/* insert an integer value to an integer vector. */
+void zIndexInsertVal(zIndex index, int val)
+{
+  int i;
+
+  for( i=0; i<zIndexSizeNC(index); i++ )
+    if( zIndexElemNC(index,i) >= val ){
+      memmove( &zIndexElemNC(index,i+1), &zIndexElemNC(index,i), sizeof(int)*(zIndexSizeNC(index)-i) );
+      break;
+    }
+  zIndexIncSize( index );
+  zIndexSetElem( index, i, val );
+}
+
 /* remove a component from an integer vector. */
 zIndex zIndexRemove(zIndex idx, int i)
 {
   memmove( &zIndexElemNC(idx,i), &zIndexElemNC(idx,i+1), sizeof(int)*(zIndexSizeNC(idx)-i-1) );
   zIndexSizeNC(idx)--;
   return idx;
+}
+
+/* comparison function for zIndexSort. */
+static int _zIndexSortCmp(void *p1, void *p2, void *dummy)
+{
+  if( *(int*)p1 > *(int*)p2 ) return 1;
+  if( *(int*)p1 < *(int*)p2 ) return -1;
+  return 0;
+}
+/* sort an integer vector in ascending order. */
+void zIndexSort(zIndex index)
+{
+  zQuickSort( zIndexBufNC(index), zIndexSizeNC(index), sizeof(int), _zIndexSortCmp, NULL );
 }
 
 /* create an integer vector from a list of integers. */

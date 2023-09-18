@@ -1,3 +1,7 @@
+2023. 9.18. Added zIndexCopyNC and zIndexCopy. [zeda_index, zeda_errmsg]
+2023. 9.18. Added zIndexRemoveVal and zIndexInsertVal. [zeda_index]
+2023. 9.18. Added zIndexSort. [zeda_index]
+2023. 9.18. Added zIndexBufNC and zIndexBuf. [zeda_index]
 2023. 9.17. Added zIndexSizeNC and zIndexSize. [zeda_index]
 2023. 8. 6. Modified rand_test.c in test (thanks to Daishi Kaneta). [test]
 2023. 8. 1. Modified definition of zListClass. [zeda_list]

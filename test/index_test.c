@@ -70,6 +70,46 @@ void assert_index_remove(void)
   zAssert( zIndexRemove, res );
 }
 
+void assert_index_remove_and_insert_test(void)
+{
+  zIndex i1, i2;
+  int i, val;
+  bool result = true;
+
+  i1 = zIndexAlloc( N );
+  for( i=0; i<zIndexSizeNC(i1); i++ )
+    zIndexSetElemNC( i1, i, zRandI(-N,N) );
+  i2 = zIndexAlloc( N );
+  zIndexSizeNC(i2) = 0;
+  while( zIndexSizeNC(i1) > 0 ){
+    i = zRandI( 0, zIndexSizeNC(i1)-1 );
+    val = zIndexElemNC(i1,i);
+    zIndexRemoveVal( i1, val );
+    zIndexInsertVal( i2, val );
+  }
+  for( i=1; i<zIndexSizeNC(i2); i++ )
+    if( zIndexElemNC(i2,i) < zIndexElemNC(i2,i-1) ) result = false;
+  zIndexFree( i1 );
+  zIndexFree( i2 );
+  zAssert( zIndexRemoveVal + zIndexInsertVal, result );
+}
+
+void assert_index_sort(void)
+{
+  zIndex index;
+  int i;
+  bool result = true;
+
+  index = zIndexAlloc( N );
+  for( i=0; i<N; i++ )
+    zIndexElemNC(index,i) = zRandI(-N,N);
+  zIndexSort( index );
+  for( i=1; i<N; i++ )
+    if( zIndexElemNC(index,i-1) > zIndexElemNC(index,i) ) result = false;
+  zIndexFree( index );
+  zAssert( zIndexSort, result );
+}
+
 int main(void)
 {
   zRandInit();
@@ -77,5 +117,7 @@ int main(void)
   assert_index_swap();
   assert_index_move();
   assert_index_remove();
+  assert_index_remove_and_insert_test();
+  assert_index_sort();
   return EXIT_SUCCESS;
 }
