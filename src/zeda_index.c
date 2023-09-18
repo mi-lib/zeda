@@ -159,7 +159,7 @@ bool zIndexRemoveVal(zIndex index, int val)
 }
 
 /* insert an integer value to an integer vector. */
-void zIndexInsertVal(zIndex index, int val)
+int zIndexInsertVal(zIndex index, int val)
 {
   int i;
 
@@ -170,6 +170,7 @@ void zIndexInsertVal(zIndex index, int val)
     }
   zIndexIncSize( index );
   zIndexSetElem( index, i, val );
+  return i;
 }
 
 /* remove a component from an integer vector. */
