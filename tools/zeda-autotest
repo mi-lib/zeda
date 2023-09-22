@@ -1,0 +1,56 @@
+#!/bin/sh
+
+LOG=test.log
+RESULT="success"
+
+rm -f ${LOG}
+touch ${LOG}
+
+check_and_output_to_log(){
+    if [ "$?" != 0 ]; then
+	RESULT="failure"
+    fi
+    if [ "${OUTPUT}" != "" ]; then
+	printf '%s\n' "${OUTPUT}" | tee -a ${LOG}
+    fi
+}
+
+test_one(){
+    echo "[Testing" ${testcase}"]" | tee -a ${LOG}
+    OUTPUT="$(make ${testcase} 2>&1)"; check_and_output_to_log
+    OUTPUT="$(./${testcase} 2>&1)";    check_and_output_to_log
+}
+
+test_all(){
+    TEST=`ls *test.c`
+    for testfile in $TEST
+    do
+	testcase=`basename ${testfile} .c`
+	test_one
+    done
+}
+
+make clean
+
+if [ "$1" = "" ]; then
+    test_all
+else
+    while [ "$1" != "" ]
+    do
+	testcase="$1"
+	test_one
+	shift
+    done
+fi
+
+make clean
+
+if [ ${RESULT} = "success" ]; then
+    rm -f ${LOG}
+else
+    echo "Some of the tests failed. See" ${LOG}"."
+fi
+
+echo "Done."
+
+exit 0

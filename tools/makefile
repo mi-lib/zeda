@@ -13,7 +13,7 @@ CONFIGTOOL=$(shell echo ${PROJNAME} | sed 's/_/-/')-config
 include config.tools
 
 CONFIGGEN=zeda-config-gen
-TOOLS=zeda-chkdep zeda-makefile-gen zeda-deb-gen $(CONFIGGEN) $(CONFIGTOOL)
+TOOLS=zeda-chkdep zeda-autotest zeda-makefile-gen zeda-deb-gen $(CONFIGGEN) $(CONFIGTOOL)
 
 #####################################################################
 all: $(CONFIGTOOL)

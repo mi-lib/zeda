@@ -228,7 +228,7 @@ endif
 devtools:
 	@cd \$(TOOLDIR); make
 autotest:
-	@cd \$(TESTDIR); ./test.sh
+	@cd \$(TESTDIR); zeda-autotest
 doc:
 	@cd \$(DOCDIR); make
 clean:

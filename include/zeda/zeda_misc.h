@@ -41,10 +41,12 @@ union _##__struct_name
  * if not, it aborts.
  */
 #define zAssert( func, expr ) do{\
-  printf( "%s ... ", #func );\
+  eprintf( "%s ... ", #func );\
+  fflush( stderr );\
   assert( expr );\
-  printf( "OK\n" );\
-} while(0)\
+  eprintf( "OK\n" );\
+  fflush( stderr );\
+} while(0)
 
 /*!
  * \def zMax(x,y)

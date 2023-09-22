@@ -1,3 +1,5 @@
+2023. 9.22. Added zeda-autotest, and modified zeda-makefile-gen to use it. [tools]
+2023. 9.22. Modified zAssert to output messages to stderr. [zeda_misc]
 2023. 9.18. Debugged zIndexCopyNC. [zeda_index]
 2023. 9.18. Modified specification of zIndexInsertVal to accept maximum buffer size. [zeda_index, zeda_errmsg]
 2023. 9.18. Modified specification of zIndexInsertVal. [zeda_index]
