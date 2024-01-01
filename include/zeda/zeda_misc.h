@@ -13,7 +13,6 @@
 
 #include <zeda/zeda_defs.h>
 #include <zeda/zeda_errmsg.h>
-#include <assert.h>
 
 __BEGIN_DECLS
 
@@ -43,8 +42,11 @@ union _##__struct_name
 #define zAssert( func, expr ) do{\
   eprintf( "%s ... ", #func );\
   fflush( stderr );\
-  assert( expr );\
-  eprintf( "OK\n" );\
+  if( !( expr ) ){\
+    eprintf( "\x1b[31mFailed\x1b[0m\n" );\
+    abort();\
+  }\
+  eprintf( "\x1b[32mOK\x1b[0m\n" );\
   fflush( stderr );\
 } while(0)
 
