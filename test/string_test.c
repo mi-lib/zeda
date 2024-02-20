@@ -1,3 +1,7 @@
+#ifndef __WINDOWS__
+#include <unistd.h>
+#endif /* __WINDOWS__ */
+
 #include <zeda/zeda.h>
 
 void assert_strchr(void)
@@ -128,6 +132,53 @@ void assert_num_token(void)
   fclose( fp );
 }
 
+void assert_check_utf_bom(void)
+{
+#ifndef __WINDOWS__
+#define NKF_PATH              "/usr/bin/nkf"
+
+#define UTF_BOM_TEST_STRING           "あいうえお"
+#define UTF_BOM_TEST_FILENAME_ORG     "test_ja.txt"
+#define UTF_BOM_TEST_FILENAME_UTF8    "test_ja_utf8.txt"
+#define UTF_BOM_TEST_FILENAME_UTF16B  "test_ja_utf16b.txt"
+#define UTF_BOM_TEST_FILENAME_UTF16L  "test_ja_utf16l.txt"
+  char cmd[BUFSIZ];
+  FILE *fp;
+
+  if( access( NKF_PATH, X_OK ) != 0 ){
+    ZRUNWARN( "%s is not found. skipped", NKF_PATH );
+    return;
+  }
+  /* generate test files */
+  sprintf( cmd, "echo %s > %s", UTF_BOM_TEST_STRING, UTF_BOM_TEST_FILENAME_ORG );
+  if( system( cmd ) );
+  sprintf( cmd, "%s -w8 %s > %s", NKF_PATH, UTF_BOM_TEST_FILENAME_ORG, UTF_BOM_TEST_FILENAME_UTF8 );
+  if( system( cmd ) );
+  sprintf( cmd, "%s -w16B %s > %s", NKF_PATH, UTF_BOM_TEST_FILENAME_ORG, UTF_BOM_TEST_FILENAME_UTF16B );
+  if( system( cmd ) );
+  sprintf( cmd, "%s -w16L %s > %s", NKF_PATH, UTF_BOM_TEST_FILENAME_ORG, UTF_BOM_TEST_FILENAME_UTF16L );
+  if( system( cmd ) );
+  /* assert */
+  fp = fopen( UTF_BOM_TEST_FILENAME_UTF8, "r" );
+  zAssert( zFCheckUTFBOM (UTF-8), zFCheckUTFBOM( fp ) == ZUTF_TYPE_UTF8 );
+  fclose( fp );
+  fp = fopen( UTF_BOM_TEST_FILENAME_UTF16B, "r" );
+  zAssert( zFCheckUTFBOM (UTF-16 big endian), zFCheckUTFBOM( fp ) == ZUTF_TYPE_UTF16BE );
+  fclose( fp );
+  fp = fopen( UTF_BOM_TEST_FILENAME_UTF16L, "r" );
+  zAssert( zFCheckUTFBOM (UTF-16 little endian), zFCheckUTFBOM( fp ) == ZUTF_TYPE_UTF16LE );
+  fclose( fp );
+  fp = fopen( UTF_BOM_TEST_FILENAME_ORG, "r" );
+  zAssert( zFCheckUTFBOM (unknown case), zFCheckUTFBOM( fp ) == ZUTF_TYPE_NONE );
+  fclose( fp );
+  /* delete test files */
+  unlink( UTF_BOM_TEST_FILENAME_ORG );
+  unlink( UTF_BOM_TEST_FILENAME_UTF8 );
+  unlink( UTF_BOM_TEST_FILENAME_UTF16B );
+  unlink( UTF_BOM_TEST_FILENAME_UTF16L );
+#endif /* __WINDOWS__ */
+}
+
 bool test_getdirfilename(char *pathname, char *dir, char *file, int ret)
 {
   char dirname[BUFSIZ], filename[BUFSIZ];
@@ -184,6 +235,7 @@ int main(void)
   assert_strmanip();
   assert_token();
   assert_num_token();
+  assert_check_utf_bom();
   assert_pathname();
   assert_strsearch();
   return EXIT_SUCCESS;

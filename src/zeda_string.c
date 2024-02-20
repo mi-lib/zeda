@@ -617,6 +617,31 @@ char *zSDouble(char *str, double *val)
   return ret;
 }
 
+/* check byte order marker of UTF-8/16 encode files. */
+#define _c_eq(c,v) ( ( 0xff & (c) ) == (v) )
+zUTFType zFCheckUTFBOM(FILE *fp)
+{
+  char bom[3];
+  zUTFType result = ZUTF_TYPE_NONE;
+
+  rewind( fp );
+  if( fread( bom, sizeof(char), 3, fp ) != 3 ) return result;
+  if( _c_eq( bom[0], 0xef ) && _c_eq( bom[1], 0xbb ) && _c_eq( bom[2], 0xbf ) ){
+    result = ZUTF_TYPE_UTF8;
+  } else
+  if( _c_eq( bom[0], 0xfe ) && _c_eq( bom[1], 0xff ) ){
+    result = ZUTF_TYPE_UTF16BE;
+    fseek( fp, 2, SEEK_SET );
+  } else
+  if( _c_eq( bom[0], 0xff ) && _c_eq( bom[1], 0xfe ) ){
+    result = ZUTF_TYPE_UTF16LE;
+    fseek( fp, 2, SEEK_SET );
+  } else
+    rewind( fp ); /* rewind if BOM is not found. */
+  return result;
+}
+#undef _c_eq
+
 /* for tag-and-key format */
 
 static char ztagbeginident = ZDEFAULT_TAG_BEGIN_IDENT;

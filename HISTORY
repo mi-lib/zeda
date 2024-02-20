@@ -1,3 +1,4 @@
+2024. 2.21. Added zUTFType and zFCheckUTFBOM. [zeda_string]
 2024. 1. 3. Modified zAssert not to use assert but abort, and to colorize the output. [zeda_misc]
 2023. 9.22. Added zeda-autotest, and modified zeda-makefile-gen to use it. [tools]
 2023. 9.22. Modified zAssert to output messages to stderr. [zeda_misc]

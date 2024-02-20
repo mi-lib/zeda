@@ -579,6 +579,17 @@ __ZEDA_EXPORT char *zSDouble(char *str, double *val);
 
 /*! \} */
 
+/*! \brief byte order marker of UTF-8/16 encode files. */
+typedef enum{
+  ZUTF_TYPE_NONE    =-1,
+  ZUTF_TYPE_UTF8    = 0,
+  ZUTF_TYPE_UTF16BE = 1,
+  ZUTF_TYPE_UTF16LE = 2,
+} zUTFType;
+
+/*! \brief check byte order marker of UTF-8/16 encode files. */
+__ZEDA_EXPORT zUTFType zFCheckUTFBOM(FILE *fp);
+
 #define ZDEFAULT_TAG_BEGIN_IDENT '['
 #define ZDEFAULT_TAG_END_IDENT   ']'
 
