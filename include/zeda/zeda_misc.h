@@ -147,11 +147,6 @@ __ZEDA_EXPORT void *zClone(void *src, size_t size);
 
 /*! \} */
 
-/*! \brief count the size of a file. */
-#ifndef __KERNEL__
-__ZEDA_EXPORT size_t zFileSize(FILE *fp);
-#endif /* __KERNEL__ */
-
 /*! \brief peek charactor.
  *
  * fpeek() picks up a charactor from the current position
@@ -161,6 +156,23 @@ __ZEDA_EXPORT size_t zFileSize(FILE *fp);
  */
 #ifndef __KERNEL__
 __ZEDA_EXPORT int fpeek(FILE *fp);
+#endif /* __KERNEL__ */
+
+/*! \brief count the size of a file. */
+#ifndef __KERNEL__
+__ZEDA_EXPORT size_t zFileSize(FILE *fp);
+#endif /* __KERNEL__ */
+
+/*! \brief compare two files.
+ *
+ * zFileSize() compares two files \a filename1 and \a filename2.
+ * \return
+ * zFileSize() returns the position at which the first pair of different data in
+ * the files is found. If the files are the same, 0 is returned.
+ * If it fails to open \a filename1 or \a filename2, -1 is returned.
+ */
+#ifndef __KERNEL__
+__ZEDA_EXPORT long zFileCompare(const char *filename1, const char *filename2);
 #endif /* __KERNEL__ */
 
 /* ********************************************************** */

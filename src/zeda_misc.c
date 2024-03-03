@@ -51,6 +51,19 @@ void *zClone(void *src, size_t size)
 /* stream manipulation
  * ********************************************************** */
 
+#ifndef __KERNEL__
+/* peek a charactor from file. */
+int fpeek(FILE *fp)
+{
+  int c;
+
+  c = fgetc( fp );
+  ungetc( c, fp );
+  return c;
+}
+#endif /* __KERNEL__ */
+
+#ifndef __KERNEL__
 /* count the size of a file. */
 size_t zFileSize(FILE *fp)
 {
@@ -64,16 +77,35 @@ size_t zFileSize(FILE *fp)
   fseek( fp, pos, SEEK_SET );
   return pos_end - pos_beg;
 }
+#endif /* __KERNEL__ */
 
 #ifndef __KERNEL__
-/* peek a charactor from file. */
-int fpeek(FILE *fp)
+long zFileCompare(const char *filename1, const char *filename2)
 {
-  int c;
+  FILE *fp1, *fp2;
+  char data1, data2;
+  long ret = 0;
 
-  c = fgetc( fp );
-  ungetc( c, fp );
-  return c;
+  if( !( fp1 = fopen( filename1, "r" ) ) ){
+    ZOPENERROR( filename1 );
+    return -1;
+  }
+  if( !( fp2 = fopen( filename2, "r" ) ) ){
+    ZOPENERROR( filename2 );
+    fclose( fp1 );
+    return -1;
+  }
+  while( !feof( fp1 ) && !feof( fp2 ) ){
+    data1 = fgetc( fp1 );
+    data2 = fgetc( fp2 );
+    if( data1 != data2 ){
+      ret = ftell( fp1 ) + 1;
+      break;
+    }
+  }
+  fclose( fp1 );
+  fclose( fp2 );
+  return ret;
 }
 #endif /* __KERNEL__ */
 

@@ -28,6 +28,32 @@ void assert_clone(void)
   free( dest );
 }
 
+#ifndef __WINDOWS__
+#include <unistd.h>
+void assert_filecompare(void)
+{
+#define FILE1 "filecomp_test_1.txt"
+#define FILE2 "filecomp_test_2.txt"
+  const char *str1 = "test string 1";
+  const char *str2 = "test string 2";
+  FILE *fp;
+
+  fp = fopen( FILE1, "w" );
+  fprintf( fp, "%s\n", str1 );
+  fclose( fp );
+  fp = fopen( FILE2, "w" );
+  fprintf( fp, "%s\n", str1 );
+  fclose( fp );
+  zAssert( zFileCompare (successful case), zFileCompare( FILE1, FILE2 ) == 0 );
+  fp = fopen( FILE2, "a" );
+  fprintf( fp, "%s\n", str2 );
+  fclose( fp );
+  zAssert( zFileCompare (failure case), zFileCompare( FILE1, FILE2 ) != 0 );
+  unlink( FILE1 );
+  unlink( FILE2 );
+}
+#endif
+
 void assert_i2a(void)
 {
   char str[BUFSIZ];
@@ -105,6 +131,7 @@ int main(void)
   zAssert( zBound, zBound( 0.5, 1, 0 ) == zBound( 0.5, 0, 1 ) );
   assert_swap();
   assert_clone();
+  assert_filecompare();
   zAssert( zA2X, zA2X( "1g2h3i" ) == 0x102030 && zA2X( "1a2b3c" ) == 0x1a2b3c );
   assert_i2a();
   assert_f2a();
