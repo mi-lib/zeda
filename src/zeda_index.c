@@ -73,6 +73,13 @@ zIndex zIndexSetList(zIndex idx, ...)
 }
 #endif /* __KERNEL__ */
 
+/* copy an integer vector to another without checking the size consistency. */
+zIndex zIndexCopyNC(zIndex src, zIndex dest)
+{
+  _zIndexCopyNC( src, dest );
+  return dest;
+}
+
 /* copy an integer vector to another. */
 zIndex zIndexCopy(zIndex src, zIndex dest)
 {
@@ -80,7 +87,8 @@ zIndex zIndexCopy(zIndex src, zIndex dest)
     ZRUNERROR( ZEDA_ERR_SIZMIS_INDEX );
     return NULL;
   }
-  return zIndexCopyNC( src, dest );
+  _zIndexCopyNC( src, dest );
+  return dest;
 }
 
 /* free an integer vector. */

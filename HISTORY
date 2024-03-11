@@ -1,3 +1,4 @@
+2024. 3.11. Renamed zIndexCopyNC to _zIndexCopyNC, and reimplemented zIndexCopyNC and zIndexCopy (thanks to Kenta Imanishi). [zeda_index]
 2024. 3. 4. Added zFileCompare. [zeda_misc]
 2024. 2.21. Added zUTFType and zFCheckUTFBOM. [zeda_string]
 2024. 1. 3. Modified zAssert not to use assert but abort, and to colorize the output. [zeda_misc]

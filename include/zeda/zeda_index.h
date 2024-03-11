@@ -111,15 +111,21 @@ zIndex zIndexCreateList(int num, ...);
 zIndex zIndexSetList(zIndex idx, ...);
 #endif /* __KERNEL__ */
 
-#define zIndexCopyNC(src,dest) memcpy( zIndexBufNC(dest), zIndexBufNC(src), sizeof(int)*zIndexSizeNC(dest) )
+#define _zIndexCopyNC(src,dest) memcpy( zIndexBufNC(dest), zIndexBufNC(src), sizeof(int)*zIndexSizeNC(dest) )
 
 /*! \brief copy an integer vector to another.
  *
- * zIndexCopy() copies an integer vector \a src to another vector \a dest.
+ * zIndexCopyNC() and zIndexCopy() copy an integer vector \a src to another
+ * vector \a dest. The latter checks if the sizes of the two vectors are
+ * the same, while the former does not.
  * \return
+ * zIndexCopyNC() returns a pointer \a dest. If the size of \a src is smaller
+ * than that of \a dest, anything might happen.
+ *
  * zIndexCopy() returns a pointer \a dest if it succeeds. If the sizes of
  * \a src and \a dest are different, it returns the false value.
  */
+__ZEDA_EXPORT zIndex zIndexCopyNC(zIndex src, zIndex dest);
 __ZEDA_EXPORT zIndex zIndexCopy(zIndex src, zIndex dest);
 
 /*! \brief free an array of integer values.
