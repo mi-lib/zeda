@@ -46,6 +46,32 @@
 
 #include <zeda/zeda_compat.h>
 
+/*!
+ * \def ZDECL_STRUCT, ZDECL_UNION, ZDEF_STRUCT, ZDEF_UNION
+ * defines a struct/union in a way that is compatible with C++.
+ */
+#ifdef __cplusplus
+#define ZDECL_STRUCT( __struct_name ) struct __struct_name
+#define ZDECL_UNION( __struct_name ) union __struct_name
+#define ZDEF_STRUCT( __export, __struct_name ) struct __export __struct_name
+#define ZDEF_UNION( __export, __struct_name )  union __export __struct_name
+#else
+#define ZDECL_STRUCT( __struct_name ) \
+struct _##__struct_name; \
+typedef struct _##__struct_name __struct_name
+#define ZDECL_UNION( __struct_name ) \
+union _##__struct_name; \
+typedef union _##__struct_name __struct_name
+#define ZDEF_STRUCT( __export, __struct_name ) \
+struct _##__struct_name; \
+typedef struct _##__struct_name __struct_name; \
+struct _##__struct_name
+#define ZDEF_UNION( __export, __struct_name ) \
+union _##__struct_name; \
+typedef union _##__struct_name __struct_name; \
+union _##__struct_name
+#endif /* __cplusplus */
+
 __BEGIN_DECLS
 
 /* ********************************************************** */
@@ -55,8 +81,7 @@ __BEGIN_DECLS
 /*! \brief default buffer size.
  *
  * BUFSIZ is defined in the standard C library. This macro is
- * validated in non-standard C environments rather as a moderate
- * value.
+ * validated in non-standard C environments as a moderate value.
  */
 #ifndef BUFSIZ
 #define BUFSIZ 512

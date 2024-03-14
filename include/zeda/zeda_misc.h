@@ -17,24 +17,6 @@
 __BEGIN_DECLS
 
 /*!
- * \def ZDEF_STRUCT, ZDEF_UNION
- * defines a struct/union in a way that is compatible with C++.
- */
-#ifdef __cplusplus
-#define ZDEF_STRUCT( __export, __struct_name ) struct __export __struct_name
-#define ZDEF_UNION( __export, __struct_name )  union __export __struct_name
-#else
-#define ZDEF_STRUCT( __export, __struct_name ) \
-struct _##__struct_name; \
-typedef struct _##__struct_name __struct_name; \
-struct _##__struct_name
-#define ZDEF_UNION( __export, __struct_name ) \
-union _##__struct_name; \
-typedef union _##__struct_name __struct_name; \
-union _##__struct_name
-#endif /* __cplusplus */
-
-/*!
  * \def zAssert( func, expr )
  * asserts \a expr and echo a message that \a func works fine;
  * if not, it aborts.
@@ -107,6 +89,17 @@ __ZEDA_EXPORT double zBound(double x, double b1, double b2);
 
 #define zFree(m)        do{ if( (m) ){ free( m ); (m) = NULL; } } while(0)
 
+/*!
+ * \def zRealloc(m,t,n)
+ * reallocate memory where \a m points.
+ * \a n is the number of data to be reallocated.
+ * \a type is the type of the data.
+ * \note zRealloc() is not available in the kernel space.
+ */
+#ifndef __KERNEL__
+#define zRealloc(m,t,n) (t *)realloc( (void *)m, sizeof(t)*(n) )
+#endif /* __KERNEL__ */
+
 #define ZDEF_ALLOC_FUNCTION_PROTOTYPE(type) type *type##Alloc(void)
 #define ZDEF_ALLOC_FUNCTION(type) \
 ZDEF_ALLOC_FUNCTION_PROTOTYPE( type ){ \
@@ -122,18 +115,7 @@ ZDEF_ALLOC_FUNCTION_PROTOTYPE( type ){ \
  * \def zCopy(t,s,d)
  * copy \a s to \a d, where both are supposed to be types of \a t.
  */
-#define zCopy(t,s,d)    ( (t *)memcpy( d, s, sizeof(t) ) )
-
-/*!
- * \def zRealloc(m,t,n)
- * reallocate memory where \a m points.
- * \a n is the number of data to be reallocated.
- * \a type is the type of the data.
- * \note zRealloc() is not available in the kernel space.
- */
-#ifndef __KERNEL__
-#define zRealloc(m,t,n) (t *)realloc( (void *)m, sizeof(t)*(n) )
-#endif /* __KERNEL__ */
+#define zCopy(t,s,d) ( (t *)memcpy( d, s, sizeof(t) ) )
 
 /*! \brief clone a memory space.
  *
