@@ -781,7 +781,7 @@ __ZEDA_EXPORT int zGetDirFilename(char *path, char *dirname, char *filename, siz
  * ex. if \a name is "xxx.yyy.zzz", then the address
  * of the first "z" is returned.
  */
-__ZEDA_EXPORT char *zGetSuffix(char *name);
+__ZEDA_EXPORT char *zGetSuffix(const char *name);
 
 /*! \brief add a suffix to a filename.
  *

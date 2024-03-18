@@ -1,3 +1,4 @@
+2024. 3.19. Modified specification of zGetSuffix to accept a constant pointer to a string. [zeda_string]
 2024. 3.19. Modified ZTKInt and ZTKDouble to copy the current value in the ZTK parse tree to a buffer internally. [zeda_ztk]
 2024. 3.19. Modified specifications of _zFileStackNew, zFileStackPush, ZTKKeyFieldListNew, ZTKTagFieldListNew, _ZTKParseTag, _ZTKParse, and ZTKParse to accept a constant pointer for strings. [zeda_ztk]
 2024. 3.19. Modified specifications of zStrClone, zAddSuffix, and zOpenFile to accept a constant pointer for strings. [zeda_string]

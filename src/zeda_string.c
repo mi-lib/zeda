@@ -713,7 +713,7 @@ void zIndent(int n)
 #endif /* __KERNEL__ */
 
 /* get suffix of a pathname. */
-char *zGetSuffix(char *name)
+char *zGetSuffix(const char *name)
 {
   char *cp;
 
