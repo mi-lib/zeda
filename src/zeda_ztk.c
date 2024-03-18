@@ -19,7 +19,7 @@ void zFileStackInit(zFileStack *stack)
 }
 
 /* open a new file to be pushed to a file stack. */
-static zFileStack *_zFileStackNew(char *pathname)
+static zFileStack *_zFileStackNew(const char *pathname)
 {
   zFileStack *cp;
 
@@ -27,7 +27,7 @@ static zFileStack *_zFileStackNew(char *pathname)
     ZALLOCERROR();
     return NULL;
   }
-  if( !( cp->fp = zOpenZTKFile( pathname, (char *)"r" ) ) ){
+  if( !( cp->fp = zOpenZTKFile( pathname, "r" ) ) ){
     free( cp );
     return NULL;
   }
@@ -42,7 +42,7 @@ static zFileStack *_zFileStackNew(char *pathname)
 
 /* check if the given file is already in a file stack, and if not,
  * open the file and push it. */
-zFileStack *zFileStackPush(zFileStack *head, char *pathname)
+zFileStack *zFileStackPush(zFileStack *head, const char *pathname)
 {
   zFileStack *cp;
 
@@ -103,7 +103,7 @@ void ZTKKeyFieldFPrint(FILE *fp, ZTKKeyField *kf)
  *//* ******************************************************* */
 
 /* insert a new key field of ZTK format to a list. */
-ZTKKeyFieldListCell *ZTKKeyFieldListNew(ZTKKeyFieldList *list, char *key)
+ZTKKeyFieldListCell *ZTKKeyFieldListNew(ZTKKeyFieldList *list, const char *key)
 {
   ZTKKeyFieldListCell *cp;
 
@@ -153,7 +153,7 @@ void ZTKTagFieldFPrint(FILE *fp, ZTKTagField *tf)
  *//* ******************************************************* */
 
 /* insert a new tagged field of ZTK format to a list. */
-ZTKTagFieldListCell *ZTKTagFieldListNew(char buf[])
+ZTKTagFieldListCell *ZTKTagFieldListNew(const char *buf)
 {
   ZTKTagFieldListCell *cp;
 
@@ -215,7 +215,7 @@ void ZTKDestroy(ZTK *ztk)
 }
 
 /* parse a tag with a ZTK format processor. */
-static bool _ZTKParseTag(ZTK *ztk, char *buf)
+static bool _ZTKParseTag(ZTK *ztk, const char *buf)
 {
   if( !( ztk->tf_cp = ZTKTagFieldListNew( buf ) ) ) /* allocate a new tagged field */
     return false;
@@ -225,7 +225,7 @@ static bool _ZTKParseTag(ZTK *ztk, char *buf)
 }
 
 /* internally scan and parse a file into a tag-and-key list of a ZTK format processor. */
-bool _ZTKParse(ZTK *ztk, char *path)
+bool _ZTKParse(ZTK *ztk, const char *path)
 {
   bool ret = true;
   zFileStack *fs;
@@ -256,7 +256,7 @@ bool ZTKParseFP(ZTK *ztk, FILE *fp)
         continue;
       }
       if( !ztk->tf_cp )
-        if( !_ZTKParseTag( ztk, (char *)"" ) ) continue; /* tagged field unactivated. */
+        if( !_ZTKParseTag( ztk, "" ) ) continue; /* tagged field unactivated. */
       if( zFPostCheckKey( fp ) ){ /* token is a key. */
         if( !( ztk->kf_cp = ZTKKeyFieldListNew( &ztk->tf_cp->data.kflist, buf ) ) ){
           ret = false;
@@ -264,7 +264,7 @@ bool ZTKParseFP(ZTK *ztk, FILE *fp)
         }
       } else{
         if( !ztk->kf_cp ){ /* add and activate a null key field */
-          if( !( ztk->kf_cp = ZTKKeyFieldListNew( &ztk->tf_cp->data.kflist, (char *)"" ) ) ){
+          if( !( ztk->kf_cp = ZTKKeyFieldListNew( &ztk->tf_cp->data.kflist, "" ) ) ){
             ret = false;
             break;
           }
@@ -280,7 +280,7 @@ bool ZTKParseFP(ZTK *ztk, FILE *fp)
 }
 
 /* scan and parse a file into a tag-and-key list of a ZTK format processor. */
-bool ZTKParse(ZTK *ztk, char *path)
+bool ZTKParse(ZTK *ztk, const char *path)
 {
   ZTKInit( ztk );
   return _ZTKParse( ztk, path );
@@ -368,9 +368,11 @@ ZTKTagFieldListCell *ZTKTagRewind(ZTK *ztk)
 int ZTKInt(ZTK *ztk)
 {
   int retval;
+  char buf[BUFSIZ];
 
   if( !ZTKVal(ztk) ) return 0;
-  zSInt( ZTKVal(ztk), &retval );
+  strncpy( buf, ZTKVal(ztk), BUFSIZ );
+  zSInt( buf, &retval );
   ZTKValNext( ztk );
   return retval;
 }
@@ -379,9 +381,11 @@ int ZTKInt(ZTK *ztk)
 double ZTKDouble(ZTK *ztk)
 {
   double retval;
+  char buf[BUFSIZ];
 
   if( !ZTKVal(ztk) ) return 0;
-  zSDouble( ZTKVal(ztk), &retval );
+  strncpy( buf, ZTKVal(ztk), BUFSIZ );
+  zSDouble( buf, &retval );
   ZTKValNext( ztk );
   return retval;
 }

@@ -32,7 +32,7 @@ char *zStrCopy(char *dest, const char *src, size_t size)
 }
 
 /* clone a string. */
-char *zStrClone(char *str)
+char *zStrClone(const char *str)
 {
   return str ? (char *)zClone( str, strlen(str)+1 ) : NULL;
 }
@@ -721,7 +721,7 @@ char *zGetSuffix(char *name)
 }
 
 /* concatenate suffix to a pathname. */
-char *zAddSuffix(char *org, const char *suffix, char *dest, size_t size)
+char *zAddSuffix(const char *org, const char *suffix, char *dest, size_t size)
 {
   char *sfx;
 
@@ -792,7 +792,7 @@ int zGetDirFilename(char *path, char *dirname, char *filename, size_t size)
 }
 
 /* open file with specified suffix. */
-FILE *zOpenFile(char filename[], const char *suffix, const char *mode)
+FILE *zOpenFile(const char filename[], const char *suffix, const char *mode)
 {
   char fullname[BUFSIZ];
   FILE *fp;

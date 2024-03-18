@@ -124,7 +124,7 @@ ZDEF_ALLOC_FUNCTION_PROTOTYPE( type ){ \
  * Otherwise, the null pointer is returned.
  */
 #ifndef __KERNEL__
-__ZEDA_EXPORT void *zClone(void *src, size_t size);
+__ZEDA_EXPORT void *zClone(const void *src, size_t size);
 #endif /* __KERNEL__ */
 
 /*! \} */

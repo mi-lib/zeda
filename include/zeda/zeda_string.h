@@ -50,7 +50,7 @@ __ZEDA_EXPORT char *zStrCopy(char *dest, const char *src, size_t size);
  * When it fails to allocate memory or \a str is the null pointer,
  * the null pointer is returned.
  */
-__ZEDA_EXPORT char *zStrClone(char *str);
+__ZEDA_EXPORT char *zStrClone(const char *str);
 
 /*! \brief concatenate a string to another.
  *
@@ -797,7 +797,7 @@ __ZEDA_EXPORT char *zGetSuffix(char *name);
  * \a dest must have enough size for \a org, '.' and
  * the additional \a suffix.
  */
-__ZEDA_EXPORT char *zAddSuffix(char *org, const char *suffix, char *dest, size_t size);
+__ZEDA_EXPORT char *zAddSuffix(const char *org, const char *suffix, char *dest, size_t size);
 
 /*! \brief replace the suffix of a filename to a specified one.
  *
@@ -840,7 +840,7 @@ __ZEDA_EXPORT char *zCutSuffix(char *name);
  * zOpenFile() returns a pointer to the opened file if
  * succeeds. Otherwise, the null pointer is returned.
  */
-__ZEDA_EXPORT FILE *zOpenFile(char filename[], const char *suffix, const char *mode);
+__ZEDA_EXPORT FILE *zOpenFile(const char filename[], const char *suffix, const char *mode);
 
 /*! \brief default suffix of .ztk (Z-Tag-and-Key) file format. */
 #define ZEDA_ZTK_SUFFIX "ztk"

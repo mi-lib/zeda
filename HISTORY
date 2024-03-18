@@ -1,3 +1,8 @@
+2024. 3.19. Modified ZTKInt and ZTKDouble to copy the current value in the ZTK parse tree to a buffer internally. [zeda_ztk]
+2024. 3.19. Modified specifications of _zFileStackNew, zFileStackPush, ZTKKeyFieldListNew, ZTKTagFieldListNew, _ZTKParseTag, _ZTKParse, and ZTKParse to accept a constant pointer for strings. [zeda_ztk]
+2024. 3.19. Modified specifications of zStrClone, zAddSuffix, and zOpenFile to accept a constant pointer for strings. [zeda_string]
+2024. 3.19. Modified specification of zClone to accept a constant pointer for src. [zeda_misc]
+2024. 3.19. Included iostream from zeda_defs.h. [zeda_defs]
 2024. 3.15. Moved ZDECL_STRUCT, ZDECL_UNION, ZDEF_STRUCT, and ZDEF_UNION from zeda_misc to zeda_defs. [zeda_defs, zeda_misc]
 2024. 3.15. Added ZDECL_STRUCT and ZDECL_UNION (thanks to Kenta Imanishi). [zeda_misc]
 2024. 3.11. Renamed zIndexCopyNC to _zIndexCopyNC, and reimplemented zIndexCopyNC and zIndexCopy (thanks to Kenta Imanishi). [zeda_index]

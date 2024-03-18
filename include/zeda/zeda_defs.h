@@ -32,6 +32,7 @@
 
 #ifndef __KERNEL__
 # ifdef __cplusplus
+#  include <iostream>
 #  include <cstdio>
 #  include <cstdlib>
 #  include <cstring>
