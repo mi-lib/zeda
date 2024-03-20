@@ -717,7 +717,7 @@ char *zGetSuffix(const char *name)
 {
   char *cp;
 
-  return ( cp = strrchr( name, '.' ) ) ? cp+1 : NULL;
+  return ( cp = (char *)strrchr( name, '.' ) ) ? cp+1 : NULL;
 }
 
 /* concatenate suffix to a pathname. */
