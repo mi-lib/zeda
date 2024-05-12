@@ -6,3 +6,4 @@ tools/*-config
 app/*
 !app/*.c
 !app/makefile
+!app/config.app

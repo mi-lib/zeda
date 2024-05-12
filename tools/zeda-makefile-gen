@@ -158,6 +158,7 @@ output_make_app(){
     cat << EOF
 include ../libinfo
 include ../config
+include config.app
 PROJNAME_HYPHEN=\$(shell echo \${PROJNAME} | sed 's/_/-/')
 
 BINDIR=\$(PREFIX)/bin
@@ -166,8 +167,8 @@ INSTALL=install -m 755
 UNINSTALL=rm -f
 
 CONFIGTOOL=\$(PROJNAME_HYPHEN)-config
-LINK=\`\$(CONFIGTOOL) -l\`
-LINKCPP=\`\$(CONFIGTOOL) -lcpp\`
+LINK=\`\$(CONFIGTOOL) -l\` \$(APPLINK)
+LINKCPP=\`\$(CONFIGTOOL) -lcpp\` \$(APPLINKCPP)
 
 CC=gcc
 CXX=g++

@@ -1,3 +1,4 @@
+2024. 5.13. Added app/config.app, and modified zeda-makefile-gen to include config.app when building app. [app, tools]
 2024. 3.20. Debugged zGetSuffix to cast return value of strrchr. [zeda_string]
 2024. 3.19. Modified specification of zGetSuffix to accept a constant pointer to a string. [zeda_string]
 2024. 3.19. Modified ZTKInt and ZTKDouble to copy the current value in the ZTK parse tree to a buffer internally. [zeda_ztk]
