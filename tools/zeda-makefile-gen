@@ -52,8 +52,8 @@ EOF
 
 output_make_lib(){
     cat << EOF
-include ../libinfo
 include ../config
+include ../libinfo
 PROJNAME_UNDERSCORE=\$(shell echo \${PROJNAME} | sed 's/-/_/')
 
 ROOTDIR=..
@@ -116,8 +116,8 @@ EOF
 
 output_make_tools(){
     cat << EOF
-include ../libinfo
 include ../config
+include ../libinfo
 PROJNAME_HYPHEN=\$(shell echo \${PROJNAME} | sed 's/_/-/')
 
 BINDIR=\$(PREFIX)/bin
@@ -156,8 +156,8 @@ EOF
 
 output_make_app(){
     cat << EOF
-include ../libinfo
 include ../config
+include ../libinfo
 include config.app
 PROJNAME_HYPHEN=\$(shell echo \${PROJNAME} | sed 's/_/-/')
 
@@ -175,7 +175,15 @@ CXX=g++
 CFLAGS=$2 -Wall -O3 \`\$(CONFIGTOOL) --cflags\`
 TARGET=\$(shell ls *.c 2> /dev/null | xargs -I{} basename {} .c | xargs)
 
-all: \$(TARGET)
+CHKDEP=`which zeda-chkdep`
+
+all: dependency \$(TARGET)
+dependency:
+ifneq (\$(CHKDEP),)
+ifneq (\$(DEPENDENCY),)
+	@\$(CHKDEP) \$(DEPENDENCY) || exit 1
+endif
+endif
 
 %: %.c
 	@echo " CC	" $<
@@ -201,9 +209,9 @@ EOF
 
 output_make_default(){
     cat << EOF
-include libinfo
 CONFIG:=\$(shell test -e config || cp config.org config; echo config)
 include \$(CONFIG)
+include libinfo
 PROJNAME_UNDERSCORE=\$(shell echo \${PROJNAME} | sed 's/-/_/')
 
 ROOTDIR:=.
