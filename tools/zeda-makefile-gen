@@ -68,7 +68,6 @@ ifneq (\$(CHKDEP),)
 endif
 
 CC=gcc
-STD=c89
 CFLAGS=-Wall -fPIC -fno-common -O3 \$(INCLUDE) -funroll-loops -D __\$(shell echo \${PROJNAME_UNDERSCORE} | tr 'a-z' 'A-Z')_BUILD_DLL__=1
 ifneq (\$(STD),)
       CFLAGS+="-std=\$(STD)"

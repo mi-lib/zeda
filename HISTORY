@@ -1,3 +1,4 @@
+2024. 5.13. Added STD option in config.org, and modified zeda-makefile-gen not to set the default STD. [config, tools]
 2024. 5.13. Modified zeda-makefile-gen to include config before libinfo. [tools]
 2024. 5.13. Added app/config.app, and modified zeda-makefile-gen to include config.app when building app. [app, tools]
 2024. 3.20. Debugged zGetSuffix to cast return value of strrchr. [zeda_string]
