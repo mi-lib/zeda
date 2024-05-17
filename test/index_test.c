@@ -1,5 +1,20 @@
 #include <zeda/zeda.h>
 
+void assert_clone(void)
+{
+  zIndex src, dest;
+  int i, n = 10;
+
+  src = zIndexCreate( n );
+  for( i=0; i<n; i++ ){
+    zIndexSetElem( src, i, zRandI(-n,n) );
+  }
+  dest = zIndexClone( src );
+  zAssert( zIndexClone, zIndexIsEqual( src, dest ) );
+  zIndexFree( src );
+  zIndexFree( dest );
+}
+
 void assert_index_head_tail(void)
 {
   zIndex index;
@@ -113,6 +128,7 @@ void assert_index_sort(void)
 int main(void)
 {
   zRandInit();
+  assert_clone();
   assert_index_head_tail();
   assert_index_swap();
   assert_index_move();

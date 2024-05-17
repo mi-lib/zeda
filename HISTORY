@@ -1,3 +1,4 @@
+2024. 5.17. Added assert_clone in test/index_test.c. [test]
 2024. 5.17. Added zIndexClone. [zeda_index]
 2024. 5.13. Added DEPENDENCY in config.app. [app]
 2024. 5.13. Added STD option in config.org, and modified zeda-makefile-gen not to set the default STD. [config, tools]
