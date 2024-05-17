@@ -91,6 +91,15 @@ zIndex zIndexCopy(zIndex src, zIndex dest)
   return dest;
 }
 
+/* clone an integer vector. */
+zIndex zIndexClone(zIndex src)
+{
+  zIndex dest;
+
+  if( !( dest = zIndexAlloc( zIndexSizeNC(src) ) ) ) return NULL;
+  return zIndexCopyNC( src, dest );
+}
+
 /* free an integer vector. */
 void zIndexFree(zIndex idx)
 {

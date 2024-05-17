@@ -128,6 +128,16 @@ zIndex zIndexSetList(zIndex idx, ...);
 __ZEDA_EXPORT zIndex zIndexCopyNC(zIndex src, zIndex dest);
 __ZEDA_EXPORT zIndex zIndexCopy(zIndex src, zIndex dest);
 
+/*! \brief clone an integer vector.
+ *
+ * zIndexClone() clones an integer vector \a src, namely, it allocates an integer
+ * vector of the same size with \a src, and copies \a src to it.
+ * \return
+ * zIndexClone() returns a pointer to the cloned integer vector if it succeeds.
+ * Otherwise, it returns the null pointer.
+ */
+__ZEDA_EXPORT zIndex zIndexClone(zIndex src);
+
 /*! \brief free an array of integer values.
  *
  * zIndexFree() frees a zIndex instance \a idx,
