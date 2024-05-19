@@ -1,3 +1,4 @@
+2024. 5.19. Added zListDup. [list]
 2024. 5.17. Added assert_clone in test/index_test.c. [test]
 2024. 5.17. Added zIndexClone. [zeda_index]
 2024. 5.13. Added DEPENDENCY in config.app. [app]

@@ -190,6 +190,24 @@ zListClass(zList, zListCell, void*);
   } \
 } while(0)
 
+/*! \brief duplicate a list \a src to \a dest. \a t is the type of list cells. */
+#define zListDup(t,src,dest) do{\
+  t *__zlist_scp, *__zlist_new_cell; \
+ \
+  zListInit( dest ); \
+  zListForEach( src, __zlist_scp ){ \
+    if( !( __zlist_new_cell = zAlloc( t, 1 ) ) ){\
+      ZALLOCERROR(); \
+      break; \
+    } \
+    zCopy( t, __zlist_scp, __zlist_new_cell ); \
+    zListInsertHead( dest, __zlist_new_cell ); \
+  } \
+  if( zListSize( dest ) != zListSize( src ) ){ \
+    zListDestroy( t, dest ); \
+  } \
+} while(0)
+
 /*! \brief insert a list cell \a n to the next of \a c in a list \a l. */
 #define zListInsertNext(l,c,n) do{\
   zListCellInsertNext( c, n ); \
