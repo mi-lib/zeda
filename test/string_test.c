@@ -53,7 +53,29 @@ void assert_strmanip(void)
 #define WS_TEST_TXT "string_ws_test.txt"
 #define NUM_TEST_TXT "string_num_test.txt"
 
-void assert_token(void)
+void assert_sskipdelimiter(void)
+{
+  char *string1 = " ,;:|(){}\t\v\f\n\ra";
+  char *string2 = " ,;:|(){}\t\v\f\n\r";
+
+  zAssert( zSSkipDelimiter (regular case), *zSSkipDelimiter( string1 ) == 'a' );
+  zAssert( zSSkipDelimiter (irregular case), *zSSkipDelimiter( string2 ) == '\0' );
+}
+
+void assert_stris(void)
+{
+  char buf[BUFSIZ];
+
+  zAssert( zStrIsHex,
+    zStrIsHex( "0123456789abcdef" ) &&
+    zStrIsHex( "0123456789ABCDEF" ) &&
+    !zStrIsHex( "0 1 2 3 4 5 6 7 8 9 A B C D E F" ) &&
+    !zStrIsHex( "abcdefg" ) );
+  zAssert( zStrIsTag, zStrIsTag( "[tag]" ) );
+  zAssert( zExtractTag, zExtractTag( "[tag]", buf ) && !strcmp( buf, "tag" ) );
+}
+
+void assert_ftoken(void)
 {
   FILE *fp;
   char buf[BUFSIZ];
@@ -73,14 +95,32 @@ void assert_token(void)
     zFSkipWS( fp ) && zFToken( fp, buf, BUFSIZ ) && !strcmp( buf, "klmno" ) &&
     zFSkipWS( fp ) && zFToken( fp, buf, BUFSIZ ) && !strcmp( buf, "p" ) );
   fclose( fp );
+}
 
-  zAssert( zStrIsHex,
-    zStrIsHex( "0123456789abcdef" ) &&
-    zStrIsHex( "0123456789ABCDEF" ) &&
-    !zStrIsHex( "0 1 2 3 4 5 6 7 8 9 A B C D E F" ) &&
-    !zStrIsHex( "abcdefg" ) );
-  zAssert( zTokenIsTag, zTokenIsTag( "[tag]" ) );
-  zAssert( zExtractTag, zExtractTag( "[tag]", buf ) && !strcmp( buf, "tag" ) );
+void assert_stoken(void)
+{
+  char string[BUFSIZ];
+  char token[BUFSIZ];
+  bool result[6];
+
+  strcpy( string, "test1 test2\ttest3|\"test4 test5\";test6:\"test7 test8 " );
+  result[0] = strcmp( zSToken( string, token, BUFSIZ ), "test1" ) == 0;
+  result[1] = strcmp( zSToken( string, token, BUFSIZ ), "test2" ) == 0;
+  result[2] = strcmp( zSToken( string, token, BUFSIZ ), "test3" ) == 0;
+  result[3] = strcmp( zSToken( string, token, BUFSIZ ), "test4 test5" ) == 0;
+  result[4] = strcmp( zSToken( string, token, BUFSIZ ), "test6" ) == 0;
+  result[5] = strcmp( zSToken( string, token, BUFSIZ ), "test7 test8 " ) == 0;
+  zAssert( zSToken, result[0] && result[1] && result[2] && result[3] && result[4] && result[5] );
+  strcpy( string, "\"" );
+  result[0] = !*zSToken( string, token, BUFSIZ );
+  strcpy( string, "\"\"" );
+  result[1] = !*zSToken( string, token, BUFSIZ );
+  zAssert( zSToken (empty string case), result[0] && result[1] );
+  strcpy( string, "abcdefghijklmnopqrstuvwxyz" );
+  result[0] = strcmp( zSToken( string, token, 4 ), "abc" ) == 0;
+  result[1] = strcmp( zSToken( string, token, 4 ), "def" ) == 0;
+  result[2] = strcmp( zSToken( string, token, 4 ), "ghi" ) == 0;
+  zAssert( zSToken (short buffer case), result[0] && result[1] && result[2] );
 }
 
 void assert_num_token(void)
@@ -233,7 +273,10 @@ int main(void)
 {
   assert_strchr();
   assert_strmanip();
-  assert_token();
+  assert_sskipdelimiter();
+  assert_stris();
+  assert_ftoken();
+  assert_stoken();
   assert_num_token();
   assert_check_utf_bom();
   assert_pathname();

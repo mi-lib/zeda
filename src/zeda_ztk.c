@@ -244,7 +244,7 @@ bool ZTKParseFP(ZTK *ztk, FILE *fp)
 
   while( !feof( fp ) ){
     if( !zFToken( fp, buf, BUFSIZ ) ) break;
-    if( zTokenIsTag( buf ) ){
+    if( zStrIsTag( buf ) ){
       zExtractTag( buf, buf );
       if( !_ZTKParseTag( ztk, buf ) ){
         ret = false;

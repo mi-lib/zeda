@@ -202,7 +202,7 @@ __ZEDA_EXPORT char *zCutNL(char *str);
  * \return
  * zStrToUpper() returns a pointer \a dest.
  */
-__ZEDA_EXPORT char *zStrToUpper(char *src, size_t size, char *dest);
+__ZEDA_EXPORT char *zStrToUpper(const char *src, size_t size, char *dest);
 
 /*! \brief convert a string to the lowercase set.
  *
@@ -211,7 +211,7 @@ __ZEDA_EXPORT char *zStrToUpper(char *src, size_t size, char *dest);
  * \return
  * zStrToLower() returns a pointer \a dest.
  */
-__ZEDA_EXPORT char *zStrToLower(char *src, size_t size, char *dest);
+__ZEDA_EXPORT char *zStrToLower(const char *src, size_t size, char *dest);
 
 /* ********************************************************** */
 /*! \defgroup token tokenization.
@@ -226,7 +226,7 @@ __ZEDA_EXPORT char *zStrToLower(char *src, size_t size, char *dest);
  * zResetDelimiter, zIsDelimiter,
  * zFSkipDelimiter, zSSkipDelimiter
  */
-__ZEDA_EXPORT void zSetDelimiter(char s[]);
+__ZEDA_EXPORT void zSetDelimiter(const char s[]);
 
 /*! \brief reset a delimiter set.
  *
@@ -260,7 +260,7 @@ __ZEDA_EXPORT void zResetDelimiter(void);
  * \sa
  * zResetOperator, zIsOperator
  */
-__ZEDA_EXPORT void zSetOperator(char s[]);
+__ZEDA_EXPORT void zSetOperator(const char s[]);
 
 /*! \brief reset an operator set.
  *
@@ -299,7 +299,7 @@ __ZEDA_EXPORT void zResetOperator(void);
  * charactor '\\0'. Also, note that \a s is automatically
  * terminated by the null charactor if it is a string.
  */
-__ZEDA_EXPORT bool zIsIncludedChar(char c, char *s);
+__ZEDA_EXPORT bool zIsIncludedChar(char c, const char *s);
 
 /*! \brief check if a charactor is the whitespace.
  *
@@ -349,7 +349,7 @@ __ZEDA_EXPORT bool zIsOperator(char c);
  * hex-style. Namely, a string beginning with a sign
  * such as -ffff is not regarded as a number.
  */
-__ZEDA_EXPORT bool zStrIsHex(char *str);
+__ZEDA_EXPORT bool zStrIsHex(const char *str);
 
 /*! \brief skip whitespaces in a file.
  *
@@ -384,7 +384,7 @@ __ZEDA_EXPORT char *zSSkipWS(char *str);
  * is not included \a s. If the file reaches EOF, the null
  * charactor '\\0' is returned.
  */
-__ZEDA_EXPORT char zFSkipIncludedChar(FILE *fp, char *s);
+__ZEDA_EXPORT char zFSkipIncludedChar(FILE *fp, const char *s);
 
 /*! \brief skip a certain charactors in a string.
  *
@@ -396,7 +396,7 @@ __ZEDA_EXPORT char zFSkipIncludedChar(FILE *fp, char *s);
  * rest charactors of \a str are whitespaces, the null
  * pointer is returned.
  */
-__ZEDA_EXPORT char *zSSkipIncludedChar(char *str, char *s);
+__ZEDA_EXPORT char *zSSkipIncludedChar(char *str, const char *s);
 
 /*! \brief skip delimiter in a file.
  *
@@ -469,29 +469,23 @@ __ZEDA_EXPORT char *zFToken(FILE *fp, char *tkn, size_t size);
 
 /*! \brief tokenize a string.
  *
- * zSToken() acquires the first token in a string \a str and
- * copies it where \a tkn points. Token is a charactor set
- * segmented by a delimiter, charactors enclosed in quotation
- * marks or double quotation marks. The token size is limited
- * up to \a size. If the first quotation mark does not have
- * a corresponding closing mark, the token buffer is filled
- * with the rest charactors in the string.
+ * zSToken() acquires the first token in a string \a str and copies it where \a tkn points.
+ * Token is a set of charactors segmented by delimiters, or charactors enclosed in single/double
+ * quotation marks. \a size is the upper bound of the size of \a tkn. If the first quotation
+ * mark does not have the corresponding closing mark, the rest of charactors in \a str are
+ * copied to \a tkn.
  * \a str is overridden by the remaining string destructively.
  *
- * zSTokenSkim() also acquires the first token in a string
- * \a str and copies it where \a tkn points. The difference
- * from zSToken() is that it returns a pointer immediately
- * after \a tkn in \a str and does not destroy \a str.
+ * zSTokenSkim() also acquires the first token in \a str and copies it where \a tkn points.
+ * The difference from zSToken() is that it returns a pointer immediately after the token in
+ * \a str and does not destroy \a str.
  * \return
- * zSToken() returns a pointer \a tkn. If a token is
- * not found, the null pointer is returned.
+ * zSToken() always returns a pointer \a tkn.
  *
- * zSTokenSkim() returns a pointer immediately after \a tkn,
- * which corresponds to a charactor in \a str.
+ * zSTokenSkim() returns a pointer immediately after the token  in \a str.
  * \sa zSetDelimiter, zIsDelimiter, zFToken
  * \note
- * If the size of buffer pointed by \a tkn is less
- * than \a size, anything might happen.
+ * If the size of the buffer pointed by \a tkn is less than \a size, the token is truncated.
  */
 __ZEDA_EXPORT char *zSTokenSkim(char *str, char *tkn, size_t size);
 __ZEDA_EXPORT char *zSToken(char *str, char *tkn, size_t size);
@@ -599,19 +593,17 @@ __ZEDA_EXPORT void zSetTagIdent(char begin_ident, char end_ident);
 /*! \brief reset the tag identifiers. */
 __ZEDA_EXPORT void zResetTagIdent(void);
 
-/*! \brief check if a token is a tag.
+/*! \brief check if a string is a tag.
  *
- * zTokenIsTag() checks if a token pointed by \a tkn
- * is a tag, namely, \a tkn is bracketed or not.
+ * zStrIsTag() checks if a token pointed by \a str is a tag, namely, \a str is bracketed by [] or not.
  * \return
  * a boolean value is returned.
  */
-__ZEDA_EXPORT bool zTokenIsTag(char *tkn);
+__ZEDA_EXPORT bool zStrIsTag(const char *str);
 
 /*! \brief extract a tag.
  *
- * zExtractTag() extracts a keyword from a bracketted
- * token \a tag, and puts it where \a notag points.
+ * zExtractTag() extracts a keyword from a bracketted token \a tag, and puts it where \a notag points.
  * ex. suppose \a tag is "[xxx]", then \a notag is "xxx".
  * \return
  * a pointer \a notag is returned.
@@ -623,10 +615,8 @@ __ZEDA_EXPORT char *zExtractTag(char *tag, char *notag);
 
 /*! \brief count a number of tag tokens in a file.
  *
- * zFCountTag() counts bracketed tokens with a keyword
- * \a tag in a file \a fp.
- * After counting, the current position of \a fp is
- * rewinded to the head of file.
+ * zFCountTag() counts bracketed tokens with a keyword \a tag in a file \a fp.
+ * After counting, the current position of \a fp is rewinded to the head of file.
  * \return
  * The number of the counted tags in the file is returned.
  * \sa

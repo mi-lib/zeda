@@ -8,8 +8,8 @@
 #include <ctype.h>
 #include <stdarg.h>
 
-static const char *znullstring = "";
-char *zNullStr(void){ return (char *)znullstring; }
+static const char *zeda_nullstring = "";
+char *zNullStr(void){ return (char *)zeda_nullstring; }
 
 /* copy a string supposing the destination area has enough size. */
 char *zStrCopyNC(char *dest, const char *src)
@@ -166,7 +166,7 @@ char *zCutNL(char *str)
 }
 
 /* convert charactors in a string to uppercases. */
-static char *_zStrConv(char *src, size_t size, char *dest, int (* _method)(int))
+static char *_zStrConv(const char *src, size_t size, char *dest, int (* _method)(int))
 {
   char *cp;
   size_t s;
@@ -178,44 +178,44 @@ static char *_zStrConv(char *src, size_t size, char *dest, int (* _method)(int))
 }
 
 /* convert charactors in a string to uppercases. */
-char *zStrToUpper(char *src, size_t size, char *dest)
+char *zStrToUpper(const char *src, size_t size, char *dest)
 {
   return _zStrConv( src, size, dest, toupper );
 }
 
 /* convert charactors in a string to lowercases. */
-char *zStrToLower(char *src, size_t size, char *dest)
+char *zStrToLower(const char *src, size_t size, char *dest)
 {
   return _zStrConv( src, size, dest, tolower );
 }
 
 #ifndef __KERNEL__
-static char zdelimiter_default[] = {
+static const char zeda_delimiter_default[] = {
   EOF, '\t', '\v', '\f', '\n', '\r',
   ' ', ',', ';', ':', '|', '(', ')', '{', '}', '\0'
 };
-static char *zdelimiter = zdelimiter_default;
+static const char *zeda_delimiter = zeda_delimiter_default;
 
 /* specify a set of delimiters. */
-void zSetDelimiter(char s[]){ zdelimiter = s; }
+void zSetDelimiter(const char s[]){ zeda_delimiter = s; }
 
 /* reset a set of delimiters. */
-void zResetDelimiter(void){ zSetDelimiter( zdelimiter_default ); }
+void zResetDelimiter(void){ zSetDelimiter( zeda_delimiter_default ); }
 
-static char zoperator_default[] = {
+static const char zeda_operator_default[] = {
   '!', '%', '&', '*', '+', '-', '/', '<', '=', '>',
   '?', '@', '\\', '^', '~', '\0',
 };
-static char *zoperator = zoperator_default;
+static const char *zeda_operator = zeda_operator_default;
 
 /* specify a set of operators. */
-void zSetOperator(char s[]){ zoperator = s; }
+void zSetOperator(const char s[]){ zeda_operator = s; }
 
 /* reset a set of operators. */
-void zResetOperator(void){ zSetOperator( zoperator_default ); }
+void zResetOperator(void){ zSetOperator( zeda_operator_default ); }
 
 /* check if a charactor is included in a specified set. */
-bool zIsIncludedChar(char c, char *s)
+bool zIsIncludedChar(char c, const char *s)
 {
   while( *s ) if( *s++ == c ) return true;
   return false;
@@ -224,17 +224,17 @@ bool zIsIncludedChar(char c, char *s)
 /* check if a charactor is a delimiter. */
 bool zIsDelimiter(char c)
 {
-  return zIsIncludedChar( c, zdelimiter );
+  return zIsIncludedChar( c, zeda_delimiter );
 }
 
 /* check if a charactor is an operator. */
 bool zIsOperator(char c)
 {
-  return zIsIncludedChar( c, zoperator );
+  return zIsIncludedChar( c, zeda_operator );
 }
 
 /* check if a string represents a hexadecimal number. */
-bool zStrIsHex(char *str)
+bool zStrIsHex(const char *str)
 {
   for( ; *str; str++ )
     if( !isxdigit( *str ) ) return false;
@@ -261,7 +261,7 @@ char *zSSkipWS(char *str)
 }
 
 /* skip certain charactors in a file. */
-char zFSkipIncludedChar(FILE *fp, char *s)
+char zFSkipIncludedChar(FILE *fp, const char *s)
 {
   char c;
 
@@ -273,7 +273,7 @@ char zFSkipIncludedChar(FILE *fp, char *s)
 }
 
 /* skip certain charactors in a string. */
-char *zSSkipIncludedChar(char *str, char *s)
+char *zSSkipIncludedChar(char *str, const char *s)
 {
   for( ; *str && zIsIncludedChar(*str,s); str++ );
   return str;
@@ -282,13 +282,13 @@ char *zSSkipIncludedChar(char *str, char *s)
 /* skip delimiters in a file. */
 char zFSkipDelimiter(FILE *fp)
 {
-  return zFSkipIncludedChar( fp, zdelimiter );
+  return zFSkipIncludedChar( fp, zeda_delimiter );
 }
 
 /* skip delimiters in a string. */
 char *zSSkipDelimiter(char *str)
 {
-  return zSSkipIncludedChar( str, zdelimiter );
+  return zSSkipIncludedChar( str, zeda_delimiter );
 }
 
 static char zcommentident = ZDEFAULT_COMMENT_IDENT;
@@ -340,25 +340,27 @@ static char *_zFString(FILE *fp, char *tkn, size_t size)
   return tkn;
 }
 
-/* get a string from string and return a pointer immediately after the string. */
+/* get a quoted string from a vanilla string and return a pointer immediately after the string. */
 static char *_zSString(char *str, char *tkn, size_t size)
 {
   uint i;
   char *sp;
 
-  size--; /* for the null charactor */
   for( sp=str, i=0; *sp; sp++, i++ ){
-    if( zIsQuotation( *sp ) && ( i == 0 || tkn[i-1] != '\\' ) )
+    if( zIsQuotation( *sp ) && ( i == 0 || tkn[i-1] != '\\' ) ){
+      sp++;
       break;
+    }
     if( i >= size ){
       ZRUNWARN( ZEDA_WARN_TOOLNG_STR );
-      i = _zMax( size, 0 );
+      i = size - 1;
+      sp--;
       break;
     }
     tkn[i] = *sp;
   }
   tkn[i] = '\0';
-  return sp+1;
+  return sp;
 }
 
 /* get a token in a file. */
@@ -393,23 +395,20 @@ char *zSTokenSkim(char *str, char *tkn, size_t size)
   uint i;
   char *sp;
 
-  if( !( *tkn = *( sp = zSSkipDelimiter( str ) ) ) ) return sp;
-  if( zIsQuotation( *sp ) ){
-    zStrCopyNC( str, sp+1 );
-    return _zSString( str, tkn, size );
+  if( !*( sp = zSSkipDelimiter( str ) ) ){ /* empty string case */
+    *tkn = '\0';
+    return sp;
   }
-  if( *sp++ == '\0' ){
-    *str = '\0';
-    return NULL;
-  }
-  size--;
-  for( i=1; *sp && !zIsDelimiter(*sp); i++ ){
+  if( zIsQuotation( *sp ) ) /* quoted string case */
+    return _zSString( sp+1, tkn, size );
+  for( i=0; *sp && !zIsDelimiter(*sp); sp++, i++ ){
     if( i >= size ){
       ZRUNWARN( ZEDA_WARN_TOOLNG_TKN );
-      i = _zMax( size, 0 );
+      i = size - 1;
+      sp--;
       break;
     }
-    tkn[i] = *sp++;
+    tkn[i] = *sp;
   }
   tkn[i] = '\0';
   return sp;
@@ -589,6 +588,7 @@ char *zSNumToken(char *str, char *tkn, size_t size)
 char *zFInt(FILE *fp, int *val)
 {
   char buf[BUFSIZ], *ret;
+
   if( ( ret = zFToken( fp, buf, BUFSIZ ) ) ) *val = atoi( buf );
   return ret;
 }
@@ -596,15 +596,18 @@ char *zFInt(FILE *fp, int *val)
 /* get an integer value from string. */
 char *zSInt(char *str, int *val)
 {
-  char buf[BUFSIZ], *ret;
-  if( ( ret = zSToken( str, buf, BUFSIZ ) ) ) *val = atoi( buf );
-  return ret;
+  char buf[BUFSIZ];
+
+  if( !*zSToken( str, buf, BUFSIZ ) ) return NULL;
+  *val = atoi( buf );
+  return str;
 }
 
 /* get a double-precision floating-point value from file. */
 char *zFDouble(FILE *fp, double *val)
 {
   char buf[BUFSIZ], *ret;
+
   if( ( ret = zFToken( fp, buf, BUFSIZ ) ) ) *val = atof( buf );
   return ret;
 }
@@ -612,9 +615,11 @@ char *zFDouble(FILE *fp, double *val)
 /* get a double-precision floating-point value from string. */
 char *zSDouble(char *str, double *val)
 {
-  char buf[BUFSIZ], *ret;
-  if( ( ret = zSToken( str, buf, BUFSIZ ) ) ) *val = atof( buf );
-  return ret;
+  char buf[BUFSIZ];
+
+  if( !*zSToken( str, buf, BUFSIZ ) ) return NULL;
+  *val = atof( buf );
+  return str;
 }
 
 /* check byte order marker of UTF-8/16 encode files. */
@@ -644,22 +649,22 @@ zUTFType zFCheckUTFBOM(FILE *fp)
 
 /* for tag-and-key format */
 
-static char ztagbeginident = ZDEFAULT_TAG_BEGIN_IDENT;
-static char ztagendident   = ZDEFAULT_TAG_END_IDENT;
+static char zeda_tag_begin_ident = ZDEFAULT_TAG_BEGIN_IDENT;
+static char zeda_tag_end_ident   = ZDEFAULT_TAG_END_IDENT;
 
 /* specify the tag identifiers. */
 void zSetTagIdent(char begin_ident, char end_ident){
-  ztagbeginident = begin_ident;
-  ztagendident   = end_ident;
+  zeda_tag_begin_ident = begin_ident;
+  zeda_tag_end_ident   = end_ident;
 }
 
-/* reset the tag identifiers. */
+/* reset the tag identifiers to default values. */
 void zResetTagIdent(void){ zSetTagIdent( ZDEFAULT_TAG_BEGIN_IDENT, ZDEFAULT_TAG_END_IDENT ); }
 
-/* check if a token is a tag. */
-bool zTokenIsTag(char *tkn)
+/* check if a string is a tag. */
+bool zStrIsTag(const char *str)
 {
-  return tkn && ( tkn[0] == ztagbeginident && tkn[strlen(tkn)-1] == ztagendident )
+  return str && ( str[0] == zeda_tag_begin_ident && str[strlen(str)-1] == zeda_tag_end_ident )
     ? true : false;
 }
 
@@ -673,10 +678,10 @@ char *zExtractTag(char *tag, char *notag)
   return notag;
 }
 
-static char zkeyident = ZDEFAULT_KEY_IDENT;
+static char zeda_key_ident = ZDEFAULT_KEY_IDENT;
 
 /* specify the key identifier. */
-void zSetKeyIdent(char ident){ zkeyident = ident; }
+void zSetKeyIdent(char ident){ zeda_key_ident = ident; }
 
 /* reset the key identifier. */
 void zResetKeyIdent(void){ zSetKeyIdent( ZDEFAULT_KEY_IDENT ); }
@@ -687,7 +692,7 @@ bool zFPostCheckKey(FILE *fp)
   char c;
 
   while( ( c = fgetc( fp ) ) != EOF ){
-    if( c == zkeyident ) return true;
+    if( c == zeda_key_ident ) return true;
     if( !zIsDelimiter( c ) ){
       ungetc( c, fp );
       break;
