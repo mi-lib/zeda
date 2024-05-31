@@ -1,3 +1,4 @@
+2024. 5.31. Removed test.sh. [test]
 2024. 5.29. Changed the license from LGPL-3 to MIT license. [all]
 2024. 5.29. Debugged zSInt and zSDouble. [zeda_string]
 2024. 5.29. Mmodified the specification of zSToken to always return the pointer to the buffer for token. [zeda_string]
