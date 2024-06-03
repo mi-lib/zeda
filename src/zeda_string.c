@@ -34,7 +34,7 @@ char *zStrCopy(char *dest, const char *src, size_t size)
 /* clone a string. */
 char *zStrClone(const char *str)
 {
-  return str ? (char *)zClone( str, strlen(str)+1 ) : NULL;
+  return str ? zClone( str, char, strlen(str)+1 ) : NULL;
 }
 
 /* concatenate a string with another. */

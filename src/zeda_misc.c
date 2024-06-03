@@ -36,7 +36,7 @@ double zBound(double x, double b1, double b2)
  * ********************************************************** */
 
 /* clone a memory space. */
-void *zClone(const void *src, size_t size)
+void *zCloneMem(const void *src, size_t size)
 {
   void *dest;
 

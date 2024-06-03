@@ -71,33 +71,32 @@ __ZEDA_EXPORT double zBound(double x, double b1, double b2);
  * \{ *//* ************************************************** */
 
 /*!
- * \def zAlloc(t,n)
- * allocate memory for \a n data of a data type \a type.
+ * \def zAlloc(type,nmemb)
+ * allocate memory for \a nmemb data of a data type \a type.
  *
- * \def zAllocZero(t,n)
- * allocate memory for \a n data of a data type \a type and clear it by zero.
+ * \def zAllocZero(type,nmemb)
+ * allocate memory for \a nmemb data of a data type \a type and clear it by zero.
  *
- * \def zFree(m)
- * free memory allocated at \a m.
- * \a m is reset to be the null pointer after freeing the memory.
+ * \def zFree(mem)
+ * free memory allocated at \a mem.
+ * \a mem is reset to be the null pointer after freeing the memory.
  */
-/* NOTE: now zAlloc is implemented with calloc but will be replaced
- * by malloc for faster operations.
+/* NOTE: zAlloc is implemented with calloc now but might be replaced with malloc for faster operations.
  */
-#define zAlloc(t,n)     ( (n) == 0 ? NULL : (t *)calloc( (n), sizeof(t) ) )
-#define zAllocZero(t,n) ( (n) == 0 ? NULL : (t *)calloc( (n), sizeof(t) ) )
+#define zAlloc(type,nmemb)     ( (nmemb) == 0 ? NULL : (type *)calloc( (nmemb), sizeof(type) ) )
+#define zAllocZero(type,nmemb) ( (nmemb) == 0 ? NULL : (type *)calloc( (nmemb), sizeof(type) ) )
 
-#define zFree(m)        do{ if( (m) ){ free( m ); (m) = NULL; } } while(0)
+#define zFree(mem)             do{ if( (mem) ){ free( mem ); (mem) = NULL; } } while(0)
 
 /*!
- * \def zRealloc(m,t,n)
- * reallocate memory where \a m points.
- * \a n is the number of data to be reallocated.
+ * \def zRealloc(mem,type,nmemb)
+ * reallocate memory where \a mem points.
+ * \a nmemb is the number of data to be reallocated.
  * \a type is the type of the data.
  * \note zRealloc() is not available in the kernel space.
  */
 #ifndef __KERNEL__
-#define zRealloc(m,t,n) (t *)realloc( (void *)m, sizeof(t)*(n) )
+#define zRealloc(mem,type,nmemb) (type *)realloc( (void *)mem, sizeof(type)*(nmemb) )
 #endif /* __KERNEL__ */
 
 #define ZDEF_ALLOC_FUNCTION_PROTOTYPE(type) type *type##Alloc(void)
@@ -112,19 +111,24 @@ ZDEF_ALLOC_FUNCTION_PROTOTYPE( type ){ \
 }
 
 /*!
- * \def zCopy(t,s,d)
+ * \def zCopy(type,src,dest)
  * copy \a s to \a d, where both are supposed to be types of \a t.
  */
-#define zCopy(t,s,d) ( (t *)memcpy( d, s, sizeof(t) ) )
+#define zCopy(type,src,dest) ( (type *)memcpy( dest, src, sizeof(type) ) )
 
 /*! \brief clone a memory space.
  *
- * zClone() clones a memory space \a src with a size \a size and
- * returns a pointer to the newly allocated memory if succeeding.
- * Otherwise, the null pointer is returned.
+ * zCloneMem() clones a memory space pointed by \a src with a size \a size.
+ *
+ * zClone() clones a memory space of type \a type pointed by \a src. \a nmemb is the number of members
+ * to be cloned.
+ * \return
+ * zCloneMem() and zClone() return a pointer to the newly allocated memory if they succeed. Otherwise,
+ * they return the null pointer.
  */
 #ifndef __KERNEL__
-__ZEDA_EXPORT void *zClone(const void *src, size_t size);
+__ZEDA_EXPORT void *zCloneMem(const void *src, size_t size);
+#define zClone(src,type,nmemb) (type *)zCloneMem( src, sizeof(type)*nmemb )
 #endif /* __KERNEL__ */
 
 /*! \} */
