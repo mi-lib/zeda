@@ -6,7 +6,7 @@ char *generate_string_one(int len)
   char *str;
 
   len = zRandI( 1, len );
-  if( !( str = malloc( sizeof(char)*len ) ) ) return NULL;
+  if( !( str = (char*)malloc( sizeof(char)*len ) ) ) return NULL;
   for( i=0; i<len; i++ ){
     str[i] = zRandI( '!', '~' );
   }

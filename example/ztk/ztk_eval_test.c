@@ -40,12 +40,12 @@ void *eval_expression(void *obj, int i, void *arg, ZTK *ztk)
 void *eval_operation(void *obj, int i, void *arg, ZTK *ztk)
 {
   if( ZTKValCmp( ztk, "print" ) ){
-    print_expression( obj );
+    print_expression( (expression_t*)obj );
   } else
   if( ZTKValCmp( ztk, "scan" ) ){
     printf( "enter an expression > " );
     if( scanf( "%lf %c %lf", &((expression_t *)obj)->val1, &((expression_t *)obj)->op, &((expression_t *)obj)->val2 ) == 3 )
-      print_expression( obj );
+      print_expression( (expression_t*)obj );
   }
   return obj;
 }
