@@ -28,14 +28,15 @@ void list_print(zIntList *list, char *name)
 int main(void)
 {
   zIntList l1, l2;
+  char list1[] = "list1";
+  char list2[] = "list2";
 
   list_create( &l1, 0, 5 );
-  char list1[] = "list1";
   list_print( &l1, list1 );
 
   printf( ">> duplicate\n" );
   zListDup( zIntListCell, &l1, &l2 );
-  list_print( &l2, "list2" );
+  list_print( &l2, list2 );
 
   zListDestroy( zIntListCell, &l1 );
   zListDestroy( zIntListCell, &l2 );

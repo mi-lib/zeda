@@ -1,3 +1,4 @@
+2024. 7.10. Corrected list/list_dup_test and ztk/ztk_eval_test in example (thanks to Daishi Kaneta). [example]
 2024. 6. 3. Modified misc_test to correspond to the redefinition of zClone. [test]
 2024. 6. 3. Renamed zClone to zCloneMem, and redefined zClone to specify type of the memory to be allocated. [zeda_misc, zeda_string]
 2024. 5.31. Removed test.sh. [test]

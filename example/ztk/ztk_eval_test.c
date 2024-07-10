@@ -26,13 +26,15 @@ void print_expression(expression_t *expression)
   printf( "%g %c %g = %g\n", expression->val1, expression->op, expression->val2, calculate( expression ) );
 }
 
+#define exp_obj ((expression_t *)obj)
+
 /* a callback function to pick up an operator and operands. */
 void *eval_expression(void *obj, int i, void *arg, ZTK *ztk)
 {
-  ((expression_t *)obj)->val1 = ZTKDouble(ztk);
-  ((expression_t *)obj)->op = ZTKVal(ztk)[0];
+  exp_obj->val1 = ZTKDouble(ztk);
+  exp_obj->op = ZTKVal(ztk)[0];
   ZTKValNext(ztk);
-  ((expression_t *)obj)->val2 = ZTKDouble(ztk);
+  exp_obj->val2 = ZTKDouble(ztk);
   return obj;
 }
 
@@ -40,12 +42,12 @@ void *eval_expression(void *obj, int i, void *arg, ZTK *ztk)
 void *eval_operation(void *obj, int i, void *arg, ZTK *ztk)
 {
   if( ZTKValCmp( ztk, "print" ) ){
-    print_expression( (expression_t*)obj );
+    print_expression( exp_obj );
   } else
   if( ZTKValCmp( ztk, "scan" ) ){
     printf( "enter an expression > " );
-    if( scanf( "%lf %c %lf", &((expression_t *)obj)->val1, &((expression_t *)obj)->op, &((expression_t *)obj)->val2 ) == 3 )
-      print_expression( (expression_t*)obj );
+    if( scanf( "%lf %c %lf", &exp_obj->val1, &exp_obj->op, &exp_obj->val2 ) == 3 )
+      print_expression( exp_obj );
   }
   return obj;
 }
