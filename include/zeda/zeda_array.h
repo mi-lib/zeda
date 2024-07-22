@@ -48,6 +48,7 @@ __BEGIN_DECLS
 struct array_t{\
   int size;\
   cell_t *buf;\
+  array_t() : size{0}, buf{NULL} {}\
 }
 #else
 #define zArrayClass(array_t,cell_t) \
