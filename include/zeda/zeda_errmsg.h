@@ -31,14 +31,16 @@
 
 #define ZEDA_WARN_INDEX_SIZMIS         "index has only %d components, while specified size is %d"
 
-#define ZEDA_WARN_CSV_FIELD_EMPTY      "field empty"
+#define ZEDA_WARN_CSV_FIELD_EMPTY      "field empty in a CSV file"
+
+#define ZEDA_WARN_ZTK_UNKNOWN_VAL      "unknown value %s in the field of tag=%s key=%s"
 
 #define ZEDA_WARN_ZTK_INCLUDE_DUP      "%s: duplicate file inclusion, skipped."
 #define ZEDA_WARN_ZTK_NOT_TAGGED       "not in a tagged field, skipped."
-#define ZEDA_WARN_ZTK_DUPDEF           "duplicate entry of tag [%s], skipped."
+#define ZEDA_WARN_ZTK_DUPDEF           "duplicate entry of tag=%s, skipped."
 
-#define ZEDA_WARN_ZTK_TOOMANY_TAGS     "too many tag %s specified, skipped."
-#define ZEDA_WARN_ZTK_TOOMANY_KEYS     "too many key %s specified, skipped."
+#define ZEDA_WARN_ZTK_TOOMANY_TAGS     "too many tags %s specified, skipped."
+#define ZEDA_WARN_ZTK_TOOMANY_KEYS     "too many keys %s specified, skipped."
 
 #define ZEDA_WARN_UNKNOWNOPT           "unknown option: %s"
 
@@ -62,6 +64,8 @@
 
 #define ZEDA_ERR_CSV_INVALID           "invalid CSV file"
 #define ZEDA_ERR_CSV_INVALID_LINE      "out-of-range line number %d specified"
+
+#define ZEDA_ERR_ZTK_UNKNOWN_VAL       "unknown value %s in the field of tag=%s key=%s"
 
 #define ZEDA_ERR_FATAL                 "fatal error! - please report to the author"
 
