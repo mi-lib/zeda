@@ -460,9 +460,15 @@ void _ZTKPrpKeyFPrint(FILE *fp, void *obj, ZTKPrp prp[], int num)
 
   for( i=0; i<num; i++ )
     if( prp[i]._fprint ){
-      for( j=0; j<prp[i].num; j++ ){
-        fprintf( fp, "%s: ", prp[i].str );
-        prp[i]._fprint( fp, j, obj );
+      if( prp[i]._fprint != NULL ){
+        if( prp[i].num > 0 ){
+          for( j=0; j<prp[i].num; j++ ){
+            fprintf( fp, "%s: ", prp[i].str );
+            prp[i]._fprint( fp, j, obj );
+          }
+        } else{
+          prp[i]._fprint( fp, 1, obj );
+        }
       }
     }
 }
@@ -505,9 +511,15 @@ void _ZTKPrpTagFPrint(FILE *fp, void *obj, ZTKPrp prp[], int num)
 
   for( i=0; i<num; i++ )
     if( prp[i]._fprint ){
-      for( j=0; j<prp[i].num; j++ ){
-        fprintf( fp, "[%s]\n", prp[i].str );
-        prp[i]._fprint( fp, j, obj );
+      if( prp[i]._fprint != NULL ){
+        if( prp[i].num > 0 ){
+          for( j=0; j<prp[i].num; j++ ){
+            fprintf( fp, "[%s]\n", prp[i].str );
+            prp[i]._fprint( fp, j, obj );
+          }
+        } else {
+          prp[i]._fprint( fp, 1, obj );
+        }
       }
     }
 }
