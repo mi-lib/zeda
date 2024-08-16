@@ -456,13 +456,16 @@ void *_ZTKEvalKey(void *obj, void *arg, ZTK *ztk, ZTKPrp prp[], int num)
 /* print out a key field of a ZTK format processor based on a ZTK property. */
 void _ZTKPrpKeyFPrint(FILE *fp, void *obj, ZTKPrp prp[], int num)
 {
-  int i, j;
+  int i, j, k;
 
   for( i=0; i<num; i++ )
     if( prp[i]._fprint ){
       for( j=0; j<prp[i].num; j++ ){
         fprintf( fp, "%s: ", prp[i].str );
-        prp[i]._fprint( fp, j, obj );
+        if( !prp[i]._fprint( fp, j, obj ) ){
+          for( k=strlen(prp[i].str)+2; k>0; k-- )
+            fputc( '\b', fp );
+        }
       }
     }
 }

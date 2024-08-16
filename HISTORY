@@ -1,3 +1,5 @@
+2024. 8.16. Defined _Bool as bool in C89 standard. [zeda_defs]
+2024. 8.16. Modified return type of _fprint member of ZTKPrp to bool, and modified _ZTKPrpKeyFPrint. [zeda_ztk]
 2024. 7.25. Defined ZEDA_WARN_ZTK_UNKNOWN_VAL and ZEDA_ERR_ZTK_UNKNOWN_VAL. [zeda_errmsg]
 2024. 7.23. Added constructor to zArrayClass for C++ extension. [zeda_array]
 2024. 7.10. Corrected list/list_dup_test and ztk/ztk_eval_test in example (thanks to Daishi Kaneta). [example]

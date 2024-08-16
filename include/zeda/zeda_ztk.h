@@ -171,12 +171,12 @@ __ZEDA_EXPORT void ZTKFPrint(FILE *fp, ZTK *ztk);
 /*! \struct ZTKPrp
  * \brief properties of a class described by a set of tag/key string and call-back functions.
  *//* ******************************************************* */
-typedef struct{
+ZDEF_STRUCT( __ZEDA_CLASS_EXPORT, ZTKPrp ){
   const char *str; /*!< a string for a tag/key */
   int num;   /*!< the number of tags/keys */
   void *(* _eval)(void *, int, void *, ZTK *); /*!< ZTK evaluation function */
-  void (* _fprint)(FILE *, int, void *); /*!< print out function */
-} ZTKPrp;
+  bool (* _fprint)(FILE *, int, void *); /*!< print out function */
+};
 
 /* evaluate a key field of a ZTK format processor based on a ZTK property. */
 __ZEDA_EXPORT void *_ZTKEvalKey(void *obj, void *arg, ZTK *ztk, ZTKPrp prp[], int num);
