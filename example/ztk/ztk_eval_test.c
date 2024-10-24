@@ -52,10 +52,15 @@ void *eval_operation(void *obj, int i, void *arg, ZTK *ztk)
   return obj;
 }
 
+bool generate_expression(void *obj, int i, void *arg, ZTK *ztk)
+{
+  if( exp_obj->op
+}
+
 /* a list of keys to which callback functions are associated. */
 ZTKPrp ztk_prp_job[] = {
-  { "expression", 1, eval_expression, NULL },
-  { "operation", 1, eval_operation, NULL },
+  { "expression", 1, eval_expression, generate_expression, NULL },
+  { "operation", 1, eval_operation, NULL, NULL },
 };
 
 /* a callback function to execute a job corresponding to each tag field. */
@@ -67,25 +72,34 @@ void *job_exec(void *obj, int i, void *arg, ZTK *ztk)
 
 /* a list of tags to which callback functions are associated. */
 ZTKPrp ztk_prp_calculator[] = {
-  { "job", -1, job_exec, NULL },
+  { "job", -1, job_exec, NULL, NULL },
 };
 
 /* evaluate a ZTK processor. */
-void eval_test(ZTK *ztk)
+void eval_test(ZTK *ztk, expression_t *expression)
 {
-  expression_t expression;
-  ZTKEvalTag( &expression, NULL, ztk, ztk_prp_calculator );
+  ZTKEvalTag( expression, NULL, ztk, ztk_prp_calculator );
+}
+
+void output_test(expression_t *exporession)
+{
+  ZTKPrp *prp_calculator;
+
+  if( !( prp_calculator = ZTKPrpDup( ztk_prp_calculator ) ) ) return NULL;
+
 }
 
 int main(int argc, char *argv[])
 {
   ZTK ztk;
+  expression_t expression;
 
   ZTKInit( &ztk );
   ZTKParse( &ztk, "calcurator.ztk" );
   /* activate the following line in order to see an image of the parsed tree. */
   ZTKPrint( &ztk );
-  eval_test( &ztk );
+  eval_test( &ztk, expression );
+  output_test( &expression );
   ZTKDestroy( &ztk );
   return 0;
 }

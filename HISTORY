@@ -1,3 +1,6 @@
+2024.10.24. Added _ZTKPrpFPrint and ZTKPrpFPrint. [zeda_ztk]
+2024.10.24. Added _ZTKPrpSetNum and ZTKPrpSetNum. [zeda_ztk]
+2024.10.24. Modified prototypes of _ZTKPrpDup, _ZTKEvalKey, _ZTKPrpKeyFPrint, _ZTKEvalTag, and _ZTKPrpTagFPrint to accept an instance of size_t as the number of properties of the array. [zeda_ztk]
 2024.10.24. Added ZTKAddInt and ZTKAddDouble. [zeda_ztk]
 2024.10.24. Added ZTKAddKey and ZTKAddVal. [zeda_ztk]
 2024.10.24. Modified prototypes of zStrListAdd, zStrListFind, and zStrListFindAndAdd to accept a pointer to const char. [zeda_strlist]
