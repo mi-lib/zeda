@@ -124,7 +124,7 @@ bool __zeda_echo = true;
 int zA2X_c(char c)
 {
   if( !isxdigit(c) ){
-    ZRUNERROR( ZEDA_WARN_INVHEX, c );
+    ZRUNERROR( ZEDA_WARN_INVALID_HEX, c );
     return 0;
   }
   return isdigit(c) ? c - '0' : tolower(c) - 'a' + 10;

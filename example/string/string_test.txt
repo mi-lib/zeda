@@ -1,0 +1,19 @@
+%
+%%%%
+%%%%%%%%%
+
+% comment1
+%%%  comment2
+
+string1
+string2		%comment3
+string3, string4: string5; (string6)
+"separated string 7"
+
+empty-string9 ""
+
+'quoted string 10'
+
+empty-quoted-string11 ''
+
+%comment 4

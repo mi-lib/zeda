@@ -112,6 +112,13 @@ __ZEDA_EXPORT ZTK *ZTKInit(ZTK *ztk);
 /*! \brief destroy a ZTK format processor. */
 __ZEDA_EXPORT void ZTKDestroy(ZTK *ztk);
 
+/*! \brief add a new tag to a ZTK format processor. */
+__ZEDA_EXPORT bool ZTKAddTag(ZTK *ztk, const char *buf);
+/*! \brief add a new key to the current tag field of a ZTK format processor. */
+__ZEDA_EXPORT bool ZTKAddKey(ZTK *ztk, const char *key);
+/*! \brief add a new value to the current key field of a ZTK format processor. */
+__ZEDA_EXPORT bool ZTKAddVal(ZTK *ztk, const char *val);
+
 /*! \brief scan and parse a file stream into a tag-and-key list of a ZTK format processor. */
 __ZEDA_EXPORT bool ZTKParseFP(ZTK *ztk, FILE *fp);
 
@@ -177,6 +184,10 @@ ZDEF_STRUCT( __ZEDA_CLASS_EXPORT, ZTKPrp ){
   void *(* _eval)(void *, int, void *, ZTK *); /*!< ZTK evaluation function */
   bool (* _fprint)(FILE *, int, void *); /*!< print out function */
 };
+
+/*! \brief duplicate an array of ZTKKeyIO. */
+__ZEDA_EXPORT ZTKPrp *_ZTKPrpDup(ZTKPrp *src, int num);
+#define ZTKPrpDup(src) _ZTKPrpDup( src, sizeof(src)/sizeof(ZTKPrp) )
 
 /* evaluate a key field of a ZTK format processor based on a ZTK property. */
 __ZEDA_EXPORT void *_ZTKEvalKey(void *obj, void *arg, ZTK *ztk, ZTKPrp prp[], int num);

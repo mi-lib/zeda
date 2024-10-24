@@ -319,48 +319,135 @@ char zFSkipComment(FILE *fp)
 #endif /* __KERNEL__ */
 
 #ifndef __KERNEL__
-/* get a string from file. */
-static char *_zFString(FILE *fp, char *tkn, size_t size)
+/* get a fenced token from file. */
+static char *_zFFencedToken(FILE *fp, char *tkn, size_t size, const char begin_ident, const char end_ident)
 {
   uint i;
 
   if( size <= 1 ) return NULL;
+  if( tkn[0] != begin_ident ) return NULL;
   size--; /* for the null charactor */
-  for( i=0; !feof(fp); i++ ){
+  for( i=1; !feof(fp); ){
     if( i >= size ){
-      ZRUNWARN( ZEDA_WARN_TOOLNG_STR );
+      ZRUNWARN( ZEDA_WARN_TOOLONG_STRING );
       i = _zMax( size, 0 );
       break;
     }
-    tkn[i] = fgetc( fp );
-    if( zIsQuotation( tkn[i] ) && ( i == 0 || tkn[i-1] != '\\' ) )
-      break;
+    tkn[i++] = fgetc( fp );
+    if( tkn[i-1] == end_ident && tkn[i-2] != '\\' ) break;
   }
   tkn[i] = '\0';
   return tkn;
 }
 
-/* get a quoted string from a vanilla string and return a pointer immediately after the string. */
-static char *_zSString(char *str, char *tkn, size_t size)
+/* get a fenced token from a vanilla string and return a pointer immediately after the string. */
+static char *_zSFencedToken(char *str, char *tkn, size_t size, const char begin_ident, const char end_ident)
 {
   uint i;
   char *sp;
 
-  for( sp=str, i=0; *sp; sp++, i++ ){
-    if( zIsQuotation( *sp ) && ( i == 0 || tkn[i-1] != '\\' ) ){
-      sp++;
-      break;
-    }
+  if( *str != begin_ident ) return NULL;
+  tkn[0] = *str;
+  for( sp=str+1, i=1; *sp; ){
     if( i >= size ){
-      ZRUNWARN( ZEDA_WARN_TOOLNG_STR );
+      ZRUNWARN( ZEDA_WARN_TOOLONG_STRING );
       i = size - 1;
       sp--;
       break;
     }
-    tkn[i] = *sp;
+    tkn[i++] = *sp++;
+    if( tkn[i-1] == end_ident && tkn[i-2] != '\\' ) break;
   }
   tkn[i] = '\0';
   return sp;
+}
+
+/* unfence a fenced string. */
+static char *_zStrUnfence(const char *src, char *dest, const char begin_ident, const char end_ident)
+{
+  char *cp;
+
+  if( *src == begin_ident ) src++;
+  zStrCopyNC( dest, src );
+  if( ( cp = strrchr( dest, end_ident ) ) ) *cp = '\0';
+  return dest;
+}
+
+static char *_zFFencedTokenAndUnfence(FILE *fp, char *tkn, size_t size, const char begin_ident, const char end_ident)
+{
+  if( !_zFFencedToken( fp, tkn, size, begin_ident, end_ident ) ) return NULL;
+  return _zStrUnfence( tkn, tkn, begin_ident, end_ident );
+}
+
+static char *_zSFencedTokenAndUnfence(char *str, char *tkn, size_t size, const char begin_ident, const char end_ident)
+{
+  char *ret;
+
+  if( !( ret = _zSFencedToken( str, tkn, size, begin_ident, end_ident ) ) ) return NULL;
+  _zStrUnfence( tkn, tkn, begin_ident, end_ident );
+  return ret;
+}
+
+/* get a quoted string from file. */
+#define _zFString(fp,tkn,size) _zFFencedTokenAndUnfence( fp, tkn, size, '\"', '\"' )
+#define _zFQuote(fp,tkn,size)  _zFFencedTokenAndUnfence( fp, tkn, size, '\'', '\'' )
+
+/* get a quoted string from a vanilla string and return a pointer immediately after the string. */
+#define _zSString(str,tkn,size) _zSFencedTokenAndUnfence( str, tkn, size, '\"', '\"' )
+#define _zSQuote(str,tkn,size)  _zSFencedTokenAndUnfence( str, tkn, size, '\'', '\'' )
+
+/* for ZTK (Z's tag-and-key) format */
+
+static char zeda_tag_begin_ident = ZDEFAULT_TAG_BEGIN_IDENT;
+static char zeda_tag_end_ident   = ZDEFAULT_TAG_END_IDENT;
+
+/* specify the tag identifiers. */
+void zSetTagIdent(char begin_ident, char end_ident){
+  zeda_tag_begin_ident = begin_ident;
+  zeda_tag_end_ident   = end_ident;
+}
+
+/* reset the tag identifiers to default values. */
+void zResetTagIdent(void){ zSetTagIdent( ZDEFAULT_TAG_BEGIN_IDENT, ZDEFAULT_TAG_END_IDENT ); }
+
+/* get a tagged token. */
+#define _zFTag(fp,tkn,size) _zFFencedToken( fp, tkn, size, zeda_tag_begin_ident, zeda_tag_end_ident )
+#define _zSTag(fp,tkn,size) _zSFencedToken( fp, tkn, size, zeda_tag_begin_ident, zeda_tag_end_ident )
+
+/* check if a string is a tag. */
+bool zStrIsTag(const char *str)
+{
+  return str && ( str[0] == zeda_tag_begin_ident && str[strlen(str)-1] == zeda_tag_end_ident )
+    ? true : false;
+}
+
+/* extract a tagged part from string. */
+char *zExtractTag(char *tag, char *notag)
+{
+  return _zStrUnfence( tag, notag, zeda_tag_begin_ident, zeda_tag_end_ident );
+}
+
+static char zeda_key_ident = ZDEFAULT_KEY_IDENT;
+
+/* specify the key identifier. */
+void zSetKeyIdent(char ident){ zeda_key_ident = ident; }
+
+/* reset the key identifier. */
+void zResetKeyIdent(void){ zSetKeyIdent( ZDEFAULT_KEY_IDENT ); }
+
+/* check if the last token is a key. */
+bool zFPostCheckKey(FILE *fp)
+{
+  char c;
+
+  while( ( c = fgetc( fp ) ) != EOF ){
+    if( c == zeda_key_ident ) return true;
+    if( !zIsDelimiter( c ) ){
+      ungetc( c, fp );
+      break;
+    }
+  }
+  return false;
 }
 
 /* get a token in a file. */
@@ -371,12 +458,14 @@ char *zFToken(FILE *fp, char *tkn, size_t size)
   *tkn = '\0'; /* initialize buffer */
   if( !zFSkipComment( fp ) ) return NULL;
   *tkn = fgetc( fp );
-  if( zIsQuotation( *tkn ) )
-    return _zFString( fp, tkn, size );
-  size--;
+  /* check if token is fenced */
+  if( _zFString( fp, tkn, size ) || _zFQuote( fp, tkn, size ) || _zFTag( fp, tkn, size ) )
+    return tkn;
+
+  size--; /* token already has one charactor. */
   for( i=1; !feof(fp); i++ ){
     if( i >= size ){
-      ZRUNWARN( ZEDA_WARN_TOOLNG_TKN );
+      ZRUNWARN( ZEDA_WARN_TOOLONG_TOKEN );
       i = _zMax( size, 0 );
       break;
     }
@@ -393,17 +482,20 @@ char *zFToken(FILE *fp, char *tkn, size_t size)
 char *zSTokenSkim(char *str, char *tkn, size_t size)
 {
   uint i;
-  char *sp;
+  char *sp, *sp_next;
 
   if( !*( sp = zSSkipDelimiter( str ) ) ){ /* empty string case */
     *tkn = '\0';
     return sp;
   }
-  if( zIsQuotation( *sp ) ) /* quoted string case */
-    return _zSString( sp+1, tkn, size );
+  /* check if token is fenced */
+  if( ( sp_next = _zSString( sp, tkn, size ) ) ) return sp_next;
+  if( ( sp_next = _zSQuote( sp, tkn, size ) ) ) return sp_next;
+  if( ( sp_next = _zSTag( sp, tkn, size ) ) ) return sp_next;
+
   for( i=0; *sp && !zIsDelimiter(*sp); sp++, i++ ){
     if( i >= size ){
-      ZRUNWARN( ZEDA_WARN_TOOLNG_TKN );
+      ZRUNWARN( ZEDA_WARN_TOOLONG_TOKEN );
       i = size - 1;
       sp--;
       break;
@@ -429,7 +521,7 @@ char *zFIntToken(FILE *fp, char *tkn, size_t size)
   size--;
   for( i=0; ; i++ ){
     if( i >= size ){
-      ZRUNWARN( ZEDA_WARN_TOOLNG_NUM );
+      ZRUNWARN( ZEDA_WARN_TOOLONG_NUM );
       i = _zMax( size, 0 );
       break;
     }
@@ -522,7 +614,7 @@ char *zSIntToken(char *str, char *tkn, size_t size)
   size--;
   for( sp=str, i=0; isdigit(*sp); tkn[i++]=*sp++ )
     if( i >= size ){
-      ZRUNWARN( ZEDA_WARN_TOOLNG_NUM );
+      ZRUNWARN( ZEDA_WARN_TOOLONG_NUM );
       i = _zMax( size, 0 );
       break;
     }
@@ -647,60 +739,6 @@ zUTFType zFCheckUTFBOM(FILE *fp)
 }
 #undef _c_eq
 
-/* for tag-and-key format */
-
-static char zeda_tag_begin_ident = ZDEFAULT_TAG_BEGIN_IDENT;
-static char zeda_tag_end_ident   = ZDEFAULT_TAG_END_IDENT;
-
-/* specify the tag identifiers. */
-void zSetTagIdent(char begin_ident, char end_ident){
-  zeda_tag_begin_ident = begin_ident;
-  zeda_tag_end_ident   = end_ident;
-}
-
-/* reset the tag identifiers to default values. */
-void zResetTagIdent(void){ zSetTagIdent( ZDEFAULT_TAG_BEGIN_IDENT, ZDEFAULT_TAG_END_IDENT ); }
-
-/* check if a string is a tag. */
-bool zStrIsTag(const char *str)
-{
-  return str && ( str[0] == zeda_tag_begin_ident && str[strlen(str)-1] == zeda_tag_end_ident )
-    ? true : false;
-}
-
-/* extract a tagged part from string. */
-char *zExtractTag(char *tag, char *notag)
-{
-  char *cp;
-
-  zStrCopyNC( notag, tag+1 );
-  if( ( cp = strrchr( notag, ']' ) ) ) *cp = '\0';
-  return notag;
-}
-
-static char zeda_key_ident = ZDEFAULT_KEY_IDENT;
-
-/* specify the key identifier. */
-void zSetKeyIdent(char ident){ zeda_key_ident = ident; }
-
-/* reset the key identifier. */
-void zResetKeyIdent(void){ zSetKeyIdent( ZDEFAULT_KEY_IDENT ); }
-
-/* check if the last token is a key. */
-bool zFPostCheckKey(FILE *fp)
-{
-  char c;
-
-  while( ( c = fgetc( fp ) ) != EOF ){
-    if( c == zeda_key_ident ) return true;
-    if( !zIsDelimiter( c ) ){
-      ungetc( c, fp );
-      break;
-    }
-  }
-  return false;
-}
-
 #ifndef __KERNEL__
 /* indent. */
 void zFIndent(FILE *fp, int n)
@@ -708,7 +746,7 @@ void zFIndent(FILE *fp, int n)
   fprintf( fp, "%*s", n, "" );
 }
 #else
-/* indent(for kernel module). */
+/* indent (for kernel module). */
 void zIndent(int n)
 {
   int i;

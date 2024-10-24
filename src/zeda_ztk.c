@@ -214,14 +214,26 @@ void ZTKDestroy(ZTK *ztk)
   ZTKTagFieldListDestroy( &ztk->tflist );
 }
 
-/* parse a tag with a ZTK format processor. */
-static bool _ZTKParseTag(ZTK *ztk, const char *buf)
+/* add a new tag to a ZTK format processor. */
+bool ZTKAddTag(ZTK *ztk, const char *tag)
 {
-  if( !( ztk->tf_cp = ZTKTagFieldListNew( buf ) ) ) /* allocate a new tagged field */
+  if( !( ztk->tf_cp = ZTKTagFieldListNew( tag ) ) ) /* allocate a new tagged field */
     return false;
   zListInsertHead( &ztk->tflist, ztk->tf_cp );
   ztk->kf_cp = NULL; /* unactivate the key field */
   return true;
+}
+
+/* add a new key to the current tag field of a ZTK format processor. */
+bool ZTKAddKey(ZTK *ztk, const char *key)
+{
+  return ( ztk->kf_cp = ZTKKeyFieldListNew( &ztk->tf_cp->data.kflist, key ) ) ? true : false;
+}
+
+/* add a new value to the current key field of a ZTK format processor. */
+bool ZTKAddVal(ZTK *ztk, const char *val)
+{
+  return ZTKKeyFieldAddVal( &ztk->kf_cp->data, val ) ? true : false;
 }
 
 /* internally scan and parse a file into a tag-and-key list of a ZTK format processor. */
@@ -246,7 +258,7 @@ bool ZTKParseFP(ZTK *ztk, FILE *fp)
     if( !zFToken( fp, buf, BUFSIZ ) ) break;
     if( zStrIsTag( buf ) ){
       zExtractTag( buf, buf );
-      if( !_ZTKParseTag( ztk, buf ) ){
+      if( !ZTKAddTag( ztk, buf ) ){
         ret = false;
         break;
       }
@@ -256,20 +268,20 @@ bool ZTKParseFP(ZTK *ztk, FILE *fp)
         continue;
       }
       if( !ztk->tf_cp )
-        if( !_ZTKParseTag( ztk, "" ) ) continue; /* tagged field unactivated. */
+        if( !ZTKAddTag( ztk, "" ) ) continue; /* tagged field unactivated. */
       if( zFPostCheckKey( fp ) ){ /* token is a key. */
-        if( !( ztk->kf_cp = ZTKKeyFieldListNew( &ztk->tf_cp->data.kflist, buf ) ) ){
+        if( !ZTKAddKey( ztk, buf ) ){
           ret = false;
           break;
         }
       } else{
         if( !ztk->kf_cp ){ /* add and activate a null key field */
-          if( !( ztk->kf_cp = ZTKKeyFieldListNew( &ztk->tf_cp->data.kflist, "" ) ) ){
+          if( !ZTKAddKey( ztk, "" ) ){
             ret = false;
             break;
           }
         }
-        if( !ZTKKeyFieldAddVal( &ztk->kf_cp->data, buf ) ){ /* token is a value. */
+        if( !ZTKAddVal( ztk, buf ) ){ /* token is a value. */
           ret = false;
           break;
         }
@@ -418,9 +430,21 @@ void ZTKFPrint(FILE *fp, ZTK *ztk)
 }
 
 /* ********************************************************** */
-/*! \struct ZTKPrp
- * \brief properties of a class described by a set of tag/key string and call-back functions.
- *//* ******************************************************* */
+/* ZTKPrp
+ * ********************************************************** */
+
+/*! \brief duplicate an array of ZTKPrp. */
+ZTKPrp *_ZTKPrpDup(ZTKPrp *src, int num)
+{
+  ZTKPrp *dest;
+
+  if( !( dest = zAlloc( ZTKPrp, num ) ) ){
+    ZALLOCERROR();
+    return NULL;
+  }
+  memcpy( dest, src, sizeof(ZTKPrp)*num );
+  return dest;
+}
 
 /* evaluate a key field of a ZTK format processor based on a ZTK property. */
 void *_ZTKEvalKey(void *obj, void *arg, ZTK *ztk, ZTKPrp prp[], int num)
@@ -469,6 +493,10 @@ void _ZTKPrpKeyFPrint(FILE *fp, void *obj, ZTKPrp prp[], int num)
       }
     }
 }
+
+/* ********************************************************** */
+/* ZTKTagIO
+ * ********************************************************** */
 
 /* evaluate a tag field of a ZTK format processor based on a ZTK property. */
 void *_ZTKEvalTag(void *obj, void *arg, ZTK *ztk, ZTKPrp prp[], int num)

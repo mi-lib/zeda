@@ -84,7 +84,7 @@ zIndex zIndexCopyNC(zIndex src, zIndex dest)
 zIndex zIndexCopy(zIndex src, zIndex dest)
 {
   if( zIndexSize(src) != zIndexSize(dest) ){
-    ZRUNERROR( ZEDA_ERR_SIZMIS_INDEX );
+    ZRUNERROR( ZEDA_ERR_INDEX_SIZEMISMATCH );
     return NULL;
   }
   _zIndexCopyNC( src, dest );
@@ -242,13 +242,13 @@ zIndex zIndexFScan(FILE *fp)
   zIndex idx;
 
   if( !zFInt( fp, &size ) ){
-    ZRUNERROR( ZEDA_ERR_SIZUNFOUND_INDEX );
+    ZRUNERROR( ZEDA_ERR_INDEX_SIZENOTSPECIFIED );
     return NULL;
   }
   if( !( idx = zIndexCreate( size ) ) ) return NULL;
   for( i=0; i<size; i++ ){
     if( zFInt( fp, zArrayElemNC(idx,i) ) ){
-      ZRUNERROR( ZEDA_WARN_INDEX_SIZMIS, i, size );
+      ZRUNERROR( ZEDA_WARN_INDEX_OVERSIZE, i, size );
       break;
     }
   }

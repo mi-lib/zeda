@@ -8,7 +8,7 @@
 #include <stdarg.h>
 
 /* add a string to the head of a list of strings. */
-zStrListCell *zStrListAdd(zStrList *list, char *str)
+zStrListCell *zStrListAdd(zStrList *list, const char *str)
 {
   zStrListCell *cell;
 
@@ -65,7 +65,7 @@ void zStrListGetPtr(zStrList *strlist, int n, ...)
 }
 
 /* find a string in a list of strings. */
-zStrListCell *zStrListFind(zStrList *list, char *str)
+zStrListCell *zStrListFind(zStrList *list, const char *str)
 {
   zStrListCell *cp;
 
@@ -76,7 +76,7 @@ zStrListCell *zStrListFind(zStrList *list, char *str)
 }
 
 /* find a string in a list or strings, and if not found, add it to the head of the list. */
-zStrListCell *zStrListFindAndAdd(zStrList *list, char *str)
+zStrListCell *zStrListFindAndAdd(zStrList *list, const char *str)
 {
   zStrListCell *cp;
 

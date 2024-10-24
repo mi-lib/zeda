@@ -61,7 +61,7 @@ ulong bit_rotate(ulong val, int bitwidth, int d)
   ulong mask;
 
   if( bitwidth > (int)( sizeof(ulong) << 3 ) )
-    ZRUNWARN( ZEDA_WARN_TOOLNG_BITWIDTH );
+    ZRUNWARN( ZEDA_WARN_TOOLONG_BITWIDTH );
   val &= ( mask = ( 1 << bitwidth ) - 1 ); /* masking */
   if( ( d %= bitwidth ) < 0 ) d += bitwidth;
   return ( ( val << d ) & mask ) | ( val >> ( bitwidth - d ) );
