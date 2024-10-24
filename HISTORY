@@ -1,3 +1,4 @@
+2024.10.24. Added ZTKAddInt and ZTKAddDouble. [zeda_ztk]
 2024.10.24. Added ZTKAddKey and ZTKAddVal. [zeda_ztk]
 2024.10.24. Modified prototypes of zStrListAdd, zStrListFind, and zStrListFindAndAdd to accept a pointer to const char. [zeda_strlist]
 2024.10.24. Renamed _ZTKParseTag to ZTKAddTag. [zeda_ztk]

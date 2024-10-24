@@ -236,6 +236,22 @@ bool ZTKAddVal(ZTK *ztk, const char *val)
   return ZTKKeyFieldAddVal( &ztk->kf_cp->data, val ) ? true : false;
 }
 
+/* add a new integer value to the current key field of a ZTK format processor. */
+bool ZTKAddInt(ZTK *ztk, const int val)
+{
+  char buf[BUFSIZ];
+  sprintf( buf, "%d", val );
+  return ZTKAddVal( ztk, buf );
+}
+
+/* add a new double-precision floating-point value value to the current key field of a ZTK format processor. */
+bool ZTKAddDouble(ZTK *ztk, const double val)
+{
+  char buf[BUFSIZ];
+  sprintf( buf, "%.10g", val );
+  return ZTKAddVal( ztk, buf );
+}
+
 /* internally scan and parse a file into a tag-and-key list of a ZTK format processor. */
 bool _ZTKParse(ZTK *ztk, const char *path)
 {
@@ -493,10 +509,6 @@ void _ZTKPrpKeyFPrint(FILE *fp, void *obj, ZTKPrp prp[], int num)
       }
     }
 }
-
-/* ********************************************************** */
-/* ZTKTagIO
- * ********************************************************** */
 
 /* evaluate a tag field of a ZTK format processor based on a ZTK property. */
 void *_ZTKEvalTag(void *obj, void *arg, ZTK *ztk, ZTKPrp prp[], int num)
