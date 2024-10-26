@@ -1,5 +1,7 @@
+2024.10.26. Added ZTKKeyFieldListHeadDestroy and ZTKDelKey. [zeda_ztk]
+2024.10.26. Modified _ZTKPrpKeyFPrint to skip unnecessary key fields. [zeda_ztk]
 2024.10.24. Added _ZTKPrpFPrint and ZTKPrpFPrint. [zeda_ztk]
-2024.10.24. Added _ZTKPrpSetNum and ZTKPrpSetNum. [zeda_ztk]
+2024.10.24. Added _ZTKPrpSetNum and ZTKPrpSetNum. [zeda_ztk, zeda_errmsg]
 2024.10.24. Modified prototypes of _ZTKPrpDup, _ZTKEvalKey, _ZTKPrpKeyFPrint, _ZTKEvalTag, and _ZTKPrpTagFPrint to accept an instance of size_t as the number of properties of the array. [zeda_ztk]
 2024.10.24. Added ZTKAddInt and ZTKAddDouble. [zeda_ztk]
 2024.10.24. Added ZTKAddKey and ZTKAddVal. [zeda_ztk]

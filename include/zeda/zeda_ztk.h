@@ -64,6 +64,9 @@ zListClass( ZTKKeyFieldList, ZTKKeyFieldListCell, ZTKKeyField );
 /* insert a new key field of ZTK format to a list. */
 __ZEDA_EXPORT ZTKKeyFieldListCell *ZTKKeyFieldListNew(ZTKKeyFieldList *list, const char *key);
 
+/* destroy the head of a list of key fields of ZTK format. */
+__ZEDA_EXPORT void ZTKKeyFieldListHeadDestroy(ZTKKeyFieldList *list);
+
 /* destroy a list of key fields of ZTK format. */
 __ZEDA_EXPORT void ZTKKeyFieldListDestroy(ZTKKeyFieldList *list);
 
@@ -116,6 +119,8 @@ __ZEDA_EXPORT void ZTKDestroy(ZTK *ztk);
 __ZEDA_EXPORT bool ZTKAddTag(ZTK *ztk, const char *buf);
 /*! \brief add a new key to the current tag field of a ZTK format processor. */
 __ZEDA_EXPORT bool ZTKAddKey(ZTK *ztk, const char *key);
+/*! \brief delete a key at the head of the current tag field of a ZTK format processor. */
+__ZEDA_EXPORT void ZTKDelKey(ZTK *ztk);
 /*! \brief add a new value to the current key field of a ZTK format processor. */
 __ZEDA_EXPORT bool ZTKAddVal(ZTK *ztk, const char *val);
 /*! \brief add a new integer value to the current key field of a ZTK format processor. */
@@ -186,9 +191,6 @@ ZDEF_STRUCT( __ZEDA_CLASS_EXPORT, ZTKPrp ){
   const char *str; /*!< a string for a tag/key */
   int num; /*!< the number of tags/keys */
   void *(* _eval)(void *, int, void *, ZTK *); /*!< ZTK evaluation function */
-#if 0
-  bool (* _generate)(void *, int, void *, ZTK *); /*!< ZTK generation function */
-#endif
   bool (* _fprint)(FILE *, int, void *); /*!< print out function */
 };
 

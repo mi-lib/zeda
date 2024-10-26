@@ -121,17 +121,22 @@ ZTKKeyFieldListCell *ZTKKeyFieldListNew(ZTKKeyFieldList *list, const char *key)
   return cp;
 }
 
-/* destroy a list of key fields of ZTK format. */
-void ZTKKeyFieldListDestroy(ZTKKeyFieldList *list)
+/* destroy the head of a list of key fields of ZTK format. */
+void ZTKKeyFieldListHeadDestroy(ZTKKeyFieldList *list)
 {
   ZTKKeyFieldListCell *cp;
 
-  while( !zListIsEmpty( list ) ){
-    zListDeleteHead( list, &cp );
-    free( cp->data.key );
-    zStrListDestroy( &cp->data.vallist );
-    free( cp );
-  }
+  zListDeleteHead( list, &cp );
+  free( cp->data.key );
+  zStrListDestroy( &cp->data.vallist );
+  free( cp );
+}
+
+/* destroy a list of key fields of ZTK format. */
+void ZTKKeyFieldListDestroy(ZTKKeyFieldList *list)
+{
+  while( !zListIsEmpty( list ) )
+    ZTKKeyFieldListHeadDestroy( list );
 }
 
 /* ********************************************************** */
@@ -228,6 +233,13 @@ bool ZTKAddTag(ZTK *ztk, const char *tag)
 bool ZTKAddKey(ZTK *ztk, const char *key)
 {
   return ( ztk->kf_cp = ZTKKeyFieldListNew( &ztk->tf_cp->data.kflist, key ) ) ? true : false;
+}
+
+/* delete a key at the head of the current tag field of a ZTK format processor. */
+void ZTKDelKey(ZTK *ztk)
+{
+  ZTKKeyFieldListHeadDestroy( &ztk->tf_cp->data.kflist );
+  ztk->kf_cp = zListIsEmpty( &ztk->tf_cp->data.kflist ) ? NULL : zListHead( &ztk->tf_cp->data.kflist );
 }
 
 /* add a new value to the current key field of a ZTK format processor. */
@@ -472,9 +484,6 @@ ZTKPrp *_ZTKPrpDup(ZTKPrp *src, size_t size)
   return dest;
 }
 
-#define ZEDA_ERR_ZTK_PRP_UNMODIFIABLE "not permitted to modify the number of fields %s"
-#define ZEDA_WARN_ZTK_PRP_NOTFOUND    "manipulator of field %s not found"
-
 /* set number of a ZTK property with the specified string. */
 bool _ZTKPrpSetNum(ZTKPrp *prp, size_t size, const char *str, int num)
 {
@@ -529,17 +538,22 @@ void *_ZTKEvalKey(void *obj, void *arg, ZTK *ztk, ZTKPrp prp[], size_t size)
 void _ZTKPrpKeyFPrint(FILE *fp, void *obj, ZTKPrp prp[], size_t size)
 {
   int i, j, k;
+  fpos_t pos;
 
   for( i=0; i<size; i++ )
-    if( prp[i]._fprint ){
+    if( prp[i]._fprint )
       for( j=0; j<prp[i].num; j++ ){
+        if( fp != stdout && fp != stderr )
+          fgetpos( fp, &pos );
         fprintf( fp, "%s: ", prp[i].str );
         if( !prp[i]._fprint( fp, j, obj ) ){
-          for( k=strlen(prp[i].str)+2; k>0; k-- )
-            fputc( '\b', fp );
+          if( fp != stdout && fp != stderr )
+            fsetpos( fp, &pos );
+          else
+            for( k=strlen(prp[i].str)+2; k>0; k-- )
+              fputc( '\b', fp );
         }
       }
-    }
 }
 
 /* evaluate a tag field of a ZTK format processor based on a ZTK property. */
