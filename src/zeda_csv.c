@@ -25,7 +25,7 @@ char *zCSVGoToLine(zCSV *csv, int i)
     ZRUNERROR( ZEDA_ERR_CSV_INVALID_LINE, i );
     return NULL;
   }
-  fseek( csv->fp, csv->pos[i], SEEK_SET );
+  fsetpos( csv->fp, &csv->pos[i] );
   return zCSVGetLine( csv );
 }
 
@@ -104,7 +104,7 @@ bool zCSVGetDoubleN(zCSV *csv, double val[], int n)
 /* rewind the stream of a CSV file. */
 void zCSVRewind(zCSV *csv)
 {
-  fseek( csv->fp, csv->pos[0], SEEK_SET );
+  fsetpos( csv->fp, &csv->pos[0] );
 }
 
 /* count the number of fields per line. */
@@ -128,13 +128,13 @@ zCSV *zCSVOpen(zCSV *csv, char filename[])
     return NULL;
   for( csv->nl=0; fgets( csv->buf, BUFSIZ, csv->fp ); )
     if( csv->buf[0] != '\%' ) csv->nl++;
-  if( !( csv->pos = zAlloc( long, csv->nl ) ) ){
+  if( !( csv->pos = zAlloc( fpos_t, csv->nl ) ) ){
     ZALLOCERROR();
     return NULL;
   }
   rewind( csv->fp );
   for( i=0; i<csv->nl; ){
-    csv->pos[i] = ftell( csv->fp );
+    fgetpos( csv->fp, &csv->pos[i] );
     if( !fgets( csv->buf, BUFSIZ, csv->fp ) ){
       ZRUNERROR( ZEDA_ERR_CSV_INVALID );
       return NULL;

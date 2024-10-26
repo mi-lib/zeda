@@ -1,3 +1,6 @@
+2024.10.26. Reimplemented zFileSize. [zeda_misc, test]
+2024.10.26. Modified _zFSignedToken and zFNumToken to use fgetpos and fsetpos instead of ftell and fseek. [zeda_string]
+2024.10.26. Modified member pos of zCSV as a pointer of fpos_t. [zeda_csv]
 2024.10.26. Added ZTKKeyFieldListHeadDestroy and ZTKDelKey. [zeda_ztk]
 2024.10.26. Modified _ZTKPrpKeyFPrint to skip unnecessary key fields. [zeda_ztk]
 2024.10.24. Added _ZTKPrpFPrint and ZTKPrpFPrint. [zeda_ztk]

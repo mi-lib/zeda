@@ -67,15 +67,14 @@ int fpeek(FILE *fp)
 /* count the size of a file. */
 size_t zFileSize(FILE *fp)
 {
-  long pos, pos_beg, pos_end;
+  size_t size;
+  fpos_t pos;
 
-  pos = ftell( fp );
-  fseek( fp, 0, SEEK_SET );
-  pos_beg = ftell( fp );
+  fgetpos( fp, &pos );
   fseek( fp, 0, SEEK_END );
-  pos_end = ftell( fp );
-  fseek( fp, pos, SEEK_SET );
-  return pos_end - pos_beg;
+  size = ftell( fp );
+  fsetpos( fp, &pos );
+  return size;
 }
 #endif /* __KERNEL__ */
 

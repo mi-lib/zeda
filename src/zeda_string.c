@@ -565,9 +565,9 @@ static char *_zFUnsignedToken(FILE *fp, char *tkn, size_t size)
 static char *_zFSignedToken(FILE *fp, char *tkn, size_t size)
 {
   char c;
-  long pos;
+  fpos_t pos;
 
-  pos = ftell( fp );
+  fgetpos( fp, &pos );
   c = fgetc( fp );
   if( c != '+' && c != '-' ){
     ungetc( c, fp );
@@ -576,7 +576,7 @@ static char *_zFSignedToken(FILE *fp, char *tkn, size_t size)
   if( size > 1 && *_zFUnsignedToken( fp, tkn+1, size-1 ) )
     *tkn = c;
   else{
-    fseek( fp, pos, SEEK_SET );
+    fsetpos( fp, &pos );
     *tkn = '\0';
   }
   return tkn;
@@ -587,15 +587,15 @@ char *zFNumToken(FILE *fp, char *tkn, size_t size)
 {
   char c;
   size_t len;
-  long pos;
+  fpos_t pos;
 
   if( !*_zFSignedToken( fp, tkn, size ) ) goto END;
   if( ( len = strlen( tkn ) + 1 ) >= size ) goto END;
-  pos = ftell( fp );
+  fgetpos( fp, &pos );
   c = fgetc( fp );
   if( c == 'e' || c == 'E' ){
     if( !*_zFSignedToken( fp, tkn+len, size-len ) ){
-      fseek( fp, pos, SEEK_SET );
+      fsetpos( fp, &pos );
       goto END;
     }
     tkn[len-1] = c;
