@@ -36,6 +36,41 @@ void assert_list_item(void)
   zAssert( zListItem, result );
 }
 
+typedef struct{
+  Z_NAMED_CLASS;
+  int val;
+} namedint_t;
+zListClass( namedint_list_t, namedint_cell_t, namedint_t );
+
+void assert_list_name_find(void)
+{
+  namedint_list_t list;
+  namedint_cell_t *cp;
+  int i, val;
+  char buf[4];
+  bool result = true;
+
+  zListInit( &list );
+  for( i=0; i<SIZE; i++ ){
+    cp = zAlloc( namedint_cell_t, 1 );
+    zI2A( i, buf );
+    zNameSet( &cp->data, buf );
+    cp->data.val = i;
+    zListInsertHead( &list, cp );
+  }
+  for( i=0; i<SIZE; i++ ){
+    zI2A( ( val = zRandI( 0, SIZE ) ), buf );
+    zListFindName( &list, buf, &cp );
+    if( atoi(buf) != val ) result = false;
+  }
+  while( !zListIsEmpty( &list ) ){
+    zListDeleteHead( &list, &cp );
+    zNameFree( &cp->data );
+    free( cp );
+  }
+  zAssert( zListNameFind, result );
+}
+
 bool test_purge_check(zIntList *list, int i)
 {
   zIntListCell *cp;
@@ -138,7 +173,9 @@ void assert_quicksort(void)
 
 int main(void)
 {
+  zRandInit();
   assert_list_item();
+  assert_list_name_find();
   assert_swap();
   assert_purge();
   assert_quicksort();
