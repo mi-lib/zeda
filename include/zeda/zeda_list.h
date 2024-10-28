@@ -330,10 +330,10 @@ zListClass(zList, zListCell, void*);
 
 /*! \brief find a list cell by name. */
 #define zListFindName(list,_name,cp) do{\
-  *(cp) = NULL;\
-  zListForEach( list, *(cp) ){\
-    if( strcmp( (*(cp))->data.name, _name ) == 0 ) break;\
+  zListForEach( list, (cp) ){\
+    if( strcmp( zName(&(cp)->data), _name ) == 0 ) break;\
   }\
+  if( (cp) == zListRoot(list) ) (cp) = NULL;\
 } while(0)
 
 /*! \brief define the quick sort method for a list class.

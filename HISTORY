@@ -1,3 +1,4 @@
+2024.10.28. Debugged zListFindName. [zeda_list]
 2024.10.27. Added zListFindName. [zeda_list]
 2024.10.26. Reimplemented zFileSize. [zeda_misc, test]
 2024.10.26. Modified _zFSignedToken and zFNumToken to use fgetpos and fsetpos instead of ftell and fseek. [zeda_string]

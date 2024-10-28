@@ -48,7 +48,8 @@ void assert_list_name_find(void)
   namedint_cell_t *cp;
   int i, val;
   char buf[4];
-  bool result = true;
+  bool result1 = true;
+  bool result2 = true;
 
   zListInit( &list );
   for( i=0; i<SIZE; i++ ){
@@ -59,16 +60,20 @@ void assert_list_name_find(void)
     zListInsertHead( &list, cp );
   }
   for( i=0; i<SIZE; i++ ){
-    zI2A( ( val = zRandI( 0, SIZE ) ), buf );
-    zListFindName( &list, buf, &cp );
-    if( atoi(buf) != val ) result = false;
+    zI2A( ( val = zRandI( 0, SIZE-1 ) ), buf );
+    zListFindName( &list, buf, cp );
+    if( atoi(buf) != val ) result1 = false;
   }
+  zI2A( SIZE, buf );
+  zListFindName( &list, buf, cp );
+  result2 = cp ? false : true;
   while( !zListIsEmpty( &list ) ){
     zListDeleteHead( &list, &cp );
     zNameFree( &cp->data );
     free( cp );
   }
-  zAssert( zListNameFind, result );
+  zAssert( zListNameFind (successful case), result1 );
+  zAssert( zListNameFind (failure case), result2 );
 }
 
 bool test_purge_check(zIntList *list, int i)
