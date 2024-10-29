@@ -549,9 +549,11 @@ void _ZTKPrpKeyFPrint(FILE *fp, void *obj, ZTKPrp prp[], size_t size)
         if( !prp[i]._fprint( fp, j, obj ) ){
           if( fp != stdout && fp != stderr )
             fsetpos( fp, &pos );
-          else
+          else{
             for( k=strlen(prp[i].str)+2; k>0; k-- )
               fputc( '\b', fp );
+            fprintf( fp, "\033[0K" );
+          }
         }
       }
 }
