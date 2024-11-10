@@ -1,3 +1,4 @@
+2024.11.10. Modified zeda-makefile-gen not to extract `which`. [tools]
 2024.10.29. Modified _ZTKPrpKeyFPrint to delete cancelled charactors on the standard output/standard error by an escape sequence. [zeda_ztk]
 2024.10.28. Debugged zListFindName. [zeda_list]
 2024.10.27. Added zListFindName. [zeda_list]
