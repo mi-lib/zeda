@@ -153,16 +153,22 @@ typedef unsigned int   uint;   /*!< unsigned integer. */
 typedef unsigned long  ulong;  /*!< unsigned long integer. */
 #endif /* _DEFINED_UINT */
 
-#if __STDC_VERSION__ >= 199901L
+#if defined( __STDC_VERSION__) && __STDC_VERSION__ >= 199901L
+/* C99 */
 #include <stdbool.h>
 #else
 # ifndef __cplusplus
+/* C89 */
 /*! \brief boolean type (for Language C). */
 typedef ubyte bool;
+/* _Bool should be overridden by bool. */
+#define _Bool bool
 /*! these values are available for boolean. */
 enum{
   false = 0, true = 1
 };
+#else
+/* C++ */
 # endif /* __cplusplus */
 #endif /* __STDC_VERSION__ */
 

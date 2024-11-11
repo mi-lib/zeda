@@ -31,7 +31,7 @@ __BEGIN_DECLS
 typedef struct{
   FILE *fp;         /*!< file pointer */
   int nl;           /*!< number of lines */
-  long *pos;        /*!< array of starting positions of lines in the file stream */
+  fpos_t *pos;      /*!< array of starting positions of lines in the file stream */
   int nf;           /*!< number of fields per line */
   char buf[BUFSIZ]; /*!< internal buffer */
 } zCSV;

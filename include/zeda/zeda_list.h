@@ -34,15 +34,15 @@ __BEGIN_DECLS
 
 #ifdef __cplusplus
 #define zListClass(list_t,cell_t,data_t) \
-struct cell_t{ \
-  cell_t *prev, *next; \
-  data_t data; \
-  cell_t() : prev{this}, next{this} {} \
-}; \
-struct list_t{ \
-  int size; \
-  cell_t root; \
-  list_t() : size{0} {} \
+struct cell_t{\
+  cell_t *prev, *next;\
+  data_t data;\
+  cell_t() : prev{this}, next{this} {}\
+};\
+struct list_t{\
+  int size;\
+  cell_t root;\
+  list_t() : size{0} {}\
 }
 #else
 #define zListClass(list_t,cell_t,data_t) \
@@ -70,40 +70,40 @@ zListClass(zList, zListCell, void*);
 
 /*! \brief initialize a list cell \a c. */
 #define zListCellInit(c) do{\
-  zListCellSetNext( c, c ); \
-  zListCellSetPrev( c, c ); \
+  zListCellSetNext( c, c );\
+  zListCellSetPrev( c, c );\
 } while(0)
 
 /*! \brief bind two list cells \a l and \a f.
     \a l is the latter, while \a f is the former. */
 #define zListCellBind(l,f) do{\
-  zListCellSetPrev( f, l ); \
-  zListCellSetNext( l, f ); \
+  zListCellSetPrev( f, l );\
+  zListCellSetNext( l, f );\
 } while(0)
 
 /*! \brief insert a list cell \a n to the next of \a c. */
 #define zListCellInsertNext(c,n) do{\
-  zListCellBind( n, zListCellNext(c) ); \
-  zListCellBind( c, n ); \
+  zListCellBind( n, zListCellNext(c) );\
+  zListCellBind( c, n );\
 } while(0)
 
 /*! \brief insert a list cell \a p to the previous of \a c. */
 #define zListCellInsertPrev(c,p) do{\
-  zListCellBind( zListCellPrev(c), p ); \
-  zListCellBind( p, c ); \
+  zListCellBind( zListCellPrev(c), p );\
+  zListCellBind( p, c );\
 } while(0)
 
 /*! \brief purge a cell \a c from a list. */
 #define zListCellPurge(c) do{\
-  zListCellBind( zListCellPrev((c)), zListCellNext((c)) ); \
-  zListCellInit( (c) ); \
+  zListCellBind( zListCellPrev((c)), zListCellNext((c)) );\
+  zListCellInit( (c) );\
 } while(0)
 
 /*! \brief delete the next cell of \a c from a list.
     The deleted cell is stored into \a n. */
 #define zListCellDeleteNext(c,n) do{\
-  if( zListCellNext(c) != (c) ){ \
-    *(n) = zListCellNext( c ); \
+  if( zListCellNext(c) != (c) ){\
+    *(n) = zListCellNext( c );\
     zListCellPurge( *(n) );\
   } else\
     *(n) = NULL;\
@@ -112,8 +112,8 @@ zListClass(zList, zListCell, void*);
 /*! \brief delete the previous cell from a list.
     The deleted cell is stored into \a p. */
 #define zListCellDeletePrev(c,p) do{\
-  if( zListCellPrev(c) != (c) ){ \
-    *(p) = zListCellPrev( c ); \
+  if( zListCellPrev(c) != (c) ){\
+    *(p) = zListCellPrev( c );\
     zListCellPurge( *(p) );\
   } else\
     *(p) = NULL;\
@@ -124,30 +124,28 @@ zListClass(zList, zListCell, void*);
 #define zListCellSwap(cell_t,c1,c2) do{\
   cell_t *__zlist_cell_swap_tmp; \
  \
-  __zlist_cell_swap_tmp = zListCellPrev( c1 ); \
-  zListCellBind( zListCellPrev(c2), c1 ); \
-  zListCellBind( __zlist_cell_swap_tmp, c2 ); \
-  __zlist_cell_swap_tmp = zListCellNext( c1 ); \
-  zListCellBind( c1, zListCellNext(c2) ); \
-  zListCellBind( c2, __zlist_cell_swap_tmp ); \
+  __zlist_cell_swap_tmp = zListCellPrev( c1 );\
+  zListCellBind( zListCellPrev(c2), c1 );\
+  zListCellBind( __zlist_cell_swap_tmp, c2 );\
+  __zlist_cell_swap_tmp = zListCellNext( c1 );\
+  zListCellBind( c1, zListCellNext(c2) );\
+  zListCellBind( c2, __zlist_cell_swap_tmp );\
 } while(0)
 
 #ifndef __KERNEL__
 /*! \brief print connections around a list cell \a c
     to the file \a f. */
 #define zListCellFPrint(f,c) do{\
-  fprintf( f, "cell [%p] ", c ); \
-  fprintf( f, "%p <- prev | next-> %p\n", \
-    zListCellPrev(c), zListCellNext(c) ); \
+  fprintf( f, "cell [%p] ", c );\
+  fprintf( f, "%p <- prev | next-> %p\n", zListCellPrev(c), zListCellNext(c) );\
 } while(0)
 /*! \brief print pointing information of a list cell \a c
     to the standard output. */
 #define zListCellPrint(c)  zListCellFPrint( stdout, c )
 #else
 #define zListCellPrint(c) do{\
-  printk( "cell [%p] ", c ); \
-  printk( "%p <- prev | next-> %p\n", \
-    zListCellPrev(c), zListCellNext(c) ); \
+  printk( "cell [%p] ", c );\
+  printk( "%p <- prev | next-> %p\n", zListCellPrev(c), zListCellNext(c) );\
 } while(0)
 #endif /* __KERNEL__ */
 
@@ -176,48 +174,48 @@ zListClass(zList, zListCell, void*);
 
 /*! \brief initialize a list \a l. */
 #define zListInit(l) do{\
-  zListSetSize( l, 0 ); \
-  zListCellInit( zListRoot( l ) ); \
+  zListSetSize( l, 0 );\
+  zListCellInit( zListRoot( l ) );\
 } while(0)
 
 /*! \brief destroy a list \a l. \a t is the type of list cells. */
 #define zListDestroy(t,l) do{\
-  t *__zlist_destroy_cell = NULL; \
- \
-  while( !zListIsEmpty( l ) ){ \
-    zListDeleteHead( l, &__zlist_destroy_cell ); \
-    zFree( __zlist_destroy_cell ); \
-  } \
+  t *__zlist_destroy_cell = NULL;\
+\
+  while( !zListIsEmpty( l ) ){\
+    zListDeleteHead( l, &__zlist_destroy_cell );\
+    zFree( __zlist_destroy_cell );\
+  }\
 } while(0)
 
 /*! \brief duplicate a list \a src to \a dest. \a t is the type of list cells. */
 #define zListDup(t,src,dest) do{\
-  t *__zlist_scp, *__zlist_new_cell; \
- \
-  zListInit( dest ); \
-  zListForEach( src, __zlist_scp ){ \
+  t *__zlist_scp, *__zlist_new_cell;\
+\
+  zListInit( dest );\
+  zListForEach( src, __zlist_scp ){\
     if( !( __zlist_new_cell = zAlloc( t, 1 ) ) ){\
-      ZALLOCERROR(); \
-      break; \
-    } \
-    zCopy( t, __zlist_scp, __zlist_new_cell ); \
-    zListInsertHead( dest, __zlist_new_cell ); \
-  } \
-  if( zListSize( dest ) != zListSize( src ) ){ \
-    zListDestroy( t, dest ); \
-  } \
+      ZALLOCERROR();\
+      break;\
+    }\
+    zCopy( t, __zlist_scp, __zlist_new_cell );\
+    zListInsertHead( dest, __zlist_new_cell );\
+  }\
+  if( zListSize( dest ) != zListSize( src ) ){\
+    zListDestroy( t, dest );\
+  }\
 } while(0)
 
 /*! \brief insert a list cell \a n to the next of \a c in a list \a l. */
 #define zListInsertNext(l,c,n) do{\
-  zListCellInsertNext( c, n ); \
-  zListIncSize(l); \
+  zListCellInsertNext( c, n );\
+  zListIncSize(l);\
 } while(0)
 
 /*! \brief insert a list cell \a p to the previous of \a c in a list \a l. */
 #define zListInsertPrev(l,c,p) do{\
-  zListCellInsertPrev( c, p ); \
-  zListIncSize(l); \
+  zListCellInsertPrev( c, p );\
+  zListIncSize(l);\
 } while(0)
 
 /*! \brief insert a list cell \a c to the head of a list \a l. */
@@ -228,15 +226,15 @@ zListClass(zList, zListCell, void*);
 /*! \brief delete the next cell of \a c of a list \a l.
     The deleted cell is stored into \a n. */
 #define zListDeleteNext(l,c,n) do{\
-  zListCellDeleteNext( c, n ); \
-  zListDecSize(l); \
+  zListCellDeleteNext( c, n );\
+  zListDecSize(l);\
 } while(0)
 
 /*! \brief delete the previous cell of \a c of a list \a l.
     The deleted cell is stored into \a p. */
 #define zListDeletePrev(l,c,p) do{\
-  zListCellDeletePrev( c, p ); \
-  zListDecSize(l); \
+  zListCellDeletePrev( c, p );\
+  zListDecSize(l);\
 } while(0)
 
 /*! \brief delete the head cell of a list \a l.
@@ -328,6 +326,14 @@ zListClass(zList, zListCell, void*);
         if( --__z_list_item_tmp == (i) ) break;\
     }\
   }\
+} while(0)
+
+/*! \brief find a list cell by name. */
+#define zListFindName(list,_name,cp) do{\
+  zListForEach( list, (cp) ){\
+    if( strcmp( zName(&(cp)->data), _name ) == 0 ) break;\
+  }\
+  if( (cp) == zListRoot(list) ) (cp) = NULL;\
 } while(0)
 
 /*! \brief define the quick sort method for a list class.

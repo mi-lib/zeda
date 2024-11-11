@@ -60,7 +60,7 @@ ROOTDIR=..
 LIBDIR=\$(ROOTDIR)/lib
 INCLUDE=-I\$(ROOTDIR)/include
 
-CHKDEP=`which zeda-chkdep`
+CHKDEP=\`which zeda-chkdep\`
 ifneq (\$(CHKDEP),)
 	ifneq (\$(DEPENDENCY),)
 		INCLUDE+=\$(shell \$(CHKDEP) \$(DEPENDENCY) -l | sed 's/_/-/' | tr -s " " "\n" | xargs -I{} echo \\\`{}-config -I\\\` | xargs)
@@ -174,7 +174,7 @@ CXX=g++
 CFLAGS=$2 -Wall -O3 \`\$(CONFIGTOOL) --cflags\`
 TARGET=\$(shell ls *.c 2> /dev/null | xargs -I{} basename {} .c | xargs)
 
-CHKDEP=`which zeda-chkdep`
+CHKDEP=\`which zeda-chkdep\`
 
 all: dependency \$(TARGET)
 dependency:
@@ -223,7 +223,7 @@ DOCDIR:=\$(ROOTDIR)/doc
 TESTDIR:=\$(ROOTDIR)/test
 SAMPLEDIR:=\$(ROOTDIR)/example
 
-CHKDEP=`which zeda-chkdep`
+CHKDEP=\`which zeda-chkdep\`
 
 all: library devtools
 library:

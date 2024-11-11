@@ -64,6 +64,9 @@ zListClass( ZTKKeyFieldList, ZTKKeyFieldListCell, ZTKKeyField );
 /* insert a new key field of ZTK format to a list. */
 __ZEDA_EXPORT ZTKKeyFieldListCell *ZTKKeyFieldListNew(ZTKKeyFieldList *list, const char *key);
 
+/* destroy the head of a list of key fields of ZTK format. */
+__ZEDA_EXPORT void ZTKKeyFieldListHeadDestroy(ZTKKeyFieldList *list);
+
 /* destroy a list of key fields of ZTK format. */
 __ZEDA_EXPORT void ZTKKeyFieldListDestroy(ZTKKeyFieldList *list);
 
@@ -111,6 +114,19 @@ __ZEDA_EXPORT ZTK *ZTKInit(ZTK *ztk);
 
 /*! \brief destroy a ZTK format processor. */
 __ZEDA_EXPORT void ZTKDestroy(ZTK *ztk);
+
+/*! \brief add a new tag to a ZTK format processor. */
+__ZEDA_EXPORT bool ZTKAddTag(ZTK *ztk, const char *buf);
+/*! \brief add a new key to the current tag field of a ZTK format processor. */
+__ZEDA_EXPORT bool ZTKAddKey(ZTK *ztk, const char *key);
+/*! \brief delete a key at the head of the current tag field of a ZTK format processor. */
+__ZEDA_EXPORT void ZTKDelKey(ZTK *ztk);
+/*! \brief add a new value to the current key field of a ZTK format processor. */
+__ZEDA_EXPORT bool ZTKAddVal(ZTK *ztk, const char *val);
+/*! \brief add a new integer value to the current key field of a ZTK format processor. */
+__ZEDA_EXPORT bool ZTKAddInt(ZTK *ztk, const int val);
+/*! \brief add a new double-precision floating-point value value to the current key field of a ZTK format processor. */
+__ZEDA_EXPORT bool ZTKAddDouble(ZTK *ztk, const double val);
 
 /*! \brief scan and parse a file stream into a tag-and-key list of a ZTK format processor. */
 __ZEDA_EXPORT bool ZTKParseFP(ZTK *ztk, FILE *fp);
@@ -171,27 +187,38 @@ __ZEDA_EXPORT void ZTKFPrint(FILE *fp, ZTK *ztk);
 /*! \struct ZTKPrp
  * \brief properties of a class described by a set of tag/key string and call-back functions.
  *//* ******************************************************* */
-typedef struct{
+ZDEF_STRUCT( __ZEDA_CLASS_EXPORT, ZTKPrp ){
   const char *str; /*!< a string for a tag/key */
-  int num;   /*!< the number of tags/keys */
+  int num; /*!< the number of tags/keys */
   void *(* _eval)(void *, int, void *, ZTK *); /*!< ZTK evaluation function */
-  void (* _fprint)(FILE *, int, void *); /*!< print out function */
-} ZTKPrp;
+  bool (* _fprint)(FILE *, int, void *); /*!< print out function */
+};
+
+/*! \brief print out information of a list of ZTK property (for debug). */
+__ZEDA_EXPORT void _ZTKPrpFPrint(FILE *fp, const ZTKPrp *prp, size_t size);
+#define ZTKPrpFPrint(fp,prp) _ZTKPrpFPrint( fp, prp, sizeof(prp)/sizeof(ZTKPrp) )
+
+/*! \brief duplicate an array of ZTKPrp. */
+__ZEDA_EXPORT ZTKPrp *_ZTKPrpDup(const ZTKPrp *src, size_t size);
+#define ZTKPrpDup(src) _ZTKPrpDup( src, sizeof(src)/sizeof(ZTKPrp) )
+/*! \brief set number of a ZTK property with the specified string. */
+__ZEDA_EXPORT bool _ZTKPrpSetNum(ZTKPrp *prp, size_t size, const char *str, int num);
+#define ZTKPrpSetNum(prp,str,num) _ZTKPrpSetNum( prp, sizeof(prp)/sizeof(ZTKPrp), str, num )
 
 /* evaluate a key field of a ZTK format processor based on a ZTK property. */
-__ZEDA_EXPORT void *_ZTKEvalKey(void *obj, void *arg, ZTK *ztk, ZTKPrp prp[], int num);
+__ZEDA_EXPORT void *_ZTKEvalKey(void *obj, void *arg, ZTK *ztk, const ZTKPrp prp[], size_t size);
 #define ZTKEvalKey(obj,arg,ztk,prp) _ZTKEvalKey( obj, arg, ztk, prp, sizeof(prp)/sizeof(ZTKPrp) )
 
 /* print out a key field of a ZTK format processor based on a ZTK property. */
-__ZEDA_EXPORT void _ZTKPrpKeyFPrint(FILE *fp, void *obj, ZTKPrp prp[], int num);
+__ZEDA_EXPORT void _ZTKPrpKeyFPrint(FILE *fp, void *obj, const ZTKPrp prp[], size_t size);
 #define ZTKPrpKeyFPrint(fp,obj,prp) _ZTKPrpKeyFPrint( fp, obj, prp, sizeof(prp)/sizeof(ZTKPrp) )
 
 /* evaluate a tag field of a ZTK format processor based on a ZTK property. */
-__ZEDA_EXPORT void *_ZTKEvalTag(void *obj, void *arg, ZTK *ztk, ZTKPrp prp[], int num);
+__ZEDA_EXPORT void *_ZTKEvalTag(void *obj, void *arg, ZTK *ztk, const ZTKPrp prp[], size_t size);
 #define ZTKEvalTag(obj,arg,ztk,prp) _ZTKEvalTag( obj, arg, ztk, prp, sizeof(prp)/sizeof(ZTKPrp) )
 
 /* print out a tag field of a ZTK format processor based on a ZTK property. */
-__ZEDA_EXPORT void _ZTKPrpTagFPrint(FILE *fp, void *obj, ZTKPrp prp[], int num);
+__ZEDA_EXPORT void _ZTKPrpTagFPrint(FILE *fp, void *obj, const ZTKPrp prp[], size_t size);
 #define ZTKPrpTagFPrint(fp,obj,prp) _ZTKPrpTagFPrint( fp, obj, prp, sizeof(prp)/sizeof(ZTKPrp) )
 
 __END_DECLS

@@ -1,3 +1,6 @@
+#ifndef __WINDOWS__
+#include <unistd.h>
+#endif /* __WINDOWS__ */
 #include <zeda/zeda.h>
 #include <math.h>
 
@@ -28,10 +31,43 @@ void assert_clone(void)
   free( dest );
 }
 
+void assert_filesize(void)
+{
 #ifndef __WINDOWS__
-#include <unistd.h>
+  FILE *fp;
+  size_t size;
+  byte *buf;
+  bool ret;
+  int i;
+  const char *filename = "__assert_filesize.dat";
+
+  size = zRandI( 0, 3000 );
+  if( !( fp = fopen( filename, "w" ) ) ){
+    ZOPENERROR( filename );
+    return;
+  }
+  if( ( buf = zAlloc( byte, size ) ) ){
+    for( i=0; i<size; i++ )
+      buf[i] = zRandI( 0, 0xff );
+    fwrite( buf, 1, size, fp );
+  } else
+    ZALLOCERROR();
+  fclose( fp );
+
+  if( !( fp = fopen( filename, "r" ) ) ){
+    ZOPENERROR( filename );
+    return;
+  }
+  ret = zFileSize( fp ) == size ? true : false;
+  fclose( fp );
+  unlink( filename );
+  zAssert( zFileSize, ret );
+#endif /* __WINDOWS__ */
+}
+
 void assert_filecompare(void)
 {
+#ifndef __WINDOWS__
 #define FILE1 "filecomp_test_1.txt"
 #define FILE2 "filecomp_test_2.txt"
   const char *str1 = "test string 1";
@@ -51,8 +87,8 @@ void assert_filecompare(void)
   zAssert( zFileCompare (failure case), zFileCompare( FILE1, FILE2 ) != 0 );
   unlink( FILE1 );
   unlink( FILE2 );
-}
 #endif
+}
 
 void assert_i2a(void)
 {
@@ -124,6 +160,7 @@ void assert_i2a_ordinal(void)
 
 int main(void)
 {
+  zRandInit();
   zEchoOff();
   zAssert( zMax, zMax(1,0) == 1 );
   zAssert( zMin, zMin(1,0) == 0 );
@@ -131,6 +168,7 @@ int main(void)
   zAssert( zBound, zBound( 0.5, 1, 0 ) == zBound( 0.5, 0, 1 ) );
   assert_swap();
   assert_clone();
+  assert_filesize();
   assert_filecompare();
   zAssert( zA2X, zA2X( "1g2h3i" ) == 0x102030 && zA2X( "1a2b3c" ) == 0x1a2b3c );
   assert_i2a();

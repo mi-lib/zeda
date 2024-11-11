@@ -331,13 +331,6 @@ __ZEDA_EXPORT bool zIsDelimiter(char c);
  */
 __ZEDA_EXPORT bool zIsOperator(char c);
 
-/*! \brief check if a charactor is a quotation mark.
- *
- * zIsQuotation() is a boolean. It is the true value
- * if \a c is either ' or ".
- */
-#define zIsQuotation(c) ( (c) == '\'' || (c) == '\"' )
-
 /*! \brief check if a string represents a hexadecimal number.
  *
  * zStrIsHex() checks if a string pointed by \a str
@@ -444,6 +437,115 @@ __ZEDA_EXPORT void zResetCommentIdent(void);
  * zSetCommentIdent, zResetCommentIdent
  */
 __ZEDA_EXPORT char zFSkipComment(FILE *fp);
+
+/* for ZTK (Z's tag-and-key) format */
+
+#define ZDEFAULT_TAG_BEGIN_IDENT '['
+#define ZDEFAULT_TAG_END_IDENT   ']'
+
+/*! \brief specify the tag identifiers. */
+__ZEDA_EXPORT void zSetTagIdent(char begin_ident, char end_ident);
+
+/*! \brief reset the tag identifiers. */
+__ZEDA_EXPORT void zResetTagIdent(void);
+
+/*! \brief check if a string is a tag.
+ *
+ * zStrIsTag() checks if a token pointed by \a str is a tag, namely, \a str is bracketed by [] or not.
+ * \return
+ * a boolean value is returned.
+ */
+__ZEDA_EXPORT bool zStrIsTag(const char *str);
+
+/*! \brief extract a tag.
+ *
+ * zExtractTag() extracts a keyword from a bracketted token \a tag, and puts it where \a notag points.
+ * ex. suppose \a tag is "[xxx]", then \a notag is "xxx".
+ * \return
+ * a pointer \a notag is returned.
+ * \note
+ * \a notag is allowed to be the same with \a tag.
+ * Namely, zExtractTag( str, str ) is a valid expression.
+ */
+__ZEDA_EXPORT char *zExtractTag(char *tag, char *notag);
+
+/*! \brief count a number of tag tokens in a file.
+ *
+ * zFCountTag() counts bracketed tokens with a keyword \a tag in a file \a fp.
+ * After counting, the current position of \a fp is rewinded to the head of file.
+ * \return
+ * The number of the counted tags in the file is returned.
+ * \sa
+ * zFCountKey
+ */
+__ZEDA_EXPORT int zFCountTag(FILE *fp, char *tag);
+
+/*! \brief scan tagged fields in a file.
+ *
+ * zTagFScan() scans all tagged fields in a file \a fp.
+ * \a tag_fscan defines persing rules to accept some tags.
+ * \a instance is a pointer to an instance of a specific class
+ * to be processed.
+ *
+ * \a fp and \instance are given to \a tag_fscan as the first and
+ * second arguments, respectively. The third argument of \a tag_fscan
+ * is for a buffer that stores the token previously scanned, which
+ * may be used to further tokenize in \a tag_fscan. It is up to
+ * programmers whether they use the fourth argument. It can be
+ * utilized to catch something illegal in \a tag_fscan and try
+ * any exceptions. It is returned by zTagFScan().
+ * \return
+ * zTagFScan() returns the fourth value of \a tag_fscan, which may
+ * catch something illegal in the persing process. At default,
+ * the true value is returned.
+ */
+__ZEDA_EXPORT bool zTagFScan(FILE *fp, bool (* tag_fscan)(FILE*,void*,char*,bool*), void *instance);
+
+#define ZDEFAULT_KEY_IDENT ':'
+
+/*! \brief specify the key identifier. */
+__ZEDA_EXPORT void zSetKeyIdent(char ident);
+
+/*! \brief reset the key identifier. */
+__ZEDA_EXPORT void zResetKeyIdent(void);
+
+/*! \brief  check if the last token is a key. */
+__ZEDA_EXPORT bool zFPostCheckKey(FILE *fp);
+
+/*! \brief count keywords in a file.
+ *
+ * zFCountKey() counts keywords which coincide with
+ * a string pointed by \a key in a file \a fp between a
+ * tag and the next tag.
+ * After counting, the current position of \a fp is
+ * rewinded where it pointed before counting.
+ * \return
+ * The number of the counted keywords is returned.
+ * \sa
+ * zFCountTag
+ */
+__ZEDA_EXPORT int zFCountKey(FILE *fp, char *key);
+
+/*! \brief scan a field in a file.
+ *
+ * zFieldFScan() scans a field in a file pointed by \a fp from the
+ * current position. \a field_fscan defines persing rules to process
+ * a specific class. \a instance is a pointer to an instance of the
+ * specific class.
+ *
+ * \a fp and \instance are given to \a field_fscan as the first
+ * and second arguments, respectively. The third argument of
+ * \a field_fscan is for a buffer that stores the token previously
+ * scanned, which may be used to further tokenize in \a field_fscan.
+ * It is up to programmers whether they use the fourth argument.
+ * It can be utilized to catch something illegal in \a field_fscan
+ * and try any exceptions. It is returned by zFieldFScan().
+ * \return
+ * zFieldFScan() returns the fourth value of \a field_fscan, which
+ * may catch something illegal in the persing process. At default,
+ * the true value is returned.
+ */
+__ZEDA_EXPORT bool zFieldFScan(FILE *fp, bool (* field_fscan)(FILE*,void*,char*,bool*), void *instance);
 
 /*! \brief tokenize a file.
  *
@@ -583,113 +685,6 @@ typedef enum{
 
 /*! \brief check byte order marker of UTF-8/16 encode files. */
 __ZEDA_EXPORT zUTFType zFCheckUTFBOM(FILE *fp);
-
-#define ZDEFAULT_TAG_BEGIN_IDENT '['
-#define ZDEFAULT_TAG_END_IDENT   ']'
-
-/*! \brief specify the tag identifiers. */
-__ZEDA_EXPORT void zSetTagIdent(char begin_ident, char end_ident);
-
-/*! \brief reset the tag identifiers. */
-__ZEDA_EXPORT void zResetTagIdent(void);
-
-/*! \brief check if a string is a tag.
- *
- * zStrIsTag() checks if a token pointed by \a str is a tag, namely, \a str is bracketed by [] or not.
- * \return
- * a boolean value is returned.
- */
-__ZEDA_EXPORT bool zStrIsTag(const char *str);
-
-/*! \brief extract a tag.
- *
- * zExtractTag() extracts a keyword from a bracketted token \a tag, and puts it where \a notag points.
- * ex. suppose \a tag is "[xxx]", then \a notag is "xxx".
- * \return
- * a pointer \a notag is returned.
- * \note
- * \a notag is allowed to be the same with \a tag.
- * Namely, zExtractTag( str, str ) is a valid expression.
- */
-__ZEDA_EXPORT char *zExtractTag(char *tag, char *notag);
-
-/*! \brief count a number of tag tokens in a file.
- *
- * zFCountTag() counts bracketed tokens with a keyword \a tag in a file \a fp.
- * After counting, the current position of \a fp is rewinded to the head of file.
- * \return
- * The number of the counted tags in the file is returned.
- * \sa
- * zFCountKey
- */
-__ZEDA_EXPORT int zFCountTag(FILE *fp, char *tag);
-
-/*! \brief scan tagged fields in a file.
- *
- * zTagFScan() scans all tagged fields in a file \a fp.
- * \a tag_fscan defines persing rules to accept some tags.
- * \a instance is a pointer to an instance of a specific class
- * to be processed.
- *
- * \a fp and \instance are given to \a tag_fscan as the first and
- * second arguments, respectively. The third argument of \a tag_fscan
- * is for a buffer that stores the token previously scanned, which
- * may be used to further tokenize in \a tag_fscan. It is up to
- * programmers whether they use the fourth argument. It can be
- * utilized to catch something illegal in \a tag_fscan and try
- * any exceptions. It is returned by zTagFScan().
- * \return
- * zTagFScan() returns the fourth value of \a tag_fscan, which may
- * catch something illegal in the persing process. At default,
- * the true value is returned.
- */
-__ZEDA_EXPORT bool zTagFScan(FILE *fp, bool (* tag_fscan)(FILE*,void*,char*,bool*), void *instance);
-
-#define ZDEFAULT_KEY_IDENT ':'
-
-/*! \brief specify the key identifier. */
-__ZEDA_EXPORT void zSetKeyIdent(char ident);
-
-/*! \brief reset the key identifier. */
-__ZEDA_EXPORT void zResetKeyIdent(void);
-
-/*! \brief  check if the last token is a key. */
-__ZEDA_EXPORT bool zFPostCheckKey(FILE *fp);
-
-/*! \brief count keywords in a file.
- *
- * zFCountKey() counts keywords which coincide with
- * a string pointed by \a key in a file \a fp between a
- * tag and the next tag.
- * After counting, the current position of \a fp is
- * rewinded where it pointed before counting.
- * \return
- * The number of the counted keywords is returned.
- * \sa
- * zFCountTag
- */
-__ZEDA_EXPORT int zFCountKey(FILE *fp, char *key);
-
-/*! \brief scan a field in a file.
- *
- * zFieldFScan() scans a field in a file pointed by \a fp from the
- * current position. \a field_fscan defines persing rules to process
- * a specific class. \a instance is a pointer to an instance of the
- * specific class.
- *
- * \a fp and \instance are given to \a field_fscan as the first
- * and second arguments, respectively. The third argument of
- * \a field_fscan is for a buffer that stores the token previously
- * scanned, which may be used to further tokenize in \a field_fscan.
- * It is up to programmers whether they use the fourth argument.
- * It can be utilized to catch something illegal in \a field_fscan
- * and try any exceptions. It is returned by zFieldFScan().
- * \return
- * zFieldFScan() returns the fourth value of \a field_fscan, which
- * may catch something illegal in the persing process. At default,
- * the true value is returned.
- */
-__ZEDA_EXPORT bool zFieldFScan(FILE *fp, bool (* field_fscan)(FILE*,void*,char*,bool*), void *instance);
 
 #endif /* __KERNEL__ */
 

@@ -1,0 +1,7 @@
+[tag1]
+key1: val1 val2 val3
+
+[tag2]key2: val1 val2 val3
+
+[tag3::subtag1]
+key2; val4
