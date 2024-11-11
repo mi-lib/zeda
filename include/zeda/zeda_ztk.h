@@ -195,30 +195,30 @@ ZDEF_STRUCT( __ZEDA_CLASS_EXPORT, ZTKPrp ){
 };
 
 /*! \brief print out information of a list of ZTK property (for debug). */
-__ZEDA_EXPORT void _ZTKPrpFPrint(FILE *fp, ZTKPrp *prp, size_t size);
+__ZEDA_EXPORT void _ZTKPrpFPrint(FILE *fp, const ZTKPrp *prp, size_t size);
 #define ZTKPrpFPrint(fp,prp) _ZTKPrpFPrint( fp, prp, sizeof(prp)/sizeof(ZTKPrp) )
 
 /*! \brief duplicate an array of ZTKPrp. */
-__ZEDA_EXPORT ZTKPrp *_ZTKPrpDup(ZTKPrp *src, size_t size);
+__ZEDA_EXPORT ZTKPrp *_ZTKPrpDup(const ZTKPrp *src, size_t size);
 #define ZTKPrpDup(src) _ZTKPrpDup( src, sizeof(src)/sizeof(ZTKPrp) )
 /*! \brief set number of a ZTK property with the specified string. */
 __ZEDA_EXPORT bool _ZTKPrpSetNum(ZTKPrp *prp, size_t size, const char *str, int num);
 #define ZTKPrpSetNum(prp,str,num) _ZTKPrpSetNum( prp, sizeof(prp)/sizeof(ZTKPrp), str, num )
 
 /* evaluate a key field of a ZTK format processor based on a ZTK property. */
-__ZEDA_EXPORT void *_ZTKEvalKey(void *obj, void *arg, ZTK *ztk, ZTKPrp prp[], size_t size);
+__ZEDA_EXPORT void *_ZTKEvalKey(void *obj, void *arg, ZTK *ztk, const ZTKPrp prp[], size_t size);
 #define ZTKEvalKey(obj,arg,ztk,prp) _ZTKEvalKey( obj, arg, ztk, prp, sizeof(prp)/sizeof(ZTKPrp) )
 
 /* print out a key field of a ZTK format processor based on a ZTK property. */
-__ZEDA_EXPORT void _ZTKPrpKeyFPrint(FILE *fp, void *obj, ZTKPrp prp[], size_t size);
+__ZEDA_EXPORT void _ZTKPrpKeyFPrint(FILE *fp, void *obj, const ZTKPrp prp[], size_t size);
 #define ZTKPrpKeyFPrint(fp,obj,prp) _ZTKPrpKeyFPrint( fp, obj, prp, sizeof(prp)/sizeof(ZTKPrp) )
 
 /* evaluate a tag field of a ZTK format processor based on a ZTK property. */
-__ZEDA_EXPORT void *_ZTKEvalTag(void *obj, void *arg, ZTK *ztk, ZTKPrp prp[], size_t size);
+__ZEDA_EXPORT void *_ZTKEvalTag(void *obj, void *arg, ZTK *ztk, const ZTKPrp prp[], size_t size);
 #define ZTKEvalTag(obj,arg,ztk,prp) _ZTKEvalTag( obj, arg, ztk, prp, sizeof(prp)/sizeof(ZTKPrp) )
 
 /* print out a tag field of a ZTK format processor based on a ZTK property. */
-__ZEDA_EXPORT void _ZTKPrpTagFPrint(FILE *fp, void *obj, ZTKPrp prp[], size_t size);
+__ZEDA_EXPORT void _ZTKPrpTagFPrint(FILE *fp, void *obj, const ZTKPrp prp[], size_t size);
 #define ZTKPrpTagFPrint(fp,obj,prp) _ZTKPrpTagFPrint( fp, obj, prp, sizeof(prp)/sizeof(ZTKPrp) )
 
 __END_DECLS

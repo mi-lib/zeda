@@ -462,7 +462,7 @@ void ZTKFPrint(FILE *fp, ZTK *ztk)
  * ********************************************************** */
 
 /* print out information of a list of ZTK property (for debug). */
-void _ZTKPrpFPrint(FILE *fp, ZTKPrp *prp, size_t size)
+void _ZTKPrpFPrint(FILE *fp, const ZTKPrp *prp, size_t size)
 {
   int i;
 
@@ -472,7 +472,7 @@ void _ZTKPrpFPrint(FILE *fp, ZTKPrp *prp, size_t size)
 }
 
 /* duplicate an array of ZTKPrp. */
-ZTKPrp *_ZTKPrpDup(ZTKPrp *src, size_t size)
+ZTKPrp *_ZTKPrpDup(const ZTKPrp *src, size_t size)
 {
   ZTKPrp *dest;
 
@@ -504,7 +504,7 @@ bool _ZTKPrpSetNum(ZTKPrp *prp, size_t size, const char *str, int num)
 }
 
 /* evaluate a key field of a ZTK format processor based on a ZTK property. */
-void *_ZTKEvalKey(void *obj, void *arg, ZTK *ztk, ZTKPrp prp[], size_t size)
+void *_ZTKEvalKey(void *obj, void *arg, ZTK *ztk, const ZTKPrp prp[], size_t size)
 {
   int i;
   int *count;
@@ -535,7 +535,7 @@ void *_ZTKEvalKey(void *obj, void *arg, ZTK *ztk, ZTKPrp prp[], size_t size)
 }
 
 /* print out a key field of a ZTK format processor based on a ZTK property. */
-void _ZTKPrpKeyFPrint(FILE *fp, void *obj, ZTKPrp prp[], size_t size)
+void _ZTKPrpKeyFPrint(FILE *fp, void *obj, const ZTKPrp prp[], size_t size)
 {
   int i, j, k;
   fpos_t pos;
@@ -559,7 +559,7 @@ void _ZTKPrpKeyFPrint(FILE *fp, void *obj, ZTKPrp prp[], size_t size)
 }
 
 /* evaluate a tag field of a ZTK format processor based on a ZTK property. */
-void *_ZTKEvalTag(void *obj, void *arg, ZTK *ztk, ZTKPrp prp[], size_t size)
+void *_ZTKEvalTag(void *obj, void *arg, ZTK *ztk, const ZTKPrp prp[], size_t size)
 {
   int i, *count;
 
@@ -590,7 +590,7 @@ void *_ZTKEvalTag(void *obj, void *arg, ZTK *ztk, ZTKPrp prp[], size_t size)
 }
 
 /* print out a tag field of a ZTK format processor based on a ZTK property. */
-void _ZTKPrpTagFPrint(FILE *fp, void *obj, ZTKPrp prp[], size_t size)
+void _ZTKPrpTagFPrint(FILE *fp, void *obj, const ZTKPrp prp[], size_t size)
 {
   int i, j;
 
