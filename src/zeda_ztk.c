@@ -596,11 +596,9 @@ void _ZTKPrpTagFPrint(FILE *fp, void *obj, const ZTKPrp prp[], size_t size)
 
   for( i=0; i<size; i++ )
     if( prp[i]._fprint ){
-      if( prp[i]._fprint != NULL ){
-        for( j=0; j<prp[i].num; j++ ){
-          fprintf( fp, "[%s]\n", prp[i].str );
-          prp[i]._fprint( fp, j, obj );
-        }
+      for( j=0; j<prp[i].num; j++ ){
+        fprintf( fp, "[%s]\n", prp[i].str );
+        prp[i]._fprint( fp, j, obj );
       }
     }
 }
