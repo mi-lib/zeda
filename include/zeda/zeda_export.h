@@ -1,6 +1,6 @@
-/* zeda_export.h */
+/* ../include/zeda/zeda_export.h */
 /* This file was automatically generated. */
-/* 2023年  6月  1日 木曜日 21:20:21 JST by zhidao */
+/* 2024年 11月 12日 火曜日 14:35:51 JST by zhidao */
 #ifndef __ZEDA_EXPORT_H__
 #define __ZEDA_EXPORT_H__
 #include <zeda/zeda_compat.h>
@@ -16,4 +16,5 @@
 # define __ZEDA_EXPORT __EXPORT
 # define __ZEDA_CLASS_EXPORT
 #endif
+#define __ZEDA_VERSION "1.9.16"
 #endif /* __ZEDA_EXPORT_H__ */

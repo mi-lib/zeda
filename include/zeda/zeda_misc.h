@@ -16,6 +16,12 @@
 
 __BEGIN_DECLS
 
+/*! \def zGetLibVersion( libname )
+ * refers a string that represents version of the library, where the corresponding
+ * string is automatically defined in <libname>_export.h.
+ */
+#define zGetLibVersion( libname ) __##libname##_VERSION
+
 /*!
  * \def zAssert( func, expr )
  * asserts \a expr and echo a message that \a func works fine;

@@ -1,3 +1,6 @@
+2024.11.12. Added zGetLibVersion. [zeda_misc]
+2024.11.12. Modified zeda-makefile-gen to define the library version in the export header file as a macro. [tools]
+2024.11.12. Modified zeda-makefile-gen to always regenerate the export header file. [tools]
 2024.11.11. Added const qualifiers to arguments of _ZTKPrpFPrint, _ZTKPrpDup, _ZTKEvalKey, _ZTKPrpKeyFPrint, _ZTKEvalTag, and _ZTKPrpTagFPrint. [zeda_ztk]
 2024.11.10. Modified zeda-makefile-gen not to extract `which`. [tools]
 2024.10.29. Modified _ZTKPrpKeyFPrint to delete cancelled charactors on the standard output/standard error by an escape sequence. [zeda_ztk]
