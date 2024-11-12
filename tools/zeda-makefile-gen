@@ -24,7 +24,7 @@ EXPORT_HEADER_EXIST=\$(shell test -e \${EXPORT_HEADER} || echo "n")
 PROJNAME_CAPITAL=\$(shell echo \${PROJNAME_UNDERSCORE} | tr 'a-z' 'A-Z')
 all:
 ifneq (\${EXPORT_HEADER_EXIST},n)
-	@echo "\${EXPORT_HEADER} already exists. Remove it."
+	@echo "\${EXPORT_HEADER} already exists. Remove and regenerate it."
 	-@rm -f \${EXPORT_HEADER}
 endif
 	@touch \${EXPORT_HEADER}

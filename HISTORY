@@ -1,3 +1,4 @@
+2024.11.12. Modified zeda-makefile-gen. [tools]
 2024.11.12. Added zGetLibVersion. [zeda_misc]
 2024.11.12. Modified zeda-makefile-gen to define the library version in the export header file as a macro. [tools]
 2024.11.12. Modified zeda-makefile-gen to always regenerate the export header file. [tools]
