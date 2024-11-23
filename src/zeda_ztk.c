@@ -464,7 +464,7 @@ void ZTKFPrint(FILE *fp, ZTK *ztk)
 /* print out information of a list of ZTK property (for debug). */
 void _ZTKPrpFPrint(FILE *fp, const ZTKPrp *prp, size_t size)
 {
-  int i;
+  uint i;
 
   for( i=0; i<size; i++ ){
     fprintf( fp, "property of field %s (%d)\tevaluator: %p\tgenerator: %p\n", prp[i].str, prp[i].num, prp[i]._eval, prp[i]._fprint );
@@ -487,7 +487,7 @@ ZTKPrp *_ZTKPrpDup(const ZTKPrp *src, size_t size)
 /* set number of a ZTK property with the specified string. */
 bool _ZTKPrpSetNum(ZTKPrp *prp, size_t size, const char *str, int num)
 {
-  int i;
+  uint i;
 
   for( i=0; i<size; i++ ){
     if( strcmp( prp[i].str, str ) == 0 ){
@@ -506,7 +506,7 @@ bool _ZTKPrpSetNum(ZTKPrp *prp, size_t size, const char *str, int num)
 /* evaluate a key field of a ZTK format processor based on a ZTK property. */
 void *_ZTKEvalKey(void *obj, void *arg, ZTK *ztk, const ZTKPrp prp[], size_t size)
 {
-  int i;
+  uint i;
   int *count;
 
   if( !ZTKKeyRewind( ztk ) ) return NULL;
@@ -537,7 +537,8 @@ void *_ZTKEvalKey(void *obj, void *arg, ZTK *ztk, const ZTKPrp prp[], size_t siz
 /* print out a key field of a ZTK format processor based on a ZTK property. */
 void _ZTKPrpKeyFPrint(FILE *fp, void *obj, const ZTKPrp prp[], size_t size)
 {
-  int i, j, k;
+  uint i;
+  int j, k;
   fpos_t pos;
 
   for( i=0; i<size; i++ )
@@ -561,7 +562,8 @@ void _ZTKPrpKeyFPrint(FILE *fp, void *obj, const ZTKPrp prp[], size_t size)
 /* evaluate a tag field of a ZTK format processor based on a ZTK property. */
 void *_ZTKEvalTag(void *obj, void *arg, ZTK *ztk, const ZTKPrp prp[], size_t size)
 {
-  int i, *count;
+  uint i;
+  int *count;
 
   if( !ZTKTagRewind( ztk ) ) return NULL;
   if( !( count = zAlloc( int, size ) ) ){
@@ -592,7 +594,8 @@ void *_ZTKEvalTag(void *obj, void *arg, ZTK *ztk, const ZTKPrp prp[], size_t siz
 /* print out a tag field of a ZTK format processor based on a ZTK property. */
 void _ZTKPrpTagFPrint(FILE *fp, void *obj, const ZTKPrp prp[], size_t size)
 {
-  int i, j;
+  uint i;
+  int j;
 
   for( i=0; i<size; i++ )
     if( prp[i]._fprint ){
