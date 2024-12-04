@@ -2,24 +2,25 @@
 #include <zeda/zeda_ztk.h>
 
 /* *** calculation expression class *** */
+typedef enum{
+  EXPRESSION_OP_NONE=-1,
+  EXPRESSION_OP_ADD,
+  EXPRESSION_OP_SUB,
+  EXPRESSION_OP_MUL,
+  EXPRESSION_OP_DIV,
+} enum_op;
 
 typedef struct{
   double val1, val2;
-  enum{
-    EXPRESSION_OP_NONE=-1,
-    EXPRESSION_OP_ADD,
-    EXPRESSION_OP_SUB,
-    EXPRESSION_OP_MUL,
-    EXPRESSION_OP_DIV,
-  } op;
+  enum_op op;
 } expression_t;
 
 /* refer the operator identifier by a charactor */
-int expression_op(char op)
+enum_op expression_op(char op)
 {
   const char op_list[] = "+-*/";
-  char *op_pos;
-  return ( op_pos = strchr( op_list, op ) ) ? op_pos - op_list : EXPRESSION_OP_NONE;
+  const char *op_pos;
+  return ( op_pos = strchr( op_list, op ) ) ? (enum_op)(op_pos - op_list) : EXPRESSION_OP_NONE;
 }
 
 /* refer the operator charactor by an identifier */
