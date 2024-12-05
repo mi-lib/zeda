@@ -346,25 +346,25 @@ zListClass(zList, zListCell, void*);
  * The function defined will be named 'list_t'QuickSort()
  * with the following prototype.
  *
- * \a list_t *list_tQuickSort(\a list_t *list, int (*cmp)(void*,void*,void*), void *priv);
+ * \a list_t *list_tQuickSort(\a list_t *list, int (*cmp)(void*,void*,void*), void *util);
  *
  * The cells of \a list will be sorted in ascending order
  * according to the comparison function \a cmp.
  * (The factor \a a in the \a list is put after another
  * factor \a b if \a cmp(\a a,\a b,\a p) > 0. \a p is
- * for programmer's utility, given by \a priv.)
+ * for programmer's utility, given by \a util.)
  */
 #define zListQuickSortDef(list_t, cell_t) \
-static void _##list_t##InnerQuickSort(cell_t *head, cell_t *tail, int (*cmp)(void*,void*,void*), void *priv);\
-void _##list_t##InnerQuickSort(cell_t *head, cell_t *tail, int (*cmp)(void*,void*,void*), void *priv)\
+static void _##list_t##InnerQuickSort(cell_t *head, cell_t *tail, int (*cmp)(void*,void*,void*), void *util);\
+void _##list_t##InnerQuickSort(cell_t *head, cell_t *tail, int (*cmp)(void*,void*,void*), void *util)\
 {\
   cell_t *hp, *tp, *pivot, *p;\
 \
   for( pivot=hp=head, tp=tail; ; ){\
     /* choose a pivot for the head value */\
-    while( cmp( (void *)hp, (void *)pivot, priv ) > 0 && hp != tail )\
+    while( cmp( (void *)hp, (void *)pivot, util ) > 0 && hp != tail )\
       hp = zListCellPrev( hp );\
-    while( cmp( (void *)tp, (void *)pivot, priv ) < 0 && tp != head )\
+    while( cmp( (void *)tp, (void *)pivot, util ) < 0 && tp != head )\
       tp = zListCellNext( tp );\
     if( hp == tp || hp == zListCellPrev( tp ) )\
       break;\
@@ -377,14 +377,14 @@ void _##list_t##InnerQuickSort(cell_t *head, cell_t *tail, int (*cmp)(void*,void
     tp = p;\
   }\
   if( hp != head )\
-    _##list_t##InnerQuickSort( head, zListCellNext(hp), cmp, priv );\
+    _##list_t##InnerQuickSort( head, zListCellNext(hp), cmp, util );\
   if( tp != tail )\
-    _##list_t##InnerQuickSort( zListCellPrev(tp), tail, cmp, priv );\
+    _##list_t##InnerQuickSort( zListCellPrev(tp), tail, cmp, util );\
 }\
 \
-list_t *list_t##QuickSort(list_t *list, int (* cmp)(void*,void*,void*), void *priv)\
+list_t *list_t##QuickSort(list_t *list, int (* cmp)(void*,void*,void*), void *util)\
 {\
-  _##list_t##InnerQuickSort( zListHead(list), zListTail(list), cmp, priv );\
+  _##list_t##InnerQuickSort( zListHead(list), zListTail(list), cmp, util );\
   return list;\
 }
 
