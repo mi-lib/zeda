@@ -1,3 +1,4 @@
+2024.12. 5. Added zArrayAssign, and modified the test code for array class. [zeda_array, test]
 2024.11.23. Modified _ZTKPrpFPrint, _ZTKPrpSetNum, _ZTKEvalKey, _ZTKPrpKeyFPrint, _ZTKEvalTag, and _ZTKPrpTagFPrint to make types of counter variables consistent. [zeda_ztk]
 2024.11.14. Added an example code to print out arbitrary number of tag and key fields. [example]
 2024.11.12. Modified .gitignore. [all]

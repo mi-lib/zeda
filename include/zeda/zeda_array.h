@@ -58,56 +58,60 @@ typedef struct{\
 } array_t
 #endif /* __cplusplus */
 
-#define zArraySize(a)          (a)->size
-#define zArrayBuf(a)           (a)->buf
+#define zArraySize(array)          (array)->size
+#define zArrayBuf(array)           (array)->buf
 
-#define zArrayPosIsValid(a,p)  ( (p) < zArraySize(a) && (p) >= 0 )
+#define zArrayPosIsValid(array,p)  ( (p) < zArraySize(array) && (p) >= 0 )
 
 /* NOTE: do not use the following macro before allocating buffer */
-#define zArrayElemSize(a)      sizeof(*zArrayBuf(a))
+#define zArrayElemSize(array)      sizeof(*zArrayBuf(array))
 
-#define zArrayElemNC(a,i)      ( &zArrayBuf(a)[i] )
-#define zArrayElem(a,i)        ( zArrayPosIsValid(a,i) ? zArrayElemNC(a,i) : NULL )
-#define zArraySetElemNC(a,i,d) memcpy( zArrayElemNC(a,i), (d), zArrayElemSize(a) )
-#define zArraySetElem(a,i,d)   ( zArrayPosIsValid(a,i) ? zArraySetElemNC(a,i,d) : NULL )
+#define zArrayElemNC(array,i)      ( &zArrayBuf(array)[i] )
+#define zArrayElem(array,i)        ( zArrayPosIsValid(array,i) ? zArrayElemNC(array,i) : NULL )
+#define zArraySetElemNC(array,i,d) memcpy( zArrayElemNC(array,i), (d), zArrayElemSize(array) )
+#define zArraySetElem(array,i,d)   ( zArrayPosIsValid(array,i) ? zArraySetElemNC(array,i,d) : NULL )
 
-#define zArrayHead(a)          zArrayElemNC( a, zArraySize(a)-1 )
-#define zArrayNeck(a)          zArrayElemNC( a, zArraySize(a)-2 )
-#define zArrayTail(a)          zArrayElemNC( a, 0 )
+#define zArrayHead(array)          zArrayElemNC( array, zArraySize(array)-1 )
+#define zArrayNeck(array)          zArrayElemNC( array, zArraySize(array)-2 )
+#define zArrayTail(array)          zArrayElemNC( array, 0 )
 
-#define zArrayInit(arr) do{\
-  zArraySize(arr) = 0;\
-  zArrayBuf(arr) = NULL;\
+/*! \brief assign a buffer and its size to an array. */
+#define zArrayAssign(array,buf,size) do{\
+  zArraySize(array) = (size);\
+  zArrayBuf(array) = (buf);\
 } while(0)
+
+#define zArrayInit(array) zArrayAssign( array, NULL, 0 )
+
 /*! \brief allocate an array.
  * \param arr array class instance to be allocated.
  * \param type the data type of the array cells.
  * \param n the number of cells.
  */
-#define zArrayAlloc(arr,type,n) do{\
-  if( (n) <= 0 ) zArrayInit( arr );\
+#define zArrayAlloc(array,type,n) do{\
+  if( (n) <= 0 ) zArrayInit( array );\
   else{\
-    if( !( zArrayBuf(arr) = zAlloc( type, n ) ) ){\
+    if( !( zArrayBuf(array) = zAlloc( type, n ) ) ){\
       ZALLOCERROR();\
-      zArraySize(arr) = 0;\
+      zArraySize(array) = 0;\
     } else\
-      zArraySize(arr) = (n);\
+      zArraySize(array) = (n);\
   }\
 } while(0)
 
 /*! \brief free an array.
  * \param arr a pointer to the array to be freed.
  */
-#define zArrayFree(arr) do{\
-  free( zArrayBuf(arr) );\
-  zArrayInit( arr );\
+#define zArrayFree(array) do{\
+  free( zArrayBuf(array) );\
+  zArrayInit( array );\
 } while(0)
 
 /*! zArrayFindName() is valid for an array of a named class.
  * \sa zNameFind.
  */
-#define zArrayFindName(arr,name,ptr) \
-  zNameFind( zArrayBuf(arr), zArraySize(arr), name, ptr )
+#define zArrayFindName(array,name,ptr) \
+  zNameFind( zArrayBuf(array), zArraySize(array), name, ptr )
 
 #ifndef __KERNEL__
 /* since realloc() is not implemented in kernel space,
@@ -117,88 +121,88 @@ typedef struct{\
 /*! \brief add a new cell to an array.
  *
  * zArrayAdd() adds a new cell pointed by \a dat to an array
- * \a arr at the last, incrementing the size of \a arr.
+ * \a array at the last, incrementing the size of \a array.
  * \a type is the data type of the cell.
  */
-#define zArrayAdd(arr,type,dat) do{\
+#define zArrayAdd(array,type,dat) do{\
   type *__zarray_ap;\
-  __zarray_ap = zRealloc( zArrayBuf(arr), type, zArraySize(arr)+1 );\
+  __zarray_ap = zRealloc( zArrayBuf(array), type, zArraySize(array)+1 );\
   if( __zarray_ap == NULL )\
     ZALLOCERROR();\
   else{\
-    zArraySize(arr)++;\
-    zArrayBuf(arr) = __zarray_ap;\
-    zArraySetElemNC( arr, zArraySize(arr)-1, dat );\
+    zArraySize(array)++;\
+    zArrayBuf(array) = __zarray_ap;\
+    zArraySetElemNC( array, zArraySize(array)-1, dat );\
   }\
 } while(0)
 
 /*! \brief insert a new cell into an array.
  *
  * zArrayInsert() inserts a new cell pointed by \a dat to in an
- * array \a arr at the location specified by \a pos, incrementing
- * the size of \a arr. \a type is the data type of the cell.
+ * array \a array at the location specified by \a pos, incrementing
+ * the size of \a array. \a type is the data type of the cell.
  */
-#define zArrayInsert(arr,type,pos,dat) do{\
+#define zArrayInsert(array,type,pos,dat) do{\
   type *__zarray_ap;\
-  if( (pos) == zArraySize(arr) ){\
-    zArrayAdd( arr, type, dat );\
-  } else if( zArrayPosIsValid(arr,pos) ){\
-    __zarray_ap = zRealloc( zArrayBuf(arr), type, zArraySize(arr)+1 );\
+  if( (pos) == zArraySize(array) ){\
+    zArrayAdd( array, type, dat );\
+  } else if( zArrayPosIsValid(array,pos) ){\
+    __zarray_ap = zRealloc( zArrayBuf(array), type, zArraySize(array)+1 );\
     if( __zarray_ap == NULL )\
       ZALLOCERROR();\
     else{\
-      zArrayBuf(arr) = __zarray_ap;\
-      memmove( zArrayElemNC(arr,(pos)+1), zArrayElemNC(arr,pos), sizeof(type)*(zArraySize(arr)-(pos)) );\
-      zArraySetElemNC( arr, pos, dat );\
-      zArraySize(arr)++;\
+      zArrayBuf(array) = __zarray_ap;\
+      memmove( zArrayElemNC(array,(pos)+1), zArrayElemNC(array,pos), sizeof(type)*(zArraySize(array)-(pos)) );\
+      zArraySetElemNC( array, pos, dat );\
+      zArraySize(array)++;\
     }\
   } else{\
-    ZRUNWARN( "invalid position %d/%d in array specified", pos, zArraySize(arr)-1 );\
+    ZRUNWARN( "invalid position %d/%d in array specified", pos, zArraySize(array)-1 );\
   }\
 } while(0)
 
 /*! \brief delete a cell from an array.
  *
  * zArrayDelete() deletes a cell at the location specified by
- * \a pos in an array \a arr at, decrementing the size of \a arr.
+ * \a pos in an array \a array at, decrementing the size of \a array.
  * \a type is the data type of the cell.
  */
-#define zArrayDelete(arr,type,pos) do{\
+#define zArrayDelete(array,type,pos) do{\
   type *__zarray_ap;\
-  if( zArrayPosIsValid(arr,pos) ){\
-    if( (pos) < zArraySize(arr)-1 )\
-      memmove( zArrayElemNC(arr,pos), zArrayElemNC(arr,(pos)+1), sizeof(type)*(zArraySize(arr)-(pos)-1) );\
-    if( zArraySize(arr) > 1 ){\
-      __zarray_ap = zRealloc( zArrayBuf(arr), type, zArraySize(arr)-1 );\
+  if( zArrayPosIsValid(array,pos) ){\
+    if( (pos) < zArraySize(array)-1 )\
+      memmove( zArrayElemNC(array,pos), zArrayElemNC(array,(pos)+1), sizeof(type)*(zArraySize(array)-(pos)-1) );\
+    if( zArraySize(array) > 1 ){\
+      __zarray_ap = zRealloc( zArrayBuf(array), type, zArraySize(array)-1 );\
       if( __zarray_ap == NULL )\
         ZALLOCERROR();\
       else{\
-        zArraySize(arr)--;\
-        zArrayBuf(arr) = __zarray_ap;\
+        zArraySize(array)--;\
+        zArrayBuf(array) = __zarray_ap;\
       }\
     } else{\
-      zArrayFree( arr );\
+      zArrayFree( array );\
     }\
   } else{\
-    ZRUNWARN( "invalid position %d/%d in array specified", pos, zArraySize(arr)-1 );\
+    ZRUNWARN( "invalid position %d/%d in array specified", pos, zArraySize(array)-1 );\
   }\
 } while(0)
 
 /*! \brief append an array to another.
  *
- * zArrayAppend() appends an array pointed by \a subarr
- * to another array pointed by \a arr.
+ * zArrayAppend() appends an array pointed by \a subarray
+ * to another array pointed by \a array.
  * \a type is the data type of the cell.
  */
-#define zArrayAppend(arr,subarr,type) do{\
+#define zArrayAppend(array,subarray,type) do{\
   type *__zarray_ap;\
-  __zarray_ap = zRealloc( zArrayBuf(arr), type, zArraySize(arr)+zArraySize(subarr) );\
+  __zarray_ap = zRealloc( zArrayBuf(array), type, zArraySize(array)+zArraySize(subarray) );\
   if( __zarray_ap == NULL )\
     ZALLOCERROR();\
   else{\
-    zArrayBuf(arr) = __zarray_ap;\
-    memcpy( zArrayElemNC(arr,zArraySize(arr)), zArrayBuf(subarr), zArraySize(subarr)*sizeof(type) );\
-    zArraySize(arr) += zArraySize(subarr);\
+    zArrayBuf(array) = __zarray_ap;\
+    memcpy( zArrayElemNC(array,zArraySize(array)), zArrayBuf(subarray), zArraySize(subarray)*sizeof(type) );\
+    zArraySize(array) += zArraySize(subarray);\
   }\
 } while(0)
 
@@ -223,22 +227,22 @@ typedef struct{\
  * is the size of each component.
  * The components of \a array will be sorted in ascending order according
  * to the comparison function \a cmp. Namely, a factor 'a' in the \a array
- * is put after another factor 'b' if cmp(a,b,priv) > 0, where \a priv is
+ * is put after another factor 'b' if cmp(a,b,priv) > 0, where \a util is
  * for programmer's utility.
  * \return
  * zQuickSort() returns no value.
  */
-__ZEDA_EXPORT void zQuickSort(void *array, int nmemb, int size, int (*cmp)(void*,void*,void*), void *priv);
+__ZEDA_EXPORT void zQuickSort(void *array, int nmemb, int size, int (*cmp)(void*,void*,void*), void *util);
 
 /*! \brief quick sort for an array.
  *
  * zArrayQuickSort() is a macro which is a wrapper of zQuickSort() that sorts
  * an array pointed by \a array based on the quick sort algorithm. \a cmp and
- * \a priv have the same roles with those for zQuickSort().
+ * \a util have the same roles with those for zQuickSort().
  * \sa
  * zQuickSort()
  */
-#define zArrayQuickSort(arr,cmp,priv) zQuickSort( (void*)zArrayBuf(arr), zArraySize(arr), zArrayElemSize(arr), cmp, priv )
+#define zArrayQuickSort(arr,cmp,util) zQuickSort( (void*)zArrayBuf(arr), zArraySize(arr), zArrayElemSize(arr), cmp, util )
 
 /*! \brief insert a member into a pointer array at sorted position.
  *
@@ -249,24 +253,24 @@ __ZEDA_EXPORT void zQuickSort(void *array, int nmemb, int size, int (*cmp)(void*
  * 
  * The components of \a array will be sorted in ascending order according
  * to the comparison function \a cmp. Namely, a factor 'a' in the \a array
- * is put after another factor 'b' if cmp(a,b,priv) > 0, where \a priv is
+ * is put after another factor 'b' if cmp(a,b,util) > 0, where \a util is
  * for programmer's utility.
  * \return
  * zInsertSort() returns a pointer \a memb in the case of success, or the
  * null pointer if \a i is larger than or equal to \a size.
  */
-__ZEDA_EXPORT void *zInsertSort(void *array, void *memb, int i, int nmemb, int size, int (* cmp)(void*,void*,void*), void *priv);
+__ZEDA_EXPORT void *zInsertSort(void *array, void *memb, int i, int nmemb, int size, int (* cmp)(void*,void*,void*), void *util);
 
 /*! \brief insert a member into an array at sorted position.
  *
  * zArrayInsertSort() is a macro which is a wrapper of zInsertSort() that
  * inserts a new member \a memb into an array pointed by \a array in a
- * sorted way. \a cmp and \a priv have the same roles with those for
+ * sorted way. \a cmp and \a util have the same roles with those for
  * zInsertSort().
  * \sa
  * zInsertSort()
  */
-#define zArrayInsertSort(arr,memb,i,cmp,priv) zInsertSort( (void*)zArrayBuf(arr), (memb), (i), zArraySize(arr), zArrayElemSize(arr), cmp, priv )
+#define zArrayInsertSort(array,memb,i,cmp,util) zInsertSort( (void*)zArrayBuf(array), (memb), (i), zArraySize(array), zArrayElemSize(array), cmp, util )
 
 /*! \} */
 
@@ -310,48 +314,48 @@ typedef struct{\
 } array_t
 #endif /* __cplusplus */
 
-#define zArray2Size(a,i)  (a)->size[i]
-#define zArray2RowSize(a) (a)->size[0]
-#define zArray2ColSize(a) (a)->size[1]
-#define zArray2Buf(a)     ( (a)->buf )
+#define zArray2Size(array,i)  (array)->size[i]
+#define zArray2RowSize(array) (array)->size[0]
+#define zArray2ColSize(array) (array)->size[1]
+#define zArray2Buf(array)     ( (array)->buf )
 
-#define zArray2PosIsValid(a,r,c) ( (r) < zArray2RowSize(a) && (r) >= 0 && (c) < zArray2ColSize(a) && (c) >= 0 )
+#define zArray2PosIsValid(array,r,c) ( (r) < zArray2RowSize(array) && (r) >= 0 && (c) < zArray2ColSize(array) && (c) >= 0 )
 
 /* NOTE: do not use the following macro before allocating buffer */
-#define zArray2ElemSize(a)       sizeof(*zArray2Buf(a))
+#define zArray2ElemSize(array)       sizeof(*zArray2Buf(array))
 
-#define zArray2ElemNC(a,i,j)      ( &zArray2Buf(a)[(i)*zArray2ColSize(a) + (j)] )
-#define zArray2Elem(a,i,j)        ( zArray2PosIsValid(a,i,j) ? zArray2ElemNC(a,i,j) : NULL )
-#define zArray2SetElemNC(a,i,j,d) memcpy( zArray2ElemNC(a,i,j), (d), zArray2ElemSize(a) )
-#define zArray2SetElem(a,i,j,d)   ( zArray2PosIsValid(a,i,j) ? zArray2SetElemNC(a,i,j,d) : NULL )
+#define zArray2ElemNC(array,i,j)      ( &zArray2Buf(array)[(i)*zArray2ColSize(array) + (j)] )
+#define zArray2Elem(array,i,j)        ( zArray2PosIsValid(array,i,j) ? zArray2ElemNC(array,i,j) : NULL )
+#define zArray2SetElemNC(array,i,j,d) memcpy( zArray2ElemNC(array,i,j), (d), zArray2ElemSize(array) )
+#define zArray2SetElem(array,i,j,d)   ( zArray2PosIsValid(array,i,j) ? zArray2SetElemNC(array,i,j,d) : NULL )
 
-#define zArray2Init(arr) do{\
-  zArray2RowSize(arr) = zArray2ColSize(arr) = 0;\
-  zArray2Buf(arr) = NULL;\
+#define zArray2Init(array) do{\
+  zArray2RowSize(array) = zArray2ColSize(array) = 0;\
+  zArray2Buf(array) = NULL;\
 } while(0)
 /*! \brief allocate an array.
- * \param arr array class instance to be allocated.
+ * \param array array class instance to be allocated.
  * \param type the data type of the array cells.
  * \param n the number of cells.
  */
-#define zArray2Alloc(arr,type,r,c) do{\
-  zArray2Init( arr );\
-  if( (r) > 0 && (c) > 0 && !( zArray2Buf(arr) = zAlloc(type,(r)*(c)) ) ){\
+#define zArray2Alloc(array,type,r,c) do{\
+  zArray2Init( array );\
+  if( (r) > 0 && (c) > 0 && !( zArray2Buf(array) = zAlloc(type,(r)*(c)) ) ){\
     ZALLOCERROR();\
-    zArray2RowSize(arr) = 0;\
-    zArray2ColSize(arr) = 0;\
+    zArray2RowSize(array) = 0;\
+    zArray2ColSize(array) = 0;\
   } else{\
-    zArray2RowSize(arr) = (r);\
-    zArray2ColSize(arr) = (c);\
+    zArray2RowSize(array) = (r);\
+    zArray2ColSize(array) = (c);\
   }\
 } while(0)
 
 /*! \brief free an array.
- * \param arr a pointer to the array to be freed.
+ * \param array a pointer to the array to be freed.
  */
-#define zArray2Free(arr) do{\
-  free( zArray2Buf(arr) );\
-  zArray2Init( arr );\
+#define zArray2Free(array) do{\
+  free( zArray2Buf(array) );\
+  zArray2Init( array );\
 } while(0)
 
 /*! \} */
