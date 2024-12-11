@@ -141,7 +141,7 @@ all: \$(CONFIGTOOL)
 \$(CONFIGTOOL):
 	@echo " GENERATE	" \$@
 	-@rm -f \$@
-	@\$(CONFIGGEN) -I "\$(INCLUDE)" -L "\$(LIB)" -D "\$(DEF)" -l "\$(LINK)" -lcpp "\$(LINKCPP)" -v \$(VERSION) > \$@
+	@\$(CONFIGGEN) -I "\$(INCLUDE)" -L "\$(LIB)" -D "\$(DEF)" -l "\$(LINK)" -lcpp "\$(LINKCPP)" -v \$(VERSION) -dep \"\$(DEPENDENCY)\" > \$@
 install: \$(CONFIGTOOL)
 	@echo " INSTALL	" \$^
 	@\$(INSTALL) \$^ \$(BINDIR)

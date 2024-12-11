@@ -6,6 +6,7 @@ LINK=
 LINKCPP=
 DEF=
 VERSION=
+DEPENDENCY=
 
 while [ "$1" != "" ]
 do
@@ -27,6 +28,9 @@ do
     ;;
   -v)
     shift; VERSION=$1; shift
+    ;;
+  -dep)
+    shift; DEPENDENCY=$1; shift
     ;;
   *)
     ;;
@@ -71,6 +75,11 @@ fi
 if [ "$VERSION" != "" ]; then
   echo "-v)"
   echo "  echo $VERSION"
+  echo "  ;;"
+fi
+if [ "$DEPENDENCY" != "" ]; then
+  echo "--dep)"
+  echo "  echo $DEPENDENCY"
   echo "  ;;"
 fi
 echo "*)"
