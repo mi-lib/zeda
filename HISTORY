@@ -1,3 +1,4 @@
+2024.12.12. Modified ztk_eval_test to enable to be compiled in C++ (thanks to Daishi Kaneta). [example]
 2024.11.23. Modified _ZTKPrpFPrint, _ZTKPrpSetNum, _ZTKEvalKey, _ZTKPrpKeyFPrint, _ZTKEvalTag, and _ZTKPrpTagFPrint to make types of counter variables consistent. [zeda_ztk]
 2024.11.14. Added an example code to print out arbitrary number of tag and key fields. [example]
 2024.11.12. Modified .gitignore. [all]

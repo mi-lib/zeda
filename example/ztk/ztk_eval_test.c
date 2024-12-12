@@ -8,19 +8,19 @@ typedef enum{
   EXPRESSION_OP_SUB,
   EXPRESSION_OP_MUL,
   EXPRESSION_OP_DIV,
-} enum_op;
+} op_t;
 
 typedef struct{
   double val1, val2;
-  enum_op op;
+  op_t op;
 } expression_t;
 
 /* refer the operator identifier by a charactor */
-enum_op expression_op(char op)
+op_t expression_op(char op)
 {
   const char op_list[] = "+-*/";
   const char *op_pos;
-  return ( op_pos = strchr( op_list, op ) ) ? (enum_op)(op_pos - op_list) : EXPRESSION_OP_NONE;
+  return ( op_pos = strchr( op_list, op ) ) ? (op_t)( op_pos - op_list ) : EXPRESSION_OP_NONE;
 }
 
 /* refer the operator charactor by an identifier */
