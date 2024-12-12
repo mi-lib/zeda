@@ -1,3 +1,4 @@
+2024.12.12. Modified ztk_eval_test to enable to be compiled in C++ (thanks to Daishi Kaneta). [example]
 2024.12.11. Modified zeda-config-gen and zeda-makefile-gen to output information about dependency of libraries. [tools]
 2024.12. 5. Modified zListQuickSortDef to rename priv to util. [zeda_list]
 2024.12. 5. Added zArrayAssign, and modified the test code for array class. [zeda_array, test]
