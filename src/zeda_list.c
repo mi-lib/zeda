@@ -22,7 +22,7 @@ void _zListFPrint(FILE *fp, zList *list)
   int i = 0;
   zListCell *cp;
 
-  fprintf( fp, "size = %d\n", zListSize( list ) );
+  fprintf( fp, "size = %d\n", zListSize(list) );
   zListForEach( list, cp ){
     fprintf( fp, "<%d>", i++ );
     zListCellFPrint( fp, cp );
@@ -35,7 +35,7 @@ void zListPrint(zList *list)
   int i;
   zListCell *cp;
 
-  printk( "size = %d\n", zListSize( list ) );
+  printk( "size = %d\n", zListSize(list) );
   zListForEach( list, cp ){
     printk( "<%d>", i++ );
     zListCellPrint( cp );

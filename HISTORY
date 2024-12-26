@@ -1,3 +1,6 @@
+2024.12.27. Added zStackMoveCell and zQueueMoveCell. [zeda_list]
+2024.12.27. Modified specification of zListFindName to receive a pointer to a pointer to a cell. [zeda_list]
+2024.12.27. Modified zListMove to guard destination list in case it is not empty. [zeda_list]
 2024.12.12. Modified ztk_eval_test to enable to be compiled in C++ (thanks to Daishi Kaneta). [example]
 2024.12.11. Modified zeda-config-gen and zeda-makefile-gen to output information about dependency of libraries. [tools]
 2024.12. 5. Modified zListQuickSortDef to rename priv to util. [zeda_list]
