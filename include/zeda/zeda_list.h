@@ -250,7 +250,7 @@ zListClass(zList, zListCell, void*);
   }\
 } while(0)
 
-#define zListAppend(borrowerlist,renterlis) zListAppendZ( borrowerlist, renterlist )
+#define zListAppend(borrowerlist,renterlist) zListAppendZ( borrowerlist, renterlist )
 
 /*! \brief move a list to another. */
 #define zListMove(src,dest) do{\
