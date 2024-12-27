@@ -414,9 +414,9 @@ void zListPrint(zList *list);
 
 /*! \brief pop the head cell of a stack, and push it to another. */
 #define zStackMoveCell(cell_t,src,dest) do{\
-  cell_t *cp;\
-  zStackPop( src, &cp );\
-  zStackPush( dest, cp );\
+  cell_t *__z_list_stack_move_cp;\
+  zStackPop( src, &__z_list_stack_move_cp );\
+  zStackPush( dest, __z_list_stack_move_cp );\
 } while(0)
 
 /*! \brief enqueue operation. */
@@ -426,15 +426,15 @@ void zListPrint(zList *list);
 
 /*! \brief dequeue the head cell of a queue, and enqueue it to another. */
 #define zQueueMoveCell(cell_t,src,dest) do{\
-  cell_t *cp;\
-  zQueueDequeue( src, &cp );\
-  zQueueEnqueue( dest, cp );\
+  cell_t *__z_list_queue_move_cp;\
+  zQueueDequeue( src, &__z_list_queue_move_cp );\
+  zQueueEnqueue( dest, __z_list_queue_move_cp );\
 } while(0)
 
 /*! \} */
 
 /*! \brief a list of integer numbers */
-zListClass(zIntList, zIntListCell, int);
+zListClass( zIntList, zIntListCell, int );
 
 /*! \brief a list of integer numbers */
 __ZEDA_EXPORT bool zIntListAdd(zIntList *list, int i);
