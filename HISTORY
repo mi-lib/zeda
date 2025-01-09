@@ -1,3 +1,5 @@
+2025. 1. 9. Separated zeda_pathname from zeda_string. [zeda, zeda_string, zeda_pathname, zeda_csv, zeda_ztk]
+2025. 1. 9. Moved ZEDA_ZTK_SUFFIX and zOpenZTKFile from zeda_string to zeda_ztk. [zeda_string, zeda_ztk]
 2024.12.27. Modified the names of internal cells in zStackMoveCell and zQueueMoveCell. [zeda_list]
 2024.12.27. Debugged zListAppend. [zeda_list]
 2024.12.27. Added zStackMoveCell and zQueueMoveCell. [zeda_list]

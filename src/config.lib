@@ -1,5 +1,5 @@
 OBJ=zeda_misc.o\
-	zeda_string.o \
+	zeda_string.o zeda_pathname.o\
 	zeda_bit.o zeda_rand.o\
 	zeda_binfile.o\
 	zeda_csv.o\

@@ -12,7 +12,7 @@
 #ifndef __ZEDA_CSV_H__
 #define __ZEDA_CSV_H__
 
-#include <zeda/zeda_string.h>
+#include <zeda/zeda_pathname.h>
 
 #ifndef __KERNEL__
 

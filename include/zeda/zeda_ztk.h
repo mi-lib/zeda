@@ -13,8 +13,15 @@
 #ifndef __KERNEL__
 
 #include <zeda/zeda_strlist.h>
+#include <zeda/zeda_pathname.h>
 
 __BEGIN_DECLS
+
+/*! \brief default suffix of .ztk (Z's Tag-and-Key) file format. */
+#define ZEDA_ZTK_SUFFIX "ztk"
+
+/*! \brief open a .ztk file. */
+#define zOpenZTKFile(filename,mode) zOpenFile( filename, ZEDA_ZTK_SUFFIX, mode )
 
 /* ********************************************************** */
 /*! \struct zFileStack

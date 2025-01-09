@@ -32,7 +32,7 @@
 #include <zeda/zeda_list.h>
 #include <zeda/zeda_tree.h>
 
-#include <zeda/zeda_string.h>
+#include <zeda/zeda_pathname.h>
 
 #include <zeda/zeda_rand.h>
 #include <zeda/zeda_index.h>
