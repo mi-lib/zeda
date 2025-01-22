@@ -128,7 +128,7 @@ zIndex zIndexOrder(zIndex idx, int s)
 }
 
 /* check if two integer vectors are equal. */
-bool zIndexIsEqual(zIndex idx1, zIndex idx2)
+bool zIndexEqual(zIndex idx1, zIndex idx2)
 {
   int i;
 

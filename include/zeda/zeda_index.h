@@ -163,12 +163,12 @@ __ZEDA_EXPORT zIndex zIndexOrder(zIndex idx, int s);
 
 /*! \brief check if two arrays of integer values are equal.
  *
- * zIndexIsEqual() checks if two arrays of integer values
+ * zIndexEqual() checks if two arrays of integer values
  * \a idx1 and \a idx2 are equal.
  * \return the true value if \a idx1 and \a idx2 are equal,
  * or the false values, otherwise.
  */
-__ZEDA_EXPORT bool zIndexIsEqual(zIndex idx1, zIndex idx2);
+__ZEDA_EXPORT bool zIndexEqual(zIndex idx1, zIndex idx2);
 
 /*! \brief swap two elements of an array of integer values.
  *

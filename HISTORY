@@ -1,3 +1,4 @@
+2025. 1.22. Renamed zIndexIsEqual to zIndexEqual. [zeda_index]
 2025. 1.22. Modified zIndexClone to return the null pointer if the source pointer is null. [zeda_index]
 2025. 1.22. Modified zCloneMem to return the null pointer if the source pointer is null. [zeda_misc]
 2025. 1. 9. Separated zeda_pathname from zeda_string. [zeda, zeda_string, zeda_pathname, zeda_csv, zeda_ztk]

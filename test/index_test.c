@@ -11,7 +11,7 @@ void assert_clone(void)
   }
   zAssert( zIndexClone (null case), zIndexClone( NULL ) == NULL );
   dest = zIndexClone( src );
-  zAssert( zIndexClone, zIndexIsEqual( src, dest ) );
+  zAssert( zIndexClone, zIndexEqual( src, dest ) );
   zIndexFree( src );
   zIndexFree( dest );
 }
@@ -35,7 +35,7 @@ void assert_index_swap(void)
   index = zIndexCreate( 10 );
   index_cmp = zIndexCreateList( 10, 0, 1, 5, 3, 4, 2, 6, 7, 8, 9 );
   zIndexSwap( index, 2, 5 );
-  res = zIndexIsEqual( index, index_cmp );
+  res = zIndexEqual( index, index_cmp );
   zIndexFree( index_cmp );
   zIndexFree( index );
   zAssert( zIndexSwap, res );
@@ -50,10 +50,10 @@ void assert_index_move(void)
   index_cmp = zIndexCreate( 10 );
   zIndexMove( index, 2, 7 );
   zIndexSetList( index_cmp, 0, 1, 3, 4, 5, 6, 7, 2, 8, 9 );
-  res1 = zIndexIsEqual( index, index_cmp );
+  res1 = zIndexEqual( index, index_cmp );
   zIndexMove( index, 6, 3 );
   zIndexSetList( index_cmp, 0, 1, 3, 7, 4, 5, 6, 2, 8, 9 );
-  res2 = zIndexIsEqual( index, index_cmp );
+  res2 = zIndexEqual( index, index_cmp );
   zIndexFree( index_cmp );
   zIndexFree( index );
   zAssert( zIndexMove, res1 && res2 );
@@ -79,7 +79,7 @@ void assert_index_remove(void)
     for( j=i+1; j<zArraySize(index_cmp); j++ )
       zIndexSetElem( index_cmp, j-1, zIndexElemNC(index_cmp,j) );
     zIndexDecSize( index_cmp );
-    if( !zIndexIsEqual( index, index_cmp ) ) res = false;
+    if( !zIndexEqual( index, index_cmp ) ) res = false;
   }
   zIndexFree( index_cmp );
   zIndexFree( index );
