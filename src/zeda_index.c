@@ -96,6 +96,7 @@ zIndex zIndexClone(zIndex src)
 {
   zIndex dest;
 
+  if( !src ) return NULL;
   if( !( dest = zIndexAlloc( zIndexSizeNC(src) ) ) ) return NULL;
   return zIndexCopyNC( src, dest );
 }

@@ -9,6 +9,7 @@ void assert_clone(void)
   for( i=0; i<n; i++ ){
     zIndexSetElem( src, i, zRandI(-n,n) );
   }
+  zAssert( zIndexClone (null case), zIndexClone( NULL ) == NULL );
   dest = zIndexClone( src );
   zAssert( zIndexClone, zIndexIsEqual( src, dest ) );
   zIndexFree( src );

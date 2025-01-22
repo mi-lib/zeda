@@ -25,6 +25,7 @@ void assert_strmanip(void)
   zStrCopy( str1, "abcdefg", BUFSIZ );
   zStrCopy( str2, str1, BUFSIZ );
   zAssert( zStrCopy, strcmp( str1, str2 ) == 0 );
+  zAssert( zStrClone (null case), zStrClone( NULL ) == NULL );
   strp = zStrClone( str1 );
   zAssert( zStrClone, strcmp( strp, str2 ) == 0 );
   free( strp );

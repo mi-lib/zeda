@@ -40,6 +40,7 @@ void *zCloneMem(const void *src, size_t size)
 {
   void *dest;
 
+  if( !src ) return NULL;
   if( !( dest = malloc( size ) ) ){
     ZALLOCERROR();
     return NULL;

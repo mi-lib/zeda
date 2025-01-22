@@ -25,6 +25,7 @@ void assert_clone(void)
   byte src[BUFSIZ], *dest;
   int i;
 
+  zAssert( zClone (null case), zClone( NULL, byte, BUFSIZ ) == NULL );
   for( i=0; i<BUFSIZ; i++ )
     src[i] = zRandI(0,0xff);
   zAssert( zClone, ( dest = zClone( src, byte, BUFSIZ ) ) && memcmp( dest, src, BUFSIZ ) == 0 );
