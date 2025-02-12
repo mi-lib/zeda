@@ -1,3 +1,4 @@
+2025. 2.13. Modified zeda_delimiter_default to cast EOF to char (thanks to Kenta Imanishi). [zeda_string]
 2025. 1.22. Renamed zIndexIsEqual to zIndexEqual. [zeda_index]
 2025. 1.22. Modified zIndexClone to return the null pointer if the source pointer is null. [zeda_index]
 2025. 1.22. Modified zCloneMem to return the null pointer if the source pointer is null. [zeda_misc]

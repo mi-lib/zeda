@@ -191,7 +191,7 @@ char *zStrToLower(const char *src, size_t size, char *dest)
 
 #ifndef __KERNEL__
 static const char zeda_delimiter_default[] = {
-  EOF, '\t', '\v', '\f', '\n', '\r',
+  (char)EOF, '\t', '\v', '\f', '\n', '\r',
   ' ', ',', ';', ':', '|', '(', ')', '{', '}', '\0'
 };
 static const char *zeda_delimiter = zeda_delimiter_default;
