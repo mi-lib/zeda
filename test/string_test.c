@@ -173,6 +173,30 @@ void assert_num_token(void)
   fclose( fp );
 }
 
+void assert_value_stoken(void)
+{
+  int ival;
+  double dval;
+  char buf[BUFSIZ];
+  const char *string_int = "0 1 2";
+  const char *string_double = "-0.1 0.2 0.3e+12";
+  bool result = true;
+
+  strcpy( buf, string_int );
+  if( !zSInt( buf, &ival ) ){ result = false; } if( ival != 0 ){ result = false; }
+  if( !zSInt( buf, &ival ) ){ result = false; } if( ival != 1 ){ result = false; }
+  if( !zSInt( buf, &ival ) ){ result = false; } if( ival != 2 ){ result = false; }
+  if(  zSInt( buf, &ival ) ){ result = false; }
+  zAssert( zSInt, result );
+
+  strcpy( buf, string_double );
+  if( !zSDouble( buf, &dval ) ){ result = false; } if( dval != -0.1   ){ result = false; }
+  if( !zSDouble( buf, &dval ) ){ result = false; } if( dval != 0.2    ){ result = false; }
+  if( !zSDouble( buf, &dval ) ){ result = false; } if( dval != 0.3e12 ){ result = false; }
+  if(  zSDouble( buf, &dval ) ){ result = false; }
+  zAssert( zSDouble, result );
+}
+
 void assert_check_utf_bom(void)
 {
 #ifndef __WINDOWS__
@@ -279,6 +303,7 @@ int main(void)
   assert_ftoken();
   assert_stoken();
   assert_num_token();
+  assert_value_stoken();
   assert_check_utf_bom();
   assert_pathname();
   assert_strsearch();

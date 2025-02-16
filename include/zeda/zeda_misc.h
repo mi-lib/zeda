@@ -47,12 +47,23 @@ __BEGIN_DECLS
  * return a saturated value of \a x with the lower
  * boundary \a l and the upper boundary \a u.
  */
-#define _zMax(x,y)     ( (x)>=(y) ? (x) : (y) )
+#define _zMax(x,y)     ( (x) >= (y) ? (x) : (y) )
 __ZEDA_EXPORT double zMax(double x, double y);
-#define _zMin(x,y)     ( (x)<=(y) ? (x) : (y) )
+#define _zMin(x,y)     ( (x) <= (y) ? (x) : (y) )
 __ZEDA_EXPORT double zMin(double x, double y);
-#define _zLimit(x,l,u) ( (x)<=(l) ? (l) : ( (x)>=(u) ? (u) : (x) ) )
+#define _zLimit(x,l,u) ( (x) <= (l) ? (l) : ( (x) >= (u) ? (u) : (x) ) )
 __ZEDA_EXPORT double zLimit(double x, double l, double u);
+
+/*!
+ * \def zMax3(x,y)
+ * return the largest value of \a x, \a y, and \a z.
+ * \def zMin(x,y)
+ * return the smallest value of \a x, \a y, and \a z.
+ */
+#define _zMax3(x,y,z)  ( (x) >= (y) ? _zMax( x, z ) : _zMax( y, z ) )
+__ZEDA_EXPORT double zMax3(double x, double y, double z);
+#define _zMin3(x,y,z)  ( (x) <= (y) ? _zMin( x, z ) : _zMin( y, z ) )
+__ZEDA_EXPORT double zMin3(double x, double y, double z);
 
 /*! \brief
  * return a saturated value of \a x with two boundaries \a b1 and

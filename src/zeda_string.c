@@ -677,41 +677,43 @@ char *zSNumToken(char *str, char *tkn, size_t size)
 }
 
 /* get an integer value from file. */
-char *zFInt(FILE *fp, int *val)
+bool zFInt(FILE *fp, int *val)
 {
-  char buf[BUFSIZ], *ret;
+  char buf[BUFSIZ];
 
-  if( ( ret = zFToken( fp, buf, BUFSIZ ) ) ) *val = atoi( buf );
-  return ret;
+  if( !zFToken( fp, buf, BUFSIZ ) ) return false;
+  *val = atoi( buf );
+  return true;
 }
 
 /* get an integer value from string. */
-char *zSInt(char *str, int *val)
+bool zSInt(char *str, int *val)
 {
   char buf[BUFSIZ];
 
-  if( !*zSToken( str, buf, BUFSIZ ) ) return NULL;
+  if( !*zSToken( str, buf, BUFSIZ ) ) return false;
   *val = atoi( buf );
-  return str;
+  return true;
 }
 
 /* get a double-precision floating-point value from file. */
-char *zFDouble(FILE *fp, double *val)
-{
-  char buf[BUFSIZ], *ret;
-
-  if( ( ret = zFToken( fp, buf, BUFSIZ ) ) ) *val = atof( buf );
-  return ret;
-}
-
-/* get a double-precision floating-point value from string. */
-char *zSDouble(char *str, double *val)
+bool zFDouble(FILE *fp, double *val)
 {
   char buf[BUFSIZ];
 
-  if( !*zSToken( str, buf, BUFSIZ ) ) return NULL;
+  if( !zFToken( fp, buf, BUFSIZ ) ) return false;
   *val = atof( buf );
-  return str;
+  return true;
+}
+
+/* get a double-precision floating-point value from string. */
+bool zSDouble(char *str, double *val)
+{
+  char buf[BUFSIZ];
+
+  if( !*zSToken( str, buf, BUFSIZ ) ) return false;
+  *val = atof( buf );
+  return true;
 }
 
 /* check byte order marker of UTF-8/16 encode files. */

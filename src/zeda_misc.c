@@ -24,6 +24,11 @@ double zMin(double x, double y){ return _zMin( x, y ); }
 /* return as close value in between the given lower and upper bounds. */
 double zLimit(double x, double l, double u){ return _zLimit( x, l, u ); }
 
+/* return the largest of three values. */
+double zMax3(double x, double y, double z){ return _zMax3( x, y, z ); }
+/* return the smallest of three values. */
+double zMin3(double x, double y, double z){ return _zMin3( x, y, z ); }
+
 /* saturate a value within a segment. */
 double zBound(double x, double b1, double b2)
 {

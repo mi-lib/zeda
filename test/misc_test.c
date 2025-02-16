@@ -4,6 +4,39 @@
 #include <zeda/zeda.h>
 #include <math.h>
 
+void assert_maxmin(void)
+{
+  zAssert( zMax,
+    zMax(1,0) == 1 &&
+    zMax(0,1) == 1 );
+  zAssert( zMin,
+    zMin(1,0) == 0 &&
+    zMin(0,1) == 0 );
+  zAssert( zLimit,
+    zLimit( 0.5, 0, 1 ) == 0.5 &&
+    zLimit( -1, 0, 1 ) == 0 &&
+    zLimit( 10, 0, 1 ) == 1 );
+  zAssert( zBound,
+    zBound( 0.5, 1, 0 ) == zBound( 0.5, 0, 1 ) &&
+    zBound(  -1, 1, 0 ) == zBound(  -1, 0, 1 ) &&
+    zBound(   2, 1, 0 ) == zBound(   2, 0, 1 ) );
+
+  zAssert( zMax3,
+    zMax3( 1, 2, 3 ) == 3 &&
+    zMax3( 1, 3, 2 ) == 3 &&
+    zMax3( 2, 1, 3 ) == 3 &&
+    zMax3( 2, 3, 1 ) == 3 &&
+    zMax3( 3, 1, 2 ) == 3 &&
+    zMax3( 3, 2, 1 ) == 3 );
+  zAssert( zMin3,
+    zMin3( 1, 2, 3 ) == 1 &&
+    zMin3( 1, 3, 2 ) == 1 &&
+    zMin3( 2, 1, 3 ) == 1 &&
+    zMin3( 2, 3, 1 ) == 1 &&
+    zMin3( 3, 1, 2 ) == 1 &&
+    zMin3( 3, 2, 1 ) == 1 );
+}
+
 void assert_swap(void)
 {
   char ac, ac0, bc, bc0;
@@ -163,10 +196,7 @@ int main(void)
 {
   zRandInit();
   zEchoOff();
-  zAssert( zMax, zMax(1,0) == 1 );
-  zAssert( zMin, zMin(1,0) == 0 );
-  zAssert( zLimit, zLimit( 0.5, 0, 1 ) == 0.5 && zLimit( -1, 0, 1 ) == 0 && zLimit( 10, 0, 1 ) == 1 );
-  zAssert( zBound, zBound( 0.5, 1, 0 ) == zBound( 0.5, 0, 1 ) );
+  assert_maxmin();
   assert_swap();
   assert_clone();
   assert_filesize();

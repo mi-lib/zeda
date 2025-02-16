@@ -642,36 +642,44 @@ __ZEDA_EXPORT char *zSNumToken(char *str, char *tkn, size_t size);
 
 /*! \brief get an integer value from file.
  *
- * zFInt() acquires an integer value in a file \a fp
- * from the current position. If no integer value is
- * recognized at the current position, zero is returned.
+ * zFInt() reads an integer value from the current position of a file \a fp. The value is stored where
+ * \a val points.
+ * \return
+ * zFInt() returns the true value if it succeeds to read a value. If no value is found, the false value
+ * is returned.
  */
-__ZEDA_EXPORT char *zFInt(FILE *fp, int *val);
+__ZEDA_EXPORT bool zFInt(FILE *fp, int *val);
 
 /*! \brief get an integer value from a string.
  *
- * zSInt() acquires an integer value in a string \a str.
- * If no integer value is recognized at the head of the
- * string, zero is returned.
+ * zSInt() reads an integer value from the current position of a string \a str. The value is stored where
+ * \a val points. \a str is destructively updated to skip the corresponding value part.
+ * \return
+ * zSInt() returns the true value if it succeeds to read a value. If no value is found, the false value
+ * is returned.
  */
-__ZEDA_EXPORT char *zSInt(char *str, int *val);
+__ZEDA_EXPORT bool zSInt(char *str, int *val);
 
-/*! \brief get a d-float value in a file.
+/*! \brief get a double-precision floating-point value in a file.
  *
- * zFDouble() acquires a double-precision floating-point
- * value in a file \a fp from the current position.
- * If no value is recognized at the current position,
- * zero is returned.
+ * zFDouble() reads a double-precision floating-point value from the current position of a file \a fp.
+ * The value is stored where \a val points.
+ * \return
+ * zFDouble() returns the true value if it succeeds to read a value. If no value is found, the false value
+ * is returned.
  */
-__ZEDA_EXPORT char *zFDouble(FILE *fp, double *val);
+__ZEDA_EXPORT bool zFDouble(FILE *fp, double *val);
 
-/*! \brief get a d-float value in a string.
+/*! \brief get a double-precision floating-point value in a string.
  *
- * zSDouble() acquires a double-precision floating-point
- * value in a string \a str. If no value is recognized
- * at the head of the string, zero is returned.
+ * zSDouble() reads a double-precision floating-point value from the current position of a string \a str.
+ * The value is stored where \a val points. \a str is destructively updated to skip the corresponding
+ * value part.
+ * \return
+ * zSDouble() returns the true value if it succeeds to read a value. If no value is found, the false value
+ * is returned.
  */
-__ZEDA_EXPORT char *zSDouble(char *str, double *val);
+__ZEDA_EXPORT bool zSDouble(char *str, double *val);
 
 /*! \} */
 

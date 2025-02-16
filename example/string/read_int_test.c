@@ -7,7 +7,7 @@ int main(void)
 
   printf( "enter a string: " );
   if( !fgets( buf, BUFSIZ, stdin ) ) return 1;
-  while( *zSInt( buf, &val[0] ) )
+  while( zSInt( buf, &val[0] ) )
     printf( "%d\n", val[0] );
 
   printf( "enter 3 numbers: " );
