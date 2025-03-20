@@ -86,6 +86,39 @@ void assert_index_remove(void)
   zAssert( zIndexRemove, res );
 }
 
+void assert_index_remove_irregular(void)
+{
+  zIndex index, index_cmp;
+  bool result = true;
+
+  index = zIndexCreate( SIZE );
+  index_cmp = zIndexCreate( SIZE-1 );
+  zIndexOrder( index, 0 );
+  zIndexRemove( index, 0 );
+  zIndexOrder( index_cmp, 1 );
+  if( !zIndexEqual( index, index_cmp ) ){
+    eprintf( "(case 1) different indices\n" );
+    zIndexFPrint( stderr, index );
+    zIndexFPrint( stderr, index_cmp );
+  }
+  zIndexRemove( index, zIndexSizeNC(index) );
+  if( !zIndexEqual( index, index_cmp ) ){
+    eprintf( "(case 2) different indices\n" );
+    zIndexFPrint( stderr, index );
+    zIndexFPrint( stderr, index_cmp );
+  }
+  zIndexRemove( index, zIndexSizeNC(index)-1 );
+  zIndexDecSize( index_cmp );
+  if( !zIndexEqual( index, index_cmp ) ){
+    eprintf( "(case 3) different indices\n" );
+    zIndexFPrint( stderr, index );
+    zIndexFPrint( stderr, index_cmp );
+  }
+  zIndexFree( index );
+  zIndexFree( index_cmp );
+  zAssert( zIndexOrder (irregular cases), result );
+}
+
 void assert_index_remove_and_insert_test(void)
 {
   zIndex i1, i2;
@@ -134,6 +167,7 @@ int main(void)
   assert_index_swap();
   assert_index_move();
   assert_index_remove();
+  assert_index_remove_irregular();
   assert_index_remove_and_insert_test();
   assert_index_sort();
   return EXIT_SUCCESS;

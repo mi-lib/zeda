@@ -30,6 +30,7 @@
 #define ZEDA_WARN_TOOLONG_NUM          "too long number"
 
 #define ZEDA_WARN_INDEX_OVERSIZE       "index has only %d components, while specified size is %d"
+#define ZEDA_WARN_INDEX_INVALID_POS    "invalid position %d, must be within [0,%d]"
 
 #define ZEDA_WARN_CSV_FIELD_EMPTY      "field empty in a CSV file"
 

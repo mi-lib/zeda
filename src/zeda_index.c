@@ -198,8 +198,15 @@ int zIndexInsertVal(zIndex index, int maxsize, int val)
 /* remove a component from an integer vector. */
 zIndex zIndexRemove(zIndex idx, int i)
 {
-  memmove( &zIndexElemNC(idx,i), &zIndexElemNC(idx,i+1), sizeof(int)*(zIndexSizeNC(idx)-i-1) );
-  zIndexSizeNC(idx)--;
+  int size;
+
+  if( !zIndexPosIsValid( idx, i ) ){
+    ZRUNWARN( ZEDA_WARN_INDEX_INVALID_POS, i, zIndexSizeNC(idx)-1 );
+  } else{
+    if( ( size = zIndexSizeNC(idx) - i - 1 ) > 0 )
+      memmove( &zIndexElemNC(idx,i), &zIndexElemNC(idx,i+1), sizeof(int)*size );
+    zIndexSizeNC(idx)--;
+  }
   return idx;
 }
 
