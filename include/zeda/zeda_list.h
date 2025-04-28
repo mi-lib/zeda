@@ -34,15 +34,33 @@ __BEGIN_DECLS
 
 #ifdef __cplusplus
 #define zListClass(list_t,cell_t,data_t) \
-struct cell_t{\
-  cell_t *prev, *next;\
-  data_t data;\
-  cell_t() : prev{this}, next{this} {}\
+struct cell_t{ \
+  cell_t *prev, *next; \
+  data_t data; \
+  cell_t() : prev{this}, next{this} {} \
 };\
-struct list_t{\
-  int size;\
-  cell_t root;\
-  list_t() : size{0} {}\
+struct list_t{ \
+  int size; \
+  cell_t root; \
+  list_t() : size{0} {} \
+ public: \
+  cell_t *head(){ return zListHead( this ); } \
+  cell_t *tail(){ return zListTail( this ); } \
+  void init(){ zListInit( this ); } \
+  void insertHead(cell_t *cell){ zListInsertHead( this, cell ); } \
+  void insertTail(cell_t *cell){ zListInsertTail( this, cell ); } \
+  cell_t *deleteHead(){ \
+    cell_t *cellptr; \
+    zListDeleteHead( this, &cellptr ); \
+    return cellptr; \
+  } \
+  cell_t *deleteTail(){ \
+    cell_t *cellptr; \
+    zListDeleteTail( this, &cellptr ); \
+    return cellptr; \
+  } \
+  cell_t *purge(cell_t *cell){ zListPurge( this, cell ); return cell; } \
+  void append(list_t *renterlist){ zListAppend( this, renterlist ); } \
 }
 #else
 #define zListClass(list_t,cell_t,data_t) \
@@ -55,9 +73,6 @@ typedef struct _##list_t{\
   cell_t root;\
 } list_t
 #endif /* __cplusplus */
-
-/* dummy list cell class */
-zListClass(zList, zListCell, void*);
 
 /*! \brief a pointer to the previous cell of \a cell. */
 #define zListCellPrev(cell) (cell)->prev
@@ -375,6 +390,9 @@ list_t *list_t##QuickSort(list_t *list, int (* cmp)(void*,void*,void*), void *ut
   _##list_t##InnerQuickSort( zListHead(list), zListTail(list), cmp, util );\
   return list;\
 }
+
+/* dummy list cell class */
+zListClass(zList, zListCell, void*);
 
 /*! \brief print connection information of a list.
  *

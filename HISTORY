@@ -1,3 +1,6 @@
+2025.04.28. Added C++ methods to zListClass. [zeda_list, example]
+2025.04.28. Added C++ methods to zArrayClass and zArray2Class. [zeda_array, example]
+2025.04.26. Applied ZDEF_STRUCT to zeda_ztk, and added C++ methods to ZTK. [zeda_ztk, example]
 2025.03.20. Debugged zIndexRemove. [zeda_errmsg, zeda_index]
 2025.02.16. Added zMax3 and zMin3. [zeda_misc]
 2025.02.15. Modified zFInt, zSInt, zFDouble, and zSDouble to return a boolean value. [zeda_string]

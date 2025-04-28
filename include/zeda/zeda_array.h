@@ -45,10 +45,40 @@ __BEGIN_DECLS
  */
 #ifdef __cplusplus
 #define zArrayClass(array_t,cell_t) \
-struct array_t{\
-  int size;\
-  cell_t *buf;\
-  array_t() : size{0}, buf{NULL} {}\
+struct array_t{ \
+  int size; \
+  cell_t *buf; \
+  array_t() : size{0}, buf{NULL} {} \
+  array_t(int _size){ zArrayAlloc( this, cell_t, _size ); } \
+  bool isValidPos(int pos){ return zArrayPosIsValid( this, pos ); } \
+  cell_t *getNC(int i){ return zArrayElemNC( this, i ); } \
+  cell_t *get(int i){ return zArrayElem( this, i ); } \
+  void setNC(int i, cell_t *elem){ zArraySetElemNC( this, i, elem ); } \
+  bool set(int i, cell_t *elem){ return zArraySetElem( this, i, elem ) ? true : false; } \
+  cell_t *head(){ return zArrayHead( this ); } \
+  cell_t *neck(){ return zArrayNeck( this ); } \
+  cell_t *tail(){ return zArrayTail( this ); } \
+  void assign(cell_t *_buf, int _size){ zArrayAssign( this, _buf, _size ); } \
+  array_t *init(){ zArrayInit( this ); return this; } \
+  array_t *alloc(int _size){ \
+    zArrayAlloc( this, cell_t, _size ); \
+    return this; \
+  } \
+  void _free(){ zArrayFree( this ); } \
+  cell_t *add(cell_t *dat){ \
+    int _size = size; \
+    zArrayAdd( this, cell_t, dat ); \
+    return ( zArraySize(this) == _size + 1 ) ? dat : nullptr; \
+  } \
+  cell_t *insert(int pos, cell_t *dat){ \
+    int _size = size; \
+    zArrayInsert( this, cell_t, pos, dat ); \
+    return ( zArraySize(this) == _size + 1 ) ? dat : nullptr; \
+  } \
+  void remove(int pos){ zArrayDelete( this, cell_t, pos ); } \
+  void append(array_t *subarray){ zArrayAppend( this, subarray, cell_t ); } \
+  void move(array_t *src){ zArrayMove( src, this ); } \
+  void sort(int (* cmp)(void*,void*,void*), void *util){ zArrayQuickSort( this, cmp, util ); } \
 }
 #else
 #define zArrayClass(array_t,cell_t) \
@@ -103,8 +133,8 @@ typedef struct{\
  * \param arr a pointer to the array to be freed.
  */
 #define zArrayFree(array) do{\
-  free( zArrayBuf(array) );\
-  zArrayInit( array );\
+  free( zArrayBuf(array) ); \
+  zArrayInit( array ); \
 } while(0)
 
 /*! zArrayFindName() is valid for an array of a named class.
@@ -302,15 +332,25 @@ __ZEDA_EXPORT void *zInsertSort(void *array, void *memb, int i, int nmemb, int s
  */
 #ifdef __cplusplus
 #define zArray2Class(array_t,cell_t) \
-struct array_t{\
-  int size[2];\
-  cell_t *buf;\
+struct array_t{ \
+  int size[2]; \
+  cell_t *buf; \
+  int rowsize(){ zArray2RowSize( this ); } \
+  int colsize(){ zArray2ColSize( this ); } \
+  bool isValidPos(int row, int col){ return zArray2PosIsValid( this, row, col ); } \
+  cell_t *getNC(int i, int j){ return zArray2ElemNC( this, i, j ); } \
+  cell_t *get(int i, int j){ return zArray2Elem( this, i, j ); } \
+  void setNC(int i, int j, cell_t *elem){ zArray2SetElemNC( this, i, j, elem ); } \
+  bool set(int i, int j, cell_t *elem){ return zArray2SetElem( this, i, j, elem ) ? true : false; } \
+  array_t *init(){ zArray2Init( this ); } \
+  array_t *alloc(int rowsize, int colsize){ zArray2Alloc( this, cell_t, rowsize, colsize ); return this; } \
+  void _free(){ zArray2Free( this ); } \
 }
 #else
 #define zArray2Class(array_t,cell_t) \
-typedef struct{\
-  int size[2];\
-  cell_t *buf;\
+typedef struct{ \
+  int size[2]; \
+  cell_t *buf; \
 } array_t
 #endif /* __cplusplus */
 
