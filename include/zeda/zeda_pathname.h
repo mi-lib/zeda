@@ -60,7 +60,7 @@ __ZEDA_EXPORT char *zAddSuffix(const char *org, const char *suffix, char *dest, 
  * \a dest must have enough size for the suffix-exempt \a org, '.'
  * and \a suffix.
  */
-__ZEDA_EXPORT char *zReplaceSuffix(char *org, char *suffix, char *dest, size_t size);
+__ZEDA_EXPORT char *zReplaceSuffix(const char *org, const char *suffix, char *dest, size_t size);
 
 /*! \brief cut a suffix from a filename
  *

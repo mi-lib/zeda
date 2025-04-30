@@ -53,8 +53,6 @@ struct array_t{ \
   bool isValidPos(int pos){ return zArrayPosIsValid( this, pos ); } \
   cell_t *getNC(int i){ return zArrayElemNC( this, i ); } \
   cell_t *get(int i){ return zArrayElem( this, i ); } \
-  void setNC(int i, cell_t *elem){ zArraySetElemNC( this, i, elem ); } \
-  bool set(int i, cell_t *elem){ return zArraySetElem( this, i, elem ) ? true : false; } \
   cell_t *head(){ return zArrayHead( this ); } \
   cell_t *neck(){ return zArrayNeck( this ); } \
   cell_t *tail(){ return zArrayTail( this ); } \
@@ -65,18 +63,6 @@ struct array_t{ \
     return this; \
   } \
   void _free(){ zArrayFree( this ); } \
-  cell_t *add(cell_t *dat){ \
-    int _size = size; \
-    zArrayAdd( this, cell_t, dat ); \
-    return ( zArraySize(this) == _size + 1 ) ? dat : nullptr; \
-  } \
-  cell_t *insert(int pos, cell_t *dat){ \
-    int _size = size; \
-    zArrayInsert( this, cell_t, pos, dat ); \
-    return ( zArraySize(this) == _size + 1 ) ? dat : nullptr; \
-  } \
-  void remove(int pos){ zArrayDelete( this, cell_t, pos ); } \
-  void append(array_t *subarray){ zArrayAppend( this, subarray, cell_t ); } \
   void move(array_t *src){ zArrayMove( src, this ); } \
   void sort(int (* cmp)(void*,void*,void*), void *util){ zArrayQuickSort( this, cmp, util ); } \
 }
@@ -226,7 +212,7 @@ typedef struct{\
  */
 #define zArrayAppend(array,subarray,type) do{\
   type *__zarray_ap;\
-  __zarray_ap = zRealloc( zArrayBuf(array), type, zArraySize(array)+zArraySize(subarray) );\
+  __zarray_ap = zRealloc( zArrayBuf(array), type, zArraySize(array) + zArraySize(subarray) );\
   if( __zarray_ap == NULL )\
     ZALLOCERROR();\
   else{\
@@ -335,14 +321,14 @@ __ZEDA_EXPORT void *zInsertSort(void *array, void *memb, int i, int nmemb, int s
 struct array_t{ \
   int size[2]; \
   cell_t *buf; \
-  int rowsize(){ zArray2RowSize( this ); } \
-  int colsize(){ zArray2ColSize( this ); } \
+  int rowsize(){ return zArray2RowSize( this ); } \
+  int colsize(){ return zArray2ColSize( this ); } \
   bool isValidPos(int row, int col){ return zArray2PosIsValid( this, row, col ); } \
   cell_t *getNC(int i, int j){ return zArray2ElemNC( this, i, j ); } \
   cell_t *get(int i, int j){ return zArray2Elem( this, i, j ); } \
   void setNC(int i, int j, cell_t *elem){ zArray2SetElemNC( this, i, j, elem ); } \
   bool set(int i, int j, cell_t *elem){ return zArray2SetElem( this, i, j, elem ) ? true : false; } \
-  array_t *init(){ zArray2Init( this ); } \
+  array_t *init(){ zArray2Init( this ); return this; } \
   array_t *alloc(int rowsize, int colsize){ zArray2Alloc( this, cell_t, rowsize, colsize ); return this; } \
   void _free(){ zArray2Free( this ); } \
 }

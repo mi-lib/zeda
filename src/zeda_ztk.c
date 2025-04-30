@@ -462,34 +462,34 @@ void ZTKFPrint(FILE *fp, ZTK *ztk)
  * ********************************************************** */
 
 /* print out information of a list of ZTK property (for debug). */
-void _ZTKPrpFPrint(FILE *fp, const ZTKPrp *prp, size_t size)
+void ZTKPrpFPrint(FILE *fp, const ZTKPrp *prp, size_t prpnum)
 {
   uint i;
 
-  for( i=0; i<size; i++ ){
+  for( i=0; i<prpnum; i++ ){
     fprintf( fp, "property of field %s (%d)\tevaluator: %p\tgenerator: %p\n", prp[i].str, prp[i].num, prp[i]._eval, prp[i]._fprint );
   }
 }
 
 /* duplicate an array of ZTKPrp. */
-ZTKPrp *_ZTKPrpDup(const ZTKPrp *src, size_t size)
+ZTKPrp *ZTKPrpDup(const ZTKPrp *src, size_t prpnum)
 {
   ZTKPrp *dest;
 
-  if( !( dest = zAlloc( ZTKPrp, size ) ) ){
+  if( !( dest = zAlloc( ZTKPrp, prpnum ) ) ){
     ZALLOCERROR();
     return NULL;
   }
-  memcpy( dest, src, sizeof(ZTKPrp)*size );
+  memcpy( dest, src, sizeof(ZTKPrp)*prpnum );
   return dest;
 }
 
 /* set number of a ZTK property with the specified string. */
-bool _ZTKPrpSetNum(ZTKPrp *prp, size_t size, const char *str, int num)
+bool ZTKPrpSetNum(ZTKPrp *prp, size_t prpnum, const char *str, int num)
 {
   uint i;
 
-  for( i=0; i<size; i++ ){
+  for( i=0; i<prpnum; i++ ){
     if( strcmp( prp[i].str, str ) == 0 ){
       if( prp[i].num != -1 ){
         ZRUNERROR( ZEDA_ERR_ZTK_PRP_UNMODIFIABLE, str );
@@ -504,18 +504,18 @@ bool _ZTKPrpSetNum(ZTKPrp *prp, size_t size, const char *str, int num)
 }
 
 /* evaluate a key field of a ZTK format processor based on a ZTK property. */
-void *_ZTKEvalKey(void *obj, void *arg, ZTK *ztk, const ZTKPrp prp[], size_t size)
+void *ZTKEvalKey(void *obj, void *arg, ZTK *ztk, const ZTKPrp prp[], size_t prpnum)
 {
   uint i;
   int *count;
 
   if( !ZTKKeyRewind( ztk ) ) return NULL;
-  if( !( count = zAlloc( int, size ) ) ){
+  if( !( count = zAlloc( int, prpnum ) ) ){
     ZALLOCERROR();
     return NULL;
   }
   do{
-    for( i=0; i<size; i++ )
+    for( i=0; i<prpnum; i++ )
       if( ZTKKeyCmp( ztk, prp[i].str ) && prp[i]._eval ){
         if( prp[i].num > 0 && count[i] >= prp[i].num ){
           ZRUNWARN( ZEDA_WARN_ZTK_TOOMANY_KEYS, prp[i].str );
@@ -535,13 +535,13 @@ void *_ZTKEvalKey(void *obj, void *arg, ZTK *ztk, const ZTKPrp prp[], size_t siz
 }
 
 /* print out a key field of a ZTK format processor based on a ZTK property. */
-void _ZTKPrpKeyFPrint(FILE *fp, void *obj, const ZTKPrp prp[], size_t size)
+void ZTKPrpKeyFPrint(FILE *fp, void *obj, const ZTKPrp prp[], size_t prpnum)
 {
   uint i;
   int j, k;
   fpos_t pos;
 
-  for( i=0; i<size; i++ )
+  for( i=0; i<prpnum; i++ )
     if( prp[i]._fprint )
       for( j=0; j<prp[i].num; j++ ){
         if( fp != stdout && fp != stderr )
@@ -560,17 +560,17 @@ void _ZTKPrpKeyFPrint(FILE *fp, void *obj, const ZTKPrp prp[], size_t size)
 }
 
 /* evaluate a tag field of a ZTK format processor based on a ZTK property. */
-void *_ZTKEvalTag(void *obj, void *arg, ZTK *ztk, const ZTKPrp prp[], size_t size)
+void *ZTKEvalTag(void *obj, void *arg, ZTK *ztk, const ZTKPrp prp[], size_t prpnum)
 {
   uint i;
   int *count;
 
   if( !ZTKTagRewind( ztk ) ) return NULL;
-  if( !( count = zAlloc( int, size ) ) ){
+  if( !( count = zAlloc( int, prpnum ) ) ){
     ZALLOCERROR();
     return NULL;
   }
-  for( i=0; i<size; i++ ){
+  for( i=0; i<prpnum; i++ ){
     ZTKTagRewind( ztk );
     if( prp[i]._eval ) do{
       if( ZTKTagCmp( ztk, prp[i].str ) ){
@@ -592,12 +592,12 @@ void *_ZTKEvalTag(void *obj, void *arg, ZTK *ztk, const ZTKPrp prp[], size_t siz
 }
 
 /* print out a tag field of a ZTK format processor based on a ZTK property. */
-void _ZTKPrpTagFPrint(FILE *fp, void *obj, const ZTKPrp prp[], size_t size)
+void ZTKPrpTagFPrint(FILE *fp, void *obj, const ZTKPrp prp[], size_t prpnum)
 {
   uint i;
   int j;
 
-  for( i=0; i<size; i++ )
+  for( i=0; i<prpnum; i++ )
     if( prp[i]._fprint ){
       for( j=0; j<prp[i].num; j++ ){
         fprintf( fp, "[%s]\n", prp[i].str );

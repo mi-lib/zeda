@@ -226,8 +226,10 @@ SAMPLEDIR:=\$(ROOTDIR)/example
 
 CHKDEP=\`which zeda-chkdep\`
 
-all: library devtools
-library:
+.PHONY: lib doc test example
+
+all: lib devtools
+lib:
 ifneq (\$(CHKDEP),)
 ifneq (\$(DEPENDENCY),)
 	@\$(CHKDEP) \$(DEPENDENCY) || exit 1
@@ -236,10 +238,12 @@ endif
 	@cd \$(SRCDIR); make
 devtools:
 	@cd \$(TOOLDIR); make
-autotest:
+test:
 	@cd \$(TESTDIR); zeda-autotest
 doc:
 	@cd \$(DOCDIR); make
+example:
+	@cd \$(SAMPLEDIR); ./makeall.sh
 clean:
 	-@rm -f \$(ROOTDIR)/*~ \$(INCDIR)/*~
 	@cd \$(SRCDIR); make clean
@@ -247,7 +251,7 @@ clean:
 	@cd \$(TOOLDIR); make clean
 	@cd \$(APPDIR); make clean
 	@cd \$(DOCDIR); make clean
-	@cd \$(SAMPLEDIR); ./allclean.sh
+	@cd \$(SAMPLEDIR); ./makeall.sh clean
 install:
 	@echo " INSTALL	library"
 	-@install -m 755 \$(LIBDIR)/*.so \$(PREFIX)/lib/

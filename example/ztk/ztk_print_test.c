@@ -43,7 +43,7 @@ void *eval_tag(void *obj, int i, void *arg, ZTK *ztk)
   array = zArrayElemNC((tag_array_t*)obj,i);
   zArrayAlloc( array, int, ZTKCountKey( ztk, "key" ) );
   printf( " tag #%d has %d key fields\n", i, zArraySize(array) );
-  return ZTKEvalKey( array, NULL, ztk, ztk_prp_key );
+  return _ZTKEvalKey( array, NULL, ztk, ztk_prp_key );
 }
 
 bool print_tag(FILE*fp, int i, void *obj)
@@ -52,11 +52,11 @@ bool print_tag(FILE*fp, int i, void *obj)
   int size;
   int_array_t *array;
 
-  prp = ZTKPrpDup( ztk_prp_key );
-  size = sizeof(ztk_prp_key) / sizeof(ZTKPrp);
+  size = _ZTKPrpNum( ztk_prp_key );
+  prp = ZTKPrpDup( ztk_prp_key, size );
   array = zArrayElemNC((tag_array_t*)obj,i);
-  _ZTKPrpSetNum( prp, size, "key", zArraySize(array) );
-  _ZTKPrpKeyFPrint( fp, array, prp, size );
+  ZTKPrpSetNum( prp, size, "key", zArraySize(array) );
+  ZTKPrpKeyFPrint( fp, array, prp, size );
   fprintf( fp, "\n");
   free( prp );
   return true;
@@ -72,15 +72,15 @@ void test_eval_and_print(ZTK *ztk)
   ZTKPrp *prp;
   int size;
 
+  size = _ZTKPrpNum( ztk_prp_tag );
   zArrayAlloc( &array, int_array_t, ZTKCountTag( ztk, "tag" ) );
   printf( "ZTK file has %d tag fields.\n", zArraySize(&array) );
-  ZTKEvalTag( &array, NULL, ztk, ztk_prp_tag );
+  ZTKEvalTag( &array, NULL, ztk, ztk_prp_tag, size );
   printf( "done.\n" );
   printf( "output ZTK format\n--\n" );
-  prp = ZTKPrpDup( ztk_prp_tag );
-  size = sizeof(ztk_prp_tag) / sizeof(ZTKPrp);
-  _ZTKPrpSetNum( prp, size, "tag", zArraySize(&array) );
-  _ZTKPrpTagFPrint( stdout, &array, prp, size );
+  prp = ZTKPrpDup( ztk_prp_tag, size );
+  ZTKPrpSetNum( prp, size, "tag", zArraySize(&array) );
+  ZTKPrpTagFPrint( stdout, &array, prp, size );
   free( prp );
   tag_array_free( &array );
 }

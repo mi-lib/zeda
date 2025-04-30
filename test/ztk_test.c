@@ -20,13 +20,13 @@ void assert_ztk_prp_set_num(void)
   ZTKPrp *prp;
   int n;
 
-  n = sizeof(ztk_prp) / sizeof(ZTKPrp);
-  if( !( prp = ZTKPrpDup( ztk_prp ) ) ) return;
+  n = _ZTKPrpNum( ztk_prp );
+  if( !( prp = ZTKPrpDup( ztk_prp, n ) ) ) return;
   zAssert( ZTKPrpDup,
     assert_ztk_prp_cmp( &ztk_prp[0], &prp[0] ) &&
     assert_ztk_prp_cmp( &ztk_prp[1], &prp[1] ) );
-  _ZTKPrpSetNum( prp, n, "prp1", 2 );
-  _ZTKPrpSetNum( prp, n, "prp2", 2 );
+  ZTKPrpSetNum( prp, n, "prp1", 2 );
+  ZTKPrpSetNum( prp, n, "prp2", 2 );
   zAssert( ZTKPrpSetNum (permitted case), prp[0].num == 1 );
   zAssert( ZTKPrpSetNum (unpermitted case), prp[1].num == 2 );
   free( prp );

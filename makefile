@@ -1,12 +1,16 @@
 MAKEFILEGEN=./tools/zeda-makefile-gen
 MAKEDEB=./tools/zeda-deb-gen
 
+.PHONY: doc test example
+
 all:
 	@$(MAKEFILEGEN) | make -f -
-autotest:
-	@$(MAKEFILEGEN) | make -f - autotest
+test:
+	@$(MAKEFILEGEN) | make -f - test
 doc:
 	@$(MAKEFILEGEN) | make -f - doc
+example:
+	@$(MAKEFILEGEN) | make -f - example
 clean:
 	@$(MAKEFILEGEN) | make -f - clean
 install:

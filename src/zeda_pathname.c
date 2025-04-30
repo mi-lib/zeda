@@ -28,7 +28,7 @@ char *zAddSuffix(const char *org, const char *suffix, char *dest, size_t size)
 }
 
 /* replace suffix of a pathname. */
-char *zReplaceSuffix(char *org, char *suffix, char *dest, size_t size)
+char *zReplaceSuffix(const char *org, const char *suffix, char *dest, size_t size)
 {
   char *sfx;
 

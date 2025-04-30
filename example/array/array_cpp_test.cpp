@@ -15,9 +15,8 @@ int main(void)
   const int size = 10;
   zRandInit();
   IntArray array{ size };
-  int val;
   for(int i=0; i<array.size; i++ ){
-    array.set( i, &( val = zRandI( 0, array.size ) ) );
+    array.buf[i] = zRandI( 0, array.size );
   }
   array.sort( cmp, NULL );
   for(int i=0; i<array.size; i++ ){

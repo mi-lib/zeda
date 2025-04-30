@@ -100,7 +100,7 @@ ZTKPrp ztk_prp_job[] = {
 void *job_exec(void *obj, int i, void *arg, ZTK *ztk)
 {
   printf( "job #%d\n", i );
-  return ZTKEvalKey( obj, NULL, ztk, ztk_prp_job );
+  return _ZTKEvalKey( obj, NULL, ztk, ztk_prp_job );
 }
 
 /* a list of tags to which callback functions are associated. */
@@ -111,7 +111,7 @@ ZTKPrp ztk_prp_calculator[] = {
 /* evaluate a ZTK processor. */
 void eval_test(ZTK *ztk, expression_t *expression)
 {
-  ZTKEvalTag( expression, NULL, ztk, ztk_prp_calculator );
+  _ZTKEvalTag( expression, NULL, ztk, ztk_prp_calculator );
 }
 
 int main(int argc, char *argv[])
