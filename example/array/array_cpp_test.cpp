@@ -16,11 +16,14 @@ int main(void)
   zRandInit();
   IntArray array{ size };
   for(int i=0; i<array.size; i++ ){
-    array.buf[i] = zRandI( 0, array.size );
+    *array[i] = zRandI( 0, array.size );
   }
   array.sort( cmp, NULL );
   for(int i=0; i<array.size; i++ ){
-    std::cout << "[" << i << "] " << *array.get( i ) << std::endl;
+    std::cout << "[" << i << "] " << *array[i] << std::endl;
   }
+  std::cout << "head: " << *array.head() << std::endl;
+  std::cout << "neck: " << *array.neck() << std::endl;
+  std::cout << "tail: " << *array.tail() << std::endl;
   return 0;
 }

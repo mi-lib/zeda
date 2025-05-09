@@ -1,3 +1,5 @@
+2025.05.09. Defined zArray2RowBuf. [zeda_array]
+2025.05.09. Modified zArrayClass and zArray2Class to define an operator []. [zeda_array]
 2025.04.29. Added const qualifiers to arguments of zReplaceSuffix. [zeda_pathname]
 2025.04.29. Redefined _ZTKPrpFPrint, _ZTKEvalKey, _ZTKPrpKeyFPrint, _ZTKEvalTag, and _ZTKPrpTagFPrint as they use _ZTKPrpNum. [zeda_ztk]
 2025.04.28. Modified makefile and zeda-makefile-gen. [tools]

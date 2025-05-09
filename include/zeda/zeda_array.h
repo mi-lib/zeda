@@ -56,6 +56,7 @@ struct array_t{ \
   cell_t *head(){ return zArrayHead( this ); } \
   cell_t *neck(){ return zArrayNeck( this ); } \
   cell_t *tail(){ return zArrayTail( this ); } \
+  cell_t *operator[](int i){ return get( i ); } \
   void assign(cell_t *_buf, int _size){ zArrayAssign( this, _buf, _size ); } \
   array_t *init(){ zArrayInit( this ); return this; } \
   array_t *alloc(int _size){ \
@@ -321,16 +322,19 @@ __ZEDA_EXPORT void *zInsertSort(void *array, void *memb, int i, int nmemb, int s
 struct array_t{ \
   int size[2]; \
   cell_t *buf; \
+  array_t *init(){ zArray2Init( this ); return this; } \
+  array_t *alloc(int rowsize, int colsize){ zArray2Alloc( this, cell_t, rowsize, colsize ); return this; } \
+  void _free(){ zArray2Free( this ); } \
+  array_t() : size{ 0, 0 }, buf{NULL} {} \
+  array_t(int _rowsize, int _colsize){ alloc( _rowsize, _colsize ); } \
   int rowsize(){ return zArray2RowSize( this ); } \
   int colsize(){ return zArray2ColSize( this ); } \
   bool isValidPos(int row, int col){ return zArray2PosIsValid( this, row, col ); } \
   cell_t *getNC(int i, int j){ return zArray2ElemNC( this, i, j ); } \
   cell_t *get(int i, int j){ return zArray2Elem( this, i, j ); } \
+  cell_t *operator[](int i){ return zArray2RowBuf( this, i ); } \
   void setNC(int i, int j, cell_t *elem){ zArray2SetElemNC( this, i, j, elem ); } \
   bool set(int i, int j, cell_t *elem){ return zArray2SetElem( this, i, j, elem ) ? true : false; } \
-  array_t *init(){ zArray2Init( this ); return this; } \
-  array_t *alloc(int rowsize, int colsize){ zArray2Alloc( this, cell_t, rowsize, colsize ); return this; } \
-  void _free(){ zArray2Free( this ); } \
 }
 #else
 #define zArray2Class(array_t,cell_t) \
@@ -340,10 +344,11 @@ typedef struct{ \
 } array_t
 #endif /* __cplusplus */
 
-#define zArray2Size(array,i)  (array)->size[i]
-#define zArray2RowSize(array) (array)->size[0]
-#define zArray2ColSize(array) (array)->size[1]
-#define zArray2Buf(array)     ( (array)->buf )
+#define zArray2Size(array,i)   (array)->size[i]
+#define zArray2RowSize(array)  (array)->size[0]
+#define zArray2ColSize(array)  (array)->size[1]
+#define zArray2Buf(array)      ( (array)->buf )
+#define zArray2RowBuf(array,i) ( (i) < zArray2RowSize(array) ? &zArray2Buf(array)[(i)*zArray2ColSize(array)] : NULL )
 
 #define zArray2PosIsValid(array,r,c) ( (r) < zArray2RowSize(array) && (r) >= 0 && (c) < zArray2ColSize(array) && (c) >= 0 )
 
