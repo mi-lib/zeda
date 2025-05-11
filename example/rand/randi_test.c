@@ -4,7 +4,7 @@
 
 int main(int argc, char *argv[])
 {
-  register int i;
+  int i;
   int max, min, val;
 
   max = argc > 2 ? atoi(argv[2]) : 100;

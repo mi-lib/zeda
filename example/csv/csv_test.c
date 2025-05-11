@@ -5,7 +5,7 @@
 void create_test_csv_file(void)
 {
   FILE *fp;
-  register int i;
+  int i;
 
   if( !( fp = fopen( "test.csv", "wt" ) ) ){
     ZOPENERROR( "test.csv" );

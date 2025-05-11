@@ -1,3 +1,4 @@
+2025.05.11. Removed register qualifiers from example codes. [example]
 2025.05.09. Defined zArray2RowBuf. [zeda_array]
 2025.05.09. Modified zArrayClass and zArray2Class to define an operator []. [zeda_array]
 2025.04.29. Added const qualifiers to arguments of zReplaceSuffix. [zeda_pathname]
