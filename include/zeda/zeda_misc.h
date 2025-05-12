@@ -220,11 +220,11 @@ __ZEDA_EXPORT bool __zeda_echo;
  * output an error message whan failing to allocate memory.
  */
 #define ZECHO(msg,...)     ( __zeda_echo ? eprintf( msg " (%s).\n", ##__VA_ARGS__, __FUNCTION__ ) : 0 )
-#define ZRUNERROR(msg,...) ZECHO( "run-time error: " msg, ##__VA_ARGS__ )
-#define ZRUNWARN(msg,...)  ZECHO( "warning: " msg, ##__VA_ARGS__ )
+#define ZRUNERROR(msg,...) ZECHO( ZEDA_RUNTIME_ERROR msg, ##__VA_ARGS__ )
+#define ZRUNWARN(msg,...)  ZECHO( ZEDA_RUNTIME_WARN msg, ##__VA_ARGS__ )
 
-#define ZOPENERROR(m) ZRUNERROR( "cannot open file: %s", (m) )
-#define ZALLOCERROR() ZRUNERROR( "cannot allocate memory" )
+#define ZOPENERROR(m) ZRUNERROR( ZEDA_ERR_CANNOTOPENFILE, (m) )
+#define ZALLOCERROR() ZRUNERROR( ZEDA_ERR_CANNOTALLOCMEM )
 
 /*! \} */
 

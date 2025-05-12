@@ -11,6 +11,9 @@
 
 /* NOTE: never include this header file in user programs. */
 
+#define ZEDA_RUNTIME_ERROR "run-time error: "
+#define ZEDA_RUNTIME_WARN  "warning: "
+
 /* warning message */
 
 #define ZEDA_WARN_ENDIAN_NOT_SUPPORTED "middle endian not supported."
@@ -45,6 +48,9 @@
 #define ZEDA_WARN_UNKNOWNOPT           "unknown option: %s"
 
 /* error messages */
+
+#define ZEDA_ERR_CANNOTOPENFILE        "cannot open file: %s"
+#define ZEDA_ERR_CANNOTALLOCMEM        "cannot allocate memory"
 
 #define ZEDA_ERR_NOT_ZBD               "not a ZBD file."
 #define ZEDA_ERR_ENDIAN_CHK_NOT_FOUND  "endian checker not found."

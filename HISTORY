@@ -1,3 +1,5 @@
+2025.05.12. Defined ZEDA_ERR_CANNOTOPENFILE and ZEDA_ERR_CANNOTALLOCMEM, and modified ZOPENERROR and ZALLOCERROR. [zeda_errmsg, zeda_misc]
+2025.05.12. Defined ZEDA_RUNTIME_ERROR and ZEDA_RUNTIME_WARN, and modified ZRUNERROR and ZRUNWARN. [zeda_errmsg, zeda_misc]
 2025.05.11. Removed register qualifiers from example codes. [example]
 2025.05.09. Defined zArray2RowBuf. [zeda_array]
 2025.05.09. Modified zArrayClass and zArray2Class to define an operator []. [zeda_array]
