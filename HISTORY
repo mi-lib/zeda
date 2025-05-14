@@ -1,3 +1,5 @@
+2025.05.15. Modified zFileCompare to open files in binary modes (for Windows). [zeda_misc]
+2025.05.15. Modified _zFileStackNew to open ZTK file in binary mode (for Windows). [zeda_ztk]
 2025.05.12. Defined ZEDA_ERR_CANNOTOPENFILE and ZEDA_ERR_CANNOTALLOCMEM, and modified ZOPENERROR and ZALLOCERROR. [zeda_errmsg, zeda_misc]
 2025.05.12. Defined ZEDA_RUNTIME_ERROR and ZEDA_RUNTIME_WARN, and modified ZRUNERROR and ZRUNWARN. [zeda_errmsg, zeda_misc]
 2025.05.11. Removed register qualifiers from example codes. [example]

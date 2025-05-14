@@ -91,11 +91,11 @@ long zFileCompare(const char *filename1, const char *filename2)
   char data1, data2;
   long ret = 0;
 
-  if( !( fp1 = fopen( filename1, "r" ) ) ){
+  if( !( fp1 = fopen( filename1, "rb" ) ) ){
     ZOPENERROR( filename1 );
     return -1;
   }
-  if( !( fp2 = fopen( filename2, "r" ) ) ){
+  if( !( fp2 = fopen( filename2, "rb" ) ) ){
     ZOPENERROR( filename2 );
     fclose( fp1 );
     return -1;

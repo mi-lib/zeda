@@ -27,7 +27,7 @@ static zFileStack *_zFileStackNew(const char *pathname)
     ZALLOCERROR();
     return NULL;
   }
-  if( !( cp->fp = zOpenZTKFile( pathname, "r" ) ) ){
+  if( !( cp->fp = zOpenZTKFile( pathname, "rb" ) ) ){
     free( cp );
     return NULL;
   }
