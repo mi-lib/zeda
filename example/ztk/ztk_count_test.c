@@ -2,12 +2,12 @@
 
 void count_tag(ZTK *ztk, char *tag)
 {
-  printf( "%s ... %d\n", tag, ZTKCountTag( ztk, tag ) );
+  eprintf( "%s ... %d\n", tag, ZTKCountTag( ztk, tag ) );
 }
 
 void count_key(ZTK *ztk, char *key)
 {
-  printf( "%s: %s ... %d\n", ZTKTag(ztk), key, ZTKCountKey( ztk, key ) );
+  eprintf( "%s: %s ... %d\n", ZTKTag(ztk), key, ZTKCountKey( ztk, key ) );
 }
 
 int main(int argc, char *argv[])
@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
 
   ZTKPrint( &ztk );
 
-  printf( ">> count\n" );
+  eprintf( ">> count\n" );
   count_tag( &ztk, "tag1" );
   count_tag( &ztk, "tag2" );
   count_tag( &ztk, "tag3" );

@@ -150,6 +150,10 @@ __ZEDA_EXPORT void *zCloneMem(const void *src, size_t size);
 
 /*! \} */
 
+/* ********************************************************** */
+/*! \defgroup file_operation file operations.
+ * \{ *//* ************************************************** */
+
 /*! \brief peek charactor.
  *
  * fpeek() picks up a charactor from the current position
@@ -166,6 +170,11 @@ __ZEDA_EXPORT int fpeek(FILE *fp);
 __ZEDA_EXPORT size_t zFileSize(FILE *fp);
 #endif /* __KERNEL__ */
 
+/*! \brief check if two files are identical. */
+#ifndef __KERNEL__
+__ZEDA_EXPORT bool zFileIsIdent(FILE *fp1, FILE *fp2);
+#endif /* __KERNEL__ */
+
 /*! \brief compare two files.
  *
  * zFileSize() compares two files \a filename1 and \a filename2.
@@ -177,6 +186,8 @@ __ZEDA_EXPORT size_t zFileSize(FILE *fp);
 #ifndef __KERNEL__
 __ZEDA_EXPORT long zFileCompare(const char *filename1, const char *filename2);
 #endif /* __KERNEL__ */
+
+/*! \} */
 
 /* ********************************************************** */
 /*! \defgroup error error and warning messages

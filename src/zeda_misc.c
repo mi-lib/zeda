@@ -54,7 +54,7 @@ void *zCloneMem(const void *src, size_t size)
 }
 
 /* ********************************************************** */
-/* stream manipulation
+/* file stream operations.
  * ********************************************************** */
 
 #ifndef __KERNEL__
@@ -85,6 +85,41 @@ size_t zFileSize(FILE *fp)
 #endif /* __KERNEL__ */
 
 #ifndef __KERNEL__
+/* check if two files are identical. */
+bool zFileIsIdent(FILE *fp1, FILE *fp2)
+{
+#ifndef __WINDOWS__
+  struct stat stat1, stat2;
+
+  if( fstat( fileno( fp1 ), &stat1 ) != 0 ||
+      fstat( fileno( fp2 ), &stat2 ) != 0 ){
+    ZRUNERROR( ZEDA_ERR_CANNOTGETFILESTAT );
+    return false;
+  }
+  return ( stat1.st_ino == stat2.st_ino ) && ( stat1.st_dev == stat2.st_dev );
+#else /* __WINDOWS__ */
+  BY_HANDLE_FILE_INFORMATION info1, info2;
+
+  HANDLE h1 = (HANDLE)_get_osfhandle( _fileno(fp1) );
+  HANDLE h2 = (HANDLE)_get_osfhandle( _fileno(fp2) );
+  if( h1 == INVALID_HANDLE_VALUE || h2 == INVALID_HANDLE_VALUE ){
+    ZRUNERROR( ZEDA_ERR_CANNOTGETFILEHANDLE );
+    return false;
+  }
+  if( !GetFileInformationByHandle( h1, &info1 ) ||
+      !GetFileInformationByHandle( h2, &info2 ) ){
+    ZRUNERROR( ZEDA_ERR_CANNOTGETFILEINFO );
+    return false;
+  }
+  return ( info1.dwVolumeSerialNumber == info2.dwVolumeSerialNumber ) &&
+         ( info1.nFileIndexHigh == info2.nFileIndexHigh ) &&
+         ( info1.nFileIndexLow == info2.nFileIndexLow );
+#endif /* __WINDOWS__ */
+}
+#endif /* __KERNEL__ */
+
+#ifndef __KERNEL__
+/* compare two files. */
 long zFileCompare(const char *filename1, const char *filename2)
 {
   FILE *fp1, *fp2;

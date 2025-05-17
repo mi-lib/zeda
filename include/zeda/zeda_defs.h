@@ -30,6 +30,8 @@
 # define __END_DECLS
 #endif
 
+#include <zeda/zeda_compat.h>
+
 #ifndef __KERNEL__
 # ifdef __cplusplus
 #  include <iostream>
@@ -41,11 +43,10 @@
 #  include <stdlib.h>
 #  include <string.h>
 # endif /* __cplusplus */
+#include <sys/stat.h>
 #endif /* __KERNEL__ */
 
 #include <time.h>
-
-#include <zeda/zeda_compat.h>
 
 /*!
  * \def ZDECL_STRUCT, ZDECL_UNION, ZDEF_STRUCT, ZDEF_UNION

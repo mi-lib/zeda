@@ -18,41 +18,31 @@ void zFileStackInit(zFileStack *stack)
   stack->prev = NULL;
 }
 
-/* open a new file to be pushed to a file stack. */
-static zFileStack *_zFileStackNew(const char *pathname)
-{
-  zFileStack *cp;
-
-  if( !( cp = zAlloc( zFileStack, 1 ) ) ){
-    ZALLOCERROR();
-    return NULL;
-  }
-  if( !( cp->fp = zOpenZTKFile( pathname, "rb" ) ) ){
-    free( cp );
-    return NULL;
-  }
-  if( !( cp->pathname = zStrClone( pathname ) ) ){
-    fclose( cp->fp );
-    free( cp );
-    return NULL;
-  }
-  cp->prev = NULL;
-  return cp;
-}
-
 /* check if the given file is already in a file stack, and if not,
  * open the file and push it. */
 zFileStack *zFileStackPush(zFileStack *head, const char *pathname)
 {
   zFileStack *cp;
+  FILE *fp;
 
   if( !pathname ) return NULL;
-  for( cp=head->prev; cp; cp=cp->prev )
-    if( strncmp( pathname, cp->pathname, BUFSIZ ) == 0 ){
+  if( !( fp = zOpenZTKFile( pathname, "rb" ) ) ) return NULL;
+  for( cp=head->prev; cp; cp=cp->prev ){
+    if( zFileIsIdent( cp->fp, fp ) ){
       ZRUNWARN( ZEDA_WARN_ZTK_INCLUDE_DUP, pathname );
       return NULL;
     }
-  if( !( cp = _zFileStackNew( pathname ) ) ) return NULL;
+  }
+  if( !( cp = zAlloc( zFileStack, 1 ) ) ){
+    ZALLOCERROR();
+    return NULL;
+  }
+  if( !( cp->pathname = zStrClone( pathname ) ) ){
+    fclose( fp );
+    free( cp );
+    return NULL;
+  }
+  cp->fp = fp;
   cp->prev = head->prev;
   head->prev = cp;
   return cp;
@@ -265,7 +255,7 @@ bool ZTKAddDouble(ZTK *ztk, const double val)
 }
 
 /* internally scan and parse a file into a tag-and-key list of a ZTK format processor. */
-bool _ZTKParse(ZTK *ztk, const char *path)
+static bool _ZTKParse(ZTK *ztk, const char *path)
 {
   bool ret = true;
   zFileStack *fs;
@@ -440,11 +430,11 @@ void ZTKFPrint(FILE *fp, ZTK *ztk)
     return; /* no tag registerred */
   }
   do{
-    fprintf( fp, "[%s]\n", ZTKTag(ztk) );
+    fprintf( fp, "[%s]\n", ZTKTag(ztk) ? ZTKTag(ztk) : "" );
     do{
-      fprintf( fp, "%s:", ZTKKey(ztk) );
+      if( ZTKKey(ztk) && ZTKKey(ztk)[0] ) fprintf( fp, "%s:", ZTKKey(ztk) );
       while( 1 ){
-        fprintf( fp, " %s", ZTKVal(ztk) );
+        fprintf( fp, " %s", ZTKVal(ztk) ? ZTKVal(ztk) : "" );
         if( ZTKValNext(ztk) )
           fprintf( fp, "," );
         else{

@@ -27,6 +27,16 @@
 # endif
 #endif
 
+/* if not on Windows, make all functions conforming to POSIX.1 avalable. */
+#if !defined( __WINDOWS__ )
+#if !defined( __USE_POSIX )
+#define __USE_POSIX
+#endif /* __USE_POSIX */
+#if !defined( _POSIX_C_SOURCE )
+#define _POSIX_C_SOURCE 1
+#endif /* _POSIX_C_SOURCE */
+#endif /* __WINDOWS__ */
+
 /* int8_t already defined in Windows. */
 #ifdef __WINDOWS__
 # ifndef _DEFINED_INT8

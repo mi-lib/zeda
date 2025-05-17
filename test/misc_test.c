@@ -1,5 +1,7 @@
 #ifndef __WINDOWS__
+#define _POSIX_C_SOURCE 200112L
 #include <unistd.h>
+#include <fcntl.h>
 #endif /* __WINDOWS__ */
 #include <zeda/zeda.h>
 #include <math.h>
@@ -65,13 +67,43 @@ void assert_clone(void)
   free( dest );
 }
 
+void assert_filecompare(void)
+{
+  const char *filename1 = "filecomp_test_1.txt";
+  const char *filename2 = "filecomp_test_2.txt";
+  const char *str1 = "test string 1";
+  const char *str2 = "test string 2";
+  FILE *fp;
+  bool result1, result2;
+
+  fp = fopen( filename1, "w" );
+  fprintf( fp, "%s\n", str1 );
+  fclose( fp );
+  fp = fopen( filename2, "w" );
+  fprintf( fp, "%s\n", str1 );
+  fclose( fp );
+  result1 = zFileCompare( filename1, filename2 ) == 0 ? true : false;
+  fp = fopen( filename2, "a" );
+  fprintf( fp, "%s\n", str2 );
+  fclose( fp );
+  result2 = zFileCompare( filename1, filename2 ) != 0 ? true: false;
+#ifdef __WINDOWS__
+  _unlink( filename1 );
+  _unlink( filename2 );
+#else
+  unlink( filename1 );
+  unlink( filename2 );
+#endif /* __WINDOWS__ */
+  zAssert( zFileCompare (successful case), result1 );
+  zAssert( zFileCompare (failure case), result2 );
+}
+
 void assert_filesize(void)
 {
-#ifndef __WINDOWS__
   FILE *fp;
   size_t size;
   byte *buf;
-  bool ret;
+  bool result;
   int i;
   const char *filename = "__assert_filesize.dat";
 
@@ -92,36 +124,85 @@ void assert_filesize(void)
     ZOPENERROR( filename );
     return;
   }
-  ret = zFileSize( fp ) == size ? true : false;
+  result = zFileSize( fp ) == size ? true : false;
   fclose( fp );
+#ifdef __WINDOWS__
+  _unlink( filename );
+#else
   unlink( filename );
-  zAssert( zFileSize, ret );
 #endif /* __WINDOWS__ */
+  zAssert( zFileSize, result );
 }
 
-void assert_filecompare(void)
+void assert_file_ident(void)
 {
-#ifndef __WINDOWS__
-#define FILE1 "filecomp_test_1.txt"
-#define FILE2 "filecomp_test_2.txt"
-  const char *str1 = "test string 1";
-  const char *str2 = "test string 2";
-  FILE *fp;
+  FILE *fp1, *fp2;
+  const char *filename1 = "testfile1";
+  const char *filename2 = "testfile2";
+  const char *filename3 = "../test/testfile1";
+  const char *filename4 = "testlink";
+  bool result0 = true, result1, result2, result3, result4;
 
-  fp = fopen( FILE1, "w" );
-  fprintf( fp, "%s\n", str1 );
-  fclose( fp );
-  fp = fopen( FILE2, "w" );
-  fprintf( fp, "%s\n", str1 );
-  fclose( fp );
-  zAssert( zFileCompare (successful case), zFileCompare( FILE1, FILE2 ) == 0 );
-  fp = fopen( FILE2, "a" );
-  fprintf( fp, "%s\n", str2 );
-  fclose( fp );
-  zAssert( zFileCompare (failure case), zFileCompare( FILE1, FILE2 ) != 0 );
-  unlink( FILE1 );
-  unlink( FILE2 );
-#endif
+  /* create test files */
+  if( !( fp1 = fopen( filename1, "w" ) ) ){
+    ZOPENERROR( filename1 );
+    result0 = false;
+  } else{
+    fprintf( fp1, "This is a testfile." );
+    fclose( fp1 );
+  }
+  if( !( fp1 = fopen( filename2, "w" ) ) ){
+    ZOPENERROR( filename2 );
+    result0 = false;
+  } else{
+    fprintf( fp1, "This is another testfile." );
+    fclose( fp1 );
+  }
+  if( symlink( filename1, filename4 ) != 0 ){
+    ZRUNERROR( "cannot create a symbolic link %s to %s", filename4, filename1 );
+    result0 = false;
+  }
+  if( !result0 ) goto ASSERT_FILEISIDENT_TERMINATE;
+  /* test1: same-file case */
+  fp1 = fopen( filename1, "r" );
+  fp2 = fopen( filename1, "r" );
+  result1 = zFileIsIdent( fp1, fp2 );
+  fclose( fp1 );
+  fclose( fp2 );
+  /* test2: different-file case */
+  fp1 = fopen( filename1, "r" );
+  fp2 = fopen( filename2, "r" );
+  result2 = !zFileIsIdent( fp1, fp2 );
+  fclose( fp1 );
+  fclose( fp2 );
+  /* test3: different-path-but-same-file case */
+  fp1 = fopen( filename1, "r" );
+  fp2 = fopen( filename3, "r" );
+  result3 = zFileIsIdent( fp1, fp2 );
+  fclose( fp1 );
+  fclose( fp2 );
+  /* test4: symbolic-link case */
+  fp1 = fopen( filename1, "r" );
+  fp2 = fopen( filename4, "r" );
+  result4 = zFileIsIdent( fp1, fp2 );
+  fclose( fp1 );
+  fclose( fp2 );
+
+ ASSERT_FILEISIDENT_TERMINATE:
+#ifdef __WINDOWS__
+  _unlink( filename1 );
+  _unlink( filename2 );
+  _unlink( filename4 );
+#else
+  unlink( filename1 );
+  unlink( filename2 );
+  unlink( filename4 );
+#endif /* __WINDOWS__ */
+  zAssert( (preparation for zFileIsIdent), result0 );
+  zAssert( zFileIsIdent (same-file case), result1 );
+  zAssert( zFileIsIdent (different-file case), result2 );
+  zAssert( zFileIsIdent (different-path-but-same-file case), result3 );
+  zAssert( zFileIsIdent (symbolic-link case), result4 );
 }
 
 void assert_i2a(void)
@@ -200,6 +281,7 @@ int main(void)
   assert_swap();
   assert_clone();
   assert_filesize();
+  assert_file_ident();
   assert_filecompare();
   zAssert( zA2X, zA2X( "1g2h3i" ) == 0x102030 && zA2X( "1a2b3c" ) == 0x1a2b3c );
   assert_i2a();

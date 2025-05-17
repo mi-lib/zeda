@@ -1,3 +1,8 @@
+2025.05.17. Debugged ZTKFPrint to print out even in cases where some tags/keys are empty. [zeda_ztk]
+2025.05.17. Abolished _zFileStackNew, and reimplemented zFileStackPush to check duplication of files by referring fileno. [zeda_ztk]
+2025.05.17. Added zFileIsIdent. [zeda_errmsg, zeda_misc]
+2025.05.17. Defined __USE_POSIX and _POSIX_C_SOURCE in order to use POSIX-conforming functions. [zeda_compat, zeda_defs]
+2025.05.16. Added static qualifier to _ZTKParse. [zeda_ztk]
 2025.05.15. Modified zFileCompare to open files in binary modes (for Windows). [zeda_misc]
 2025.05.15. Modified _zFileStackNew to open ZTK file in binary mode (for Windows). [zeda_ztk]
 2025.05.12. Defined ZEDA_ERR_CANNOTOPENFILE and ZEDA_ERR_CANNOTALLOCMEM, and modified ZOPENERROR and ZALLOCERROR. [zeda_errmsg, zeda_misc]

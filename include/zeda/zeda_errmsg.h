@@ -51,6 +51,9 @@
 
 #define ZEDA_ERR_CANNOTOPENFILE        "cannot open file: %s"
 #define ZEDA_ERR_CANNOTALLOCMEM        "cannot allocate memory"
+#define ZEDA_ERR_CANNOTGETFILESTAT     "cannot get file status"
+#define ZEDA_ERR_CANNOTGETFILEHANDLE   "cannot get file handle"
+#define ZEDA_ERR_CANNOTGETFILEINFO     "cannot get file information by handle"
 
 #define ZEDA_ERR_NOT_ZBD               "not a ZBD file."
 #define ZEDA_ERR_ENDIAN_CHK_NOT_FOUND  "endian checker not found."
