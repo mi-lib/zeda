@@ -1,3 +1,4 @@
+2025.05.17. Debugged ZTKInt and ZTKDouble to return zero if the value pointer is nil. [zeda_ztk]
 2025.05.17. Debugged ZTKFPrint to print out even in cases where some tags/keys are empty. [zeda_ztk]
 2025.05.17. Abolished _zFileStackNew, and reimplemented zFileStackPush to check duplication of files by referring fileno. [zeda_ztk]
 2025.05.17. Added zFileIsIdent. [zeda_errmsg, zeda_misc]

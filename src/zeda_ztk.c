@@ -400,8 +400,8 @@ int ZTKInt(ZTK *ztk)
   int retval;
   char buf[BUFSIZ];
 
-  if( !ZTKVal(ztk) ) return 0;
-  strncpy( buf, ZTKVal(ztk), BUFSIZ );
+  if( !ZTKValPtr(ztk) ) return 0;
+  strncpy( buf, ZTKVal(ztk), zMin( strlen(ZTKVal(ztk)), BUFSIZ ) );
   zSInt( buf, &retval );
   ZTKValNext( ztk );
   return retval;
@@ -413,8 +413,8 @@ double ZTKDouble(ZTK *ztk)
   double retval;
   char buf[BUFSIZ];
 
-  if( !ZTKVal(ztk) ) return 0;
-  strncpy( buf, ZTKVal(ztk), BUFSIZ );
+  if( !ZTKValPtr(ztk) ) return 0;
+  strncpy( buf, ZTKVal(ztk), zMin( strlen(ZTKVal(ztk)), BUFSIZ ) );
   zSDouble( buf, &retval );
   ZTKValNext( ztk );
   return retval;
