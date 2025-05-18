@@ -79,11 +79,11 @@ void ZTKKeyFieldFPrint(FILE *fp, ZTKKeyField *kf)
 {
   zStrListCell *cp;
 
-  fprintf( fp, "%s:", kf->key );
+  if( kf->key && kf->key[0] ) fprintf( fp, "%s: ", kf->key );
   zListForEach( &kf->vallist, cp ){
-    fprintf( fp, " %s", cp->data );
+    fprintf( fp, "%s", cp->data );
     if( zListCellNext(cp) != zListRoot(&kf->vallist) )
-      fprintf( fp, "," );
+      fprintf( fp, " " );
   }
   fprintf( fp, "\n" );
 }
@@ -138,7 +138,7 @@ void ZTKTagFieldFPrint(FILE *fp, ZTKTagField *tf)
 {
   ZTKKeyFieldListCell *cp;
 
-  fprintf( fp, "[%s]\n", tf->tag );
+  fprintf( fp, "[%s]\n", tf->tag ? tf->tag : "" );
   zListForEach( &tf->kflist, cp )
     ZTKKeyFieldFPrint( fp, &cp->data );
 }
@@ -401,7 +401,7 @@ int ZTKInt(ZTK *ztk)
   char buf[BUFSIZ];
 
   if( !ZTKValPtr(ztk) ) return 0;
-  strncpy( buf, ZTKVal(ztk), zMin( strlen(ZTKVal(ztk)), BUFSIZ ) );
+  strncpy( buf, ZTKVal(ztk), BUFSIZ-1 );
   zSInt( buf, &retval );
   ZTKValNext( ztk );
   return retval;
@@ -414,36 +414,16 @@ double ZTKDouble(ZTK *ztk)
   char buf[BUFSIZ];
 
   if( !ZTKValPtr(ztk) ) return 0;
-  strncpy( buf, ZTKVal(ztk), zMin( strlen(ZTKVal(ztk)), BUFSIZ ) );
+  strncpy( buf, ZTKVal(ztk), BUFSIZ-1 );
   zSDouble( buf, &retval );
   ZTKValNext( ztk );
   return retval;
 }
 
-/* print out ZTK to a file.
- * This function could be referred as an example of how the information in ZTK is retrieved.
- */
+/* print out ZTK to a file. */
 void ZTKFPrint(FILE *fp, ZTK *ztk)
 {
-  if( !ZTKTagRewind( ztk ) ){
-    fprintf( fp, "(empty)\n" );
-    return; /* no tag registerred */
-  }
-  do{
-    fprintf( fp, "[%s]\n", ZTKTag(ztk) );
-    do{
-      if( ZTKKey(ztk)[0] ) fprintf( fp, "%s: ", ZTKKey(ztk) );
-      while( 1 ){
-        fprintf( fp, "%s", ZTKVal(ztk) );
-        if( !ZTKValNext(ztk) ){
-          fprintf( fp, "\n" );
-          break;
-        }
-        fprintf( fp, " " );
-      }
-    } while( ZTKKeyNext(ztk) );
-    fprintf( fp, "\n" );
-  } while( ZTKTagNext(ztk) );
+  ZTKTagFieldListFPrint( fp, &ztk->tflist );
 }
 
 /* ********************************************************** */

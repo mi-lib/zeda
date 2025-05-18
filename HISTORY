@@ -1,3 +1,5 @@
+2025.05.18. Debugged ZTKInt and ZTKDouble. [zeda_ztk]
+2025.05.18. Modified ZTKFPrint to use ZTKTagFieldListFPrint. [zeda_ztk]
 2025.05.18. Modified ZTKFPrint. [zeda_ztk]
 2025.05.18. Added ZTKTagPtr macro, and modified ZTKTag to use it. [zeda_ztk]
 2025.05.18. Added ZTKKeyPtr macro, and modified ZTKKey and ZTKKeyFieldSize to use it. [zeda_ztk]
