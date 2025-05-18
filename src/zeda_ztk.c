@@ -430,17 +430,16 @@ void ZTKFPrint(FILE *fp, ZTK *ztk)
     return; /* no tag registerred */
   }
   do{
-    fprintf( fp, "[%s]\n", ZTKTag(ztk) ? ZTKTag(ztk) : "" );
+    fprintf( fp, "[%s]\n", ZTKTag(ztk) );
     do{
-      if( ZTKKey(ztk) && ZTKKey(ztk)[0] ) fprintf( fp, "%s:", ZTKKey(ztk) );
+      if( ZTKKey(ztk)[0] ) fprintf( fp, "%s: ", ZTKKey(ztk) );
       while( 1 ){
-        fprintf( fp, " %s", ZTKVal(ztk) ? ZTKVal(ztk) : "" );
-        if( ZTKValNext(ztk) )
-          fprintf( fp, "," );
-        else{
+        fprintf( fp, "%s", ZTKVal(ztk) );
+        if( !ZTKValNext(ztk) ){
           fprintf( fp, "\n" );
           break;
         }
+        fprintf( fp, " " );
       }
     } while( ZTKKeyNext(ztk) );
     fprintf( fp, "\n" );

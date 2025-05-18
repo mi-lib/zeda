@@ -183,7 +183,7 @@ __ZEDA_EXPORT int ZTKCountKey(ZTK *ztk, const char *key);
 /*! \brief return a pointer to the current value string of the current key field of the current tagged field in a tag-and-key list of a ZTK format processor. */
 #define ZTKValPtr(ztk) (ztk)->val_cp
 /*! \brief return the current value string of the current key field of the current tagged field in a tag-and-key list of a ZTK format processor. */
-#define ZTKVal(ztk) ( (ztk)->val_cp ? (const char *)(ztk)->val_cp->data : "" )
+#define ZTKVal(ztk) ( ZTKValPtr(ztk) ? (const char *)ZTKValPtr(ztk)->data : "" )
 /*! \brief move to the next value string in the current key field of the current tagged field in a tag-and-key list of a ZTK format processor. */
 __ZEDA_EXPORT zStrListCell *ZTKValNext(ZTK *ztk);
 /*! \brief rewind the list of value strings of the current key field of the current tagged field in a tag-and-key list of a ZTK format processor. */
@@ -191,10 +191,12 @@ __ZEDA_EXPORT zStrListCell *ZTKValRewind(ZTK *ztk);
 /*! \brief check if a string is the same with the current value string of the current key field of the current tagged field in a tag-and-key list of a ZTK format processor. */
 #define ZTKValCmp(ztk,str) ( strcmp( ZTKVal(ztk), str ) == 0 )
 
+/*! \brief a pointer to the current key field of the current tagged field in tag-and-key list of a ZTK format processor. */
+#define ZTKKeyPtr(ztk) (ztk)->kf_cp
 /*! \brief return the current key of the current tagged field in a tag-and-key list of a ZTK format processor. */
-#define ZTKKey(ztk) ( (ztk)->kf_cp ? (const char *)(ztk)->kf_cp->data.key : "" )
+#define ZTKKey(ztk) ( ZTKKeyPtr(ztk) ? (const char *)ZTKKeyPtr(ztk)->data.key : "" )
 /*! \brief return the number of values of the current key field of a ZTK format processor. */
-#define ZTKKeyFieldSize(ztk) ( (ztk)->kf_cp ? zListSize(&(ztk)->kf_cp->data.vallist): 0 )
+#define ZTKKeyFieldSize(ztk) ( ZTKKeyPtr(ztk) ? zListSize(&ZTKKeyPtr(ztk)->data.vallist): 0 )
 /*! \brief move to the next key field of the current tagged field in a tag-and-key list of a ZTK format processor. */
 __ZEDA_EXPORT ZTKKeyFieldListCell *ZTKKeyNext(ZTK *ztk);
 /*! \brief rewind the list of key fields of the current tagged field in a tag-and-key list of a ZTK format processor. */
@@ -202,8 +204,10 @@ __ZEDA_EXPORT ZTKKeyFieldListCell *ZTKKeyRewind(ZTK *ztk);
 /*! \brief check if a string is the same with the current key of the current tagged field in a tag-and-key list of a ZTK format processor. */
 #define ZTKKeyCmp(ztk,str) ( strcmp( ZTKKey(ztk), str ) == 0 )
 
+/*! \brief a pointer to the current tagged field in tag-and-key list of a ZTK format processor. */
+#define ZTKTagPtr(ztk) (ztk)->tf_cp
 /*! \brief return the current tag in a tag-and-key list of a ZTK format processor. */
-#define ZTKTag(ztk) ( (ztk)->tf_cp ? (const char *)(ztk)->tf_cp->data.tag : "" )
+#define ZTKTag(ztk) ( ZTKTagPtr(ztk) ? (const char *)ZTKTagPtr(ztk)->data.tag : "" )
 /*! \brief move to the next tagged field in a tag-and-key list of a ZTK format processor. */
 __ZEDA_EXPORT ZTKTagFieldListCell *ZTKTagNext(ZTK *ztk);
 /*! \brief rewind the list of tagged field in a tag-and-key list of a ZTK format processor. */
