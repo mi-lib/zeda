@@ -262,7 +262,7 @@ __ZEDA_EXPORT int zA2X_c(char c);
  * Ex. a string "1g2h3i" is converted to 102030.
  * \return an integer value converted.
  */
-__ZEDA_EXPORT int zA2X(char *str);
+__ZEDA_EXPORT int zA2X(const char *str);
 
 /*! \brief convert an integer to a string.
  *

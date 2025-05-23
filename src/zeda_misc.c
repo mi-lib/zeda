@@ -171,13 +171,14 @@ int zA2X_c(char c)
 }
 
 /* convert a hexadecimal string to a value. */
-int zA2X(char *str)
+int zA2X(const char *str)
 {
   int ret = 0;
+  const char *cp;
 
-  while( *str ){
+  for( cp=str; *cp; cp++ ){
     ret <<= 4;
-    ret |= zA2X_c( *str++ );
+    ret |= zA2X_c( *cp );
   }
   return ret;
 }
@@ -193,11 +194,12 @@ char *zI2A(int val, char *buf)
   if( val < 0 ){
     *cp++ = '-';
     val = -val;
+    size--;
   }
   if( ( base = (int)pow( 10, floor(log10(val))+1 ) ) == 0 )
     strcat( cp, "0" );
   else{
-    for( fig=base/10; base>1; base=fig, fig/=10 )
+    for( fig=base/10; --size>0 && base>1; base=fig, fig/=10 )
       *cp++ = val % base / fig + '0';
     *cp = '\0';
   }
@@ -213,10 +215,8 @@ char *zI2A(int val, char *buf)
 #define _zF2AFig1(val,val_ten) \
  ( ( *(val_ten) = _zF2AFig1Val((val)) ) + '0' )
 
-static void _zF2AAdvance(double val, char *fig);
-
 /* pick up the bottom figure of the value. */
-void _zF2AAdvance(double val, char *fig)
+static void _zF2AAdvance(double val, char *fig)
 {
   if( _zF2AFig1Val(val) <= 5 ) return;
   for( ; *fig=='9' || *fig=='.'; fig-- )
@@ -240,7 +240,7 @@ char *zF2A(double val, char *buf)
     val = -val;
   }
   if( val == 0 )
-    strcpy( buf, "0" );
+    strncpy( buf, "0", 1 );
   else if( val >= 1.0 ){
     if( ( fig = (int)floor(log10(val)) + 1 ) <= ZF2A_FLOATSIZE ){
       val *= pow( 0.1, fig-1 );
@@ -304,11 +304,11 @@ char *zI2AFill(int val, int size, char pat, char *buf)
   int len;
 
   if( ( len = strlen( zI2A( val, _fill_buf ) ) ) > size ){
-    strcpy( buf, _fill_buf );
+    strncpy( buf, _fill_buf, len+1 );
     return buf;
   }
   for( cp=buf; size>len; size--, cp++ ) *cp = pat;
-  strcpy( cp, _fill_buf );
+  strncpy( cp, _fill_buf, len+1 );
   return buf;
 }
 #endif /* __KERNEL__ */
