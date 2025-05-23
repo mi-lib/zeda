@@ -1,3 +1,4 @@
+#include <zeda/zeda_misc.h>
 #ifndef __WINDOWS__
 #define _POSIX_C_SOURCE 200112L
 #include <unistd.h>
@@ -158,7 +159,11 @@ void assert_file_ident(void)
     fprintf( fp1, "This is another testfile." );
     fclose( fp1 );
   }
+#ifdef __WINDOWS__
+  if(CreateSymbolicLink( filename1, filename4 , 0 ) != 0 ){
+#else
   if( symlink( filename1, filename4 ) != 0 ){
+#endif
     ZRUNERROR( "cannot create a symbolic link %s to %s", filename4, filename1 );
     result0 = false;
   }

@@ -11,6 +11,9 @@
 #pragma data_seg( ".share" )
 #pragma data_seg()
 __DEF_WINDLL
+#ifndef __KERNEL__
+#include <io.h>
+#endif
 #endif /* __WINDOWS__ */
 
 #include <math.h>
