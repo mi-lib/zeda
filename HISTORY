@@ -1,3 +1,6 @@
+2025.05.23. Modified misc_test to skip symbolic-link test in assert_file_ident for Windows. [test]
+2025.05.23. Modified location of inclusion of zeda_misc.h to define __WINDOWS__ before checking a necessity of including unistd.h (thanks to Daishi Kaneta). [test]
+2025.05.23. Modified zeda_compat.h to include io.h for Windows in order to use _get_osfhandle (thanks to Daishi Kaneta). [zeda_misc]
 2025.05.18. Debugged ZTKInt and ZTKDouble. [zeda_ztk]
 2025.05.18. Modified ZTKFPrint to use ZTKTagFieldListFPrint. [zeda_ztk]
 2025.05.18. Modified ZTKFPrint. [zeda_ztk]

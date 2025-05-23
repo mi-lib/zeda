@@ -28,7 +28,9 @@
 #endif
 
 /* if not on Windows, make all functions conforming to POSIX.1 avalable. */
-#if !defined( __WINDOWS__ )
+#if defined( __WINDOWS__ )
+#include <io.h> /* for _get_osfhandle() */
+#else
 #if !defined( __USE_POSIX )
 #define __USE_POSIX
 #endif /* __USE_POSIX */

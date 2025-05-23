@@ -1,10 +1,11 @@
-#ifndef __WINDOWS__
 #define _POSIX_C_SOURCE 200112L
+#include <zeda/zeda_misc.h>
+#ifndef __WINDOWS__
 #include <unistd.h>
 #include <fcntl.h>
 #endif /* __WINDOWS__ */
-#include <zeda/zeda.h>
 #include <math.h>
+#include <zeda/zeda_rand.h>
 
 void assert_maxmin(void)
 {
@@ -158,10 +159,12 @@ void assert_file_ident(void)
     fprintf( fp1, "This is another testfile." );
     fclose( fp1 );
   }
+#ifndef __WINDOWS__
   if( symlink( filename1, filename4 ) != 0 ){
     ZRUNERROR( "cannot create a symbolic link %s to %s", filename4, filename1 );
     result0 = false;
   }
+#endif /* __WINDOWS__ */
   if( !result0 ) goto ASSERT_FILEISIDENT_TERMINATE;
   /* test1: same-file case */
   fp1 = fopen( filename1, "r" );
@@ -181,18 +184,19 @@ void assert_file_ident(void)
   result3 = zFileIsIdent( fp1, fp2 );
   fclose( fp1 );
   fclose( fp2 );
+#ifndef __WINDOWS__
   /* test4: symbolic-link case */
   fp1 = fopen( filename1, "r" );
   fp2 = fopen( filename4, "r" );
   result4 = zFileIsIdent( fp1, fp2 );
   fclose( fp1 );
   fclose( fp2 );
+#endif /* __WINDOWS__ */
 
  ASSERT_FILEISIDENT_TERMINATE:
 #ifdef __WINDOWS__
   _unlink( filename1 );
   _unlink( filename2 );
-  _unlink( filename4 );
 #else
   unlink( filename1 );
   unlink( filename2 );
@@ -202,7 +206,9 @@ void assert_file_ident(void)
   zAssert( zFileIsIdent (same-file case), result1 );
   zAssert( zFileIsIdent (different-file case), result2 );
   zAssert( zFileIsIdent (different-path-but-same-file case), result3 );
+#ifndef __WINDOWS__
   zAssert( zFileIsIdent (symbolic-link case), result4 );
+#endif /* __WINDOWS__ */
 }
 
 void assert_i2a(void)
