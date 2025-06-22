@@ -247,7 +247,8 @@ char zFSkipWS(FILE *fp)
   char c;
 
   do{
-    if( ( c = fgetc( fp ) ) == EOF ) return (char)0;
+    c = fgetc( fp );
+    if( feof( fp ) ) return (char)0;
   } while( zIsWS(c) );
   ungetc( c, fp );
   return c;
@@ -266,7 +267,8 @@ char zFSkipIncludedChar(FILE *fp, const char *s)
   char c;
 
   do{
-    if( ( c = fgetc( fp ) ) == EOF ) return (char)0;
+    c = fgetc( fp );
+    if( feof( fp ) ) return (char)0;
   } while( zIsIncludedChar( c, s ) );
   ungetc( c, fp );
   return c;
@@ -327,14 +329,14 @@ static char *_zFFencedToken(FILE *fp, char *tkn, size_t size, const char begin_i
   if( size <= 1 ) return NULL;
   if( tkn[0] != begin_ident ) return NULL;
   size--; /* for the null charactor */
-  for( i=1; !feof(fp); ){
+  for( i=1; ; ){
     if( i >= size ){
       ZRUNWARN( ZEDA_WARN_TOOLONG_STRING );
       i = _zMax( size, 0 );
       break;
     }
     tkn[i++] = fgetc( fp );
-    if( tkn[i-1] == end_ident && tkn[i-2] != '\\' ) break;
+    if( feof( fp ) || ( tkn[i-1] == end_ident && tkn[i-2] != '\\' ) ) break;
   }
   tkn[i] = '\0';
   return tkn;
@@ -438,15 +440,17 @@ void zResetKeyIdent(void){ zSetKeyIdent( ZDEFAULT_KEY_IDENT ); }
 /* check if the last token is a key. */
 bool zFPostCheckKey(FILE *fp)
 {
-  char c;
+  int c;
 
-  while( ( c = fgetc( fp ) ) != EOF ){
+  do{
+    c = fgetc( fp );
+    if( feof( fp ) ) break;
     if( c == zeda_key_ident ) return true;
     if( !zIsDelimiter( c ) ){
       ungetc( c, fp );
       break;
     }
-  }
+  } while( 1 );
   return false;
 }
 
@@ -463,13 +467,15 @@ char *zFToken(FILE *fp, char *tkn, size_t size)
     return tkn;
 
   size--; /* token already has one charactor. */
-  for( i=1; !feof(fp); i++ ){
+  for( i=1; ; i++ ){
     if( i >= size ){
       ZRUNWARN( ZEDA_WARN_TOOLONG_TOKEN );
       i = _zMax( size, 0 );
       break;
     }
-    if( zIsDelimiter( ( tkn[i] = fgetc( fp ) ) ) ){
+    tkn[i] = fgetc( fp );
+    if( feof( fp ) ) break;
+    if( zIsDelimiter( tkn[i] ) ){
       ungetc( tkn[i], fp );
       break;
     }
@@ -525,7 +531,8 @@ char *zFIntToken(FILE *fp, char *tkn, size_t size)
       i = _zMax( size, 0 );
       break;
     }
-    if( ( tkn[i] = fgetc(fp) ) == EOF ) break;
+    tkn[i] = fgetc( fp );
+    if( feof( fp ) ) break;
     if( !isdigit(tkn[i]) ){
       ungetc( tkn[i], fp );
       break;
