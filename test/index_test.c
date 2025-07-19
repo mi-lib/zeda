@@ -159,6 +159,24 @@ void assert_index_sort(void)
   zAssert( zIndexSort, result );
 }
 
+void assert_index_shuffle(void)
+{
+  zIndex index;
+  int i, n = 10, count;
+  bool result = true;
+
+  index = zIndexCreate( n );
+  zIndexShuffle( index, 0 );
+  for( count=0, i=0; i<zIndexSizeNC(index); i++ )
+    if( zIndexElemNC(index,i) == i ) count++;
+  if( count > zIndexSizeNC(index) / 3 ) result = false;
+  zIndexSort( index );
+  for( count=0, i=0; i<zIndexSizeNC(index); i++ )
+    if( zIndexElemNC(index,i) != i ) result = false;
+  zIndexFree( index );
+  zAssert( zIndexShuffle, result );
+}
+
 int main(void)
 {
   zRandInit();
@@ -170,5 +188,6 @@ int main(void)
   assert_index_remove_irregular();
   assert_index_remove_and_insert_test();
   assert_index_sort();
+  assert_index_shuffle();
   return EXIT_SUCCESS;
 }

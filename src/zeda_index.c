@@ -6,6 +6,7 @@
 
 #include <zeda/zeda_index.h>
 #include <zeda/zeda_string.h>
+#include <zeda/zeda_rand.h>
 
 /* ********************************************************** */
 /* CLASS: zIndex
@@ -221,6 +222,23 @@ static int _zIndexSortCmp(void *p1, void *p2, void *dummy)
 void zIndexSort(zIndex index)
 {
   zQuickSort( zIndexBufNC(index), zIndexSizeNC(index), sizeof(int), _zIndexSortCmp, NULL );
+}
+
+/* randomly shuffle components of an integer vector. */
+zIndex zIndexShuffle(zIndex index, int count)
+{
+  int i, i1, i2;
+
+  if( count == 0 )
+    count = zIndexSizeNC(index) * 3;
+  for( i=0; i<count; i++ ){
+    i1 = zRandI( 0, zIndexSizeNC(index)-1 );
+    do{
+      i2 = zRandI( 0, zIndexSizeNC(index)-1 );
+    } while( i2 == i1 );
+    zIndexSwap( index, i1, i2 );
+  }
+  return index;
 }
 
 /* create an integer vector from a list of integers. */

@@ -237,6 +237,16 @@ __ZEDA_EXPORT int zIndexInsertVal(zIndex index, int maxsize, int val);
  */
 __ZEDA_EXPORT void zIndexSort(zIndex index);
 
+/*! \brief randomly shuffle components of an integer vector.
+ *
+ * zIndexShuffle() randomly shuffles components of an integer vector \a index.
+ * \a count is the number of shuffles. If 0 is given for it, it is replaced is three times of the size
+ * of \a index as the default number.
+ * \return
+ * zIndexShuffle() always returns the pointer \a index.
+ */
+__ZEDA_EXPORT zIndex zIndexShuffle(zIndex index, int count);
+
 #ifndef __KERNEL__
 /*! \brief scan an array of integer values from a file.
  *
