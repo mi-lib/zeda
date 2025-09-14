@@ -1,3 +1,7 @@
+2025.09.14. Applied ZDEF_STRUCT to zOption, and added some methods for C++. [zeda_option]
+2025.09.13. Added list_cpp_test to demonstrate how to use zListClass in C++. [example]
+2025.09.13. Added isEmpty method of zList class. [zeda_list]
+2025.09.13. Added a test to check if CR+LF is correctly skipped. [test]
 2025.09.02. Included fstream in zeda_defs.h. [zeda_defs]
 2025.07.19. Added zIndexShuffle. [zeda_index]
 2025.06.22. Modified _zFFencedToken and zFToken to call feof after fgetc. [zeda_string]

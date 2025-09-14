@@ -76,6 +76,52 @@ void assert_stris(void)
   zAssert( zExtractTag, zExtractTag( "[tag]", buf ) && !strcmp( buf, "tag" ) );
 }
 
+void assert_ftoken_newline(void)
+{
+#ifndef __WINDOWS__
+  FILE *fp;
+  const char *newline_test_filename = "newline_test.txt";
+  char token[BUFSIZ];
+  bool result = true;
+
+  if( !( fp = fopen( newline_test_filename, "wt" ) ) ){
+    ZOPENERROR( newline_test_filename );
+    return;
+  }
+  fputc( '\r', fp );
+  fputc( '\n', fp );
+  fputs( " test1", fp );
+  fputc( '\r', fp );
+  fputc( '\n', fp );
+  fputc( '\%', fp );
+  fputc( '\r', fp );
+  fputc( '\n', fp );
+  fputs( "test2", fp );
+  fputc( '\n', fp );
+  fputc( '\%', fp );
+  fputc( ' ',  fp );
+  fputc( '\r', fp );
+  fputc( '\n', fp );
+  fputs( "test3\n", fp );
+  fputc( '\%', fp );
+  fputc( '\n', fp );
+  fputc( '\%', fp );
+  fputc( ' ',  fp );
+  fputc( '\n', fp );
+  fputs( "test4\n", fp );
+  fclose( fp );
+
+  fp = fopen( newline_test_filename, "rt" );
+  zFToken( fp, token, BUFSIZ ); if( strcmp( token, "test1" ) != 0 ) result = false;
+  zFToken( fp, token, BUFSIZ ); if( strcmp( token, "test2" ) != 0 ) result = false;
+  zFToken( fp, token, BUFSIZ ); if( strcmp( token, "test3" ) != 0 ) result = false;
+  zFToken( fp, token, BUFSIZ ); if( strcmp( token, "test4" ) != 0 ) result = false;
+  fclose( fp );
+  unlink( newline_test_filename );
+  zAssert( zFToken (for CR+LF), result );
+#endif /* __WINDOWS__ */
+}
+
 void assert_ftoken(void)
 {
   FILE *fp;
@@ -301,6 +347,7 @@ int main(void)
   assert_sskipdelimiter();
   assert_stris();
   assert_ftoken();
+  assert_ftoken_newline();
   assert_stoken();
   assert_num_token();
   assert_value_stoken();

@@ -47,6 +47,7 @@ struct list_t{ \
   cell_t *head(){ return zListHead( this ); } \
   cell_t *tail(){ return zListTail( this ); } \
   void init(){ zListInit( this ); } \
+  bool isEmpty(){ return zListIsEmpty( this ); } \
   void insertHead(cell_t *cell){ zListInsertHead( this, cell ); } \
   void insertTail(cell_t *cell){ zListInsertTail( this, cell ); } \
   cell_t *deleteHead(){ \
