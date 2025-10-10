@@ -1,3 +1,4 @@
+2025.10.10. Removed unecessary prototypes of zFCountTag, zTagFScan, zFCountKey, and zFieldFScan. [zeda_string]
 2025.09.14. Applied ZDEF_STRUCT to zOption, and added some methods for C++. [zeda_option]
 2025.09.13. Added list_cpp_test to demonstrate how to use zListClass in C++. [example]
 2025.09.13. Added isEmpty method of zList class. [zeda_list]
