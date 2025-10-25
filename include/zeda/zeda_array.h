@@ -116,6 +116,18 @@ typedef struct{\
   }\
 } while(0)
 
+/*! \brief clone an array.
+ * zArrayClone() clones an array \a src to another array \a dest.
+ */
+#define zArrayClone(src,dest) do{ \
+  zArrayInit( dest ); \
+  if( ( zArrayBuf(dest) = zCloneMem( zArrayBuf(src), zArraySize(src) * zArrayElemSize(src) ) ) ){ \
+    zArraySize(dest) = zArraySize(src); \
+  } else{ \
+    ZALLOCERROR(); \
+  } \
+} while(0)
+
 /*! \brief free an array.
  * \param arr a pointer to the array to be freed.
  */
@@ -237,15 +249,26 @@ typedef struct{\
 
 #endif /* __KERNEL__ */
 
+/*! \brief partition an array of pointers.
+ *
+ * zQuickPartition() partitions an array pointed by \a array based on the \a pivot_id th element of
+ * \a array as a pivot. \a nmemb is the number of components of \a array, and \a size is the size of
+ * an individual component.
+ * The components of \a array are partitioned according to the comparison function \a cmp, namely,
+ * all elements that make cmp(a,b,priv) > 0 are put in the former half.
+ * \a util is for programmer's utility.
+ * \return
+ * zQuickPartition() returns the index of the head of the latter-half partition of \a array.
+ */
+__ZEDA_EXPORT int zQuickPartition(void *array, int nmemb, int size, int (* cmp)(void*,void*,void*), void *priv, int pivot_id);
+
 /*! \brief quick sort for a pointer array.
  *
- * zQuickSort() sorts an array pointed by \a array based on the quick sort
- * algorithm. \a nmemb is the number of components of \a array, and \a size
- * is the size of each component.
- * The components of \a array will be sorted in ascending order according
- * to the comparison function \a cmp. Namely, a factor 'a' in the \a array
- * is put after another factor 'b' if cmp(a,b,priv) > 0, where \a util is
- * for programmer's utility.
+ * zQuickSort() sorts an array pointed by \a array by the quick sort algorithm.
+ * \a nmemb is the number of components of \a array, and \a size is the size of an individual component.
+ * The components of \a array are sorted in ascending order according to the comparison function \a cmp,
+ * namely, a factor 'a' in the \a array is put after another factor 'b' if cmp(a,b,priv) > 0, where
+ * \a util is for programmer's utility.
  * \return
  * zQuickSort() returns no value.
  */
@@ -288,6 +311,26 @@ __ZEDA_EXPORT void *zInsertSort(void *array, void *memb, int i, int nmemb, int s
  * zInsertSort()
  */
 #define zArrayInsertSort(array,memb,i,cmp,util) zInsertSort( (void*)zArrayBuf(array), (memb), (i), zArraySize(array), zArrayElemSize(array), cmp, util )
+
+/*! \brief select an element of an array.
+ *
+ * zQuickSelect() selects the \a order th element of an array \a array.
+ * \a nmemb is the number of the array.
+ * \a size is the size of an element of the array.
+ * \a cmp is a comparator function, which accepts a user-defined private data \a priv.
+ * \return
+ * zQuickSelect() returns the pointer to the selected element.
+ */
+__ZEDA_EXPORT void *zQuickSelect(void *array, int nmemb, int size, int order, int (* cmp)(void*,void*,void*), void *priv);
+
+/*! \brief median of an array. */
+#define zQuickMedian(array,nmemb,size,cmp,priv) zQuickSelect( array, nmemb, size, zArraySize(array)/2, cmp, priv )
+
+/*! \brief select an element of an array. */
+#define zArraySelect(array,order,cmp,priv)      zQuickSelect( (void*)zArrayBuf(array), zArraySize(array), zArrayElemSize(array), order, cmp, priv )
+
+/*! \brief select the median of an array. */
+#define zArrayMedian(array,cmp,priv)            zArraySelect( array, zArraySize(array)/2, cmp, priv )
 
 /*! \} */
 

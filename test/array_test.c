@@ -73,53 +73,152 @@ int cmp(void *v1, void *v2, void *dummy)
   return 0;
 }
 
-int assert_quicksort(int n)
+void assert_quicksort(void)
 {
+  const int n = 100;
   int i;
   int_array_t array;
   int val;
+  bool result = true;
 
   zArrayAlloc( &array, int, n );
-  zRandInit();
   for( i=0; i<n; i++ ){
     val = zRandI(-10,10);
     zArraySetElemNC( &array, i, &val );
   }
   zArrayQuickSort( &array, cmp, NULL );
   for( i=1; i<n; i++ )
-    if( *zArrayElemNC(&array,i-1) > *zArrayElemNC(&array,i) ) return 0;
+    if( *zArrayElemNC(&array,i-1) > *zArrayElemNC(&array,i) ) result = false;
   zArrayFree( &array );
-  return 1;
+  zAssert( zArrayQuickSort, result );
 }
 
-int assert_insertsort(int n)
+void assert_insertsort(void)
 {
+  const int n = 100;
   int i;
   int_array_t array;
   int val;
+  bool result = true;
 
   zArrayAlloc( &array, int, n );
-  zRandInit();
   for( i=0; i<n; i++ ){
     val = zRandI(-10,10);
     zArrayInsertSort( &array, &val, i, cmp, NULL );
   }
   for( i=1; i<n; i++ )
-    if( *zArrayElemNC(&array,i-1) > *zArrayElemNC(&array,i) ) return 0;
+    if( *zArrayElemNC(&array,i-1) > *zArrayElemNC(&array,i) ) result = false;
   zArrayFree( &array );
-  return 1;
+  zAssert( zArrayInsertSort, result );
 }
 
-#define N 100
+void assert_select(void)
+{
+  const int n = 1000;
+  int i;
+  int_array_t array, array_clone;
+  int val;
+  bool result1 = true, result2;
+
+  zArrayAlloc( &array, int, n );
+  for( i=0; i<n; i++ ){
+    val = zRandI(-100,100);
+    zArraySetElemNC( &array, i, &val );
+  }
+  zArrayClone( &array, &array_clone );
+  zArrayQuickSort( &array_clone, cmp, NULL );
+
+  for( i=0; i<n; i++ ){
+    val = *(int *)zArraySelect( &array, i, cmp, NULL );
+    if( val != *zArrayElemNC( &array_clone, i ) ) result1 = false;
+  }
+  result2 = zArraySelect( &array, n, cmp, NULL ) == NULL;
+
+  zArrayFree( &array );
+  zArrayFree( &array_clone );
+  zAssert( zArraySelect, result1 );
+  zAssert( zArraySelect (range over case), result2 );
+}
+
+void assert_median(void)
+{
+  const int n_max = 100;
+  int i, n;
+  int_array_t array;
+  int val;
+  bool result1, result2, result3, result4, result5, result6;
+
+  result1 = result2 = result3 = result4 = result5 = result6 = true;
+  /* odd members cases */
+  for( n=0; n<n_max; n++ ){
+    zArrayAlloc( &array, int, 2*n+1 );
+    for( i=0; i<n; i++ ){
+      val = -1;
+      zArraySetElemNC( &array, i, &val );
+    }
+    val = 0;
+    zArraySetElemNC( &array, n, &val );
+    for( i=0; i<n; i++ ){
+      val = 1;
+      zArraySetElemNC( &array, n+i+1, &val );
+    }
+    result1 = *(int *)zArrayMedian( &array, cmp, NULL ) == 0;
+    for( i=0; i<zArraySize(&array); i++ ){
+      val = 0;
+      zArraySetElemNC( &array, i, &val );
+    }
+    result2 = *(int *)zArrayMedian( &array, cmp, NULL ) == 0;
+    for( i=0; i<zArraySize(&array); i++ ){
+      val = i;
+      zArraySetElemNC( &array, i, &val );
+    }
+    result3 = *(int *)zArrayMedian( &array, cmp, NULL ) == ( zArraySize(&array) - 1 ) / 2;
+    zArrayFree( &array );
+  }
+  /* even members cases */
+  for( n=1; n<n_max; n++ ){
+    zArrayAlloc( &array, int, 2*n );
+    for( i=0; i<n; i++ ){
+      val = -1;
+      zArraySetElemNC( &array, i, &val );
+    }
+    for( i=0; i<n; i++ ){
+      val = 1;
+      zArraySetElemNC( &array, n+i, &val );
+    }
+    result4 = *(int *)zArrayMedian( &array, cmp, NULL ) == 1;
+    for( i=0; i<zArraySize(&array)-1; i++ ){
+      val = 0;
+      zArraySetElemNC( &array, i, &val );
+    }
+    val = 1;
+    zArraySetElemNC( &array, i, &val );
+    result5 = *(int *)zArrayMedian( &array, cmp, NULL ) == 0;
+    for( i=0; i<zArraySize(&array); i++ ){
+      val = i;
+      zArraySetElemNC( &array, i, &val );
+    }
+    result6 = *(int *)zArrayMedian( &array, cmp, NULL ) == zArraySize(&array) / 2;
+    zArrayFree( &array );
+  }
+  zAssert( zArrayMedian (odd members case), result1 );
+  zAssert( zArrayMedian (odd members all equal case), result2 );
+  zAssert( zArrayMedian (odd members ordered case), result3 );
+  zAssert( zArrayMedian (even members case), result4 );
+  zAssert( zArrayMedian (even members all equal case), result5 );
+  zAssert( zArrayMedian (even members ordered case), result6 );
+}
+
 
 int main(void)
 {
+  zRandInit();
   assert_array_append();
   assert_array_delete();
   assert_array_insert();
-
-  zAssert( zArrayQuickSort, assert_quicksort( N ) );
-  zAssert( zAssertInsertSort, assert_insertsort( N ) );
-
+  assert_quicksort();
+  assert_insertsort();
+  assert_select();
+  assert_median();
   return EXIT_SUCCESS;
 }
