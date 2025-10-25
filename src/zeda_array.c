@@ -58,11 +58,10 @@ void *zInsertSort(void *array, void *memb, int i, int nmemb, int size, int (* cm
 /* select an element of an array recursively. */
 static void *_zQuickSelect(void *array, int nmemb, int size, int order, int (* cmp)(void*,void*,void*), void *priv)
 {
-  int pivot_id, pid;
+  int pid;
 
   if( nmemb <= 1 ) return array;
-  pivot_id = ( nmemb - 1 ) / 2;
-  pid = zQuickPartition( array, nmemb, size, cmp, priv, pivot_id );
+  pid = zQuickPartition( array, nmemb, size, cmp, priv, ( nmemb - 1 ) / 2 );
   return order < pid ?
     _zQuickSelect( array, pid, size, order, cmp, priv ) :
     _zQuickSelect( (byte *)array+size*pid, nmemb - pid, size, order - pid, cmp, priv );

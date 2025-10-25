@@ -318,6 +318,8 @@ __ZEDA_EXPORT void *zInsertSort(void *array, void *memb, int i, int nmemb, int s
  * \a nmemb is the number of the array.
  * \a size is the size of an element of the array.
  * \a cmp is a comparator function, which accepts a user-defined private data \a priv.
+ * \note
+ * The order of \a array is modified in this process.
  * \return
  * zQuickSelect() returns the pointer to the selected element.
  */

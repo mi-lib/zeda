@@ -1,3 +1,4 @@
+2025.10.25. Modified _zQuickSelect. [zeda_array]
 2025.10.25. Added zQuickSelect, and defined macros zQuickMedian, zArraySelect, and zArrayMedian. [zeda_errmsg, zeda_array]
 2025.10.25. Added zArrayClone. [zeda_array]
 2025.10.24. Modified zQuickSort to check if the number of members is less than or equal to 1. [zeda_array]
