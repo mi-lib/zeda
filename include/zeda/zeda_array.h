@@ -119,9 +119,9 @@ typedef struct{\
 /*! \brief clone an array.
  * zArrayClone() clones an array \a src to another array \a dest.
  */
-#define zArrayClone(src,dest) do{ \
+#define zArrayClone(cell_t,src,dest) do{ \
   zArrayInit( dest ); \
-  if( ( zArrayBuf(dest) = zCloneMem( zArrayBuf(src), zArraySize(src) * zArrayElemSize(src) ) ) ){ \
+  if( ( zArrayBuf(dest) = (cell_t*)zCloneMem( zArrayBuf(src), zArraySize(src) * zArrayElemSize(src) ) ) ){ \
     zArraySize(dest) = zArraySize(src); \
   } else{ \
     ZALLOCERROR(); \

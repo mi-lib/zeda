@@ -125,7 +125,7 @@ void assert_select(void)
     val = zRandI(-100,100);
     zArraySetElemNC( &array, i, &val );
   }
-  zArrayClone( &array, &array_clone );
+  zArrayClone( int, &array, &array_clone );
   zArrayQuickSort( &array_clone, cmp, NULL );
 
   for( i=0; i<n; i++ ){
