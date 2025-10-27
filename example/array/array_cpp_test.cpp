@@ -14,16 +14,22 @@ int main(void)
 {
   const int size = 10;
   zRandInit();
-  IntArray array{ size };
-  for(int i=0; i<array.size; i++ ){
-    *array[i] = zRandI( 0, array.size );
+  IntArray array_org{ size }, array_sorted;
+  for(int i=0; i<array_org.size; i++ ){
+    *array_org[i] = zRandI( 0, array_org.size );
   }
-  array.sort( cmp, NULL );
-  for(int i=0; i<array.size; i++ ){
-    std::cout << "[" << i << "] " << *array[i] << std::endl;
+  std::cout << "original array" << std::endl;
+  for(int i=0; i<array_org.size; i++ ){
+    std::cout << "[" << i << "] " << *array_org[i] << std::endl;
   }
-  std::cout << "head: " << *array.head() << std::endl;
-  std::cout << "neck: " << *array.neck() << std::endl;
-  std::cout << "tail: " << *array.tail() << std::endl;
+  array_sorted.clone( array_org );
+  array_sorted.sort( cmp, NULL );
+  std::cout << "sorted array" << std::endl;
+  for(int i=0; i<array_sorted.size; i++ ){
+    std::cout << "[" << i << "] " << *array_sorted[i] << std::endl;
+  }
+  std::cout << "head: " << *array_sorted.head() << std::endl;
+  std::cout << "neck: " << *array_sorted.neck() << std::endl;
+  std::cout << "tail: " << *array_sorted.tail() << std::endl;
   return 0;
 }

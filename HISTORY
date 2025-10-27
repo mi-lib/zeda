@@ -1,3 +1,5 @@
+2025.10.27. Added member clone to a generalized array class. [zeda_array]
+2025.10.27. Modified member alloc of a generalized array class. [zeda_array]
 2025.10.25. Modified _zQuickSelect. [zeda_array]
 2025.10.25. Added zQuickSelect, and defined macros zQuickMedian, zArraySelect, and zArrayMedian. [zeda_errmsg, zeda_array]
 2025.10.25. Added zArrayClone. [zeda_array]

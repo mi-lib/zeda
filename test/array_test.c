@@ -66,6 +66,28 @@ void assert_array_insert(void)
   zArrayFree( &array );
 }
 
+void assert_array_clone(void)
+{
+  const int n = 1000;
+  int i;
+  int_array_t array, array_clone;
+  int val;
+  bool result = true;
+
+  zArrayAlloc( &array, int, n );
+  for( i=0; i<n; i++ ){
+    val = zRandI(-100,100);
+    zArraySetElemNC( &array, i, &val );
+  }
+  zArrayClone( &array, &array_clone );
+  for( i=0; i<n; i++ ){
+    if( *(int *)zArrayElemNC(&array,i) != *(int *)zArrayElemNC(&array_clone,i) ) result = false;
+  }
+  zArrayFree( &array );
+  zArrayFree( &array_clone );
+  zAssert( zArrayClone, result );
+}
+
 int cmp(void *v1, void *v2, void *dummy)
 {
   if( *(int*)v1 > *(int*)v2 ) return 1;
@@ -216,6 +238,7 @@ int main(void)
   assert_array_append();
   assert_array_delete();
   assert_array_insert();
+  assert_array_clone();
   assert_quicksort();
   assert_insertsort();
   assert_select();

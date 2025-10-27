@@ -61,8 +61,15 @@ struct array_t{ \
   array_t *init(){ zArrayInit( this ); return this; } \
   array_t *alloc(int _size){ \
     zArrayAlloc( this, cell_t, _size ); \
+    return this->size == 0 ? NULL : this; \
+  } \
+  array_t *clone(array_t *src){ \
+    zArrayAlloc( this, cell_t, src->size ); \
+    if( this->size == 0 ) return NULL; \
+    memcpy( this->buf, src->buf, sizeof(cell_t)*src->size ); \
     return this; \
   } \
+  array_t *clone(array_t &src){ return this->clone( &src ); } \
   void _free(){ zArrayFree( this ); } \
   void move(array_t *src){ zArrayMove( src, this ); } \
   void sort(int (* cmp)(void*,void*,void*), void *util){ zArrayQuickSort( this, cmp, util ); } \
