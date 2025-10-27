@@ -1,3 +1,8 @@
+2025.10.27. Added clone method to a generalized 2-dimensional array class. [zeda_array]
+2025.10.27. Added zArray2Clone. [zeda_array]
+2025.10.27. Added destructor to a generalized 2-dimensional array class. [zeda_array]
+2025.10.27. Modified specification of zArrayClone. [zeda_array]
+2025.10.27. Added destructor to a generalized array class. [zeda_array]
 2025.10.27. Added member clone to a generalized array class. [zeda_array]
 2025.10.27. Modified member alloc of a generalized array class. [zeda_array]
 2025.10.25. Modified _zQuickSelect. [zeda_array]

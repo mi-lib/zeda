@@ -50,6 +50,7 @@ struct array_t{ \
   cell_t *buf; \
   array_t() : size{0}, buf{NULL} {} \
   array_t(int _size){ zArrayAlloc( this, cell_t, _size ); } \
+  ~array_t(){ if( size != 0 ) zArrayFree( this ); } \
   bool isValidPos(int pos){ return zArrayPosIsValid( this, pos ); } \
   cell_t *getNC(int i){ return zArrayElemNC( this, i ); } \
   cell_t *get(int i){ return zArrayElem( this, i ); } \
@@ -64,10 +65,8 @@ struct array_t{ \
     return this->size == 0 ? NULL : this; \
   } \
   array_t *clone(array_t *src){ \
-    zArrayAlloc( this, cell_t, src->size ); \
-    if( this->size == 0 ) return NULL; \
-    memcpy( this->buf, src->buf, sizeof(cell_t)*src->size ); \
-    return this; \
+    zArrayClone( cell_t, src, this ); \
+    return this->size == 0 ? NULL : this; \
   } \
   array_t *clone(array_t &src){ return this->clone( &src ); } \
   void _free(){ zArrayFree( this ); } \
@@ -76,9 +75,9 @@ struct array_t{ \
 }
 #else
 #define zArrayClass(array_t,cell_t) \
-typedef struct{\
-  int size;\
-  cell_t *buf;\
+typedef struct{ \
+  int size; \
+  cell_t *buf; \
 } array_t
 #endif /* __cplusplus */
 
@@ -112,23 +111,23 @@ typedef struct{\
  * \param type the data type of the array cells.
  * \param n the number of cells.
  */
-#define zArrayAlloc(array,type,n) do{\
-  if( (n) <= 0 ) zArrayInit( array );\
+#define zArrayAlloc(array,type,_size) do{\
+  if( (_size) <= 0 ) zArrayInit( array );\
   else{\
-    if( !( zArrayBuf(array) = zAlloc( type, n ) ) ){\
+    if( !( zArrayBuf(array) = zAlloc( type, _size ) ) ){\
       ZALLOCERROR();\
       zArraySize(array) = 0;\
     } else\
-      zArraySize(array) = (n);\
+      zArraySize(array) = (_size);\
   }\
 } while(0)
 
 /*! \brief clone an array.
  * zArrayClone() clones an array \a src to another array \a dest.
  */
-#define zArrayClone(src,dest) do{ \
+#define zArrayClone(type,src,dest) do{ \
   zArrayInit( dest ); \
-  if( ( zArrayBuf(dest) = zCloneMem( zArrayBuf(src), zArraySize(src) * zArrayElemSize(src) ) ) ){ \
+  if( ( zArrayBuf(dest) = (type *)zCloneMem( zArrayBuf(src), sizeof(type)*zArraySize(src) ) ) ){ \
     zArraySize(dest) = zArraySize(src); \
   } else{ \
     ZALLOCERROR(); \
@@ -375,10 +374,18 @@ struct array_t{ \
   int size[2]; \
   cell_t *buf; \
   array_t *init(){ zArray2Init( this ); return this; } \
-  array_t *alloc(int rowsize, int colsize){ zArray2Alloc( this, cell_t, rowsize, colsize ); return this; } \
+  array_t *alloc(int _rowsize, int _colsize){ \
+    zArray2Alloc( this, cell_t, _rowsize, _colsize ); \
+    return this->size[0] == _rowsize && this->size[1] == _colsize ? this : NULL; \
+  } \
+  array_t *clone(array_t *src){ \
+    zArray2Clone( cell_t, src, this ); \
+    return this->size[0] == src->size[0] && this->size[1] == src->size[1] ? this : NULL; \
+  } \
   void _free(){ zArray2Free( this ); } \
   array_t() : size{ 0, 0 }, buf{NULL} {} \
-  array_t(int _rowsize, int _colsize){ alloc( _rowsize, _colsize ); } \
+  array_t(int _rowsize, int _colsize){ zArray2Alloc( this, cell_t, _rowsize, _colsize ); } \
+  ~array_t(){ if( size[0] != 0 || size[1] != 0 ) zArray2Free( this ); } \
   int rowsize(){ return zArray2RowSize( this ); } \
   int colsize(){ return zArray2ColSize( this ); } \
   bool isValidPos(int row, int col){ return zArray2PosIsValid( this, row, col ); } \
@@ -421,16 +428,26 @@ typedef struct{ \
  * \param type the data type of the array cells.
  * \param n the number of cells.
  */
-#define zArray2Alloc(array,type,r,c) do{\
-  zArray2Init( array );\
-  if( (r) > 0 && (c) > 0 && !( zArray2Buf(array) = zAlloc(type,(r)*(c)) ) ){\
-    ZALLOCERROR();\
-    zArray2RowSize(array) = 0;\
-    zArray2ColSize(array) = 0;\
-  } else{\
-    zArray2RowSize(array) = (r);\
-    zArray2ColSize(array) = (c);\
-  }\
+#define zArray2Alloc(array,type,r,c) do{ \
+  zArray2Init( array ); \
+  if( (r) > 0 && (c) > 0 && !( zArray2Buf(array) = zAlloc(type,(r)*(c)) ) ){ \
+    ZALLOCERROR(); \
+    zArray2RowSize(array) = 0; \
+    zArray2ColSize(array) = 0; \
+  } else{ \
+    zArray2RowSize(array) = (r); \
+    zArray2ColSize(array) = (c); \
+  } \
+} while(0)
+
+#define zArray2Clone(type,src,dest) do{ \
+  zArray2Init( dest ); \
+  if( ( zArray2Buf(dest) = (type *)zCloneMem( zArray2Buf(src), sizeof(type)*zArray2RowSize(src)*zArray2ColSize(src) ) ) ){ \
+    zArray2RowSize(dest) = zArray2RowSize(src); \
+    zArray2ColSize(dest) = zArray2ColSize(src); \
+  } else{ \
+    ZALLOCERROR(); \
+  } \
 } while(0)
 
 /*! \brief free an array.
