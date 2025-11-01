@@ -28,6 +28,12 @@ test_all(){
 	testcase=`basename ${testfile} .c`
 	test_one
     done
+    TEST=`ls *test.cpp`
+    for testfile in $TEST
+    do
+	testcase=`basename ${testfile} .cpp`
+	test_one
+    done
 }
 
 make clean
@@ -47,8 +53,9 @@ make clean
 
 if [ ${RESULT} = "success" ]; then
     rm -f ${LOG}
+    echo "\e[32mAll tests were cleared.\e[m"
 else
-    echo "Some of the tests failed. See" ${LOG}"."
+    echo "\e[31mSome of the tests failed.\e[m See" ${LOG}"."
 fi
 
 echo "Done."

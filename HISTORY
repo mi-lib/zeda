@@ -1,3 +1,4 @@
+2025.11.01. Modified zeda-autotest to test C++ programs. [tools]
 2025.10.27. Added clone method to a generalized 2-dimensional array class. [zeda_array]
 2025.10.27. Added zArray2Clone. [zeda_array]
 2025.10.27. Added destructor to a generalized 2-dimensional array class. [zeda_array]
