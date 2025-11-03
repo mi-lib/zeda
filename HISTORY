@@ -1,3 +1,4 @@
+2025.11.03. Added type casting to void pointers in zArraySetElemNC, zArrayInsert, zArrayDelete, and zArrayAppend. [zeda_array]
 2025.11.03. Added array_cpp_test. [test]
 2025.11.03. Added insertsort method of zArray for C++. [zeda_array]
 2025.11.03. Modified specification of zArrayInsertSort, and debugged it. [zeda_errmsg, zeda_array]

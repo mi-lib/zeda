@@ -129,7 +129,7 @@ typedef struct{ \
 
 #define zArrayElemNC(array,i)      ( &zArrayBuf(array)[i] )
 #define zArrayElem(array,i)        ( zArrayPosIsValid(array,i) ? zArrayElemNC(array,i) : NULL )
-#define zArraySetElemNC(array,i,d) memcpy( zArrayElemNC(array,i), (d), zArrayElemSize(array) )
+#define zArraySetElemNC(array,i,d) memcpy( (void *)zArrayElemNC(array,i), (void *)(d), zArrayElemSize(array) )
 #define zArraySetElem(array,i,d)   ( zArrayPosIsValid(array,i) ? zArraySetElemNC(array,i,d) : NULL )
 
 #define zArrayHead(array)          zArrayElemNC( array, zArraySize(array)-1 )
@@ -256,7 +256,7 @@ typedef struct{ \
       zArrayRealloc( array, type, zArrayCapacity(array)+1 ); \
     if( zArraySize(array) < zArrayCapacity(array) ){ \
       if( (pos) < zArraySize(array) ) \
-        memmove( zArrayElemNC(array,(pos)+1), zArrayElemNC(array,pos), sizeof(type)*(zArraySize(array)-(pos)) ); \
+        memmove( (void *)zArrayElemNC(array,(pos)+1), (void *)zArrayElemNC(array,pos), sizeof(type)*(zArraySize(array)-(pos)) ); \
       zArraySetElemNC( array, pos, dat ); \
       zArraySize(array)++; \
     } \
@@ -272,7 +272,7 @@ typedef struct{ \
 #define zArrayDelete(array,type,pos) do{ \
   if( zArrayPosIsValid(array,pos) ){ \
     if( (pos) < zArraySize(array)-1 ) \
-      memmove( zArrayElemNC(array,pos), zArrayElemNC(array,(pos)+1), sizeof(type)*(zArraySize(array)-(pos)-1) ); \
+      memmove( (void *)zArrayElemNC(array,pos), (void *)zArrayElemNC(array,(pos)+1), sizeof(type)*(zArraySize(array)-(pos)-1) ); \
     zArraySize(array)--; \
   } else{ \
     ZRUNWARN( "invalid position %d/%d in array specified", pos, zArraySize(array)-1 );\
@@ -288,7 +288,7 @@ typedef struct{ \
   if( zArrayCapacity(subarray) > 0 ){ \
     zArrayRealloc( array, type, zArrayCapacity(array) + zArrayCapacity(subarray) ); \
     if( zArraySize(array) < zArrayCapacity(array) ){ \
-      memcpy( zArrayElemNC(array,zArraySize(array)), zArrayBuf(subarray), zArraySize(subarray)*sizeof(type) ); \
+      memcpy( (void *)zArrayElemNC(array,zArraySize(array)), (void *)zArrayBuf(subarray), zArraySize(subarray)*sizeof(type) ); \
       zArraySize(array) += zArraySize(subarray); \
     } \
   } \
