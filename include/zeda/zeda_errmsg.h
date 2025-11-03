@@ -64,23 +64,27 @@
 
 #define ZEDA_ERR_EMPTY_STRING              "empty string"
 
+#define ZEDA_ERR_ARRAY_UNABLETORESIZE      "cannot resize array to %d/%d, need to reallocate"
+#define ZEDA_ERR_ARRAY2_UNABLETORESIZE     "cannot resize two-dimensional array to %dx%d=%d/%d, need to reallocate"
+
 #define ZEDA_ERR_QUICKSORT_NO_COMPARATOR   "comparator not assigned for quicksort / quickselect"
 #define ZEDA_ERR_QUICKSELECT_INVALID_ORDER "invalid order %d, must be within [0, %d] for quickselect"
 #define ZEDA_ERR_QUICKSELECT_EMPTY         "empty array assigned"
+#define ZEDA_ERR_INSERTIONSORT_OCCUPIED    "array already occupied"
 
 #define ZEDA_ERR_INDEX_SIZENOTSPECIFIED    "index size not specified"
 #define ZEDA_ERR_INDEX_SIZEMISMATCH        "size mismatch of indices"
 
-#define ZEDA_ERR_INDEX_BUF_OCCUPIED       "buffer for the index vector already occupied"
+#define ZEDA_ERR_INDEX_BUF_OCCUPIED        "buffer for the index vector already occupied"
 
-#define ZEDA_ERR_LIST2INDEX_FAILED        "cannot create an integer vector from an empty list"
+#define ZEDA_ERR_LIST2INDEX_FAILED         "cannot create an integer vector from an empty list"
 
-#define ZEDA_ERR_CSV_INVALID              "invalid CSV file"
-#define ZEDA_ERR_CSV_INVALID_LINE         "out-of-range line number %d specified"
+#define ZEDA_ERR_CSV_INVALID               "invalid CSV file"
+#define ZEDA_ERR_CSV_INVALID_LINE          "out-of-range line number %d specified"
 
-#define ZEDA_ERR_ZTK_PRP_UNMODIFIABLE     "not permitted to modify the number of fields %s"
-#define ZEDA_ERR_ZTK_UNKNOWN_VAL          "unknown value %s in the field of tag=%s key=%s"
+#define ZEDA_ERR_ZTK_PRP_UNMODIFIABLE      "not permitted to modify the number of fields %s"
+#define ZEDA_ERR_ZTK_UNKNOWN_VAL           "unknown value %s in the field of tag=%s key=%s"
 
-#define ZEDA_ERR_FATAL                    "fatal error! - please report to the author"
+#define ZEDA_ERR_FATAL                     "fatal error! - please report to the author"
 
 #endif /* __ZEDA_ERRMSG_H__ */

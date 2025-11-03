@@ -46,7 +46,7 @@ void *zInsertSort(void *array, void *memb, int i, int nmemb, int size, int (* cm
   byte *p;
 
   if( i >= nmemb ){
-    ZRUNERROR( "array already occupied" );
+    ZRUNERROR( ZEDA_ERR_INSERTIONSORT_OCCUPIED );
     return NULL;
   }
   for( p=(byte*)array+size*i; p > (byte*)array && cmp( p-size, memb, priv ) > 0; p-=size ){
