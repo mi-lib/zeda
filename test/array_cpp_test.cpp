@@ -243,7 +243,7 @@ void assert_array2_resize(void)
 
   /* rowsize */
   array.rowResize( -1 );
-  zAssert( C++::zArray2.rowResize (negative case), array.rowsize() * array.colsize() == array.capacity );
+  zAssert( C++::zArray2.rowResize (negative case), array.rowsize() == array.rowcapacity() && array.colsize() == array.colcapacity() );
   array.rowResize( 0 );
   zAssert( C++::zArray2.rowResize (zero case), array.rowsize() == 0 );
   array.rowResize( rowsize );
@@ -254,7 +254,7 @@ void assert_array2_resize(void)
   /* colsize */
   array.alloc( rowsize, colsize );
   array.colResize( -1 );
-  zAssert( C++::zArray2.colResize (negative case), array.rowsize() * array.colsize() == array.capacity );
+  zAssert( C++::zArray2.colResize (negative case), array.rowsize() == array.rowcapacity() && array.colsize() == array.colcapacity() );
   array.colResize( 0 );
   zAssert( C++::zArray2.colResize (zero case), array.colsize() == 0 );
   array.colResize( colsize );

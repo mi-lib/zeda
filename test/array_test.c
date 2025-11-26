@@ -351,47 +351,62 @@ void assert_array2_resize(void)
 {
   int_array2_t array;
   const int rowsize = 5, colsize = 3;
-  bool result1, result2, result3, result4;
+  bool result1, result2, result3, result4, result5;
 
   /* rowsize */
   zArray2Alloc( &array, int, rowsize, colsize );
   zArray2RowResize( &array, -1 );
-  result1 = zArray2RowSize(&array) * zArray2ColSize(&array) == zArrayCapacity(&array);
+  result1 = zArray2RowSize(&array) == zArray2RowCapacity(&array) &&
+            zArray2ColSize(&array) == zArray2ColCapacity(&array);
   zArray2RowResize( &array, 0 );
   result2 = zArray2RowSize(&array) == 0;
   zArray2RowResize( &array, rowsize );
   result3 = zArray2RowSize(&array) == rowsize;
   zArray2RowResize( &array, rowsize*2 );
   result4 = zArray2RowSize(&array) == rowsize;
+  zArray2RowResize( &array, 0 );
+  zArray2ResetRowSize( &array );
+  result5 = zArray2RowSize(&array) == zArray2RowCapacity(&array);
   zArray2Free( &array );
   zAssert( zArray2RowResize (negative case), result1 );
   zAssert( zArray2RowResize (zero case), result2 );
   zAssert( zArray2RowResize (up-to-capacity case), result3 );
   zAssert( zArray2RowResize (exceeded case), result4 );
+  zAssert( zArray2ResetRowSize, result5 );
   /* colsize */
   zArray2Alloc( &array, int, rowsize, colsize );
   zArray2ColResize( &array, -1 );
-  result1 = zArray2RowSize(&array) * zArray2ColSize(&array) == zArrayCapacity(&array);
+  result1 = zArray2RowSize(&array) == zArray2RowCapacity(&array) &&
+            zArray2ColSize(&array) == zArray2ColCapacity(&array);
   zArray2ColResize( &array, 0 );
   result2 = zArray2ColSize(&array) == 0;
   zArray2ColResize( &array, colsize );
   result3 = zArray2ColSize(&array) == colsize;
   zArray2ColResize( &array, colsize*2 );
   result4 = zArray2ColSize(&array) == colsize;
+  zArray2ColResize( &array, 0 );
+  zArray2ResetColSize( &array );
+  result5 = zArray2ColSize(&array) == zArray2ColCapacity(&array);
   zArray2Free( &array );
   zAssert( zArray2ColResize (negative case), result1 );
   zAssert( zArray2ColResize (zero case), result2 );
   zAssert( zArray2ColResize (up-to-capacity case), result3 );
   zAssert( zArray2ColResize (exceeded case), result4 );
+  zAssert( zArray2ResetColSize, result5 );
   /* rowsize & colsize */
   zArray2Alloc( &array, int, rowsize, colsize );
   zArray2Resize( &array, rowsize-1, colsize+1 );
   result1 = zArray2RowSize(&array) == rowsize && zArray2ColSize(&array) == colsize;
   zArray2Resize( &array, rowsize-1, colsize-1 );
   result2 = zArray2RowSize(&array) == rowsize-1 && zArray2ColSize(&array) == colsize-1;
+  zArray2Resize( &array, 0, 0 );
+  zArray2ResetSize( &array );
+  result3 = zArray2RowSize(&array) == zArray2RowCapacity(&array) &&
+            zArray2ColSize(&array) == zArray2ColCapacity(&array);
   zArray2Free( &array );
   zAssert( zArray2Resize (up-to-capacity case), result1 );
   zAssert( zArray2Resize (exceeded case), result2 );
+  zAssert( zArray2ResetSize, result3 );
 }
 
 void assert_array2_pos_is_valid(void)

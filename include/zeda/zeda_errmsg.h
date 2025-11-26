@@ -65,7 +65,7 @@
 #define ZEDA_ERR_EMPTY_STRING              "empty string"
 
 #define ZEDA_ERR_ARRAY_UNABLETORESIZE      "cannot resize array to %d/%d, need to reallocate"
-#define ZEDA_ERR_ARRAY2_UNABLETORESIZE     "cannot resize two-dimensional array to %dx%d=%d/%d, need to reallocate"
+#define ZEDA_ERR_ARRAY2_UNABLETORESIZE     "cannot resize two-dimensional array to %dx%d (capacity=%dx%d), need to reallocate"
 
 #define ZEDA_ERR_QUICKSORT_NO_COMPARATOR   "comparator not assigned for quicksort / quickselect"
 #define ZEDA_ERR_QUICKSELECT_INVALID_ORDER "invalid order %d, must be within [0, %d] for quickselect"

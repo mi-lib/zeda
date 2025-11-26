@@ -53,6 +53,7 @@ struct array_t{ \
   array_t(int _capacity){ zArrayAlloc( this, cell_t, _capacity ); } \
   ~array_t(){ if( capacity != 0 ) zArrayFree( this ); } \
   int elemSize(){ return zArrayElemSize( this ); } \
+  void resetSize(){ zArrayResetSize( this ); } \
   bool resize(int size){ zArrayResize( this, size ); return zArraySize(this) == size; } \
   bool posIsValid(int pos){ return zArrayPosIsValid( this, pos ); } \
   cell_t *get(int i){ return zArrayElem( this, i ); } \
@@ -112,10 +113,15 @@ typedef struct{ \
 #define zArraySize(array)          (array)->size
 #define zArrayBuf(array)           (array)->buf
 
+#define zArraySetSize(array,size)  ( zArraySize(array) = (size) )
+#define zArrayResetSize(array)     zArraySetSize( array, zArrayCapacity(array) )
+
+#define zArraySetBuf(array,buf)    ( zArrayBuf(array) = (buf) )
+
 /*! \brief resize an array. */
 #define zArrayResize(array,size) do{ \
   if( (size) >= 0 && (size) <= zArrayCapacity(array) ){ \
-    zArraySize(array) = (size); \
+    zArraySetSize( array, size ); \
   } else{ \
     ZRUNERROR( ZEDA_ERR_ARRAY_UNABLETORESIZE, (size), zArrayCapacity(array) ); \
   } \
@@ -138,8 +144,8 @@ typedef struct{ \
 
 /*! \brief assign a buffer and its size to an array. */
 #define zArrayAssign(array,buf,capacity) do{ \
-  zArrayCapacity(array) = zArraySize(array) = (capacity); \
-  zArrayBuf(array) = (buf); \
+  zArraySetSize( array, ( zArrayCapacity(array) = (capacity) ) ); \
+  zArraySetBuf( array, buf ); \
 } while(0)
 
 /*! \brief initialize an array. */
@@ -154,11 +160,11 @@ typedef struct{ \
   if( (capacity) <= 0 ) \
     zArrayInit( array ); \
   else{ \
-    if( !( zArrayBuf(array) = zAlloc( type, capacity ) ) ){ \
+    if( !( zArraySetBuf( array, zAlloc( type, capacity ) ) ) ){ \
       ZALLOCERROR(); \
-      zArrayCapacity(array) = zArraySize(array) = 0; \
+      zArraySetSize( array, ( zArrayCapacity(array) = 0 ) ); \
     } else \
-      zArrayCapacity(array) = zArraySize(array) = (capacity); \
+      zArraySetSize( array, ( zArrayCapacity(array) = (capacity) ) ); \
   } \
 } while(0)
 
@@ -167,9 +173,9 @@ typedef struct{ \
  */
 #define zArrayClone(type,src,dest) do{ \
   zArrayInit( dest ); \
-  if( ( zArrayBuf(dest) = (type *)zCloneMem( zArrayBuf(src), sizeof(type)*zArrayCapacity(src) ) ) ){ \
+  if( ( zArraySetBuf( dest, (type *)zCloneMem( zArrayBuf(src), sizeof(type)*zArrayCapacity(src) ) ) ) ){ \
     zArrayCapacity(dest) = zArrayCapacity(src); \
-    zArraySize(dest) = zArraySize(src); \
+    zArraySetSize( dest, zArraySize(src) ); \
   } else{ \
     ZALLOCERROR(); \
   } \
@@ -192,8 +198,8 @@ typedef struct{ \
 #define zArrayMove(src,dest) do{ \
   zArrayFree( dest ); \
   zArrayCapacity(dest) = zArrayCapacity(src); \
-  zArraySize(dest) = zArraySize(src); \
-  zArrayBuf(dest) = zArrayBuf(src); \
+  zArraySetSize( dest, zArraySize(src) ); \
+  zArraySetBuf( dest, zArrayBuf(src) ); \
   zArrayInit(src); \
 } while(0)
 
@@ -211,8 +217,8 @@ typedef struct{ \
 /*! \brief reallocate buffer of an array.
  *
  * zArrayRealloc() reallocate buffer of an array \a array. \a type if the type of cells of the array.
- * \a capacity of the new capacity of the array. if \a _capacity is the same with the current
- * capacity of \a array, nothing happens.
+ * \a capacity of the new capacity of the array. if \a capacity is the same with the current
+ * capacity of \a array, nothing happens. The size of \a array is remained even after the reallocation.
  */
 #define zArrayRealloc(array,type,capacity) do{ \
   if( (capacity) != zArrayCapacity(array) ){ \
@@ -221,7 +227,7 @@ typedef struct{ \
     if( __zarray_ap == NULL ) \
       ZALLOCERROR(); \
     else{ \
-      zArrayBuf(array) = __zarray_ap; \
+      zArraySetBuf( array, __zarray_ap ); \
       zArrayCapacity(array) = (capacity); \
     } \
   } \
@@ -253,7 +259,7 @@ typedef struct{ \
     ZRUNWARN( "invalid position %d/%d in array specified", pos, zArraySize(array) ); \
   } else{ \
     if( zArraySize(array) == zArrayCapacity(array) ) \
-      zArrayRealloc( array, type, zArrayCapacity(array)+1 ); \
+      zArrayRealloc( array, type, zArrayCapacity(array) + 1 ); \
     if( zArraySize(array) < zArrayCapacity(array) ){ \
       if( (pos) < zArraySize(array) ) \
         memmove( (void *)zArrayElemNC(array,(pos)+1), (void *)zArrayElemNC(array,pos), sizeof(type)*(zArraySize(array)-(pos)) ); \
@@ -413,7 +419,7 @@ __ZEDA_EXPORT void *zQuickSelect(void *array, int nmemb, int size, int order, in
 #ifdef __cplusplus
 #define zArray2Class(array_t,cell_t) \
 struct array_t{ \
-  int capacity; \
+  int capacity[2]; \
   int size[2]; \
   cell_t *buf; \
   array_t *init(){ zArray2Init( this ); return this; } \
@@ -426,12 +432,17 @@ struct array_t{ \
     return this->size[0] == src->size[0] && this->size[1] == src->size[1] ? this : NULL; \
   } \
   void _free(){ zArray2Free( this ); } \
-  array_t() : capacity{0}, size{ 0, 0 }, buf{NULL} {} \
+  array_t() : capacity{ 0, 0 }, size{ 0, 0 }, buf{NULL} {} \
   array_t(int _rowsize, int _colsize){ zArray2Alloc( this, cell_t, _rowsize, _colsize ); } \
-  ~array_t(){ if( this->capacity != 0 ) zArray2Free( this ); } \
+  ~array_t(){ if( this->capacity[0] != 0 && this->capacity[1] != 0 ) zArray2Free( this ); } \
   int elemSize(){ return zArray2ElemSize( this ); } \
+  int rowcapacity(){ return zArray2RowCapacity( this ); } \
+  int colcapacity(){ return zArray2ColCapacity( this ); } \
   int rowsize(){ return zArray2RowSize( this ); } \
   int colsize(){ return zArray2ColSize( this ); } \
+  void resetRowSize(){ zArray2ResetRowSize( this ); } \
+  void resetColSize(){ zArray2ResetColSize( this ); } \
+  void resetSize(){ zArray2ResetSize( this ); } \
   bool rowResize(int size){ zArray2RowResize( this, size ); return zArray2RowSize(this) == size; } \
   bool colResize(int size){ zArray2ColResize( this, size ); return zArray2ColSize(this) == size; } \
   bool resize(int _rowsize, int _colsize){ zArray2Resize( this, _rowsize, _colsize ); return zArray2RowSize(this) == _rowsize && zArray2ColSize(this) == _colsize; } \
@@ -445,44 +456,58 @@ struct array_t{ \
 #else
 #define zArray2Class(array_t,cell_t) \
 typedef struct{ \
-  int capacity; \
+  int capacity[2]; \
   int size[2]; \
   cell_t *buf; \
 } array_t
 #endif /* __cplusplus */
 
-#define zArray2Capacity(array) (array)->capacity
-#define zArray2Size(array,i)   (array)->size[i]
-#define zArray2RowSize(array)  (array)->size[0]
-#define zArray2ColSize(array)  (array)->size[1]
-#define zArray2Buf(array)      ( (array)->buf )
-#define zArray2RowBuf(array,i) ( (i) < zArray2RowSize(array) ? &zArray2Buf(array)[(i)*zArray2ColSize(array)] : NULL )
+#define zArray2Capacity(array,i)  (array)->capacity[(i)]
+#define zArray2RowCapacity(array) (array)->capacity[0]
+#define zArray2ColCapacity(array) (array)->capacity[1]
+#define zArray2Size(array,i)      (array)->size[(i)]
+#define zArray2RowSize(array)     (array)->size[0]
+#define zArray2ColSize(array)     (array)->size[1]
+#define zArray2Buf(array)         ( (array)->buf )
+#define zArray2RowBuf(array,i)    ( (i) < zArray2RowSize(array) ? &zArray2Buf(array)[(i)*zArray2ColSize(array)] : NULL )
+
+#define zArray2SetRowSize(array,size) ( zArray2RowSize(array) = (size) )
+#define zArray2SetColSize(array,size) ( zArray2ColSize(array) = (size) )
+#define zArray2ResetRowSize(array)    zArray2SetRowSize( array, zArray2RowCapacity(array) )
+#define zArray2ResetColSize(array)    zArray2SetColSize( array, zArray2ColCapacity(array) )
+#define zArray2ResetSize(array) do{ \
+  zArray2ResetRowSize( array ); \
+  zArray2ResetColSize( array ); \
+} while(0)
+
+#define zArray2SetBuf(array,buf)   ( zArray2Buf(array) = (buf) )
 
 /*! \brief resize row of a two-dimensional array. */
-#define zArray2RowResize(array,rowsize) do{ \
-  if( (rowsize) >= 0 && (rowsize)*zArray2ColSize(array) <= zArray2Capacity(array) ){ \
-    zArray2RowSize(array) = (rowsize); \
+#define zArray2RowResize(array,size) do{ \
+  if( (size) >= 0 && (size) <= zArray2RowCapacity(array) ){ \
+    zArray2SetRowSize( array, size ); \
   } else{ \
-    ZRUNERROR( ZEDA_ERR_ARRAY2_UNABLETORESIZE, (rowsize), zArray2ColSize(array), (rowsize)*zArray2ColSize(array), zArray2Capacity(array) ); \
+    ZRUNERROR( ZEDA_ERR_ARRAY2_UNABLETORESIZE, (size), zArray2ColSize(array), zArray2RowCapacity(array), zArray2ColCapacity(array) ); \
   } \
 } while(0)
 
 /*! \brief resize column of a two-dimensional array. */
-#define zArray2ColResize(array,colsize) do{ \
-  if( (colsize) >= 0 && zArray2RowSize(array)*(colsize) <= zArray2Capacity(array) ){ \
-    zArray2ColSize(array) = (colsize); \
+#define zArray2ColResize(array,size) do{ \
+  if( (size) >= 0 && (size) <= zArray2ColCapacity(array) ){ \
+    zArray2SetColSize( array, size ); \
   } else{ \
-    ZRUNERROR( ZEDA_ERR_ARRAY2_UNABLETORESIZE, zArray2RowSize(array), (colsize), zArray2RowSize(array)*(colsize), zArray2Capacity(array) ); \
+    ZRUNERROR( ZEDA_ERR_ARRAY2_UNABLETORESIZE, zArray2RowSize(array), (size), zArray2RowCapacity(array), zArray2ColCapacity(array) ); \
   } \
 } while(0)
 
 /*! \brief resize a two-dimensional array. */
 #define zArray2Resize(array,rowsize,colsize) do{ \
-  if( (rowsize) >= 0 && (colsize) >= 0 && (rowsize)*(colsize) <= zArray2Capacity(array) ){ \
-    zArray2RowSize(array) = (rowsize); \
-    zArray2ColSize(array) = (colsize); \
+  if( (rowsize) >= 0 && (rowsize) <= zArray2RowCapacity(array) && \
+      (colsize) >= 0 && (colsize) <= zArray2ColCapacity(array) ){ \
+    zArray2SetRowSize( array, rowsize ); \
+    zArray2SetColSize( array, colsize ); \
   } else{ \
-    ZRUNERROR( ZEDA_ERR_ARRAY2_UNABLETORESIZE, (rowsize), (colsize), (rowsize)*(colsize), zArray2Capacity(array) ); \
+    ZRUNERROR( ZEDA_ERR_ARRAY2_UNABLETORESIZE, (rowsize), (colsize), zArray2RowCapacity(array), zArray2ColCapacity(array) ); \
   } \
 } while(0)
 
@@ -498,10 +523,9 @@ typedef struct{ \
 
 /*! \brief assign a buffer and its row and column sizes to a two-dimensional array. */
 #define zArray2Assign(array,buf,rowsize,colsize) do{ \
-  zArray2Capacity(array) = (rowsize) * (colsize); \
-  zArray2RowSize(array) = (rowsize); \
-  zArray2ColSize(array) = (colsize); \
-  zArray2Buf(array) = (buf); \
+  zArray2SetRowSize( array, ( zArray2RowCapacity(array) = (rowsize) ) ); \
+  zArray2SetColSize( array, ( zArray2ColCapacity(array) = (colsize) ) ); \
+  zArray2SetBuf( array, buf ); \
 } while(0)
 
 /*! \brief initialize a two-dimensional array. */
@@ -514,12 +538,11 @@ typedef struct{ \
  */
 #define zArray2Alloc(array,type,rowsize,colsize) do{ \
   zArray2Init( array ); \
-  if( (rowsize) > 0 && (colsize) > 0 && !( zArray2Buf(array) = zAlloc( type, (rowsize) * (colsize) ) ) ){ \
+  if( (rowsize) > 0 && (colsize) > 0 && !( zArray2SetBuf( array, zAlloc( type, (rowsize) * (colsize) ) ) ) ){ \
     ZALLOCERROR(); \
   } else{ \
-    zArray2Capacity(array) = (rowsize) * (colsize); \
-    zArray2RowSize(array) = (rowsize); \
-    zArray2ColSize(array) = (colsize); \
+    zArray2SetRowSize( array, ( zArray2RowCapacity(array) = (rowsize) ) ); \
+    zArray2SetColSize( array, ( zArray2ColCapacity(array) = (colsize) ) ); \
   } \
 } while(0)
 
@@ -529,10 +552,11 @@ typedef struct{ \
  */
 #define zArray2Clone(type,src,dest) do{ \
   zArray2Init( dest ); \
-  if( ( zArray2Buf(dest) = (type *)zCloneMem( zArray2Buf(src), sizeof(type)*zArray2Capacity(src) ) ) ){ \
-    zArray2Capacity(dest) = zArray2Capacity(src); \
-    zArray2RowSize(dest) = zArray2RowSize(src); \
-    zArray2ColSize(dest) = zArray2ColSize(src); \
+  if( ( zArray2SetBuf( dest, (type *)zCloneMem( zArray2Buf(src), sizeof(type)*zArray2RowCapacity(src)*zArray2ColCapacity(src) ) ) ) ){ \
+    zArray2RowCapacity(dest) = zArray2RowCapacity(src); \
+    zArray2ColCapacity(dest) = zArray2ColCapacity(src); \
+    zArray2SetRowSize( dest, zArray2RowSize(src) ); \
+    zArray2SetColSize( dest, zArray2ColSize(src) ); \
   } else{ \
     ZALLOCERROR(); \
   } \
