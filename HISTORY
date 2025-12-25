@@ -1,3 +1,4 @@
+2025.12.26. Replaced -i option of xargs in example/makefile to -I (thanks to Naoki Wakisaka). [example]
 2025.11.26. Modified array_test and array_cpp_test. [test]
 2025.11.26. Added methods rowcapacity and colcapacity of zArray2Class for C++. [zeda_array]
 2025.11.26. Added methods resetRowSize, resetColSize, resetSize of zArray2Class for C++. [zeda_array]
