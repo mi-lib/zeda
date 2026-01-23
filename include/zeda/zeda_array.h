@@ -469,7 +469,8 @@ typedef struct{ \
 #define zArray2RowSize(array)     (array)->size[0]
 #define zArray2ColSize(array)     (array)->size[1]
 #define zArray2Buf(array)         ( (array)->buf )
-#define zArray2RowBuf(array,i)    ( (i) < zArray2RowSize(array) ? &zArray2Buf(array)[(i)*zArray2ColSize(array)] : NULL )
+#define zArray2RowBufNC(array,i)  ( &zArray2Buf(array)[(i)*zArray2ColCapacity(array)] )
+#define zArray2RowBuf(array,i)    ( (i) < zArray2RowSize(array) ? zArray2RowBufNC(array,i) : NULL )
 
 #define zArray2SetRowSize(array,size) ( zArray2RowSize(array) = (size) )
 #define zArray2SetColSize(array,size) ( zArray2ColSize(array) = (size) )
@@ -516,7 +517,7 @@ typedef struct{ \
 /* NOTE: do not use the following macro before allocating buffer */
 #define zArray2ElemSize(array)        ( zArray2Buf(array) ? sizeof(*zArray2Buf(array)) : 0 )
 
-#define zArray2ElemNC(array,i,j)      ( &zArray2Buf(array)[(i)*zArray2ColSize(array) + (j)] )
+#define zArray2ElemNC(array,i,j)      ( &zArray2RowBufNC(array,i)[(j)] )
 #define zArray2Elem(array,i,j)        ( zArray2PosIsValid(array,i,j) ? zArray2ElemNC(array,i,j) : NULL )
 #define zArray2SetElemNC(array,i,j,d) memcpy( zArray2ElemNC(array,i,j), (d), zArray2ElemSize(array) )
 #define zArray2SetElem(array,i,j,d)   ( zArray2PosIsValid(array,i,j) ? zArray2SetElemNC(array,i,j,d) : NULL )

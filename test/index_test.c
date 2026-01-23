@@ -71,12 +71,13 @@ void assert_index_remove(void)
   index = zIndexCreate( SIZE );
   index_cmp = zIndexCreate( SIZE );
   for( k=0; k<N; k++ ){
-    zArraySize(index) = zArraySize(index_cmp) = SIZE;
+    zIndexSetSize( index, SIZE );
+    zIndexSetSize( index_cmp, SIZE );
     zIndexOrder( index, 0 );
     zIndexOrder( index_cmp, 0 );
-    i = zRandI( 0, zArraySize(index)-1 );
+    i = zRandI( 0, zIndexSizeNC(index)-1 );
     zIndexRemove( index, i );
-    for( j=i+1; j<zArraySize(index_cmp); j++ )
+    for( j=i+1; j<zIndexSizeNC(index_cmp); j++ )
       zIndexSetElem( index_cmp, j-1, zIndexElemNC(index_cmp,j) );
     zIndexDecSize( index_cmp );
     if( !zIndexEqual( index, index_cmp ) ) res = false;
@@ -100,12 +101,14 @@ void assert_index_remove_irregular(void)
     eprintf( "(case 1) different indices\n" );
     zIndexFPrint( stderr, index );
     zIndexFPrint( stderr, index_cmp );
+    result = false;
   }
   zIndexRemove( index, zIndexSizeNC(index) );
   if( !zIndexEqual( index, index_cmp ) ){
     eprintf( "(case 2) different indices\n" );
     zIndexFPrint( stderr, index );
     zIndexFPrint( stderr, index_cmp );
+    result = false;
   }
   zIndexRemove( index, zIndexSizeNC(index)-1 );
   zIndexDecSize( index_cmp );
@@ -113,6 +116,7 @@ void assert_index_remove_irregular(void)
     eprintf( "(case 3) different indices\n" );
     zIndexFPrint( stderr, index );
     zIndexFPrint( stderr, index_cmp );
+    result = false;
   }
   zIndexFree( index );
   zIndexFree( index_cmp );
@@ -129,12 +133,12 @@ void assert_index_remove_and_insert_test(void)
   for( i=0; i<zIndexSizeNC(i1); i++ )
     zIndexSetElemNC( i1, i, zRandI(-N,N) );
   i2 = zIndexAlloc( N );
-  zIndexSizeNC(i2) = 0;
+  zIndexSetSize( i2, 0 );
   while( zIndexSizeNC(i1) > 0 ){
     i = zRandI( 0, zIndexSizeNC(i1)-1 );
     val = zIndexElemNC(i1,i);
     zIndexRemoveVal( i1, val );
-    zIndexInsertVal( i2, N, val );
+    zIndexInsertVal( i2, val );
   }
   for( i=1; i<zIndexSizeNC(i2); i++ )
     if( zIndexElemNC(i2,i) < zIndexElemNC(i2,i-1) ) result = false;

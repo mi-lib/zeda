@@ -32,9 +32,6 @@
 #define ZEDA_WARN_TOOLONG_TOKEN            "too long string to tokenize"
 #define ZEDA_WARN_TOOLONG_NUM              "too long number"
 
-#define ZEDA_WARN_INDEX_OVERSIZE           "index has only %d components, while specified size is %d"
-#define ZEDA_WARN_INDEX_INVALID_POS        "invalid position %d, must be within [0,%d]"
-
 #define ZEDA_WARN_CSV_FIELD_EMPTY          "field empty in a CSV file"
 
 #define ZEDA_WARN_ZTK_PRP_NOTFOUND         "manipulator of field %s not found"
@@ -74,6 +71,8 @@
 
 #define ZEDA_ERR_INDEX_SIZENOTSPECIFIED    "index size not specified"
 #define ZEDA_ERR_INDEX_SIZEMISMATCH        "size mismatch of indices"
+#define ZEDA_ERR_INDEX_OVERSIZE            "index has only %d components, while specified size is %d"
+#define ZEDA_ERR_INDEX_INVALID_POS         "invalid position %d, must be within [0,%d]"
 
 #define ZEDA_ERR_INDEX_BUF_OCCUPIED        "buffer for the index vector already occupied"
 

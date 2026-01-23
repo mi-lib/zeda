@@ -8,11 +8,6 @@
 #include <zeda/zeda_string.h>
 #include <zeda/zeda_rand.h>
 
-/* ********************************************************** */
-/* CLASS: zIndex
- * integer value array class
- * ********************************************************** */
-
 /* allocate internal array of integer vector. */
 zIndex zIndexAlloc(int size)
 {
@@ -98,7 +93,7 @@ zIndex zIndexClone(zIndex src)
   zIndex dest;
 
   if( !src ) return NULL;
-  if( !( dest = zIndexAlloc( zIndexSizeNC(src) ) ) ) return NULL;
+  if( !( dest = zIndexAlloc( zIndexCapacity(src) ) ) ) return NULL;
   return zIndexCopyNC( src, dest );
 }
 
@@ -139,11 +134,25 @@ bool zIndexEqual(zIndex idx1, zIndex idx2)
   return true;
 }
 
-/* swap two components of an integer vector. */
-int zIndexSwap(zIndex idx, int p1, int p2)
+/* swap two components of an integer vector without checking validity of specified positions. */
+void zIndexSwapNC(zIndex idx, int p1, int p2)
 {
   zSwap( int, zIndexElemNC(idx,p1), zIndexElemNC(idx,p2) );
-  return zIndexElemNC( idx, p2 );
+}
+
+/* swap two components of an integer vector. */
+bool zIndexSwap(zIndex idx, int p1, int p2)
+{
+  if( !zIndexPosIsValid( idx, p1 ) ){
+    ZRUNERROR( ZEDA_ERR_INDEX_INVALID_POS, p1, zIndexSizeNC(idx)-1 );
+    return false;
+  }
+  if( !zIndexPosIsValid( idx, p2 ) ){
+    ZRUNERROR( ZEDA_ERR_INDEX_INVALID_POS, p2, zIndexSizeNC(idx)-1 );
+    return false;
+  }
+  zIndexSwapNC( idx, p1, p2 );
+  return true;
 }
 
 /* move a component of an integer vector to another position. */
@@ -178,11 +187,11 @@ bool zIndexRemoveVal(zIndex index, int val)
 }
 
 /* insert an integer value to an integer vector. */
-int zIndexInsertVal(zIndex index, int maxsize, int val)
+int zIndexInsertVal(zIndex index, int val)
 {
   int i;
 
-  if( zIndexSizeNC(index) >= maxsize ){
+  if( zIndexSizeNC(index) >= zIndexCapacity(index) ){
     ZRUNERROR( ZEDA_ERR_INDEX_BUF_OCCUPIED );
     return -1;
   }
@@ -202,12 +211,12 @@ zIndex zIndexRemove(zIndex idx, int i)
   int size;
 
   if( !zIndexPosIsValid( idx, i ) ){
-    ZRUNWARN( ZEDA_WARN_INDEX_INVALID_POS, i, zIndexSizeNC(idx)-1 );
-  } else{
-    if( ( size = zIndexSizeNC(idx) - i - 1 ) > 0 )
-      memmove( &zIndexElemNC(idx,i), &zIndexElemNC(idx,i+1), sizeof(int)*size );
-    zIndexSizeNC(idx)--;
+    ZRUNERROR( ZEDA_ERR_INDEX_INVALID_POS, i, zIndexSizeNC(idx)-1 );
+    return NULL;
   }
+  if( ( size = zIndexSizeNC(idx) - i - 1 ) > 0 )
+    memmove( &zIndexElemNC(idx,i), &zIndexElemNC(idx,i+1), sizeof(int)*size );
+  zIndexSizeNC(idx)--;
   return idx;
 }
 
@@ -274,8 +283,8 @@ zIndex zIndexFScan(FILE *fp)
   if( !( idx = zIndexCreate( size ) ) ) return NULL;
   for( i=0; i<size; i++ ){
     if( zFInt( fp, zArrayElemNC(idx,i) ) ){
-      ZRUNERROR( ZEDA_WARN_INDEX_OVERSIZE, i, size );
-      break;
+      ZRUNERROR( ZEDA_ERR_INDEX_OVERSIZE, i, size );
+      return NULL;
     }
   }
   return idx;

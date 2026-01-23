@@ -36,20 +36,28 @@ __BEGIN_DECLS
 zArrayClass( zIndexStruct, int );
 typedef zIndexStruct *zIndex;
 
+/*! \brief capacity of an integer value array. */
+#define zIndexCapacity(i)      zArrayCapacity(i)
+
 /*! \brief size of an integer value array.
  * \retval the size of the array if \a i is not null.
  * \retval 0 if \a i is the null pointer.
  */
-#define zIndexSizeNC(i)      zArraySize(i)
-#define zIndexSize(i)        ( (i) ? zIndexSizeNC(i) : 0 )
+#define zIndexSizeNC(i)        zArraySize(i)
+#define zIndexSize(i)          ( (i) ? zIndexSizeNC(i) : 0 )
+
+/*! \brief set size of an array of integer values. */
+#define zIndexSetSize(i,size)  zArraySetSize( i, size )
+/*! \brief reset size of an array of integer values to its capacity. */
+#define zIndexResetSize(i)     zArrayResetSize( i )
 
 /*! \brief increment size of an index vector. */
-#define zIndexIncSize(i)     ( zIndexSizeNC(i)++ )
+#define zIndexIncSize(i)       ( zIndexSizeNC(i)++ )
 /*! \brief decrement size of an index vector. */
-#define zIndexDecSize(i)     ( zIndexSizeNC(i) -= ( zIndexSizeNC(i) > 0 ? 1 : 0 ) )
+#define zIndexDecSize(i)       ( zIndexSizeNC(i) -= ( zIndexSizeNC(i) > 0 ? 1 : 0 ) )
 
 /*! \brief check if the specified position is valid for an index vector. */
-#define zIndexPosIsValid(i,n) zArrayPosIsValid( i, n )
+#define zIndexPosIsValid(i,n)  zArrayPosIsValid( i, n )
 
 #define zIndexBufNC(i)         zArrayBuf(i)
 #define zIndexBuf(i)           ( (i) ? zIndexBufNC(i) : NULL )
@@ -59,9 +67,9 @@ typedef zIndexStruct *zIndex;
 #define zIndexSetElemNC(i,n,e) ( zIndexElemNC(i,n) = (e) )
 #define zIndexSetElem(i,n,e)   ( zIndexPosIsValid(i,n) ? zIndexSetElemNC(i,n,e) : -1 )
 
-#define zIndexHead(idx)      ( *zArrayHead(idx) )
-#define zIndexNeck(idx)      ( *zArrayNeck(idx) )
-#define zIndexTail(idx)      ( *zArrayTail(idx) )
+#define zIndexHead(idx)        ( *zArrayHead(idx) )
+#define zIndexNeck(idx)        ( *zArrayNeck(idx) )
+#define zIndexTail(idx)        ( *zArrayTail(idx) )
 
 /*! \brief allocate an array of integer values.
  *
@@ -163,30 +171,32 @@ __ZEDA_EXPORT zIndex zIndexOrder(zIndex idx, int s);
 
 /*! \brief check if two arrays of integer values are equal.
  *
- * zIndexEqual() checks if two arrays of integer values
- * \a idx1 and \a idx2 are equal.
- * \return the true value if \a idx1 and \a idx2 are equal,
- * or the false values, otherwise.
+ * zIndexEqual() checks if two arrays of integer values \a idx1 and \a idx2 are equal.
+ * \return
+ * zIndexEqual() returns the true value if \a idx1 and \a idx2 are equal, or the false values, otherwise.
  */
 __ZEDA_EXPORT bool zIndexEqual(zIndex idx1, zIndex idx2);
 
 /*! \brief swap two elements of an array of integer values.
  *
- * zIndexSwap() swaps two components of a zIndex instance
- * \a idx at the positions of \a p1 and \a p2.
- * \return a newly swapped value at \a p2.
- * \note
- * if \a p1 or \a p2 is invalid, anything might happen.
+ * zIndexSwap() swaps two components of an array of integer values \a idx at positions of \a p1 and \a p2
+ * without checking validity of the specified positions.
+ *
+ * zIndexSwap() swaps two components of an array of integer values \a idx at positions of \a p1 and \a p2.
+ * It checks if both \a p1 and \a p2 are valid for \a idx before operation.
+ * \return
+ * zIndexSwap() returns the true value if it succeeds ot swap the components.
+ * If either \a p1 or \a p2 is out of range of \a idex, it returns the false value.
  */
-__ZEDA_EXPORT int zIndexSwap(zIndex idx, int p1, int p2);
+__ZEDA_EXPORT void zIndexSwapNC(zIndex idx, int p1, int p2);
+__ZEDA_EXPORT bool zIndexSwap(zIndex idx, int p1, int p2);
 
 /*! \brief move an element of an array of integer values.
  *
- * zIndexMove() moves a component at \a from' of a zIndex
- * instance \a idx to another position \a to. The components
- * between \a from and \a to are slided to make a space to
- * insert the component.
- * \return a newly replaced value at \a to.
+ * zIndexMove() moves a component at \a from to another position \a to of an array of integer values \a idx.
+ * The components between \a from and \a to are slided to make a space to insert the component.
+ * \return
+ * zIndexMove() returns the newly replaced value at \a to.
  * \note
  * if \a from or \a to is invalid, anything might happen.
  */
@@ -194,22 +204,22 @@ __ZEDA_EXPORT int zIndexMove(zIndex idx, int from, int to);
 
 /*! \brief remove a component from an integer vector.
  *
- * zIndexRemove() removes the \a i th component from an integer vector
- * \a idx. All the posterior components are shifted forward, and the
- * size of \a idx is decreased. Note that the memory allocated for
- * \a idx is remained, and only the value of the size is modified.
- * \return a pointer \a idx.
+ * zIndexRemove() removes the \a i th component from an integer vector \a idx. All the posterior
+ * components are shifted forward, and the size of \a idx is decreased. Note that the memory allocated
+ * for \a idx (referable by zIndexCapacity()) is remained, and only the value of the size is modified.
+ * \return
+ * zIndexRemove() returns a pointer \a idx.
  */
 __ZEDA_EXPORT zIndex zIndexRemove(zIndex idx, int i);
 
 /*! \brief remove an integer value from an integer vector.
  *
- * zIndexRemoveVal() removes an integer value \a val from an integer vector
- * \a index. Namely, if \a val is a member of \a index, \a val is removed
- * from \a index and decrements the size of \a index.
+ * zIndexRemoveVal() removes an integer value \a val from an integer vector \a index. Namely, if \a val
+ * is a member of \a index, \a val is removed from \a index, and decrements the size of \a index.
+ * Note that the memory allocated for \a idx (referable by zIndexCapacity()) is remained.
  * \return
- * zIndexRemoveVal() returns the true value if \a val is a member of
- * \a index. Otherwise, it returns the false value.
+ * zIndexRemoveVal() returns the true value if \a val is a member of \a index. Otherwise, it returns
+ * the false value.
  */
 __ZEDA_EXPORT bool zIndexRemoveVal(zIndex index, int val);
 
@@ -219,19 +229,13 @@ __ZEDA_EXPORT bool zIndexRemoveVal(zIndex index, int val);
  * \a index. The position of the newly inserted element is before the first
  * value that is larger than or equal to \a val. The size of \a index is
  * incremented as the result.
- * \a maxsize is the maximum size of buffer of \a index, which has to be
- * larger than or equal to the size of \a index.
+ * If the size of \a index is already equal to its capacity, nothing happens.
  * \return
  * zIndexInsertVal() returns the index of the inserted element.
- * If the buffer of \a index is already occupied, i.e., \a maxsize is equal
- * to the size of \a index, -1 is returned.
- * \note
- * zIndexInsertVal() itself does not check the true size of the originally
- * allocated array. If a wrong number is given for \a maxsize, anything might
- * happen. Thus, this function should not be used unless the safety is
- * guaranteed by some means.
+ * If the buffer of \a index is already occupied, i.e., the size of \a index is equal to its capacity,
+ * it returns -1.
  */
-__ZEDA_EXPORT int zIndexInsertVal(zIndex index, int maxsize, int val);
+__ZEDA_EXPORT int zIndexInsertVal(zIndex index, int val);
 
 /*! \brief sort an integer vector in ascending order.
  */
