@@ -18,7 +18,6 @@ __BEGIN_DECLS
 /*! \defgroup index integer value array.
  * \{ *//* ************************************************** */
 
-/* ********************************************************** */
 /*! \struct zIndex
  * \brief integer value array class
  *
@@ -32,44 +31,46 @@ __BEGIN_DECLS
  * For frequent accesses to the head, neck (one-cell-before-head)
  * and tail, zIndexHead(), zIndexNeck() and zIndexTail()
  * are available.
- *//* ******************************************************* */
+ */
 zArrayClass( zIndexStruct, int );
 typedef zIndexStruct *zIndex;
 
 /*! \brief capacity of an integer value array. */
-#define zIndexCapacity(i)      zArrayCapacity(i)
+#define zIndexCapacity(i)        zArrayCapacity(i)
 
 /*! \brief size of an integer value array.
  * \retval the size of the array if \a i is not null.
  * \retval 0 if \a i is the null pointer.
  */
-#define zIndexSizeNC(i)        zArraySize(i)
-#define zIndexSize(i)          ( (i) ? zIndexSizeNC(i) : 0 )
+#define zIndexSizeNC(i)          zArraySize(i)
+#define zIndexSize(i)            ( (i) ? zIndexSizeNC(i) : 0 )
 
 /*! \brief set size of an array of integer values. */
-#define zIndexSetSize(i,size)  zArraySetSize( i, size )
+#define zIndexSetSize(i,size)    zArraySetSize( i, size )
 /*! \brief reset size of an array of integer values to its capacity. */
-#define zIndexResetSize(i)     zArrayResetSize( i )
+#define zIndexResetSize(i)       zArrayResetSize( i )
+/*! \brief resize an array of integer values. */
+#define zIndexResize(index,size) zArrayResize( index, size )
 
 /*! \brief increment size of an index vector. */
-#define zIndexIncSize(i)       ( zIndexSizeNC(i)++ )
+#define zIndexIncSize(i)         ( zIndexSizeNC(i)++ )
 /*! \brief decrement size of an index vector. */
-#define zIndexDecSize(i)       ( zIndexSizeNC(i) -= ( zIndexSizeNC(i) > 0 ? 1 : 0 ) )
+#define zIndexDecSize(i)         ( zIndexSizeNC(i) -= ( zIndexSizeNC(i) > 0 ? 1 : 0 ) )
 
 /*! \brief check if the specified position is valid for an index vector. */
-#define zIndexPosIsValid(i,n)  zArrayPosIsValid( i, n )
+#define zIndexPosIsValid(i,n)    zArrayPosIsValid( i, n )
 
-#define zIndexBufNC(i)         zArrayBuf(i)
-#define zIndexBuf(i)           ( (i) ? zIndexBufNC(i) : NULL )
+#define zIndexBufNC(i)           zArrayBuf(i)
+#define zIndexBuf(i)             ( (i) ? zIndexBufNC(i) : NULL )
 
-#define zIndexElemNC(i,n)      zIndexBufNC(i)[n]
-#define zIndexElem(i,n)        ( zIndexPosIsValid(i,n) ? zIndexElemNC(i,n) : -1 )
-#define zIndexSetElemNC(i,n,e) ( zIndexElemNC(i,n) = (e) )
-#define zIndexSetElem(i,n,e)   ( zIndexPosIsValid(i,n) ? zIndexSetElemNC(i,n,e) : -1 )
+#define zIndexElemNC(i,n)        zIndexBufNC(i)[n]
+#define zIndexElem(i,n)          ( zIndexPosIsValid(i,n) ? zIndexElemNC(i,n) : -1 )
+#define zIndexSetElemNC(i,n,e)   ( zIndexElemNC(i,n) = (e) )
+#define zIndexSetElem(i,n,e)     ( zIndexPosIsValid(i,n) ? zIndexSetElemNC(i,n,e) : -1 )
 
-#define zIndexHead(idx)        ( *zArrayHead(idx) )
-#define zIndexNeck(idx)        ( *zArrayNeck(idx) )
-#define zIndexTail(idx)        ( *zArrayTail(idx) )
+#define zIndexHead(idx)          ( *zArrayHead(idx) )
+#define zIndexNeck(idx)          ( *zArrayNeck(idx) )
+#define zIndexTail(idx)          ( *zArrayTail(idx) )
 
 /*! \brief allocate an array of integer values.
  *
