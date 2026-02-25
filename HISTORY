@@ -1,4 +1,7 @@
-2066.02.23. Added zIndexResize. [zeda_index]
+2026.02.25. Modified zCopy to cast arguments of memcpy to void *. [zeda_misc]
+2026.02.25. Modified NodeAlloc of zTreeClass to cast arguments of memcpy to void *. [zeda_tree]
+2026.02.25. Modified zArray2SetElemNC to cast arguments of memcpy to void *. [zeda_array]
+2026.02.23. Added zIndexResize. [zeda_index]
 2026.01.20. Modified zIndexInsertVal to use capacity information of the array. [zeda_index]
 2026.01.20. Modified zIndexClone to allocate an array of the same size with the capacity of the given array of integer values. [zeda_index]
 2026.01.20. Modified zIndexFScan to return the null pointer if the number of integer given values is less than the specified size. [zeda_index]

@@ -519,7 +519,7 @@ typedef struct{ \
 
 #define zArray2ElemNC(array,i,j)      ( &zArray2RowBufNC(array,i)[(j)] )
 #define zArray2Elem(array,i,j)        ( zArray2PosIsValid(array,i,j) ? zArray2ElemNC(array,i,j) : NULL )
-#define zArray2SetElemNC(array,i,j,d) memcpy( zArray2ElemNC(array,i,j), (d), zArray2ElemSize(array) )
+#define zArray2SetElemNC(array,i,j,d) memcpy( (void *)zArray2ElemNC(array,i,j), (void *)(d), zArray2ElemSize(array) )
 #define zArray2SetElem(array,i,j,d)   ( zArray2PosIsValid(array,i,j) ? zArray2SetElemNC(array,i,j,d) : NULL )
 
 /*! \brief assign a buffer and its row and column sizes to a two-dimensional array. */

@@ -131,7 +131,7 @@ ZDEF_ALLOC_FUNCTION_PROTOTYPE( type ){ \
  * \def zCopy(type,src,dest)
  * copy \a s to \a d, where both are supposed to be types of \a t.
  */
-#define zCopy(type,src,dest) ( (type *)memcpy( dest, src, sizeof(type) ) )
+#define zCopy(type,src,dest) ( (type *)memcpy( (void *)dest, (void *)src, sizeof(type) ) )
 
 /*! \brief clone a memory space.
  *

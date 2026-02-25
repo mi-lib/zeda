@@ -17,7 +17,6 @@ __BEGIN_DECLS
 /*! \defgroup tree dynamically-allocated binary tree
  * \{ *//* ************************************************** */
 
-/* ********************************************************** */
 /*! \def zTreeClass(node_t,data_t)
  * \brief generate binary tree class.
  *
@@ -36,7 +35,7 @@ __BEGIN_DECLS
  * (node_t)DeleteHeap(), and (node_t)Heapify() are additionally
  * defined by calling zHeapClass() and zHeapClassMethod() instead
  * of zTreeClass() and zTreeClassMethod().
- *//* ******************************************************* */
+ */
 
 #define zTreeClass(METHOD_EXPORT,node_t,data_t) \
 typedef struct __##node_t{\
@@ -83,7 +82,7 @@ node_t *node_t##NodeAlloc(data_t *val){\
     return NULL;\
   }\
   node_t##Init( node );\
-  memcpy( &node->data, val, sizeof(data_t) );\
+  memcpy( (void *)&node->data, (void *)val, sizeof(data_t) );\
   return node;\
 }
 
