@@ -71,6 +71,13 @@ __ZEDA_EXPORT uint64_t endian_reverse64(uint64_t val);
 /*! \defgroup bit_op bit operations.
  * \{ *//* ************************************************** */
 
+/*! \def get a bit at the specified position. */
+#define bit_get(val,at)   ( ( (val) & ( 0x1 << (at) ) ) >> (at) )
+/*! \def set a bit at the specified position to 1. */
+#define bit_set(val,at)   ( (val) = ( (val) & ~( 0x1 << (at) ) ) | ( 0x1 << (at) ) )
+/*! \def reset a bit at the specified position to 0. */
+#define bit_reset(val,at) ( (val) = ( (val) & ~( 0x1 << (at) ) ) )
+
 /*! \brief rotate a bit sequence.
  *
  * bit_rotate() rotates a bit sequence of a value \a val
