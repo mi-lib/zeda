@@ -78,6 +78,9 @@ __ZEDA_EXPORT uint64_t endian_reverse64(uint64_t val);
 /*! \def reset a bit at the specified position to 0. */
 #define bit_reset(val,at) ( (val) = ( (val) & ~( 0x1 << (at) ) ) )
 
+/*! \def compare two values. digits where the compared two bits are equal are set for 1. */
+#define bit_cmp(val1,val2) ( ~( (val1) ^ (val2) ) )
+
 /*! \brief rotate a bit sequence.
  *
  * bit_rotate() rotates a bit sequence of a value \a val
@@ -94,6 +97,9 @@ __ZEDA_EXPORT ulong bit_rotate(ulong val, int bitwidth, int d);
  * \return the value converted.
  */
 __ZEDA_EXPORT ulong bit_reverse(ulong val, int bitwidth);
+
+/*! \brief convert a bit string to integer. */
+__ZEDA_EXPORT ulong bitstrtoi(const char *str);
 
 /*! \brief convert a bit sequence to a string in binary format.
  *

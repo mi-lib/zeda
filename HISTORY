@@ -1,3 +1,4 @@
+2026.03.27. Added bit_cmp and bitstrtoi. [zeda_bit]
 2026.03.26. Added bit_get, bit_set, and bit_reset. [zeda_bit]
 2026.02.25. Modified zCopy to cast arguments of memcpy to void *. [zeda_misc]
 2026.02.25. Modified NodeAlloc of zTreeClass to cast arguments of memcpy to void *. [zeda_tree]

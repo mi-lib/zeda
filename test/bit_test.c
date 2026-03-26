@@ -25,8 +25,19 @@ void assert_bit_getset(void)
   val = gen_bit_rand( b, 8 );
   for( val_check=0, i=0; i<8; i++ )
     bit_get( val, i ) ? bit_set( val_check, i ) : bit_reset( val_check, i );
-  eprintf( "%02x %02x\n", val, val_check );
   zAssert( bit_get / bit_set / bit_reset, val == val_check );
+}
+
+void assert_bit_cmp(void)
+{
+  ubyte val1;
+  ubyte val2;
+  ubyte val_cmp;
+
+  val1 = bitstrtoi( "01011101" );
+  val2 = bitstrtoi( "01101011" );
+  val_cmp = bitstrtoi( "11001001" );
+  zAssert( bit_cmp, (ubyte)bit_cmp( val1, val2 ) == val_cmp );
 }
 
 void assert_bit_rotate(void)
@@ -76,13 +87,28 @@ void assert_endian_check(void)
 #endif
 }
 
+void assert_bitstrtoi(void)
+{
+  ubyte bval;
+  ulong lval;
+
+  bval = bitstrtoi( "11010011" );
+  zAssert( bitstrtoi (regular case), bval == 0xd3 );
+  bval = bitstrtoi( "11a1cd11" );
+  zAssert( bitstrtoi (irregular case), bval == 0xd3 );
+  lval = bitstrtoi( "1101001110100111" );
+  zAssert( bitstrtoi (long case), lval == 0xd3a7 );
+}
+
 int main(void)
 {
   zRandInit();
   assert_bit_getset();
+  assert_bit_cmp();
   assert_bit_rotate();
   assert_bit_reverse();
   assert_endian_reverse();
   assert_endian_check();
+  assert_bitstrtoi();
   return EXIT_SUCCESS;
 }

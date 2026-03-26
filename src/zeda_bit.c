@@ -79,6 +79,19 @@ ulong bit_reverse(ulong val, int width)
   return result;
 }
 
+/* convert a bit string to integer. */
+ulong bitstrtoi(const char *str)
+{
+  const char *cp;
+  ulong val = 0;
+
+  for( cp=str; *cp; cp++ ){
+    val <<= 1;
+    if( *cp == '1' ) val |= 0x1;
+  }
+  return val;
+}
+
 /* convert a bit sequence to a string. */
 void sprintf_bit(char *str, ulong val, int width)
 {
