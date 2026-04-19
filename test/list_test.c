@@ -206,12 +206,12 @@ void assert_dup(void)
   zAssert( zListDup, result );
 }
 
-zListQuickSortDef(zIntList, zIntListCell)
+ZEDA_DEF_LIST_QUICKSORT( zIntList, zIntListCell );
 
-int test_quicksort_cmp(void *v1, void *v2, void *dummy)
+int test_quicksort_cmp(zIntListCell *v1, zIntListCell *v2, void *dummy)
 {
-  if( ((zIntListCell*)v1)->data == ((zIntListCell*)v2)->data ) return 0;
-  return ( ((zIntListCell*)v1)->data > ((zIntListCell*)v2)->data ) ? 1 : -1;
+  if( v1->data == v2->data ) return 0;
+  return ( v1->data > v2->data ) ? 1 : -1;
 }
 
 void assert_quicksort(void)
@@ -229,7 +229,30 @@ void assert_quicksort(void)
     prev_val = cp->data;
     zFree( cp );
   }
-  zAssert( zListQuickSortDef, result );
+  zAssert( zListDefineQuickSort (quicksort), result );
+}
+
+void assert_quickselect(void)
+{
+  zIntList list;
+  zIntListCell *cp;
+  const int size = 100;
+  int i, prev_val = -20;
+  bool result = true;
+
+  zListInit( &list );
+  for( i=0; i<size; i++ ){
+    cp = zAlloc( zIntListCell, 1 );
+    cp->data = zRandI( -20, 20 );
+    zListInsertHead( &list, cp );
+  }
+  for( i=0; i<size; i++ ){
+    cp = zIntListQuickSelect( &list, i, test_quicksort_cmp, NULL );
+    if( cp->data < prev_val ) result = false;
+    prev_val = cp->data;
+  }
+  zListDestroy( zIntListCell, &list );
+  zAssert( zListDefineQuickSort (quickselect), result );
 }
 
 int main(void)
@@ -242,5 +265,6 @@ int main(void)
   assert_append();
   assert_dup();
   assert_quicksort();
+  assert_quickselect();
   return EXIT_SUCCESS;
 }

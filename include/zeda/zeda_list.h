@@ -347,49 +347,74 @@ typedef struct _##list_t{\
 
 /*! \brief define the quick sort method for a list class.
  *
- * zListQuickSortDef() defines a quick sort function for a given list class \a list_t and a list cell
- * class \a cell_t. \a list_t class must stand upon \a cell_t class.
+ * ZEDA_DEF_LIST_QUICKSORT() defines quicksort/quickselect/quickmedian functions for a given list class
+ * \a list_t and a list cell class \a cell_t. \a list_t class must stand upon \a cell_t class.
  *
- * The function defined will be named 'list_t'QuickSort() with the following prototype.
- *
- * \a list_t *list_tQuickSort(\a list_t *list, int (*cmp)(void*,void*,void*), void *util);
+ * The functions to be defined have the following prototypes:
+ *  \a cell_t *list_tQuickSelect(\a list_t *list, int order, int (* cmp)(void*,void*,void*), void *util);
+ *  \a cell_t *list_tQuickMedian(\a list_t *list, int (* cmp)(void*,void*,void*), void *util);
+ *  void list_tQuickSort(\a list_t *list, int (* cmp)(void*,void*,void*), void *util);
  *
  * The cells of \a list will be sorted in ascending order according to the comparison function \a cmp.
  * (The factor \a a in the \a list is put after another factor \a b if \a cmp(\a a,\a b,\a p) > 0.
  * \a p is for programmer's utility, given by \a util.)
  */
-#define zListQuickSortDef(list_t, cell_t) \
-static void _##list_t##InnerQuickSort(cell_t *head, cell_t *tail, int (*cmp)(void*,void*,void*), void *util);\
-void _##list_t##InnerQuickSort(cell_t *head, cell_t *tail, int (*cmp)(void*,void*,void*), void *util)\
-{\
-  cell_t *hp, *tp, *pivot, *p;\
-\
-  for( pivot=hp=head, tp=tail; ; ){\
-    /* choose a pivot for the head value */\
-    while( cmp( (void *)hp, (void *)pivot, util ) > 0 && hp != tail )\
-      hp = zListCellPrev( hp );\
-    while( cmp( (void *)tp, (void *)pivot, util ) < 0 && tp != head )\
-      tp = zListCellNext( tp );\
-    if( hp == tp || hp == zListCellPrev( tp ) )\
-      break;\
-    zListCellSwap( cell_t, hp, tp );\
-    /* if head or tail is swapped, it should be renewed. */\
-    if( hp == head ) head = tp;\
-    if( tail == tp ) tail = hp;\
-    p = zListCellNext( hp );\
-    hp = zListCellPrev( tp );\
-    tp = p;\
-  }\
-  if( hp != head )\
-    _##list_t##InnerQuickSort( head, zListCellNext(hp), cmp, util );\
-  if( tp != tail )\
-    _##list_t##InnerQuickSort( zListCellPrev(tp), tail, cmp, util );\
-}\
-\
-list_t *list_t##QuickSort(list_t *list, int (* cmp)(void*,void*,void*), void *util)\
-{\
-  _##list_t##InnerQuickSort( zListHead(list), zListTail(list), cmp, util );\
-  return list;\
+#define ZEDA_DEF_LIST_QUICKSELECT_PROTOTYPE(list_t, cell_t) \
+cell_t *list_t##QuickSelect(list_t *list, int order, int (* cmp)(cell_t*,cell_t*,void*), void *util)
+#define ZEDA_DEF_LIST_QUICKMEDIAN_PROTOTYPE(list_t, cell_t) \
+cell_t *list_t##QuickMedian(list_t *list, int (* cmp)(cell_t*,cell_t*,void*), void *util)
+#define ZEDA_DEF_LIST_QUICKSORT_PROTOTYPE(list_t, cell_t) \
+void list_t##QuickSort(list_t *list, int (* cmp)(cell_t*,cell_t*,void*), void *util)
+
+#define ZEDA_DEF_LIST_QUICKSORT(list_t, cell_t) \
+static void _##list_t##QuickPartition(list_t *src, list_t *list_small, list_t *list_equal, list_t *list_large, int (* cmp)(cell_t*,cell_t*,void*), void *util){ \
+  cell_t *pivot, *cp; \
+  if( zListIsEmpty( src ) ) return; \
+  pivot = zListHead(src); \
+  zListInit( list_small ); \
+  zListInit( list_equal ); \
+  zListInit( list_large ); \
+  while( !zListIsEmpty( src ) ){ \
+    zListDeleteHead( src, &cp ); \
+    if( cmp( cp, pivot, util ) < 0 ){ \
+      zListInsertHead( list_small, cp ); \
+    } else \
+    if( cmp( cp, pivot, util ) > 0 ){ \
+      zListInsertHead( list_large, cp ); \
+    } else{ \
+      zListInsertHead( list_equal, cp ); \
+    } \
+  } \
+} \
+ZEDA_DEF_LIST_QUICKSELECT_PROTOTYPE(list_t, cell_t){ \
+  list_t list_small, list_equal, list_large; \
+  cell_t *result; \
+  if( zListSize(list) == 1 ) return zListHead(list); \
+  _##list_t##QuickPartition( list, &list_small, &list_equal, &list_large, cmp, util ); \
+  if( order < zListSize(&list_small) ){ \
+    result = list_t##QuickSelect( &list_small, order, cmp, util ); \
+  } else if( order < zListSize(&list_small) + zListSize(&list_equal) ){ \
+    result = zListTail(&list_equal); \
+  } else { \
+    result = list_t##QuickSelect( &list_large, order - zListSize(&list_small) - zListSize(&list_equal), cmp, util ); \
+  } \
+  zListAppend( list, &list_large ); \
+  zListAppend( list, &list_equal ); \
+  zListAppend( list, &list_small ); \
+  return result; \
+} \
+ZEDA_DEF_LIST_QUICKMEDIAN_PROTOTYPE(list_t, cell_t){ \
+  return list_t##QuickSelect( list, zListSize(list) / 2, cmp, util ); \
+} \
+ZEDA_DEF_LIST_QUICKSORT_PROTOTYPE(list_t, cell_t){ \
+  list_t list_small, list_equal, list_large; \
+  if( zListSize(list) <= 1 ) return; \
+  _##list_t##QuickPartition( list, &list_small, &list_equal, &list_large, cmp, util ); \
+  list_t##QuickSort( &list_small, cmp, util ); \
+  list_t##QuickSort( &list_large, cmp, util ); \
+  zListAppend( list, &list_large ); \
+  zListAppend( list, &list_equal ); \
+  zListAppend( list, &list_small ); \
 }
 
 /* dummy list cell class */
