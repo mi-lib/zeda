@@ -150,7 +150,7 @@ void assert_swap(void)
   zAssert( zListCellSwap, result );
 }
 
-bool test_append_check(zIntList *borrower, zIntList *renter)
+bool check_splice_move(zIntList *borrower, zIntList *renter)
 {
   int i = 0;
   zIntListCell *cp;
@@ -162,26 +162,63 @@ bool test_append_check(zIntList *borrower, zIntList *renter)
   return result;
 }
 
-void assert_append(void)
+bool check_unsplice(zIntList *borrower, zIntList *renter)
+{
+  int i = 0;
+  zIntListCell *cp;
+  bool result = true;
+
+  zListForEach( borrower, cp )
+    if( cp->data != i++ ) result = false;
+  zListForEach( renter, cp )
+    if( cp->data != i++ ) result = false;
+  return result;
+}
+
+void assert_splice_and_move(void)
+{
+  zIntList list1, list2;
+  bool result;
+
+  gen_intlist( &list1, 0, 9 );
+  gen_intlist( &list2,10,15 );
+  zListSpliceAndMoveA( &list1, &list2 );
+  result = check_splice_move( &list1, &list2 );
+  zListDestroy( zIntListCell, &list1 );
+  zListDestroy( zIntListCell, &list2 );
+  zAssert( zListSpliceAndMoveA, result );
+
+  gen_intlist( &list1, 0, 9 );
+  gen_intlist( &list2,10,15 );
+  zListSpliceAndMoveZ( &list2, &list1 );
+  result = check_splice_move( &list2, &list1 );
+  zListDestroy( zIntListCell, &list1 );
+  zListDestroy( zIntListCell, &list2 );
+  zAssert( zListSpliceAndMoveZ, result );
+}
+
+void assert_unsplice(void)
 {
   zIntList list1, list2;
   bool result;
 
   gen_intlist( &list1, 0, 4 );
   gen_intlist( &list2, 5, 9 );
-  zListMoveA( &list1, &list2 );
-  result = test_append_check( &list1, &list2 );
+  zListSpliceA( &list1, &list2 );
+  zListUnsplice( &list1, &list2 );
+  result = check_unsplice( &list1, &list2 );
   zListDestroy( zIntListCell, &list1 );
   zListDestroy( zIntListCell, &list2 );
-  zAssert( zListMoveA, result );
+  zAssert( zListUnsplice (head case), result );
 
   gen_intlist( &list1, 0, 4 );
   gen_intlist( &list2, 5, 9 );
-  zListMoveZ( &list2, &list1 );
-  result = test_append_check( &list2, &list1 );
+  zListSpliceZ( &list2, &list1 );
+  zListUnsplice( &list2, &list1 );
+  result = check_unsplice( &list1, &list2 );
   zListDestroy( zIntListCell, &list1 );
   zListDestroy( zIntListCell, &list2 );
-  zAssert( zListMoveZ, result );
+  zAssert( zListUnsplice (tail case), result );
 }
 
 bool test_check_dup(zIntList *list1, zIntList *list2)
@@ -262,7 +299,8 @@ int main(void)
   assert_list_name_find();
   assert_swap();
   assert_purge();
-  assert_append();
+  assert_splice_and_move();
+  assert_unsplice();
   assert_dup();
   assert_quicksort();
   assert_quickselect();

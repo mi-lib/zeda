@@ -14,23 +14,21 @@
 __BEGIN_DECLS
 
 /* ********************************************************** */
-/*! \defgroup dlist dynamically-allocated list
+/*! \defgroup list dynamically-allocated list
  * \{ *//* ************************************************** */
 
-/* ********************************************************** */
-/*! \def zListClass(list_t,cell_t,data_t)
- * \brief generate bidirectional ring list class.
+/*! \def ZEDA_DEF_LIST_CLASS( list_t, cell_t, data_t )
+ * \brief define a looped bidirectional list class.
  *
- * A macro zListClass() simultaneously generates a new
- * (bidirectional) list class and a new list cell class.
+ * A macro ZEDA_DEF_LIST_CLASS() simultaneously defines a new bidirectional list class and a list cell
+ * class for it.
  *
- * The list cell class, which is named \a cell_t has
- * pointers to the previous and the next cells, and
- * the data with a specified type \a data_t.
+ * The list cell class, which is named \a cell_t has pointers to the previous and the next cells, and
+ * a data of a specified type \a data_t.
  *
- * The list class, which is named \a list_t, has a root
- * cell with the type \a data_t and the number of cells.
- *//* ******************************************************* */
+ * The list class, which is named \a list_t, has a centinel root cell of the type \a data_t and the
+ * number of cells that it has.
+ */
 
 #ifdef __cplusplus
 #define ZEDA_DEF_LIST_CLASS(list_t,cell_t,data_t) \
@@ -61,7 +59,10 @@ struct list_t{ \
     return cellptr; \
   } \
   cell_t *purge(cell_t *cell){ zListPurge( this, cell ); return cell; } \
-  void moveZ(list_t *renterlist){ zListMoveZ( this, renterlist ); } \
+  void spliceA(list_t *renterlist){ zListSpliceA( this, renterlist ); } \
+  void spliceZ(list_t *renterlist){ zListSpliceZ( this, renterlist ); } \
+  void splicemoveA(list_t *renterlist){ zListSpliceAndMoveA( this, renterlist ); } \
+  void splicemoveZ(list_t *renterlist){ zListSpliceAndMoveZ( this, renterlist ); } \
 }
 #else
 #define ZEDA_DEF_LIST_CLASS(list_t,cell_t,data_t) \
@@ -244,6 +245,7 @@ typedef struct _##list_t{ \
   zListDecSize( list ); \
 } while(0)
 
+#if 0
 /*! \brief move a list \a renter to the head of another list \a borrower.
     As the result, \a renter becomes empty. */
 #define zListMoveA(borrower,renter) do{ \
@@ -255,7 +257,7 @@ typedef struct _##list_t{ \
   } \
 } while(0)
 
-/*! \brief append a list \a renter to the tail of another list \a borrower.
+/*! \brief move a list \a renter to the tail of another list \a borrower.
     As the result, \a renter becomes empty. */
 #define zListMoveZ(borrower,renter) do{ \
   if( !zListIsEmpty( renter ) ){ \
@@ -265,6 +267,50 @@ typedef struct _##list_t{ \
     zListInit( renter ); \
   } \
 } while(0)
+#else
+/*! \brief splice a list \a renter to the head of another list \a borrower. */
+#define zListSpliceA(borrower,renter) do{ \
+  if( !zListIsEmpty( renter ) ){ \
+    zListCellBind( zListHead(borrower), zListTail(renter) ); \
+    zListCellBind( zListHead(renter), zListRoot(borrower) ); \
+    zListSize(borrower) += zListSize(renter); \
+  } \
+} while(0)
+
+/*! \brief aplice a list \a renter to the tail of another list \a borrower. */
+#define zListSpliceZ(borrower,renter) do{ \
+  if( !zListIsEmpty( renter ) ){ \
+    zListCellBind( zListHead(renter), zListTail(borrower) ); \
+    zListCellBind( zListRoot(borrower), zListTail(renter) ); \
+    zListSize(borrower) += zListSize(renter); \
+  } \
+} while(0)
+
+/*! \brief splice a list \a renter to the head of another list \a borrower, and move ownership of \a renter
+ * to \a borrower. As the result, \a renter becomes empty. */
+#define zListSpliceAndMoveA(borrower,renter) do{ \
+  zListSpliceA( borrower, renter ); \
+  if( !zListIsEmpty( renter ) ) zListInit( renter ); \
+} while(0)
+
+/*! \brief splice a list \a renter to the tail of another list \a borrower, and move ownership of \a renter
+ * to \a borrower. As the result, \a renter becomes empty. */
+#define zListSpliceAndMoveZ(borrower,renter) do{ \
+  zListSpliceZ( borrower, renter ); \
+  if( !zListIsEmpty( renter ) ) zListInit( renter ); \
+} while(0)
+
+/*! \brief unsplice a list \a renter from the head of another list \a borrower.
+ * \a renter must be spliced to \a borrower by zListSpliceA and keep the ownership. Otherwise, it fails. */
+#define zListUnsplice(borrower,renter) do{ \
+  if( !zListIsEmpty( renter ) ){ \
+    zListCellBind( zListCellPrev( zListTail(renter) ), zListCellNext( zListHead(renter) ) ); \
+    zListCellBind( zListRoot(renter), zListTail(renter) ); \
+    zListCellBind( zListHead(renter), zListRoot(renter) ); \
+    zListSize(borrower) -= zListSize(renter); \
+  } \
+} while(0)
+#endif
 
 #if 0
 #define zListAppend(borrower,renter) zListAppendZ( borrower, renter )
@@ -403,9 +449,9 @@ ZEDA_DEF_LIST_QUICKSELECT_PROTOTYPE(list_t, cell_t){ \
   } else { \
     result = list_t##QuickSelect( &list_large, order - zListSize(&list_small) - zListSize(&list_equal), cmp, util ); \
   } \
-  zListMoveZ( list, &list_large ); \
-  zListMoveZ( list, &list_equal ); \
-  zListMoveZ( list, &list_small ); \
+  zListSpliceAndMoveZ( list, &list_large ); \
+  zListSpliceAndMoveZ( list, &list_equal ); \
+  zListSpliceAndMoveZ( list, &list_small ); \
   return result; \
 } \
 ZEDA_DEF_LIST_QUICKMEDIAN_PROTOTYPE(list_t, cell_t){ \
@@ -420,9 +466,9 @@ ZEDA_DEF_LIST_QUICKSORT_PROTOTYPE(list_t, cell_t){ \
   _##list_t##QuickPartition( list, &list_small, &list_equal, &list_large, cmp, util ); \
   list_t##QuickSort( &list_small, cmp, util ); \
   list_t##QuickSort( &list_large, cmp, util ); \
-  zListMoveZ( list, &list_large ); \
-  zListMoveZ( list, &list_equal ); \
-  zListMoveZ( list, &list_small ); \
+  zListSpliceAndMoveZ( list, &list_large ); \
+  zListSpliceAndMoveZ( list, &list_equal ); \
+  zListSpliceAndMoveZ( list, &list_small ); \
 }
 
 /* dummy list cell class */
@@ -485,11 +531,17 @@ void zListPrint(zList *list);
 
 /*! \} */
 
-/*! \brief a list of integer numbers */
+/*! \struct zIntList
+ * \brief a list of integer numbers.
+ */
 ZEDA_DEF_LIST_CLASS( zIntList, zIntListCell, int );
 
-/*! \brief a list of integer numbers */
+/*! \brief add an integer numer to a list. */
 __ZEDA_EXPORT bool zIntListAdd(zIntList *list, int i);
+
+/*! \brief output a list of integer numbers. */
+__ZEDA_EXPORT void zIntListFPrint(FILE *fp, zIntList *list);
+#define zIntListPrint(list) zIntListFPrint( stdout, list )
 
 __END_DECLS
 

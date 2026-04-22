@@ -6,15 +6,6 @@
 
 #include <zeda/zeda_list.h>
 
-/* ********************************************************** */
-/* CATEGORY: dynamically-allocated list
- * ********************************************************** */
-
-/* ********************************************************** */
-/* CLASS: zList
- * list structure
- * ********************************************************** */
-
 #ifndef __KERNEL__
 /* print information of a list to a file. */
 void _zListFPrint(FILE *fp, zList *list)
@@ -43,7 +34,7 @@ void zListPrint(zList *list)
 }
 #endif /* __KERNEL__ */
 
-/*! \brief a list of integer numbers */
+/* add an integer number to a list. */
 bool zIntListAdd(zIntList *list, int i)
 {
   zIntListCell *cp;
@@ -55,4 +46,25 @@ bool zIntListAdd(zIntList *list, int i)
   cp->data = i;
   zListInsertHead( list, cp );
   return true;
+}
+
+/* output a list of integer numbers. */
+void zIntListFPrint(FILE *fp, zIntList *list)
+{
+  zIntListCell *cp;
+  int i = 0;
+
+  if( zListIsEmpty( list ) )
+    fprintf( fp, "list is empty.\n" );
+  else{
+    zListForEach( list, cp ){
+      if( i == 10 ){
+        fprintf( fp, "\n" );
+        i = 0;
+      }
+      fprintf( fp, " %d", cp->data );
+      i++;
+    }
+    fprintf( fp, "\n" );
+  }
 }
