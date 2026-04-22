@@ -76,6 +76,7 @@
 
 #define ZEDA_ERR_INDEX_BUF_OCCUPIED        "buffer for the index vector already occupied"
 
+#define ZEDA_ERR_LIST_NOT_EMPTY            "list is not empty"
 #define ZEDA_ERR_LIST2INDEX_FAILED         "cannot create an integer vector from an empty list"
 
 #define ZEDA_ERR_CSV_INVALID               "invalid CSV file"

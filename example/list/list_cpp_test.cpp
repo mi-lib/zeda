@@ -1,6 +1,6 @@
 #include <zeda/zeda_list.h>
 
-zListClass( IntList,IntListCell, int );
+ZEDA_DEF_LIST_CLASS( IntList,IntListCell, int );
 
 int main(void)
 {

@@ -65,7 +65,7 @@ __ZEDA_EXPORT void ZTKKeyFieldFPrint(FILE *fp, ZTKKeyField *kf);
 /*! \struct ZTKKeyFieldList
  * \brief a list of key fields of ZTK format.
  *//* ******************************************************* */
-zListClass( ZTKKeyFieldList, ZTKKeyFieldListCell, ZTKKeyField );
+ZEDA_DEF_LIST_CLASS( ZTKKeyFieldList, ZTKKeyFieldListCell, ZTKKeyField );
 
 /*! \brief insert a new key field of ZTK format to a list. */
 __ZEDA_EXPORT ZTKKeyFieldListCell *ZTKKeyFieldListNew(ZTKKeyFieldList *list, const char *key);
@@ -92,7 +92,7 @@ __ZEDA_EXPORT void ZTKTagFieldFPrint(FILE *fp, ZTKTagField *tf);
 /*! \struct ZTKTagFieldList
  * \brief list of tagged fields of ZTK format.
  *//* ******************************************************* */
-zListClass( ZTKTagFieldList, ZTKTagFieldListCell, ZTKTagField );
+ZEDA_DEF_LIST_CLASS( ZTKTagFieldList, ZTKTagFieldListCell, ZTKTagField );
 
 /*! \brief insert a new tagged field of ZTK format to a list. */
 __ZEDA_EXPORT ZTKTagFieldListCell *ZTKTagFieldListNew(const char *buf);

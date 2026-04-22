@@ -40,7 +40,7 @@ typedef struct{
   Z_NAMED_CLASS;
   int val;
 } namedint_t;
-zListClass( namedint_list_t, namedint_cell_t, namedint_t );
+ZEDA_DEF_LIST_CLASS( namedint_list_t, namedint_cell_t, namedint_t );
 
 void assert_list_name_find(void)
 {
@@ -169,19 +169,19 @@ void assert_append(void)
 
   gen_intlist( &list1, 0, 4 );
   gen_intlist( &list2, 5, 9 );
-  zListAppendA( &list1, &list2 );
+  zListMoveA( &list1, &list2 );
   result = test_append_check( &list1, &list2 );
   zListDestroy( zIntListCell, &list1 );
   zListDestroy( zIntListCell, &list2 );
-  zAssert( zListAppendA, result );
+  zAssert( zListMoveA, result );
 
   gen_intlist( &list1, 0, 4 );
   gen_intlist( &list2, 5, 9 );
-  zListAppendZ( &list2, &list1 );
+  zListMoveZ( &list2, &list1 );
   result = test_append_check( &list2, &list1 );
   zListDestroy( zIntListCell, &list1 );
   zListDestroy( zIntListCell, &list2 );
-  zAssert( zListAppendZ, result );
+  zAssert( zListMoveZ, result );
 }
 
 bool test_check_dup(zIntList *list1, zIntList *list2)

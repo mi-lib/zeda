@@ -20,7 +20,7 @@ __BEGIN_DECLS
  *
  * Memory for the specified strings is internally allocated.
  */
-zListClass(zStrList, zStrListCell, char *);
+ZEDA_DEF_LIST_CLASS(zStrList, zStrListCell, char *);
 
 /*! \brief add a string to the head of a list of strings. */
 __ZEDA_EXPORT zStrListCell *zStrListAdd(zStrList *list, const char *str);
