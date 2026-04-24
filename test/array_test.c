@@ -1,6 +1,6 @@
 #include <zeda/zeda.h>
 
-zArrayClass( int_array_t, int );
+ZEDA_DEF_ARRAY_CLASS( int_array_t, int );
 
 void assert_array_elemsize(void)
 {
@@ -331,7 +331,7 @@ void assert_median(void)
   zAssert( zArrayMedian (even members ordered case), result6 );
 }
 
-zArray2Class( int_array2_t, int );
+ZEDA_DEF_ARRAY2_CLASS( int_array2_t, int );
 
 void assert_array2_elemsize(void)
 {

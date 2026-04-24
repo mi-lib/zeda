@@ -2,7 +2,7 @@
 #include <zeda/zeda_index.h>
 #include <zeda/zeda_ztk.h>
 
-zArrayClass( _TagArray, zIndex );
+ZEDA_DEF_ARRAY_CLASS( _TagArray, zIndex );
 class TagArray : public _TagArray{
  public:
   TagArray(){ zArrayInit( this ); }

@@ -18,10 +18,10 @@ __BEGIN_DECLS
 /*! \defgroup array universal array operations.
  * \{ *//* ************************************************** */
 
-/*! \def zArrayClass(array_t,cell_t)
+/*! \def ZEDA_DEF_ARRAY_CLASS(array_t,cell_t)
  * \brief generate array class.
  *
- * A macro zArrayClass() can generate a new array class, which
+ * A macro ZEDA_DEF_ARRAY_CLASS() can generate a new array class, which
  * consists of the size of the array and the pointer to the array
  * buffer.
  * \a array_t is the class name to be defined.
@@ -44,7 +44,7 @@ __BEGIN_DECLS
  * available.
  */
 #ifdef __cplusplus
-#define zArrayClass(array_t,cell_t) \
+#define ZEDA_DEF_ARRAY_CLASS(array_t,cell_t) \
 struct array_t{ \
   int capacity; \
   int size; \
@@ -101,7 +101,7 @@ struct array_t{ \
   cell_t *median(int (* cmp)(void*,void*,void*), void *util){ return (cell_t*)zArrayMedian( this, cmp, util ); } \
 }
 #else
-#define zArrayClass(array_t,cell_t) \
+#define ZEDA_DEF_ARRAY_CLASS(array_t,cell_t) \
 typedef struct{ \
   int capacity; \
   int size; \
@@ -394,10 +394,10 @@ __ZEDA_EXPORT void *zQuickSelect(void *array, int nmemb, int size, int order, in
 /*! \defgroup array2 universal two-dimensional array operations.
  * \{ *//* ************************************************** */
 
-/*! \def zArray2Class(array_t,cell_t)
+/*! \def ZEDA_DEF_ARRAY2_CLASS(array_t,cell_t)
  * \brief generate two-dimensional array class.
  *
- * A macro zArray2Class() can generate a new two-dimensional array
+ * A macro ZEDA_DEF_ARRAY2_CLASS() can generate a new two-dimensional array
  * class, which consists of the row and column sizes of the array
  * and the pointer to the array buffer.
  * \a array_t is the class name to be defined.
@@ -417,7 +417,7 @@ __ZEDA_EXPORT void *zQuickSelect(void *array, int nmemb, int size, int order, in
  * without checking the validity of specified location.
  */
 #ifdef __cplusplus
-#define zArray2Class(array_t,cell_t) \
+#define ZEDA_DEF_ARRAY2_CLASS(array_t,cell_t) \
 struct array_t{ \
   int capacity[2]; \
   int size[2]; \
@@ -454,7 +454,7 @@ struct array_t{ \
   bool set(int i, int j, cell_t *elem){ return zArray2SetElem( this, i, j, elem ) ? true : false; } \
 }
 #else
-#define zArray2Class(array_t,cell_t) \
+#define ZEDA_DEF_ARRAY2_CLASS(array_t,cell_t) \
 typedef struct{ \
   int capacity[2]; \
   int size[2]; \

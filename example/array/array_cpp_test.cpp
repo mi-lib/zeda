@@ -1,7 +1,7 @@
 #include <zeda/zeda_rand.h>
 #include <zeda/zeda_array.h>
 
-zArrayClass( IntArray, int );
+ZEDA_DEF_ARRAY_CLASS( IntArray, int );
 
 int cmp(void *v1, void *v2, void *dummy)
 {

@@ -1,7 +1,7 @@
 #include <zeda/zeda_rand.h>
 #include <zeda/zeda_array.h>
 
-zArray2Class( IntArray, int );
+ZEDA_DEF_ARRAY2_CLASS( IntArray, int );
 
 int main(void)
 {

@@ -23,7 +23,7 @@ __BEGIN_DECLS
  *
  * zIndex is a container of an array of integer values.
  * The body structure is an instance of zIndexStruct.
- * \sa zArrayClass.
+ * \sa ZEDA_DEF_ARRAY_CLASS.
  *
  * To access elements of the integer array, use zIndexElem()
  * and zIndexSetElem().
@@ -32,7 +32,7 @@ __BEGIN_DECLS
  * and tail, zIndexHead(), zIndexNeck() and zIndexTail()
  * are available.
  */
-zArrayClass( zIndexStruct, int );
+ZEDA_DEF_ARRAY_CLASS( zIndexStruct, int );
 typedef zIndexStruct *zIndex;
 
 /*! \brief capacity of an integer value array. */

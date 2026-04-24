@@ -2,8 +2,8 @@
 #include <zeda/zeda_array.h>
 #include <zeda/zeda_ztk.h>
 
-zArrayClass( int_array_t, int );
-zArrayClass( tag_array_t, int_array_t );
+ZEDA_DEF_ARRAY_CLASS( int_array_t, int );
+ZEDA_DEF_ARRAY_CLASS( tag_array_t, int_array_t );
 
 void tag_array_free(tag_array_t *array)
 {

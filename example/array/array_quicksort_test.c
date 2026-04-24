@@ -5,7 +5,7 @@ typedef struct{
   int val[3];
 } int3_t;
 
-zArrayClass( int3_array_t, int3_t );
+ZEDA_DEF_ARRAY_CLASS( int3_array_t, int3_t );
 
 void int3_randgen(int3_t *item)
 {

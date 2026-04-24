@@ -1,3 +1,5 @@
+2026.04.24. Renamed zArray2Class to ZEDA_DEF_ARRAY2_CLASS. [zeda_array]
+2026.04.24. Renamed zArrayClass to ZEDA_DEF_ARRAY_CLASS. [zeda_array, zeda_index, example, test]
 2026.04.22. Added zIntListFPrint and zIntListPrint. [zeda_list]
 2026.04.22. Modified quickpartition, quickselect, and quicksort to initialize partial lists outside of the partitioner in order to conform to C++17. [zeda_list]
 2026.04.22. Added methods spliceA, spliceZ, and splicemoveA of a list class for C++. [zeda_list]
