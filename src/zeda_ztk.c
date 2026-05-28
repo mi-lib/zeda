@@ -504,7 +504,7 @@ void *ZTKEvalKey(void *obj, void *arg, ZTK *ztk, const ZTKPrp prp[], size_t prpn
 }
 
 /* print out a key field of a ZTK format processor based on a ZTK property. */
-void ZTKPrpKeyFPrint(FILE *fp, void *obj, const ZTKPrp prp[], size_t prpnum)
+void ZTKPrpKeyFPrint(FILE *fp, const void *obj, const ZTKPrp prp[], size_t prpnum)
 {
   uint i;
   int j, k;
@@ -561,7 +561,7 @@ void *ZTKEvalTag(void *obj, void *arg, ZTK *ztk, const ZTKPrp prp[], size_t prpn
 }
 
 /* print out a tag field of a ZTK format processor based on a ZTK property. */
-void ZTKPrpTagFPrint(FILE *fp, void *obj, const ZTKPrp prp[], size_t prpnum)
+void ZTKPrpTagFPrint(FILE *fp, const void *obj, const ZTKPrp prp[], size_t prpnum)
 {
   uint i;
   int j;

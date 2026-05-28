@@ -12,8 +12,6 @@
 #include <stdarg.h>
 #include <zeda/zeda_array.h>
 
-__BEGIN_DECLS
-
 /* ********************************************************** */
 /*! \defgroup index integer value array.
  * \{ *//* ************************************************** */
@@ -32,8 +30,37 @@ __BEGIN_DECLS
  * and tail, zIndexHead(), zIndexNeck() and zIndexTail()
  * are available.
  */
+#ifdef __cplusplus
+ZEDA_DEF_ARRAY_CLASS( _zIndexStruct, int );
+struct zIndexStruct;
+typedef zIndexStruct* zIndex;
+struct zIndexStruct : public _zIndexStruct {
+  zIndexStruct(){}
+  zIndexStruct(int _size);
+  ~zIndexStruct(){}
+  int &operator[](int pos);
+  zIndex setList(...);
+  zIndexStruct &operator=(const zIndexStruct &src);
+  zIndex clone();
+  zIndex zero();
+  zIndex order(int s);
+  bool operator==(const zIndexStruct &anotherindex);
+  bool operator!=(const zIndexStruct &anotherindex);
+  bool swap(int p1, int p2);
+  int move(int from, int to);
+  zIndex remove(int i);
+  bool removeVal(int val);
+  int insertVal(int val);
+  void sort();
+  zIndex shuffle(int count);
+  friend std::ostream &operator<<(std::ostream &stream, const zIndex index);
+};
+#else
 ZEDA_DEF_ARRAY_CLASS( zIndexStruct, int );
-typedef zIndexStruct *zIndex;
+typedef zIndexStruct* zIndex;
+#endif /* __cplusplus */
+
+__BEGIN_DECLS
 
 /*! \brief capacity of an integer value array. */
 #define zIndexCapacity(i)        zArrayCapacity(i)
@@ -63,14 +90,17 @@ typedef zIndexStruct *zIndex;
 #define zIndexBufNC(i)           zArrayBuf(i)
 #define zIndexBuf(i)             ( (i) ? zIndexBufNC(i) : NULL )
 
+/*! \brief assign a buffer of integer values to an index vector. */
+#define zIndexAssignArray(index,size,buf) zArrayAssign( index, size, buf )
+
 #define zIndexElemNC(i,n)        zIndexBufNC(i)[n]
 #define zIndexElem(i,n)          ( zIndexPosIsValid(i,n) ? zIndexElemNC(i,n) : -1 )
 #define zIndexSetElemNC(i,n,e)   ( zIndexElemNC(i,n) = (e) )
 #define zIndexSetElem(i,n,e)     ( zIndexPosIsValid(i,n) ? zIndexSetElemNC(i,n,e) : -1 )
 
-#define zIndexHead(idx)          ( *zArrayHead(idx) )
-#define zIndexNeck(idx)          ( *zArrayNeck(idx) )
-#define zIndexTail(idx)          ( *zArrayTail(idx) )
+#define zIndexHead(index)        ( *zArrayHead(index) )
+#define zIndexNeck(index)        ( *zArrayNeck(index) )
+#define zIndexTail(index)        ( *zArrayTail(index) )
 
 /*! \brief allocate an array of integer values.
  *
@@ -105,19 +135,19 @@ __ZEDA_EXPORT zIndex zIndexCreate(int size);
  * zIndexCreateList() is not available in the kernel space.
  */
 #ifndef __KERNEL__
-zIndex zIndexCreateList(int num, ...);
+__ZEDA_EXPORT zIndex zIndexCreateList(int num, ...);
 #endif /* __KERNEL__ */
 
 /*! \brief set elements of an integer vector from argument list.
  *
- * zIndexSetList() sets elements of an array of integer values \a idx
- * from the specified list of arguments.
- * \retval \a idx
+ * zIndexSetElemList() sets elements of an array of integer values \a index from a given list of arguments.
+ * \retval \a index
  * \note
- * zIndexCreateList() is not available in the kernel space.
+ * zIndexSetElemList() is not available in the kernel space.
  */
 #ifndef __KERNEL__
-zIndex zIndexSetList(zIndex idx, ...);
+__ZEDA_EXPORT zIndex zIndexSetElemVList(zIndex index, va_list args);
+__ZEDA_EXPORT zIndex zIndexSetElemList(zIndex index, ...);
 #endif /* __KERNEL__ */
 
 #define _zIndexCopyNC(src,dest) memcpy( zIndexBufNC(dest), zIndexBufNC(src), sizeof(int)*zIndexSizeNC(dest) )
@@ -134,8 +164,8 @@ zIndex zIndexSetList(zIndex idx, ...);
  * zIndexCopy() returns a pointer \a dest if it succeeds. If the sizes of
  * \a src and \a dest are different, it returns the false value.
  */
-__ZEDA_EXPORT zIndex zIndexCopyNC(zIndex src, zIndex dest);
-__ZEDA_EXPORT zIndex zIndexCopy(zIndex src, zIndex dest);
+__ZEDA_EXPORT zIndex zIndexCopyNC(const zIndex src, zIndex dest);
+__ZEDA_EXPORT zIndex zIndexCopy(const zIndex src, zIndex dest);
 
 /*! \brief clone an integer vector.
  *
@@ -145,79 +175,78 @@ __ZEDA_EXPORT zIndex zIndexCopy(zIndex src, zIndex dest);
  * zIndexClone() returns a pointer to the cloned integer vector if it succeeds.
  * Otherwise, it returns the null pointer.
  */
-__ZEDA_EXPORT zIndex zIndexClone(zIndex src);
+__ZEDA_EXPORT zIndex zIndexClone(const zIndex src);
 
 /*! \brief free an array of integer values.
  *
- * zIndexFree() frees a zIndex instance \a idx,
- * freeing the assigned memory space.
+ * zIndexFree() frees the internal array of a zIndex instance \a index and itself as well.
  */
-__ZEDA_EXPORT void zIndexFree(zIndex idx);
+__ZEDA_EXPORT void zIndexFree(zIndex index);
 
 /*! \brief zero an array of integer values.
  *
  * zIndexZero() sets all components of an array of index values
  * \a idex for zeros.
- * \retval a pointer \a idx.
+ * \retval a pointer \a index.
  */
-__ZEDA_EXPORT zIndex zIndexZero(zIndex idx);
+__ZEDA_EXPORT zIndex zIndexZero(zIndex index);
 
 /*! \brief order an array of integer values.
  *
- * zIndexOrder() sets all components of \a idx in order,
- * beginning from \a s as { \a s, \a s+1, \a s+2, ... }.
- * \retval a pointer \a idx.
+ * zIndexOrder() sets all components of \a index in order, beginning from \a s as
+ * { \a s, \a s+1, \a s+2, ... }.
+ * \retval a pointer \a index.
  */
-__ZEDA_EXPORT zIndex zIndexOrder(zIndex idx, int s);
+__ZEDA_EXPORT zIndex zIndexOrder(zIndex index, int s);
 
 /*! \brief check if two arrays of integer values are equal.
  *
- * zIndexEqual() checks if two arrays of integer values \a idx1 and \a idx2 are equal.
+ * zIndexEqual() checks if two arrays of integer values \a index1 and \a index2 are equal.
  * \return
- * zIndexEqual() returns the true value if \a idx1 and \a idx2 are equal, or the false values, otherwise.
+ * zIndexEqual() returns the true value if \a index1 and \a index2 are equal, or the false values, otherwise.
  */
-__ZEDA_EXPORT bool zIndexEqual(zIndex idx1, zIndex idx2);
+__ZEDA_EXPORT bool zIndexEqual(const zIndex index1, const zIndex index2);
 
 /*! \brief swap two elements of an array of integer values.
  *
- * zIndexSwap() swaps two components of an array of integer values \a idx at positions of \a p1 and \a p2
+ * zIndexSwap() swaps two components of an array of integer values \a index at positions of \a p1 and \a p2
  * without checking validity of the specified positions.
  *
- * zIndexSwap() swaps two components of an array of integer values \a idx at positions of \a p1 and \a p2.
- * It checks if both \a p1 and \a p2 are valid for \a idx before operation.
+ * zIndexSwap() swaps two components of an array of integer values \a index at positions of \a p1 and \a p2.
+ * It checks if both \a p1 and \a p2 are valid for \a index before operation.
  * \return
  * zIndexSwap() returns the true value if it succeeds ot swap the components.
  * If either \a p1 or \a p2 is out of range of \a idex, it returns the false value.
  */
-__ZEDA_EXPORT void zIndexSwapNC(zIndex idx, int p1, int p2);
-__ZEDA_EXPORT bool zIndexSwap(zIndex idx, int p1, int p2);
+__ZEDA_EXPORT void zIndexSwapNC(zIndex index, int p1, int p2);
+__ZEDA_EXPORT bool zIndexSwap(zIndex index, int p1, int p2);
 
 /*! \brief move an element of an array of integer values.
  *
- * zIndexMove() moves a component at \a from to another position \a to of an array of integer values \a idx.
+ * zIndexMove() moves a component at \a from to another position \a to of an array of integer values \a index.
  * The components between \a from and \a to are slided to make a space to insert the component.
  * \return
  * zIndexMove() returns the newly replaced value at \a to.
  * \note
  * if \a from or \a to is invalid, anything might happen.
  */
-__ZEDA_EXPORT int zIndexMove(zIndex idx, int from, int to);
+__ZEDA_EXPORT int zIndexMove(zIndex index, int from, int to);
 
 /*! \brief remove a component from an integer vector.
  *
- * zIndexRemove() removes the \a i th component from an integer vector \a idx. All the posterior
- * components are shifted forward, and the size of \a idx is decreased. Note that the memory allocated
- * for \a idx (referable by zIndexCapacity()) is remained, and only the value of the size is modified.
+ * zIndexRemove() removes the \a i th component from an integer vector \a index. All the posterior
+ * components are shifted forward, and the size of \a index is decreased. Note that the memory allocated
+ * for \a index (referable by zIndexCapacity()) is remained, and only the value of the size is modified.
  * \return
- * zIndexRemove() returns a pointer \a idx.
+ * zIndexRemove() returns a pointer \a index.
  */
-__ZEDA_EXPORT zIndex zIndexRemove(zIndex idx, int i);
+__ZEDA_EXPORT zIndex zIndexRemove(zIndex index, int i);
 
 /*! \brief remove an integer value from an integer vector.
  *
  * zIndexRemoveVal() removes an integer value \a val from an integer vector \a index. Namely, if \a val
  * is a member of \a index, \a val is removed from \a index, and decrements the size of \a index.
- * Note that the memory allocated for \a idx (referable by zIndexCapacity()) is remained.
+ * Note that the memory allocated for \a index (referable by zIndexCapacity()) is remained.
  * \return
  * zIndexRemoveVal() returns the true value if \a val is a member of \a index. Otherwise, it returns
  * the false value.
@@ -226,10 +255,9 @@ __ZEDA_EXPORT bool zIndexRemoveVal(zIndex index, int val);
 
 /*! \brief insert an integer value to an integer vector.
  *
- * zIndexInsertVal() inserts an integer value \a val to an integer vector
- * \a index. The position of the newly inserted element is before the first
- * value that is larger than or equal to \a val. The size of \a index is
- * incremented as the result.
+ * zIndexInsertVal() inserts an integer value \a val to an integer vector \a index. The position of the
+ * newly inserted element is before the first value that is larger than or equal to \a val. The size of
+ * \a index is incremented as the result.
  * If the size of \a index is already equal to its capacity, nothing happens.
  * \return
  * zIndexInsertVal() returns the index of the inserted element.
@@ -255,17 +283,15 @@ __ZEDA_EXPORT zIndex zIndexShuffle(zIndex index, int count);
 #ifndef __KERNEL__
 /*! \brief scan an array of integer values from a file.
  *
- * zIndexFScan() scans a sequence of integer values from
- * the current position of a file \a fp, and create a new
- * zIndex instance.
+ * zIndexFScan() scans a sequence of integer values from the current position of a file \a fp, and create
+ * a new zIndex instance.
  * The format to be scanned by zIndexFScan() is as follows:
  *
  *  \a n ( x1 x2 x3 ... xn )
  *
  * where \a n is the number of values.
  *
- * zIndexScan() is also available to scan values from the
- * standard input.
+ * zIndexScan() is also available to scan values from the standard input.
  * \return a pointer to the newly allocated zIndex instance.
  * \sa zIndexScan, zIndexFPrint
  */
@@ -274,36 +300,32 @@ __ZEDA_EXPORT zIndex zIndexFScan(FILE *fp);
 
 /*! \brief print an array of integer values to a file.
  *
- * zIndexFPrint() prints an array of integer values in
- * a zIndex instance \a idx out to the current position
- * of a file \a fp in the following format:
+ * zIndexFPrint() prints an array of integer values in a zIndex instance \a index out to the current
+ * position of a file \a fp in the following format:
  *
  *  \a n ( x1 x2 x3 ... xn )
  *
  * where \a n is the number of values.
  *
- * zIndexPrint() is also available to print values out to
- * the standard output.
+ * zIndexPrint() is also available to print values out to the standard output.
  * \sa zIndexFScan, zIndexPrint, zIndexDataFPrint
  */
-__ZEDA_EXPORT void zIndexFPrint(FILE *fp, zIndex idx);
+__ZEDA_EXPORT void zIndexFPrint(FILE *fp, const zIndex index);
 #define zIndexPrint(i) zIndexFPrint( stdout, i )
 /*! \brief print an array of integer values out to a file.
  *
- * zIndexDataFPrint() prints an array of integer values in
- * a zIndex instance \a idx out to the current position of
- * a file \a fp in the following format:
+ * zIndexDataFPrint() prints an array of integer values in a zIndex instance \a index out to the current
+ * position of a file \a fp in the following format:
  *
  *  x1 x2 x3 ... xn
  *
- * zIndexDataPrint() is also available to print values out
- * to the standard output.
+ * zIndexDataPrint() is also available to print values out to the standard output.
  * \sa zIndexFScan, zIndexFPrint, zIndexDataPrint
  */
-__ZEDA_EXPORT void zIndexDataFPrint(FILE *fp, zIndex idx);
+__ZEDA_EXPORT void zIndexDataFPrint(FILE *fp, const zIndex index);
 #define zIndexDataPrint(i) zIndexDataFPrint( stdout, i )
 #else
-void zIndexPrint(zIndex idx);
+void zIndexPrint(const zIndex index);
 #endif /* __KERNEL__ */
 
 #include <zeda/zeda_list.h>
@@ -314,5 +336,36 @@ __ZEDA_EXPORT zIndex zIndexCreateFromList(zIntList *list);
 /*! \} */
 
 __END_DECLS
+
+#ifdef __cplusplus
+inline zIndexStruct::zIndexStruct(int _size) : _zIndexStruct( _size ) { zIndexOrder( this, 0 ); }
+inline int &zIndexStruct::operator[](int pos){ return zIndexElemNC( this, pos ); }
+inline zIndex zIndexStruct::setList(...){
+  va_list args;
+  va_start( args, this );
+  zIndexSetElemVList( this, args );
+  va_end( args );
+  return this;
+}
+inline zIndexStruct &zIndexStruct::operator=(const zIndexStruct &src){ return *zIndexCopy( const_cast<zIndex>(&src), this ); }
+inline zIndex zIndexStruct::clone(){ return zIndexClone( this ); }
+inline zIndex zIndexStruct::zero(){ return zIndexZero( this ); }
+inline zIndex zIndexStruct::order(int s = 0){ return zIndexOrder( this, s ); }
+inline bool zIndexStruct::operator==(const zIndexStruct &anotherindex){ return zIndexEqual( this, const_cast<zIndex>(&anotherindex) ); }
+inline bool zIndexStruct::operator!=(const zIndexStruct &anotherindex){ return !zIndexEqual( this, const_cast<zIndex>(&anotherindex) ); }
+inline bool zIndexStruct::swap(int p1, int p2){ return zIndexSwap( this, p1, p2 ); }
+inline int zIndexStruct::move(int from, int to){ return zIndexMove( this, from, to ); }
+inline zIndex zIndexStruct::remove(int i){ return zIndexRemove( this, i ); }
+inline bool zIndexStruct::removeVal(int val){ return zIndexRemoveVal( this, val ); }
+inline int zIndexStruct::insertVal(int val){ return zIndexInsertVal( this, val ); }
+inline void zIndexStruct::sort(){ zIndexSort( this ); }
+inline zIndex zIndexStruct::shuffle(int count){ return zIndexShuffle( this, count ); }
+inline std::ostream &operator<<(std::ostream &stream, const zIndex index){
+  stream << index->size << " ( " << (*index)[0];
+  for(int i=1; i<index->size; i++ ) stream << ", " << (*index)[i];
+  stream << " )" << std::endl;
+  return stream;
+}
+#endif /* __cplusplus */
 
 #endif /* __ZEDA_INDEX_H__ */

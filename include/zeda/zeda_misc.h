@@ -177,11 +177,11 @@ __ZEDA_EXPORT bool zFileIsIdent(FILE *fp1, FILE *fp2);
 
 /*! \brief compare two files.
  *
- * zFileSize() compares two files \a filename1 and \a filename2.
+ * zFileCompare() compares two files \a filename1 and \a filename2.
  * \return
- * zFileSize() returns the position at which the first pair of different data in
- * the files is found. If the files are the same, 0 is returned.
- * If it fails to open \a filename1 or \a filename2, -1 is returned.
+ * zFileCompare() returns the position at which the first pair of different data in
+ * the files is found. If the files are the same, it returns 0.
+ * If it fails to open \a filename1 or \a filename2, it returns -1.
  */
 #ifndef __KERNEL__
 __ZEDA_EXPORT long zFileCompare(const char *filename1, const char *filename2);

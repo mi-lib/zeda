@@ -1,7 +1,7 @@
 #include <zeda/zeda.h>
 
 void *assert_ztk_prp_eval_test(void *obj, int i, void *arg, ZTK *ztk){ return NULL; /* dummy */ }
-bool assert_ztk_prp_print_test(FILE *fp, int i, void *obj){ return true; }
+bool assert_ztk_prp_print_test(FILE *fp, int i, const void *obj){ return true; }
 
 bool assert_ztk_prp_cmp(const ZTKPrp *prp1, const ZTKPrp *prp2)
 {

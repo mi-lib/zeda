@@ -24,9 +24,9 @@ void *eval_key(void *obj, int i, void *arg, ZTK *ztk)
   return obj;
 }
 
-bool print_key(FILE*fp, int i, void *obj)
+bool print_key(FILE*fp, int i, const void *obj)
 {
-  fprintf( fp, "%d\n", zIndexElemNC(static_cast<zIndex>(obj),i) );
+  fprintf( fp, "%d\n", zIndexElemNC(static_cast<const zIndexStruct*>(obj),i) );
   return true;
 }
 
@@ -44,7 +44,7 @@ void *eval_tag(void *obj, int i, void *arg, ZTK *ztk)
   return ZTKEvalKey( index, NULL, ztk, ztk_prp_key, _ZTKPrpNum( ztk_prp_key ) );
 }
 
-bool print_tag(FILE*fp, int i, void *obj)
+bool print_tag(FILE*fp, int i, const void *obj)
 {
   ZTKPrp *prp;
   int size;
@@ -52,7 +52,7 @@ bool print_tag(FILE*fp, int i, void *obj)
 
   size = _ZTKPrpNum( ztk_prp_key );
   prp = ZTKPrpDup( ztk_prp_key, size );
-  index = *zArrayElemNC(static_cast<TagArray*>(obj),i);
+  index = *zArrayElemNC(static_cast<const TagArray*>(obj),i);
   ZTKPrpSetNum( prp, size, "key", zIndexSize(index) );
   ZTKPrpKeyFPrint( fp, index, prp, size );
   fprintf( fp, "\n");

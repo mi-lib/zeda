@@ -6,4 +6,4 @@
 
 #include <zeda/zeda_rrtab.h>
 
-zRRTabClassMethod( zRRBool, bool );
+ZEDA_DEF_ROUNDROBINTABLE_CLASS_METHOD( zRRBool, bool )

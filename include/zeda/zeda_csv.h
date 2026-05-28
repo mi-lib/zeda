@@ -16,25 +16,24 @@
 
 #ifndef __KERNEL__
 
-__BEGIN_DECLS
-
 /* ********************************************************** */
 /*! \defgroup CSV file operations.
  * \{ *//* ************************************************** */
 
-/* ********************************************************** */
 /*! \struct zCSV
  * \brief CSV manager class
  *
  * zCSV class handles a CSV file.
- *//* ******************************************************* */
-typedef struct{
+ */
+ZDEF_STRUCT( __ZEDA_CLASS_EXPORT, zCSV ){
   FILE *fp;         /*!< file pointer */
   int nl;           /*!< number of lines */
   fpos_t *pos;      /*!< array of starting positions of lines in the file stream */
   int nf;           /*!< number of fields per line */
   char buf[BUFSIZ]; /*!< internal buffer */
-} zCSV;
+};
+
+__BEGIN_DECLS
 
 /*! \brief number of lines of a CSV file. */
 #define zCSVLineNum(csv) (csv)->nl
@@ -75,9 +74,9 @@ __ZEDA_EXPORT bool zCSVGetDouble(zCSV *csv, double *val);
 /*! \brief get multiple double-precision floating-point values from the current buffer of a CSV file. */
 __ZEDA_EXPORT bool zCSVGetDoubleN(zCSV *csv, double val[], int n);
 
-/*! \} */
-
 __END_DECLS
+
+/*! \} */
 
 #endif /* __KERNEL__ */
 

@@ -74,6 +74,8 @@ __ZEDA_EXPORT ZEDA_BINFILE_DEF_FREAD_REV_TYPE_PROTOTYPE(  double );
 __ZEDA_EXPORT ZEDA_BINFILE_DEF_FWRITE_TYPE_PROTOTYPE(     double );
 __ZEDA_EXPORT ZEDA_BINFILE_DEF_FWRITE_REV_TYPE_PROTOTYPE( double );
 
+__END_DECLS
+
 /* binary-file manipulator */
 
 #define ZBINFILE_CURRENT_VERSION 0x00000001
@@ -85,7 +87,7 @@ __ZEDA_EXPORT ZEDA_BINFILE_DEF_FWRITE_REV_TYPE_PROTOTYPE( double );
 #define Z_ENDIAN_BIG     4321
 #define Z_ENDIAN_UNKNOWN 9999
 
-typedef struct _zBinFile{
+ZDEF_STRUCT( __ZEDA_CLASS_EXPORT, zBinFile ){
   int16_t version;      /*!< ZBD file version */
   /*! \cond */
   int16_t _endian_type; /* endian type */
@@ -96,16 +98,18 @@ typedef struct _zBinFile{
   size_t (* _fread_int16)(FILE*,int16_t*);
   size_t (* _fread_int32)(FILE*,int32_t*);
   size_t (* _fread_int64)(FILE*,int64_t*);
-  int (* _fread_int)(struct _zBinFile*);
-  long (* _fread_long)(struct _zBinFile*);
+  int (* _fread_int)(zBinFile*);
+  long (* _fread_long)(zBinFile*);
 
   size_t (* _fwrite_int16)(FILE*,int16_t*);
   size_t (* _fwrite_int32)(FILE*,int32_t*);
   size_t (* _fwrite_int64)(FILE*,int64_t*);
-  size_t (* _fwrite_int)(struct _zBinFile*,int);
-  size_t (* _fwrite_long)(struct _zBinFile*,long);
+  size_t (* _fwrite_int)(zBinFile*,int);
+  size_t (* _fwrite_long)(zBinFile*,long);
   /*! \endcond */
-} zBinFile;
+};
+
+__BEGIN_DECLS
 
 __ZEDA_EXPORT bool zBinFileOpen(zBinFile *bf, char filename[], const char *mode);
 __ZEDA_EXPORT int zBinFileClose(zBinFile *bf);

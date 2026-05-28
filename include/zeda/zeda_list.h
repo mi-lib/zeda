@@ -11,8 +11,6 @@
 
 #include <zeda/zeda_misc.h>
 
-__BEGIN_DECLS
-
 /* ********************************************************** */
 /*! \defgroup list dynamically-allocated list
  * \{ *//* ************************************************** */
@@ -245,29 +243,6 @@ typedef struct _##list_t{ \
   zListDecSize( list ); \
 } while(0)
 
-#if 0
-/*! \brief move a list \a renter to the head of another list \a borrower.
-    As the result, \a renter becomes empty. */
-#define zListMoveA(borrower,renter) do{ \
-  if( !zListIsEmpty( renter ) ){ \
-    zListCellBind( zListHead(borrower), zListTail(renter) ); \
-    zListCellBind( zListHead(renter), zListRoot(borrower) ); \
-    zListSize(borrower) += zListSize(renter); \
-    zListInit( renter ); \
-  } \
-} while(0)
-
-/*! \brief move a list \a renter to the tail of another list \a borrower.
-    As the result, \a renter becomes empty. */
-#define zListMoveZ(borrower,renter) do{ \
-  if( !zListIsEmpty( renter ) ){ \
-    zListCellBind( zListHead(renter), zListTail(borrower) ); \
-    zListCellBind( zListRoot(borrower), zListTail(renter) ); \
-    zListSize(borrower) += zListSize(renter); \
-    zListInit( renter ); \
-  } \
-} while(0)
-#else
 /*! \brief splice a list \a renter to the head of another list \a borrower. */
 #define zListSpliceA(borrower,renter) do{ \
   if( !zListIsEmpty( renter ) ){ \
@@ -310,11 +285,6 @@ typedef struct _##list_t{ \
     zListSize(borrower) -= zListSize(renter); \
   } \
 } while(0)
-#endif
-
-#if 0
-#define zListAppend(borrower,renter) zListAppendZ( borrower, renter )
-#endif
 
 /*! \brief move a list to another. */
 #define zListMove(src,dest) do{ \
@@ -474,6 +444,8 @@ ZEDA_DEF_LIST_QUICKSORT_PROTOTYPE(list_t, cell_t){ \
 /* dummy list cell class */
 ZEDA_DEF_LIST_CLASS(zList, zListCell, void*);
 
+__BEGIN_DECLS
+
 /*! \brief print connection information of a list.
  *
  * zListFPrint() prints the connection information of a list \a list to the current position of
@@ -529,12 +501,16 @@ void zListPrint(zList *list);
   zQueueEnqueue( dest, __z_list_queue_move_cp ); \
 } while(0)
 
+__END_DECLS
+
 /*! \} */
 
 /*! \struct zIntList
  * \brief a list of integer numbers.
  */
 ZEDA_DEF_LIST_CLASS( zIntList, zIntListCell, int );
+
+__BEGIN_DECLS
 
 /*! \brief add an integer numer to a list. */
 __ZEDA_EXPORT bool zIntListAdd(zIntList *list, int i);

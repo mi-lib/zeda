@@ -49,30 +49,29 @@ void assert_index_move(void)
   index = zIndexCreate( 10 );
   index_cmp = zIndexCreate( 10 );
   zIndexMove( index, 2, 7 );
-  zIndexSetList( index_cmp, 0, 1, 3, 4, 5, 6, 7, 2, 8, 9 );
+  zIndexSetElemList( index_cmp, 0, 1, 3, 4, 5, 6, 7, 2, 8, 9 );
   res1 = zIndexEqual( index, index_cmp );
   zIndexMove( index, 6, 3 );
-  zIndexSetList( index_cmp, 0, 1, 3, 7, 4, 5, 6, 2, 8, 9 );
+  zIndexSetElemList( index_cmp, 0, 1, 3, 7, 4, 5, 6, 2, 8, 9 );
   res2 = zIndexEqual( index, index_cmp );
   zIndexFree( index_cmp );
   zIndexFree( index );
   zAssert( zIndexMove, res1 && res2 );
 }
 
-#define N 100
-#define SIZE 10
-
 void assert_index_remove(void)
 {
   zIndex index, index_cmp;
   int i, j, k;
+  const int n = 100;
+  const int size = 10;
   bool res = true;
 
-  index = zIndexCreate( SIZE );
-  index_cmp = zIndexCreate( SIZE );
-  for( k=0; k<N; k++ ){
-    zIndexSetSize( index, SIZE );
-    zIndexSetSize( index_cmp, SIZE );
+  index = zIndexCreate( size );
+  index_cmp = zIndexCreate( size );
+  for( k=0; k<n; k++ ){
+    zIndexSetSize( index, size );
+    zIndexSetSize( index_cmp, size );
     zIndexOrder( index, 0 );
     zIndexOrder( index_cmp, 0 );
     i = zRandI( 0, zIndexSizeNC(index)-1 );
@@ -90,10 +89,11 @@ void assert_index_remove(void)
 void assert_index_remove_irregular(void)
 {
   zIndex index, index_cmp;
+  const int size = 10;
   bool result = true;
 
-  index = zIndexCreate( SIZE );
-  index_cmp = zIndexCreate( SIZE-1 );
+  index = zIndexCreate( size );
+  index_cmp = zIndexCreate( size-1 );
   zIndexOrder( index, 0 );
   zIndexRemove( index, 0 );
   zIndexOrder( index_cmp, 1 );
@@ -127,12 +127,13 @@ void assert_index_remove_and_insert_test(void)
 {
   zIndex i1, i2;
   int i, val;
+  const int n = 100;
   bool result = true;
 
-  i1 = zIndexAlloc( N );
+  i1 = zIndexAlloc( n );
   for( i=0; i<zIndexSizeNC(i1); i++ )
-    zIndexSetElemNC( i1, i, zRandI(-N,N) );
-  i2 = zIndexAlloc( N );
+    zIndexSetElemNC( i1, i, zRandI(-n,n) );
+  i2 = zIndexAlloc( n );
   zIndexSetSize( i2, 0 );
   while( zIndexSizeNC(i1) > 0 ){
     i = zRandI( 0, zIndexSizeNC(i1)-1 );
@@ -151,13 +152,14 @@ void assert_index_sort(void)
 {
   zIndex index;
   int i;
+  const int n = 100;
   bool result = true;
 
-  index = zIndexAlloc( N );
-  for( i=0; i<N; i++ )
-    zIndexElemNC(index,i) = zRandI(-N,N);
+  index = zIndexAlloc( n );
+  for( i=0; i<n; i++ )
+    zIndexElemNC(index,i) = zRandI(-n,n);
   zIndexSort( index );
-  for( i=1; i<N; i++ )
+  for( i=1; i<n; i++ )
     if( zIndexElemNC(index,i-1) > zIndexElemNC(index,i) ) result = false;
   zIndexFree( index );
   zAssert( zIndexSort, result );
@@ -166,7 +168,8 @@ void assert_index_sort(void)
 void assert_index_shuffle(void)
 {
   zIndex index;
-  int i, n = 10, count;
+  int i, count;
+  const int n = 10;
   bool result = true;
 
   index = zIndexCreate( n );

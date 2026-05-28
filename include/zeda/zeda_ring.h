@@ -17,6 +17,11 @@ __BEGIN_DECLS
 /*! \defgroup ring universal ring buffer.
  * \{ *//* ************************************************** */
 
+#define ZEDA_DEF_RING_CLASS_PROPERTY(cell_t) \
+  int size; \
+  int head; \
+  cell_t *buf;
+
 /*! \def zRingClass(ring_t,cell_t)
  * \brief generate ring buffer class.
  *
@@ -45,21 +50,18 @@ __BEGIN_DECLS
  * and zRingDecHead(), respectively.
  */
 #ifdef __cplusplus
-#define zRingClass(ring_t,cell_t) \
-struct ring_t{\
-  int size;\
-  int head;\
-  cell_t *buf;\
-  ring_t(){ size=head=0; buf=NULL; };\
-  ~ring_t(){ if( buf ) delete [] buf; };\
-}
+#define ZEDA_DEF_RING_CLASS(ring_t,cell_t) \
+ZDEF_STRUCT( , ring_t ){ \
+  ZEDA_DEF_RING_CLASS_PROPERTY( cell_t ) \
+ public: \
+  ring_t() : size{0}, head{0}, buf{NULL} {}; \
+  ~ring_t(){ if( buf ) delete [] buf; }; \
+};
 #else
-#define zRingClass(ring_t,cell_t) \
-typedef struct{\
-  int size;\
-  int head;\
-  cell_t *buf;\
-} ring_t
+#define ZEDA_DEF_RING_CLASS(ring_t,cell_t) \
+ZDEF_STRUCT( , ring_t ){ \
+  ZEDA_DEF_RING_CLASS_PROPERTY( cell_t ) \
+};
 #endif /* __cplusplus */
 
 #define zRingSize(y)     (y)->size

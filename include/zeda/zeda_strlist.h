@@ -12,8 +12,6 @@
 #include <zeda/zeda_list.h>
 #include <zeda/zeda_string.h>
 
-__BEGIN_DECLS
-
 #ifndef __KERNEL__
 
 /*! \struct list of strings.
@@ -21,6 +19,8 @@ __BEGIN_DECLS
  * Memory for the specified strings is internally allocated.
  */
 ZEDA_DEF_LIST_CLASS(zStrList, zStrListCell, char *);
+
+__BEGIN_DECLS
 
 /*! \brief add a string to the head of a list of strings. */
 __ZEDA_EXPORT zStrListCell *zStrListAdd(zStrList *list, const char *str);
@@ -65,8 +65,8 @@ __ZEDA_EXPORT zStrAddrListCell *zStrAddrListAdd(zStrAddrList *list, char *str);
 #define zStrAddrListFPrint zStrListFPrint
 #define zStrAddrListPrint zStrListPrint
 
-#endif /* __KERNEL__ */
-
 __END_DECLS
+
+#endif /* __KERNEL__ */
 
 #endif /* __ZEDA_STRLIST_H__ */

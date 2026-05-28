@@ -57,22 +57,22 @@ struct array_t{ \
   bool resize(int size){ zArrayResize( this, size ); return zArraySize(this) == size; } \
   bool posIsValid(int pos){ return zArrayPosIsValid( this, pos ); } \
   cell_t *get(int i){ return zArrayElem( this, i ); } \
-  cell_t *set(int i, cell_t *data){ return (cell_t *)zArraySetElem( this, i, data ); } \
-  cell_t *head(){ return zArrayHead( this ); } \
-  cell_t *neck(){ return zArrayNeck( this ); } \
-  cell_t *tail(){ return zArrayTail( this ); } \
+  cell_t *set(int i, const cell_t *data){ return (cell_t *)zArraySetElem( this, i, data ); } \
+  cell_t *head() const { return zArrayHead( this ); } \
+  cell_t *neck() const { return zArrayNeck( this ); } \
+  cell_t *tail() const { return zArrayTail( this ); } \
   cell_t *operator[](int i){ return get( i ); } \
-  void assign(cell_t *_buf, int _capacity){ zArrayAssign( this, _buf, _capacity ); } \
+  void assign(int _capacity, cell_t *_buf){ zArrayAssign( this, _capacity, _buf ); } \
   array_t *init(){ zArrayInit( this ); return this; } \
   array_t *alloc(int _capacity){ \
     zArrayAlloc( this, cell_t, _capacity ); \
     return this->capacity == 0 ? NULL : this; \
   } \
-  array_t *clone(array_t *src){ \
+  array_t *clone(const array_t *src){ \
     zArrayClone( cell_t, src, this ); \
     return this->capacity == 0 ? NULL : this; \
   } \
-  array_t *clone(array_t &src){ return this->clone( &src ); } \
+  array_t *clone(const array_t &src){ return this->clone( &src ); } \
   void _free(){ zArrayFree( this ); } \
   void move(array_t *src){ zArrayMove( src, this ); } \
   void move(array_t &src){ zArrayMove( &src, this ); } \
@@ -143,13 +143,13 @@ typedef struct{ \
 #define zArrayTail(array)          zArrayElemNC( array, 0 )
 
 /*! \brief assign a buffer and its size to an array. */
-#define zArrayAssign(array,buf,capacity) do{ \
+#define zArrayAssign(array,capacity,buf) do{ \
   zArraySetSize( array, ( zArrayCapacity(array) = (capacity) ) ); \
   zArraySetBuf( array, buf ); \
 } while(0)
 
 /*! \brief initialize an array. */
-#define zArrayInit(array) zArrayAssign( array, NULL, 0 )
+#define zArrayInit(array) zArrayAssign( array, 0, NULL )
 
 /*! \brief allocate an array.
  * \param arrary array class instance to be allocated.
@@ -427,7 +427,7 @@ struct array_t{ \
     zArray2Alloc( this, cell_t, _rowsize, _colsize ); \
     return this->size[0] == _rowsize && this->size[1] == _colsize ? this : NULL; \
   } \
-  array_t *clone(array_t *src){ \
+  array_t *clone(const array_t *src){ \
     zArray2Clone( cell_t, src, this ); \
     return this->size[0] == src->size[0] && this->size[1] == src->size[1] ? this : NULL; \
   } \
@@ -450,8 +450,8 @@ struct array_t{ \
   cell_t *getNC(int i, int j){ return zArray2ElemNC( this, i, j ); } \
   cell_t *get(int i, int j){ return zArray2Elem( this, i, j ); } \
   cell_t *operator[](int i){ return zArray2RowBuf( this, i ); } \
-  void setNC(int i, int j, cell_t *elem){ zArray2SetElemNC( this, i, j, elem ); } \
-  bool set(int i, int j, cell_t *elem){ return zArray2SetElem( this, i, j, elem ) ? true : false; } \
+  void setNC(int i, int j, const cell_t *elem){ zArray2SetElemNC( this, i, j, elem ); } \
+  bool set(int i, int j, const cell_t *elem){ return zArray2SetElem( this, i, j, elem ) ? true : false; } \
 }
 #else
 #define ZEDA_DEF_ARRAY2_CLASS(array_t,cell_t) \
@@ -523,14 +523,14 @@ typedef struct{ \
 #define zArray2SetElem(array,i,j,d)   ( zArray2PosIsValid(array,i,j) ? zArray2SetElemNC(array,i,j,d) : NULL )
 
 /*! \brief assign a buffer and its row and column sizes to a two-dimensional array. */
-#define zArray2Assign(array,buf,rowsize,colsize) do{ \
+#define zArray2Assign(array,rowsize,colsize,buf) do{ \
   zArray2SetRowSize( array, ( zArray2RowCapacity(array) = (rowsize) ) ); \
   zArray2SetColSize( array, ( zArray2ColCapacity(array) = (colsize) ) ); \
   zArray2SetBuf( array, buf ); \
 } while(0)
 
 /*! \brief initialize a two-dimensional array. */
-#define zArray2Init(array) zArray2Assign( array, NULL, 0, 0 )
+#define zArray2Init(array) zArray2Assign( array, 0, 0, NULL )
 
 /*! \brief allocate an array.
  * \param array array class instance to be allocated.

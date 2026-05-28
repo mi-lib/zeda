@@ -2,7 +2,7 @@
 
 #define N 5
 
-zRingClass( int_ring_array_t, int );
+ZEDA_DEF_RING_CLASS( int_ring_array_t, int )
 
 bool cmp(int_ring_array_t *ira, int i0, int i1, int i2, int i3, int i4)
 {

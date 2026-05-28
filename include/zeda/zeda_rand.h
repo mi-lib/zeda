@@ -17,8 +17,6 @@
 #ifndef __ZEDA_RAND_H__
 #define __ZEDA_RAND_H__
 
-__BEGIN_DECLS
-
 /*! random number operations are not available in the kernel space */
 #ifndef __KERNEL__
 
@@ -33,15 +31,17 @@ __BEGIN_DECLS
 #define Z_RAND_MT_HISTORY 623
 /*! \endcond */
 
-/* ********************************************************** */
-/*! \brief random number generator based on Mersenne twister.
- *//********************************************************* */
-typedef struct{
+/*! \struct zRandMT
+ * \brief random number generator based on Mersenne twister.
+ */
+ZDEF_STRUCT( __ZEDA_CLASS_EXPORT, zRandMT ){
   ulong  x[Z_RAND_MT_HISTORY+1]; /*!< state vector */
   int    index;                  /*!< index */
   bool   nd_sw;                  /*!< a switch for normal distribution */
   double nd_last;                /*!< a memory for normal distribution */
-} zRandMT;
+};
+
+__BEGIN_DECLS
 
 /*! \brief initialize a random number generator based on Mersenne twister.
  *
@@ -84,10 +84,10 @@ __ZEDA_EXPORT zRandMT *zRandMTDefault(void);
 #define zRandN()            zRandMTN( NULL )
 #define zRandNU()           zRandMTNU( NULL )
 
+__END_DECLS
+
 /*! \} */
 
 #endif /* __KERNEL__ */
-
-__END_DECLS
 
 #endif /* __ZEDA_RAND_H__ */

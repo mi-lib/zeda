@@ -1,7 +1,7 @@
 #include <zeda/zeda.h>
 
-zHeapClass( ,Tree, int );
-zHeapClassMethod( Tree, int, NULL, NULL );
+ZEDA_DEF_HEAP_CLASS( ,Tree, int )
+ZEDA_DEF_HEAP_CLASS_METHOD( Tree, int, NULL, NULL )
 
 #if 0
 void TreeNodePrint(Tree *node, int indent)
@@ -31,10 +31,10 @@ bool check_heap(Tree *tree)
   int prev;
   bool result = true;
 
-  prev = ( node = TreeDeleteHeap( tree, TreeComp, NULL ) )->data;
+  prev = ( node = TreeGetHeap( tree, TreeComp, NULL ) )->data;
   free( node );
   while( !zTreeIsEmpty( tree ) ){
-    if( ( node = TreeDeleteHeap( tree, TreeComp, NULL ) )->data < prev ) result = false;
+    if( ( node = TreeGetHeap( tree, TreeComp, NULL ) )->data < prev ) result = false;
     free( node );
   }
   TreeDestroy( tree );

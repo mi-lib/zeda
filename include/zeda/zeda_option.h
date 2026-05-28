@@ -16,8 +16,6 @@
 #include <ctype.h>
 #include <zeda/zeda_strlist.h>
 
-__BEGIN_DECLS
-
 /* ********************************************************** */
 /*! \defgroup option command line option manipulations.
  * \{ *//* ************************************************** */
@@ -60,6 +58,8 @@ ZDEF_STRUCT( __ZEDA_CLASS_EXPORT, zOption ){
   bool read(char **argv, zStrAddrList *arglist);
 #endif /* __cplusplus */
 };
+
+__BEGIN_DECLS
 
 /*! \brief display a command line help.
  *

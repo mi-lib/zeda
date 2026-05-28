@@ -53,21 +53,21 @@ bool assert_rand_check_diff(int val1[], int val2[], int n)
 }
 
 #define N     100
-#define SEED 1234
-#define MIN     0
-#define MAX   100
 
 void assert_rand_init()
 {
   int val1[N*2], val2[N*2];
+  const int seed = 1234;
+  const int minval = 0;
+  const int maxval = 100;
 
-  assert_rand_init_gen( SEED, MIN, MAX, val1, N );
+  assert_rand_init_gen( seed, minval, maxval, val1, N );
   sleep( 1 );
-  assert_rand_init_gen( SEED, MIN, MAX, val2, N );
+  assert_rand_init_gen( seed, minval, maxval, val2, N );
   zAssert( zRandInitSeedMT,
     assert_rand_check_equal( val1, val2, N ) && assert_rand_check_diff( val1+N, val2+N, N ) );
   sleep( 1 );
-  assert_rand_seed_gen( MIN, MAX, val1, val2, N );
+  assert_rand_seed_gen( minval, maxval, val1, val2, N );
   zAssert( zRandInitMT, assert_rand_check_equal( val1, val2, N ) );
 }
 
