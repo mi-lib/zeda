@@ -39,6 +39,7 @@ struct zIndexStruct : public _zIndexStruct {
   zIndexStruct(int _size);
   ~zIndexStruct(){}
   int &operator[](int pos);
+  void assignArray(int _size, int *_buf);
   zIndex setList(...);
   zIndexStruct &operator=(const zIndexStruct &src);
   zIndex clone();
@@ -340,6 +341,7 @@ __END_DECLS
 #ifdef __cplusplus
 inline zIndexStruct::zIndexStruct(int _size) : _zIndexStruct( _size ) { zIndexOrder( this, 0 ); }
 inline int &zIndexStruct::operator[](int pos){ return zIndexElemNC( this, pos ); }
+inline void zIndexStruct::assignArray(int _size, int *_buf){ zIndexAssignArray( this, _size, _buf ); }
 inline zIndex zIndexStruct::setList(...){
   va_list args;
   va_start( args, this );
