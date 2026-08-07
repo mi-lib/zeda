@@ -1,3 +1,4 @@
+2026.08.07. Debugged zeda-config-gen (thanks to Hiroshi Atsuta). [tools]
 2026.05.28. Added method assignArray of zIndexStruct for C++. [zeda_index]
 2026.05.28. Reimplemented ZEDA_DEF_ROUNDROBINTABLE_CLASS for C++. [zeda_rrtab]
 2026.05.28. Reimplemented ZEDA_DEF_RING_CLASS. [zeda_ring]
