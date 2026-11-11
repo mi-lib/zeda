@@ -155,6 +155,12 @@ typedef unsigned int   uint;   /*!< unsigned integer. */
 typedef unsigned long  ulong;  /*!< unsigned long integer. */
 #endif /* _DEFINED_UINT */
 
+#ifdef __cplusplus
+# include <cfloat>
+#else
+# include <float.h>
+#endif /* __cplusplus */
+
 #if defined( __STDC_VERSION__) && __STDC_VERSION__ >= 199901L
 /* C99 */
 #include <stdbool.h>

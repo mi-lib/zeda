@@ -1,3 +1,4 @@
+2026.11.11. Included float.h for C and cfloat for C++. [zeda_defs]
 2026.08.07. Debugged zeda-config-gen (thanks to Hiroshi Atsuta). [tools]
 2026.05.28. Added method assignArray of zIndexStruct for C++. [zeda_index]
 2026.05.28. Reimplemented ZEDA_DEF_ROUNDROBINTABLE_CLASS for C++. [zeda_rrtab]
